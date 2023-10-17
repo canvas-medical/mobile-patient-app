@@ -35,9 +35,7 @@ const s = StyleSheet.create({
 export function DashTabs() {
   const pathname = usePathname();
   return (
-    <View
-      style={s.tabContainer}
-    >
+    <View style={s.tabContainer}>
       <TouchableOpacity
         style={s.tabButton}
         onPress={() => router.push('/records')}
