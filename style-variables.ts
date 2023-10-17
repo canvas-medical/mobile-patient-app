@@ -8,32 +8,12 @@ const global = {
   size: (s: number) => Dimensions.get('window').width * (s / 393),
 
   // Color Palette
-  // Backgrounds / Titles
   white: '#FAFAFA',
   black: '#1A1A1A',
   primaryBlue: '#006CE9', // Lighter
   secondaryBlue: '#0039AA', // Darker
   blurBlue: '#5288EB',
-
-  // Body Text / Tags / Subtitles
-
-  // Elevations Backgrounds
-  // elevationMiddleGray: '#ECECEC',
-  // elevationLightGray: '#F8F8F8',
-
-  // Error
-  red: '#9A1010', // Is this the red we want? I don't think so. But maybe.
-
-  // Card Box Shadow
-  // cardBoxShadow: {
-  //   shadowOffset: {
-  //     width: 0,
-  //     height: Dimensions.get('window').width * (2 / 393),
-  //   },
-  //   shadowOpacity: 0.16,
-  //   shadowRadius: Dimensions.get('window').width * (20 / 393),
-  //   shadowColor: '#757575',
-  // },
+  red: '#9A1010',
 
   // Typography
   // Titles
