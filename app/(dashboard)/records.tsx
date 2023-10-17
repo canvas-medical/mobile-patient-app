@@ -31,6 +31,12 @@ const s = StyleSheet.create({
     gap: g.size(12),
     paddingVertical: g.size(12),
   },
+  subTitle: {
+    ...g.titleXSmall,
+    color: g.white,
+    marginBottom: g.size(4),
+    marginLeft: g.size(8),
+  },
   title: {
     ...g.titleLarge,
   },
@@ -60,7 +66,13 @@ export default function Records() {
       >
         {toggled
           ? medicationData.map((med) => <MedicationCard key={med.id} med={med} />)
-          : recordsData.map((rec, i) => <RecordCard key={rec.id} rec={rec} index={i} />)}
+          : recordsData.map((rec, i) => (
+            <View>
+              {i === 0 && <Text style={s.subTitle}>Latest</Text>}
+              {i === 1 && <Text style={s.subTitle}>Previous</Text>}
+              <RecordCard key={rec.id} rec={rec} index={i} />
+            </View>
+          ))}
       </ScrollView>
     </Screen>
   );

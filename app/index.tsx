@@ -9,7 +9,7 @@ export default function Index() {
 
   async function getToken() {
     // const token = await SecureStore.getItemAsync('token');
-    // if (token) router.replace('/worktickets-tab');
+    // if (token) router.replace('/records');
     // else router.replace('/initial');
     // router.replace('/initial');
     router.replace('/records');
@@ -18,7 +18,6 @@ export default function Index() {
   useEffect(() => {
     if (!navigationState?.key) return;
     getToken();
-    // }, []);
   }, [navigationState]);
 
   return null;

@@ -56,12 +56,6 @@ const s = StyleSheet.create({
     ...g.bodySmall,
     color: g.white,
   },
-  title: {
-    ...g.titleXSmall,
-    color: g.white,
-    marginBottom: g.size(4),
-    marginLeft: g.size(8),
-  },
 });
 
 interface Props {
@@ -73,7 +67,6 @@ export function RecordCard(props: Props) {
   const {
     index,
     rec: {
-      id,
       type,
       procedure,
       physician,
@@ -98,57 +91,51 @@ export function RecordCard(props: Props) {
   };
 
   return (
-    <View key={id}>
-      {/* Maybe move up one file */}
-      {index === 0 && <Text style={s.title}>Latest</Text>}
-      {index === 1 && <Text style={s.title}>Previous</Text>}
-      {/* Maybe move up one file */}
-      <BlurView intensity={40} style={s.card}>
-        <View style={s.dataContainer}>
-          <View style={s.cube}>
-            {iconSwitch()}
-          </View>
-          <View style={s.baseInfo}>
-            <Text
-              style={s.procedure}
-              numberOfLines={1}
-            >
-              {procedure}
-            </Text>
-            <Text
-              style={s.physician}
-              numberOfLines={1}
-            >
-              {physician}
-            </Text>
-            <Text
-              style={s.summary}
-              numberOfLines={1}
-            >
-              {insuranceProvider}
-            </Text>
-          </View>
-          <View style={s.costAndDate}>
-            <View style={s.pricePill}>
-              <Text style={s.price}>
-                $
-                {cost}
-              </Text>
-            </View>
-            <Text style={s.physician}>
-              {date}
-            </Text>
-          </View>
+    <BlurView intensity={40} style={s.card}>
+      <View style={s.dataContainer}>
+        <View style={s.cube}>
+          {iconSwitch()}
         </View>
-        {index === 0 && (
+        <View style={s.baseInfo}>
+          <Text
+            style={s.procedure}
+            numberOfLines={1}
+          >
+            {procedure}
+          </Text>
+          <Text
+            style={s.physician}
+            numberOfLines={1}
+          >
+            {physician}
+          </Text>
           <Text
             style={s.summary}
-            numberOfLines={4}
+            numberOfLines={1}
           >
-            {summary}
+            {insuranceProvider}
           </Text>
-        )}
-      </BlurView>
-    </View>
+        </View>
+        <View style={s.costAndDate}>
+          <View style={s.pricePill}>
+            <Text style={s.price}>
+              $
+              {cost}
+            </Text>
+          </View>
+          <Text style={s.physician}>
+            {date}
+          </Text>
+        </View>
+      </View>
+      {index === 0 && (
+        <Text
+          style={s.summary}
+          numberOfLines={4}
+        >
+          {summary}
+        </Text>
+      )}
+    </BlurView>
   );
 }
