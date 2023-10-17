@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { MedicalRecord } from '@interfaces';
-import { BlurView } from '@ui';
+import { BlurView } from 'expo-blur';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -12,10 +12,13 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   card: {
+    borderRadius: g.size(8),
+    overflow: 'hidden',
+  },
+  cardBlur: {
     paddingVertical: g.size(16),
     paddingHorizontal: g.size(20),
     gap: g.size(12),
-    borderRadius: g.size(8),
   },
   costAndDate: {
     justifyContent: 'space-between',
@@ -91,51 +94,57 @@ export function RecordCard(props: Props) {
   };
 
   return (
-    <BlurView intensity={40} style={s.card}>
-      <View style={s.dataContainer}>
-        <View style={s.cube}>
-          {iconSwitch()}
-        </View>
-        <View style={s.baseInfo}>
-          <Text
-            style={s.procedure}
-            numberOfLines={1}
-          >
-            {procedure}
-          </Text>
-          <Text
-            style={s.physician}
-            numberOfLines={1}
-          >
-            {physician}
-          </Text>
-          <Text
-            style={s.summary}
-            numberOfLines={1}
-          >
-            {insuranceProvider}
-          </Text>
-        </View>
-        <View style={s.costAndDate}>
-          <View style={s.pricePill}>
-            <Text style={s.price}>
-              $
-              {cost}
+    <View style={s.card}>
+      <BlurView
+        intensity={40}
+        tint="light"
+        style={s.cardBlur}
+      >
+        <View style={s.dataContainer}>
+          <View style={s.cube}>
+            {iconSwitch()}
+          </View>
+          <View style={s.baseInfo}>
+            <Text
+              style={s.procedure}
+              numberOfLines={1}
+            >
+              {procedure}
+            </Text>
+            <Text
+              style={s.physician}
+              numberOfLines={1}
+            >
+              {physician}
+            </Text>
+            <Text
+              style={s.summary}
+              numberOfLines={1}
+            >
+              {insuranceProvider}
             </Text>
           </View>
-          <Text style={s.physician}>
-            {date}
-          </Text>
+          <View style={s.costAndDate}>
+            <View style={s.pricePill}>
+              <Text style={s.price}>
+                $
+                {cost}
+              </Text>
+            </View>
+            <Text style={s.physician}>
+              {date}
+            </Text>
+          </View>
         </View>
-      </View>
-      {index === 0 && (
-        <Text
-          style={s.summary}
-          numberOfLines={4}
-        >
-          {summary}
-        </Text>
-      )}
-    </BlurView>
+        {index === 0 && (
+          <Text
+            style={s.summary}
+            numberOfLines={4}
+          >
+            {summary}
+          </Text>
+        )}
+      </BlurView>
+    </View>
   );
 }

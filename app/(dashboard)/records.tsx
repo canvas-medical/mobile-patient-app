@@ -58,6 +58,8 @@ export default function Records() {
         <LabeledToggle
           toggled={toggled}
           setToggled={setToggled}
+          optionOne="Lab Results"
+          optionTwo="Medications"
         />
       </View>
       <ScrollView
@@ -67,10 +69,10 @@ export default function Records() {
         {toggled
           ? medicationData.map((med) => <MedicationCard key={med.id} med={med} />)
           : recordsData.map((rec, i) => (
-            <View>
+            <View key={rec.id}>
               {i === 0 && <Text style={s.subTitle}>Latest</Text>}
               {i === 1 && <Text style={s.subTitle}>Previous</Text>}
-              <RecordCard key={rec.id} rec={rec} index={i} />
+              <RecordCard rec={rec} index={i} />
             </View>
           ))}
       </ScrollView>

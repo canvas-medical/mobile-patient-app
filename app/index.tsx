@@ -11,8 +11,8 @@ export default function Index() {
     // const token = await SecureStore.getItemAsync('token');
     // if (token) router.replace('/records');
     // else router.replace('/initial');
-    router.replace('/initial');
-    // router.replace('/records');
+    // router.replace('/initial');
+    router.replace('/records');
   }
 
   useEffect(() => {
