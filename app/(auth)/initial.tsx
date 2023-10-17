@@ -9,9 +9,8 @@ const s = StyleSheet.create({
     gap: g.size(16),
   },
   container: {
-    flex: 1,
     justifyContent: 'flex-end',
-    paddingHorizontal: g.size(48),
+    paddingHorizontal: g.size(36),
     paddingBottom: g.size(155),
   },
   subtitle: {

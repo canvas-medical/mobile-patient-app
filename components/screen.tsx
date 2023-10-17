@@ -21,7 +21,7 @@ const s = StyleSheet.create({
 
 interface Props {
   children: ReactNode,
-  style: StyleProp<any>,
+  style?: StyleProp<any>,
 }
 
 export function Screen({ children, style }: Props) {

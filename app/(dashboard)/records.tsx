@@ -12,11 +12,8 @@ import { g } from '@styles';
 import { recordsData, medicationData } from '../../dummyData';
 
 const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: g.size(72),
-  },
   dataContainer: {
+    marginTop: g.size(72),
     paddingHorizontal: g.size(16),
   },
   headerContainer: {
@@ -45,7 +42,7 @@ const s = StyleSheet.create({
 export default function Records() {
   const [toggled, setToggled] = useState(false);
   return (
-    <Screen style={s.container}>
+    <Screen>
       <View style={s.dataContainer}>
         <View style={s.headerContainer}>
           <Text style={s.title}>Profile</Text>
