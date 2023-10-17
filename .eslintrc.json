@@ -1,0 +1,112 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "react-native/react-native": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:react-native/all"
+  ],
+  "globals": {
+    "JSX": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "react-native",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "import/no-default-export": "error",
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "no-console": "off",
+    "react/prop-types": "off",
+    "react/jsx-indent": [
+      "error",
+      2
+    ],
+    "comma-dangle": "off",
+    "implicit-arrow-linebreak": "off",
+    "camelcase": [
+      "error",
+      {
+        "ignoreDestructuring": false,
+        "properties": "always"
+      }
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "multiline": true,
+        "minProperties": 6,
+        "consistent": true
+      }
+    ],
+    "react/jsx-closing-bracket-location": [
+      1,
+      "line-aligned"
+    ],
+    "max-len": [
+      2,
+      150,
+      4
+    ],
+    "react/jsx-curly-newline": "off",
+    "react-hooks/exhaustive-deps": 0,
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 2,
+    "react-native/no-color-literals": 2,
+    "react-native/no-raw-text": 2,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".tsx"
+        ]
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react-native/sort-styles": [
+      "error",
+      "asc",
+      {
+        "ignoreClassNames": false,
+        "ignoreStyleProperties": true
+      }
+    ],
+    "react-native/no-single-element-style-arrays": 2,
+    "react/style-prop-object": "off",
+    "react/require-default-props": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error"
+    ]
+  },
+  "overrides": [
+    // Expo needs default exports for _layout files
+    {
+      "files": [
+        "index.d.ts",
+        "app/**/*"
+      ],
+      "rules": {
+        "import/no-default-export": "off",
+        "import/prefer-default-export": "error"
+      }
+    }
+  ]
+}
