@@ -14,10 +14,9 @@ These should be copied over to the relevant QA doc when the PR is merged
 
 
 # Changes include
-- [ ] Bugfix (non-breaking change that solves an issue)
 - [ ] New feature (non-breaking change that adds functionality)
-- [ ] Breaking change (change that is not backwards-compatible and/or changes
-  current functionality)
+- [ ] Bugfix (non-breaking change that solves an issue)
+- [ ] Refactor
 
 # Checklist
 - [ ] I have tested this code on iOS
