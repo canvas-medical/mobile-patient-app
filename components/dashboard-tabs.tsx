@@ -5,6 +5,15 @@ import { g } from '@styles';
 import { router, usePathname } from 'expo-router';
 
 const s = StyleSheet.create({
+  activeTab: {
+    opacity: 0.8,
+  },
+  buttonBlur: {
+    width: '100%',
+    paddingVertical: g.size(8),
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   container: {
     ...g.shadow,
     position: 'absolute',
@@ -17,17 +26,20 @@ const s = StyleSheet.create({
     opacity: 0.5,
   },
   tabBlur: {
-    paddingVertical: g.size(8),
-    flex: 1,
     flexDirection: 'row',
   },
   tabButton: {
     flex: 1,
+    // paddingVertical: g.size(8),
     justifyContent: 'center',
     alignItems: 'center',
+    // borderWidth: 1,
+    // borderColor: g.red,
+    // borderStyle: 'solid',
   },
   tabDivider: {
     width: g.size(1),
+    marginVertical: g.size(2),
     backgroundColor: g.white,
   },
   tabs: {
@@ -52,12 +64,18 @@ export function DashTabs() {
             onPress={() => router.push('/records')}
             disabled={pathname === '/records'}
           >
-            <MaterialCommunityIcons
-              name="inbox"
-              size={40}
-              color={g.primaryBlue}
-              style={pathname !== '/records' && s.inactiveTab}
-            />
+            <BlurView
+              tint="light"
+              intensity={pathname === '/records' ? 50 : 0}
+              style={s.buttonBlur}
+            >
+              <MaterialCommunityIcons
+                name="inbox"
+                size={40}
+                color={g.primaryBlue}
+                style={pathname === '/records' ? s.activeTab : s.inactiveTab}
+              />
+            </BlurView>
           </TouchableOpacity>
           <View style={s.tabDivider} />
           <TouchableOpacity
@@ -65,12 +83,18 @@ export function DashTabs() {
             onPress={() => router.push('/appointments')}
             disabled={pathname === '/appointments'}
           >
-            <MaterialCommunityIcons
-              name="calendar-heart"
-              size={40}
-              color={g.primaryBlue}
-              style={pathname !== '/appointments' && s.inactiveTab}
-            />
+            <BlurView
+              tint="light"
+              intensity={pathname === '/appointments' ? 50 : 0}
+              style={s.buttonBlur}
+            >
+              <MaterialCommunityIcons
+                name="calendar-heart"
+                size={40}
+                color={g.primaryBlue}
+                style={pathname === '/appointments' ? s.activeTab : s.inactiveTab}
+              />
+            </BlurView>
           </TouchableOpacity>
         </BlurView>
       </View>
