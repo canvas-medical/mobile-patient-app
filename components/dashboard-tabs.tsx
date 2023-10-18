@@ -30,12 +30,8 @@ const s = StyleSheet.create({
   },
   tabButton: {
     flex: 1,
-    // paddingVertical: g.size(8),
     justifyContent: 'center',
     alignItems: 'center',
-    // borderWidth: 1,
-    // borderColor: g.red,
-    // borderStyle: 'solid',
   },
   tabDivider: {
     width: g.size(1),
