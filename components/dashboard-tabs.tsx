@@ -62,7 +62,7 @@ export function DashTabs() {
           >
             <BlurView
               tint="light"
-              intensity={pathname === '/records' ? 50 : 0}
+              intensity={pathname === '/records' ? 60 : 0}
               style={s.buttonBlur}
             >
               <MaterialCommunityIcons
@@ -81,7 +81,7 @@ export function DashTabs() {
           >
             <BlurView
               tint="light"
-              intensity={pathname === '/appointments' ? 50 : 0}
+              intensity={pathname === '/appointments' ? 60 : 0}
               style={s.buttonBlur}
             >
               <MaterialCommunityIcons
