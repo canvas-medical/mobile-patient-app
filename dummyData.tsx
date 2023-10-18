@@ -254,3 +254,166 @@ export const medicationData = [
     cost: 10.0
   }
 ];
+
+export const medicalAppointmentData = [
+  {
+    id: 1,
+    date: '2023-10-08',
+    time: '10:00 AM - 11:00 AM 10:00 AM - 11:00 AM 10:00 AM - 11:00 AM',
+    physician: 'Dr. John Smith Dr. John Smith Dr. John Smith Dr. John Smith',
+    physician_type: 'Cardiologist Cardiologist Cardiologist Cardiologist',
+    location: '123 Main St, Suite 100, Anytown, USA 123 Main St, Suite 100, Anytown, USA 123 Main St, Suite 100, Anytown, USA 123 Main St, Suite 100, Anytown, USA'
+  },
+  {
+    id: 2,
+    date: '2023-10-09',
+    time: '11:00 AM - 12:00 PM',
+    physician: 'Dr. Jane Doe',
+    physician_type: 'Dermatologist',
+    location: '456 Oak St, Suite 200, Anytown, USA'
+  },
+  {
+    id: 3,
+    date: '2023-10-10',
+    time: '1:00 PM - 2:00 PM',
+    physician: 'Dr. Robert Johnson',
+    physician_type: 'Endocrinologist',
+    location: '789 Elm St, Suite 300, Anytown, USA'
+  },
+  {
+    id: 4,
+    date: '2023-10-11',
+    time: '2:00 PM - 3:00 PM',
+    physician: 'Dr. Sarah Lee',
+    physician_type: 'Gastroenterologist',
+    location: '321 Pine St, Suite 400, Anytown, USA'
+  },
+  {
+    id: 5,
+    date: '2023-10-12',
+    time: '3:00 PM - 4:00 PM',
+    physician: 'Dr. Michael Brown',
+    physician_type: 'Hematologist',
+    location: '654 Maple St, Suite 500, Anytown, USA'
+  },
+  {
+    id: 6,
+    date: '2023-10-13',
+    time: '4:00 PM - 5:00 PM',
+    physician: 'Dr. Lisa Davis',
+    physician_type: 'Infectious Disease Specialist',
+    location: '987 Cedar St, Suite 600, Anytown, USA'
+  },
+  {
+    id: 7,
+    date: '2023-10-14',
+    time: '10:00 AM - 11:00 AM',
+    physician: 'Dr. William Wilson',
+    physician_type: 'Neurologist',
+    location: '123 Main St, Suite 100, Anytown, USA'
+  },
+  {
+    id: 8,
+    date: '2023-10-15',
+    time: '11:00 AM - 12:00 PM',
+    physician: 'Dr. Elizabeth Taylor',
+    physician_type: 'Oncologist',
+    location: '456 Oak St, Suite 200, Anytown, USA'
+  },
+  {
+    id: 9,
+    date: '2023-10-16',
+    time: '1:00 PM - 2:00 PM',
+    physician: 'Dr. David Brown',
+    physician_type: 'Psychiatrist',
+    location: '789 Elm St, Suite 300, Anytown, USA'
+  },
+  {
+    id: 10,
+    date: '2023-10-17',
+    time: '2:00 PM - 3:00 PM',
+    physician: 'Dr. Jennifer Lee',
+    physician_type: 'Rheumatologist',
+    location: '321 Pine St, Suite 400, Anytown, USA'
+  },
+  {
+    id: 11,
+    date: '2023-10-18',
+    time: '3:00 PM - 4:00 PM',
+    physician: 'Dr. Christopher Davis',
+    physician_type: 'Urologist',
+    location: '654 Maple St, Suite 500, Anytown, USA'
+  },
+  {
+    id: 12,
+    date: '2023-10-19',
+    time: '4:00 PM - 5:00 PM',
+    physician: 'Dr. Samantha Wilson',
+    physician_type: 'Allergist',
+    location: '987 Cedar St, Suite 600, Anytown, USA'
+  },
+  {
+    id: 13,
+    date: '2023-10-20',
+    time: '10:00 AM - 11:00 AM',
+    physician: 'Dr. Andrew Smith',
+    physician_type: 'Cardiologist',
+    location: '123 Main St, Suite 100, Anytown, USA'
+  },
+  {
+    id: 14,
+    date: '2023-10-21',
+    time: '11:00 AM - 12:00 PM',
+    physician: 'Dr. Emily Doe',
+    physician_type: 'Dermatologist',
+    location: '456 Oak St, Suite 200, Anytown, USA'
+  },
+  {
+    id: 15,
+    date: '2023-10-22',
+    time: '1:00 PM - 2:00 PM',
+    physician: 'Dr. Richard Johnson',
+    physician_type: 'Endocrinologist',
+    location: '789 Elm St, Suite 300, Anytown, USA'
+  },
+  {
+    id: 16,
+    date: '2023-10-23',
+    time: '2:00 PM - 3:00 PM',
+    physician: 'Dr. Samantha Lee',
+    physician_type: 'Gastroenterologist',
+    location: '321 Pine St, Suite 400, Anytown, USA'
+  },
+  {
+    id: 17,
+    date: '2023-10-24',
+    time: '3:00 PM - 4:00 PM',
+    physician: 'Dr. Thomas Brown',
+    physician_type: 'Hematologist',
+    location: '654 Maple St, Suite 500, Anytown, USA'
+  },
+  {
+    id: 18,
+    date: '2023-10-25',
+    time: '4:00 PM - 5:00 PM',
+    physician: 'Dr. Rachel Davis',
+    physician_type: 'Infectious Disease Specialist',
+    location: '987 Cedar St, Suite 600, Anytown, USA'
+  },
+  {
+    id: 19,
+    date: '2023-10-26',
+    time: '10:00 AM - 11:00 AM',
+    physician: 'Dr. George Wilson',
+    physician_type: 'Neurologist',
+    location: '123 Main St, Suite 100, Anytown, USA'
+  },
+  {
+    id: 20,
+    date: '2023-10-27',
+    time: '11:00 AM - 12:00 PM',
+    physician: 'Dr. Mary Taylor',
+    physician_type: 'Oncologist',
+    location: '456 Oak St, Suite 200, Anytown, USA'
+  }
+];

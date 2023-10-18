@@ -26,7 +26,8 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     gap: g.size(12),
-    paddingVertical: g.size(12),
+    paddingTop: g.size(12),
+    paddingBottom: g.size(120),
   },
   subTitle: {
     ...g.titleXSmall,
