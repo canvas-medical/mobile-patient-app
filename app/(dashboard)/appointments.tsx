@@ -48,8 +48,7 @@ const s = StyleSheet.create({
 });
 
 export default function Appointments() {
-  const [toggled, setToggled] = useState(false);
-  // const [toggled, setToggled] = useState(true);
+  const [toggled, setToggled] = useState(true);
 
   function filterByDate() {
     const now = new Date();
@@ -58,8 +57,6 @@ export default function Appointments() {
       return toggled ? apptDate > now : apptDate < now;
     });
   }
-
-  console.log('Hello: ', filterByDate());
 
   return (
     <Screen>

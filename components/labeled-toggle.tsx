@@ -9,7 +9,7 @@ const s = StyleSheet.create({
     width: '100%',
     marginVertical: g.size(12),
   },
-  container2: {
+  toggle: {
     overflow: 'hidden',
     borderRadius: g.size(50),
   },
@@ -48,7 +48,7 @@ export function LabeledToggle(props: Props) {
   const { toggled, setToggled, optionOne, optionTwo } = props;
   return (
     <View style={s.container}>
-      <View style={s.container2}>
+      <View style={s.toggle}>
         <BlurView
           intensity={40}
           tint="light"
