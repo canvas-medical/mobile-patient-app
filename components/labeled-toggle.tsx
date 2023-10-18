@@ -5,10 +5,13 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
+    ...g.shadow,
     width: '100%',
+    marginVertical: g.size(12),
+  },
+  container2: {
     overflow: 'hidden',
     borderRadius: g.size(50),
-    marginVertical: g.size(12),
   },
   toggleButton: {
     borderRadius: g.size(50),
@@ -45,29 +48,31 @@ export function LabeledToggle(props: Props) {
   const { toggled, setToggled, optionOne, optionTwo } = props;
   return (
     <View style={s.container}>
-      <BlurView
-        intensity={40}
-        tint="light"
-      >
-        <View style={s.toggleButtonContainer}>
-          <TouchableOpacity
-            style={[s.toggleButton, !toggled && s.toggleButtonActive]}
-            onPress={() => setToggled(false)}
-          >
-            <Text style={[s.toggleLabel, !toggled && s.toggleLabelActive]}>
-              {optionOne}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[s.toggleButton, toggled && s.toggleButtonActive]}
-            onPress={() => setToggled(true)}
-          >
-            <Text style={[s.toggleLabel, toggled && s.toggleLabelActive]}>
-              {optionTwo}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </BlurView>
+      <View style={s.container2}>
+        <BlurView
+          intensity={40}
+          tint="light"
+        >
+          <View style={s.toggleButtonContainer}>
+            <TouchableOpacity
+              style={[s.toggleButton, !toggled && s.toggleButtonActive]}
+              onPress={() => setToggled(false)}
+            >
+              <Text style={[s.toggleLabel, !toggled && s.toggleLabelActive]}>
+                {optionOne}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[s.toggleButton, toggled && s.toggleButtonActive]}
+              onPress={() => setToggled(true)}
+            >
+              <Text style={[s.toggleLabel, toggled && s.toggleLabelActive]}>
+                {optionTwo}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </BlurView>
+      </View>
     </View>
   );
 }
