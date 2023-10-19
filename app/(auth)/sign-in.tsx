@@ -158,7 +158,7 @@ export default function SignIn() {
                     error={error}
                   />
                   <Link
-                    href="/sign-up"
+                    href="/forgot-password"
                     style={s.forgotPassword}
                   >
                     <Text>Forgot Password?</Text>
