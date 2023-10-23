@@ -1,0 +1,35 @@
+import { StyleSheet } from 'react-native';
+import { g } from '@styles';
+import { StatusBar } from 'expo-status-bar';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import blurs from '@assets/images/blurs.png';
+
+const s = StyleSheet.create({
+  blurCircles: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.size(200),
+    height: g.size(200),
+  },
+  container: {
+    flex: 1,
+  },
+});
+
+export function Screen({ children, style }) {
+  return (
+    <LinearGradient
+      style={[s.container, style]}
+      colors={[g.primaryBlue, g.secondaryBlue]}
+    >
+      <StatusBar style="light" />
+      <Image
+        style={s.blurCircles}
+        source={blurs}
+      />
+      {children}
+    </LinearGradient>
+  );
+}
