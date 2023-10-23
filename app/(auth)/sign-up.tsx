@@ -29,9 +29,6 @@ const s = StyleSheet.create({
     borderTopRightRadius: g.size(36),
     padding: g.size(36),
     justifyContent: 'space-between',
-    borderWidth: 1,
-    borderColor: g.red,
-    borderStyle: 'solid',
     gap: g.size(48),
   },
   footer: {
