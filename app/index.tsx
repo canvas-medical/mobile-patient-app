@@ -12,7 +12,7 @@ export default function Index() {
     // if (token) router.replace('/records');
     // else router.replace('/initial');
     // router.replace('/initial');
-    router.replace('/records');
+    router.replace('/sign-in');
   }
 
   useEffect(() => {

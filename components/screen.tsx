@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 import { StyleSheet, StyleProp } from 'react-native';
-import { g } from '@styles';
 import { StatusBar } from 'expo-status-bar';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import blurs from '@assets/images/blurs.png';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   blurCircles: {

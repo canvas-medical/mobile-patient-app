@@ -13,8 +13,12 @@ const global = {
   primaryBlue: '#006CE9', // Lighter
   secondaryBlue: '#0039AA', // Darker
   blurBlue: '#5288EB',
-  red: '#9A1010',
-  neutral: '#D9D9D9',
+  error: '#DF3C3C30',
+  neutral50: '#CECECE36',
+  neutral100: '#D9D9D9',
+  neutral200: '#C3C3C3',
+  neutral300: '#989898',
+  neutral500: '#6C6C6C',
 
   shadow: {
     shadowOffset: {
@@ -79,6 +83,12 @@ const global = {
     fontSize: Dimensions.get('window').width * (20 / 393),
     lineHeight: Dimensions.get('window').width * (24 / 393),
     letterSpacing: 0.1,
+  },
+  labelXLarge: {
+    fontFamily: 'Alata',
+    fontSize: Dimensions.get('window').width * (24 / 393),
+    lineHeight: Dimensions.get('window').width * (28 / 393),
+    letterSpacing: 0.5,
   },
   bodySmall: {
     fontFamily: 'Alata',
