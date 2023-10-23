@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import { StyleSheet, View, Text, ScrollView, Animated } from 'react-native';
 import {
   Screen,
   ProfileCard,
@@ -21,12 +21,20 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  recordsContainer: {
+    height: g.height * 0.925,
+    marginTop: g.size(16),
+  },
+  recordsHeader: {
+    paddingHorizontal: g.size(16),
+  },
   scroll: {
     paddingHorizontal: g.size(16),
   },
   scrollContent: {
     gap: g.size(12),
-    paddingVertical: g.size(12),
+    paddingTop: g.size(12),
+    paddingBottom: g.size(120),
   },
   subTitle: {
     ...g.titleXSmall,
@@ -39,39 +47,78 @@ const s = StyleSheet.create({
   },
 });
 
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => (
+  layoutMeasurement.height + contentOffset.y
+  >= contentSize.height - g.size(48)
+);
+
 export default function Records() {
-  const [toggled, setToggled] = useState(false);
+  const [toggled, setToggled] = useState<boolean>(false);
+  const [mainScrollEnd, setMainScrollEnd] = useState<boolean>(false);
+  const [nestedScrollTop, setNestedScrollTop] = useState<boolean>(true);
+
+  const opacityAnimation = useRef(new Animated.Value(0.5)).current;
+  const opacityStyle = { opacity: opacityAnimation };
+  useEffect(() => {
+    Animated.timing(opacityAnimation, {
+      toValue: mainScrollEnd ? 0 : 1,
+      duration: 700,
+      useNativeDriver: true
+    }).start();
+  }, [mainScrollEnd]);
+
   return (
     <Screen>
-      <View style={s.dataContainer}>
-        <View style={s.headerContainer}>
-          <Text style={s.title}>Profile</Text>
-          <Search />
-        </View>
-        <ProfileCard />
-        <Text style={s.title}>
-          Records
-        </Text>
-        <LabeledToggle
-          toggled={toggled}
-          setToggled={setToggled}
-          optionOne="Lab Results"
-          optionTwo="Medications"
-        />
-      </View>
       <ScrollView
-        style={s.scroll}
-        contentContainerStyle={s.scrollContent}
+        scrollEnabled={nestedScrollTop}
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            setMainScrollEnd(true);
+          } else setMainScrollEnd(false);
+        }}
+        scrollEventThrottle={16}
       >
-        {toggled
-          ? medicationData.map((med) => <MedicationCard key={med.id} med={med} />)
-          : recordsData.map((rec, i) => (
-            <View key={rec.id}>
-              {i === 0 && <Text style={s.subTitle}>Latest</Text>}
-              {i === 1 && <Text style={s.subTitle}>Previous</Text>}
-              <RecordCard rec={rec} index={i} />
-            </View>
-          ))}
+        <Animated.View style={[s.dataContainer, opacityStyle]}>
+          <View style={s.headerContainer}>
+            <Text style={s.title}>Profile</Text>
+            <Search />
+          </View>
+          <ProfileCard />
+        </Animated.View>
+        <View style={s.recordsContainer}>
+          <View style={s.recordsHeader}>
+            <Text style={s.title}>
+              Records
+            </Text>
+            <LabeledToggle
+              toggled={toggled}
+              setToggled={setToggled}
+              optionOne="Lab Results"
+              optionTwo="Medications"
+            />
+          </View>
+          <ScrollView
+            style={s.scroll}
+            contentContainerStyle={s.scrollContent}
+            scrollEnabled={mainScrollEnd}
+            onScroll={({ nativeEvent }) => {
+              if (nativeEvent.contentOffset.y < 10) {
+                setNestedScrollTop(true);
+              } else setNestedScrollTop(false);
+            }}
+            scrollEventThrottle={16}
+          >
+            {toggled
+              ? medicationData.map((med) => <MedicationCard key={med.id} med={med} />)
+              : recordsData.map((rec, i) => (
+                <View key={rec.id}>
+                  {i === 0 && <Text style={s.subTitle}>Latest</Text>}
+                  {i === 1 && <Text style={s.subTitle}>Previous</Text>}
+                  <RecordCard rec={rec} index={i} />
+                </View>
+              ))}
+          </ScrollView>
+        </View>
       </ScrollView>
     </Screen>
   );

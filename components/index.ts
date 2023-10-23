@@ -1,3 +1,4 @@
+export { AppointmentCard } from '@components/appointment-card';
 export { Button } from '@components/button';
 export { DashTabs } from '@components/dashboard-tabs';
 export { LabeledToggle } from '@components/labeled-toggle';

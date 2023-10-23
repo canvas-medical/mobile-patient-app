@@ -16,6 +16,16 @@ const global = {
   red: '#9A1010',
   neutral: '#D9D9D9',
 
+  shadow: {
+    shadowOffset: {
+      width: 0,
+      height: Dimensions.get('window').width * (4 / 393),
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: Dimensions.get('window').width * (4 / 393),
+    shadowColor: '#1A1A1A',
+  },
+
   // Typography
   // Titles
   titleXSmall: {

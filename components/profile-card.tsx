@@ -6,6 +6,11 @@ import { g } from '@styles';
 import { userData } from '../dummyData';
 
 const s = StyleSheet.create({
+  container: {
+    ...g.shadow,
+    width: '100%',
+    marginVertical: g.size(16),
+  },
   dataColumn: {
     flex: 1,
     gap: g.size(8),
@@ -25,9 +30,7 @@ const s = StyleSheet.create({
     gap: g.size(12),
   },
   profileCard: {
-    width: '100%',
     borderRadius: g.size(8),
-    marginVertical: g.size(16),
     overflow: 'hidden',
   },
   profileCardBlur: {
@@ -57,81 +60,83 @@ const s = StyleSheet.create({
 
 export function ProfileCard() {
   return (
-    <View style={s.profileCard}>
-      <BlurView
-        style={s.profileCardBlur}
-        tint="light"
-        intensity={40}
-      >
-        <View style={s.userContainer}>
-          <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
-          <View style={s.userNameAddressContainer}>
-            <Text
-              style={s.userName}
-              numberOfLines={1}
-            >
-              {userData.name}
-            </Text>
-            <Text
-              style={s.userAddress}
-              numberOfLines={1}
-            >
-              {userData.address}
-            </Text>
-          </View>
-        </View>
-        <View style={s.dataContainer}>
-          <View style={s.dataColumn}>
-            <View style={s.dataRow}>
-              <FontAwesome name="birthday-cake" size={g.size(14)} color="white" />
+    <View style={s.container}>
+      <View style={s.profileCard}>
+        <BlurView
+          style={s.profileCardBlur}
+          tint="light"
+          intensity={40}
+        >
+          <View style={s.userContainer}>
+            <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
+            <View style={s.userNameAddressContainer}>
               <Text
-                style={s.dataPoint}
+                style={s.userName}
                 numberOfLines={1}
               >
-                {userData.birthday}
+                {userData.name}
               </Text>
-            </View>
-            <View style={s.dataRow}>
-              <FontAwesome5 name="phone-alt" size={g.size(14)} color="white" />
               <Text
-                style={s.dataPoint}
+                style={s.userAddress}
                 numberOfLines={1}
               >
-                {userData.phone}
-              </Text>
-            </View>
-            <View style={s.dataRow}>
-              <FontAwesome name="envelope" size={g.size(14)} color="white" />
-              <Text
-                style={s.dataPoint}
-                numberOfLines={1}
-              >
-                {userData.email}
+                {userData.address}
               </Text>
             </View>
           </View>
-          <View style={s.dataColumn}>
-            <View style={s.dataRow}>
-              <FontAwesome name="user" size={g.size(14)} color="white" />
-              <Text
-                style={s.dataPoint}
-                numberOfLines={1}
-              >
-                {userData.sex}
-              </Text>
+          <View style={s.dataContainer}>
+            <View style={s.dataColumn}>
+              <View style={s.dataRow}>
+                <FontAwesome name="birthday-cake" size={g.size(14)} color="white" />
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {userData.birthday}
+                </Text>
+              </View>
+              <View style={s.dataRow}>
+                <FontAwesome5 name="phone-alt" size={g.size(14)} color="white" />
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {userData.phone}
+                </Text>
+              </View>
+              <View style={s.dataRow}>
+                <FontAwesome name="envelope" size={g.size(14)} color="white" />
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {userData.email}
+                </Text>
+              </View>
             </View>
-            <View style={s.dataRow}>
-              <FontAwesome name="user" size={g.size(14)} color="white" />
-              <Text
-                style={s.dataPoint}
-                numberOfLines={1}
-              >
-                {userData.race}
-              </Text>
+            <View style={s.dataColumn}>
+              <View style={s.dataRow}>
+                <FontAwesome name="user" size={g.size(14)} color="white" />
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {userData.sex}
+                </Text>
+              </View>
+              <View style={s.dataRow}>
+                <FontAwesome name="user" size={g.size(14)} color="white" />
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {userData.race}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-      </BlurView>
+        </BlurView>
+      </View>
     </View>
   );
 }
