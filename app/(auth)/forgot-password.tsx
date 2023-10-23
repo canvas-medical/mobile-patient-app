@@ -96,7 +96,7 @@ export default function ForgotPassword() {
                 error={error}
               />
               <Button
-                onPress={() => router.push('/records')} // TODO: Handle submit
+                onPress={() => null} // TODO: Handle submit
                 label="Submit"
                 theme="primary"
               />

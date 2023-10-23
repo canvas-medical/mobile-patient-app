@@ -169,7 +169,7 @@ export default function SignUp() {
                   />
                 </View>
                 <Button
-                  onPress={() => router.push('/records')}
+                  onPress={() => router.push('/records')} // TODO: handle submit
                   label="Sign Up"
                   theme="primary"
                 />
