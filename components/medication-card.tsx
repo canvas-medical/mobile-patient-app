@@ -1,14 +1,19 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Medication } from '@interfaces';
-import { BlurView } from '@ui';
+import { BlurView } from 'expo-blur';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
+    borderRadius: g.size(8),
+    overflow: 'hidden',
+  },
+  cardBlur: {
     paddingVertical: g.size(16),
     paddingHorizontal: g.size(20),
-    borderRadius: g.size(8),
+  },
+  cardContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: g.size(12),
@@ -57,51 +62,56 @@ export function MedicationCard({ med }: { med: Medication }) {
   } = med;
 
   return (
-    <BlurView
-      intensity={40}
-      style={s.card}
-    >
-      <View style={s.cube}>
-        <MaterialCommunityIcons name="pill" size={48} color={g.blurBlue} />
-      </View>
-      <View style={s.medicationInfoContainer}>
-        <Text
-          style={s.medication}
-          numberOfLines={1}
-        >
-          {medication}
-        </Text>
-        <Text
-          style={s.medicationStatusInfo}
-          numberOfLines={1}
-        >
-          Qty:
-          &nbsp;
-          {quantity}
-        </Text>
-        <Text
-          style={s.medicationStatusInfo}
-          numberOfLines={1}
-        >
-          Refills left:
-          &nbsp;
-          {refillsLeft}
-        </Text>
-        <Text
-          style={s.medicationStatusInfo}
-          numberOfLines={1}
-        >
-          Last filled:
-          &nbsp;
-          {lastFilled}
-        </Text>
-      </View>
-      <View style={s.pricePill}>
-        <Text style={s.price}>
-          $
-          {cost}
-        </Text>
-      </View>
-    </BlurView>
+    <View style={s.card}>
+      <BlurView
+        intensity={40}
+        tint="light"
+        style={s.cardBlur}
+      >
+        <View style={s.cardContent}>
+          <View style={s.cube}>
+            <MaterialCommunityIcons name="pill" size={48} color={g.blurBlue} />
+          </View>
+          <View style={s.medicationInfoContainer}>
+            <Text
+              style={s.medication}
+              numberOfLines={1}
+            >
+              {medication}
+            </Text>
+            <Text
+              style={s.medicationStatusInfo}
+              numberOfLines={1}
+            >
+              Qty:
+              &nbsp;
+              {quantity}
+            </Text>
+            <Text
+              style={s.medicationStatusInfo}
+              numberOfLines={1}
+            >
+              Refills left:
+              &nbsp;
+              {refillsLeft}
+            </Text>
+            <Text
+              style={s.medicationStatusInfo}
+              numberOfLines={1}
+            >
+              Last filled:
+              &nbsp;
+              {lastFilled}
+            </Text>
+          </View>
+          <View style={s.pricePill}>
+            <Text style={s.price}>
+              $
+              {cost}
+            </Text>
+          </View>
+        </View>
+      </BlurView>
+    </View>
   );
 }

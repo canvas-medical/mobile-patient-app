@@ -12,11 +12,8 @@ import { g } from '@styles';
 import { recordsData, medicationData } from '../../dummyData';
 
 const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: g.size(72),
-  },
   dataContainer: {
+    marginTop: g.size(72),
     paddingHorizontal: g.size(16),
   },
   headerContainer: {
@@ -45,7 +42,7 @@ const s = StyleSheet.create({
 export default function Records() {
   const [toggled, setToggled] = useState(false);
   return (
-    <Screen style={s.container}>
+    <Screen>
       <View style={s.dataContainer}>
         <View style={s.headerContainer}>
           <Text style={s.title}>Profile</Text>
@@ -58,6 +55,8 @@ export default function Records() {
         <LabeledToggle
           toggled={toggled}
           setToggled={setToggled}
+          optionOne="Lab Results"
+          optionTwo="Medications"
         />
       </View>
       <ScrollView
@@ -67,10 +66,10 @@ export default function Records() {
         {toggled
           ? medicationData.map((med) => <MedicationCard key={med.id} med={med} />)
           : recordsData.map((rec, i) => (
-            <View>
+            <View key={rec.id}>
               {i === 0 && <Text style={s.subTitle}>Latest</Text>}
               {i === 1 && <Text style={s.subTitle}>Previous</Text>}
-              <RecordCard key={rec.id} rec={rec} index={i} />
+              <RecordCard rec={rec} index={i} />
             </View>
           ))}
       </ScrollView>

@@ -1,10 +1,11 @@
-import { Tabs } from 'expo-router';
+import { Screen, DashTabs } from '@components';
+import { Slot } from 'expo-router';
 
-export default function DashboardTabs() {
+export default function Dashboard() {
   return (
-    <Tabs>
-      <Tabs.Screen name="records" options={{ headerShown: false }} />
-      <Tabs.Screen name="appointments" options={{ headerShown: false }} />
-    </Tabs>
+    <Screen>
+      <Slot />
+      <DashTabs />
+    </Screen>
   );
 }

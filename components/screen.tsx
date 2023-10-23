@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { ReactNode } from 'react';
+import { StyleSheet, StyleProp } from 'react-native';
 import { g } from '@styles';
 import { StatusBar } from 'expo-status-bar';
 import { Image } from 'expo-image';
@@ -18,7 +19,12 @@ const s = StyleSheet.create({
   },
 });
 
-export function Screen({ children, style }) {
+interface Props {
+  children: ReactNode,
+  style?: StyleProp<any>,
+}
+
+export function Screen({ children, style }: Props) {
   return (
     <LinearGradient
       style={[s.container, style]}

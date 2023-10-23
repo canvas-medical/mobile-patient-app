@@ -5,9 +5,6 @@ import { Screen } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   formContainer: {
     flex: 1,
     backgroundColor: g.white,
@@ -26,7 +23,7 @@ const s = StyleSheet.create({
 
 export default function SignIn() {
   return (
-    <Screen style={s.container}>
+    <Screen>
       <View style={s.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Feather

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { BlurView } from '@ui';
+import { BlurView } from 'expo-blur';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -37,33 +37,37 @@ const s = StyleSheet.create({
 interface Props {
   toggled: boolean;
   setToggled: Dispatch<SetStateAction<boolean>>;
+  optionOne: string;
+  optionTwo: string;
 }
 
 export function LabeledToggle(props: Props) {
-  const { toggled, setToggled } = props;
+  const { toggled, setToggled, optionOne, optionTwo } = props;
   return (
-    <BlurView
-      intensity={40}
-      style={s.container}
-    >
-      <View style={s.toggleButtonContainer}>
-        <TouchableOpacity
-          style={[s.toggleButton, !toggled && s.toggleButtonActive]}
-          onPress={() => setToggled(false)}
-        >
-          <Text style={[s.toggleLabel, !toggled && s.toggleLabelActive]}>
-            Lab Results
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[s.toggleButton, toggled && s.toggleButtonActive]}
-          onPress={() => setToggled(true)}
-        >
-          <Text style={[s.toggleLabel, toggled && s.toggleLabelActive]}>
-            Medications
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </BlurView>
+    <View style={s.container}>
+      <BlurView
+        intensity={40}
+        tint="light"
+      >
+        <View style={s.toggleButtonContainer}>
+          <TouchableOpacity
+            style={[s.toggleButton, !toggled && s.toggleButtonActive]}
+            onPress={() => setToggled(false)}
+          >
+            <Text style={[s.toggleLabel, !toggled && s.toggleLabelActive]}>
+              {optionOne}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[s.toggleButton, toggled && s.toggleButtonActive]}
+            onPress={() => setToggled(true)}
+          >
+            <Text style={[s.toggleLabel, toggled && s.toggleLabelActive]}>
+              {optionTwo}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </BlurView>
+    </View>
   );
 }

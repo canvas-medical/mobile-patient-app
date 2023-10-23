@@ -14,6 +14,7 @@ const global = {
   secondaryBlue: '#0039AA', // Darker
   blurBlue: '#5288EB',
   red: '#9A1010',
+  neutral: '#D9D9D9',
 
   // Typography
   // Titles

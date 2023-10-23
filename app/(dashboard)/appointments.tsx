@@ -3,10 +3,6 @@ import { Screen } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: g.size(16),
-  },
   title: {
     ...g.titleLarge,
   },
@@ -14,7 +10,7 @@ const s = StyleSheet.create({
 
 export default function Appointments() {
   return (
-    <Screen style={s.container}>
+    <Screen>
       <Text style={s.title}>
         Profile
       </Text>
