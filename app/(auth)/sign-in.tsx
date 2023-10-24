@@ -166,7 +166,7 @@ export default function SignIn() {
                 </View>
               </View>
               <Button
-                onPress={() => router.push('/records')}
+                onPress={() => router.push('/records')} // TODO: handle submit
                 label="Sign In"
                 theme="primary"
               />
@@ -207,7 +207,7 @@ export default function SignIn() {
                 href="/sign-up"
                 style={s.footerLink}
               >
-                Sign Up
+                Sign up
               </Link>
             </Text>
           </View>
