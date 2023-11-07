@@ -57,7 +57,7 @@ export function DashTabs() {
         >
           <TouchableOpacity
             style={s.tabButton}
-            onPress={() => router.push('/records')}
+            onPress={() => router.push('records')}
             disabled={pathname === '/records'}
           >
             <BlurView
@@ -76,7 +76,7 @@ export function DashTabs() {
           <View style={s.tabDivider} />
           <TouchableOpacity
             style={s.tabButton}
-            onPress={() => router.push('/appointments')}
+            onPress={() => router.push('appointments')}
             disabled={pathname === '/appointments'}
           >
             <BlurView

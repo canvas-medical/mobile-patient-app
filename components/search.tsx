@@ -17,6 +17,7 @@ export function Search() {
   return (
     <TouchableOpacity
       onPress={() => null}
+      // onPress={() => null}
       style={s.searchButton}
     >
       <BlurView

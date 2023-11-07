@@ -43,6 +43,11 @@ export default function Initial() {
           theme="tertiary"
           onPress={() => router.push('sign-up')}
         />
+        <Button
+          label="Register"
+          theme="tertiary"
+          onPress={() => router.push('personal-details-one')}
+        />
       </View>
     </Screen>
   );

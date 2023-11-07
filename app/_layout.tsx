@@ -1,8 +1,11 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
+
+const queryClient = new QueryClient();
 
 const s = StyleSheet.create({
   loading: {
@@ -19,10 +22,13 @@ export default function RootLayout() {
   });
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(wizard)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
+      </Stack>
+    </QueryClientProvider>
   );
 }
