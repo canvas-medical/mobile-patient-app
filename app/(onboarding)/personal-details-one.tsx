@@ -95,8 +95,7 @@ export default function PersonalDetails() {
     },
     shouldFocusError: false,
   });
-
-  const { mutate, isPending } = useCreatePatient(getValues());
+  const { mutate: onCreatePatient, isPending } = useCreatePatient(getValues());
 
   return (
     <Screen>
@@ -270,7 +269,7 @@ export default function PersonalDetails() {
                           onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
-                          onSubmitEditing={() => setFocus('gender')}
+                          onSubmitEditing={() => null}
                           autoCapitalize="none"
                           keyboardType="phone-pad"
                           textContentType="telephoneNumber"
@@ -356,7 +355,7 @@ export default function PersonalDetails() {
                     />
                   </View>
                   <Button
-                    onPress={mutate}
+                    onPress={onCreatePatient}
                     label={isPending ? 'Registering...' : 'Register'}
                     theme="primary"
                   />
