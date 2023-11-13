@@ -82,7 +82,7 @@ export default function Records() {
     }).start();
   }, [mainScrollEnd]);
 
-  if (!patientID) return <ActivityIndicator style={s.loading} size="large" color={g.white} />; // Maybe remove this and put api data in state?
+  if (!patientID) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
     <Screen>
       <ScrollView

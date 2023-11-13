@@ -35,7 +35,6 @@ export default function Dashboard() {
       <View />
       <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
         <TouchableOpacity
-          // onPress={() => null}
           onPress={() => {
             Alert.alert(
               'Are you sure?',

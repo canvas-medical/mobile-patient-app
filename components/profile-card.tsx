@@ -7,7 +7,7 @@ import { userData } from '../dummyData';
 
 const s = StyleSheet.create({
   container: {
-    // ...g.shadow,
+    // ...g.shadow, // TODO: I'm leaving this here for now. It was causing a performance warning but I'd like to revisit it if we end up using it.
     width: '100%',
     marginVertical: g.size(16),
   },
