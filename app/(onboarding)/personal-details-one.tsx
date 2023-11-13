@@ -78,24 +78,33 @@ export default function PersonalDetails() {
   const {
     control,
     setFocus,
+    handleSubmit,
     clearErrors,
     formState: { errors },
-    getValues,
   } = useForm<FormData>({
     defaultValues: {
+      // preferredName: '',
+      // firstName: '',
+      // middleName: '',
+      // lastName: '',
+      // phone: '',
+      // email: '',
+      // gender: null,
+      // birthSex: null,
+      // birthDate: new Date().toISOString().slice(0, 10),
       preferredName: '',
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      phone: '',
-      email: '',
-      gender: null,
-      birthSex: null,
-      birthDate: new Date().toISOString().slice(0, 10),
+      firstName: 'Test 10',
+      middleName: null,
+      lastName: 'User 10',
+      phone: '(123) 456-7890',
+      email: 'test10@brewerdigital.com',
+      gender: 'Male',
+      birthSex: 'Male',
+      birthDate: '2000-01-01',
     },
     shouldFocusError: false,
   });
-  const { mutate: onCreatePatient, isPending } = useCreatePatient(getValues());
+  const { mutate: onCreatePatient, isPending } = useCreatePatient();
 
   return (
     <Screen>
@@ -130,12 +139,11 @@ export default function PersonalDetails() {
                     <Controller
                       name="preferredName"
                       control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="text"
                           name="preferredName"
-                          label="Preferred Name"
+                          label="Preferred Name (optional)"
                           placeholder="Enter your preferred name"
                           onFocus={() => clearErrors}
                           onChange={onChange}
@@ -176,12 +184,11 @@ export default function PersonalDetails() {
                     <Controller
                       name="middleName"
                       control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="text"
                           name="middleName"
-                          label="Middle Name"
+                          label="Middle Name (optional)"
                           placeholder="Enter your middle name"
                           onFocus={() => clearErrors()}
                           onChange={onChange}
@@ -355,7 +362,7 @@ export default function PersonalDetails() {
                     />
                   </View>
                   <Button
-                    onPress={onCreatePatient}
+                    onPress={handleSubmit((data) => onCreatePatient(data))}
                     label={isPending ? 'Registering...' : 'Register'}
                     theme="primary"
                   />

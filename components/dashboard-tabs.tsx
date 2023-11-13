@@ -15,7 +15,7 @@ const s = StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    ...g.shadow,
+    // ...g.shadow,
     position: 'absolute',
     bottom: g.size(32),
     left: '50%',

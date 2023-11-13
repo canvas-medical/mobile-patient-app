@@ -7,7 +7,7 @@ import { userData } from '../dummyData';
 
 const s = StyleSheet.create({
   container: {
-    ...g.shadow,
+    // ...g.shadow,
     width: '100%',
     marginVertical: g.size(16),
   },
