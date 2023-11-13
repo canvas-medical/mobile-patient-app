@@ -15,7 +15,7 @@ import {
   MedicationCard,
   Search,
 } from '@components';
-import { usePatientId } from '@services';
+import { usePatient } from '@services';
 import { g } from '@styles';
 import { recordsData, medicationData } from '../../dummyData';
 
@@ -69,7 +69,8 @@ export default function Records() {
   const [toggled, setToggled] = useState<boolean>(false);
   const [mainScrollEnd, setMainScrollEnd] = useState<boolean>(false);
   const [nestedScrollTop, setNestedScrollTop] = useState<boolean>(true);
-  const patientID = usePatientId();
+  const { data: patient } = usePatient();
+  const { id: patientID } = patient;
 
   const opacityAnimation = useRef(new Animated.Value(0.5)).current;
   const opacityStyle = { opacity: opacityAnimation };

@@ -1,42 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */ // REMOVE ME
-/* eslint-disable lines-around-directive */ // REMOVE ME
-/* eslint-disable max-len */ // REMOVE ME
-import { TouchableOpacity, View } from 'react-native';
-import { Screen, Search } from '@components';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { useDocumentReferences, useObservation, useRecords } from '@services';
-
-// Consent ✔️
-// Appointment ✔️
-// Condition ✔️
-// MedicationStatement ✔️
-// Immunization ✔️
-// AllergyIntolerance ✔️
-// DiagnosticReport ✔️
-// Goals ✔️
-// DocumentReference ✔️
-// Observation ✔️
+import { Screen } from '@components';
+import { g } from '@style-variables';
 
 export default function Dashboard() {
-  // 'https://fumage-example.canvasmedical.com/Consent?patient=Patient%2F2c4b29a411b043bfb1c34c8c3683c7ca';
-  // 'https://fumage-example.canvasmedical.com/Condition?patient=Patient%2Fb8dfa97bdcdf4754bcd8197ca78ef0f0';
-  // 'https://fumage-example.canvasmedical.com/MedicationStatement?patient=Patient%2Fb8dfa97bdcdf4754bcd8197ca78ef0f0';
-  'https://fumage-example.canvasmedical.com/Appointment?patient=Patient%2Fa031d1ba40d74aebb8ed716716da05c2&practitioner=Practitioner%2F4150cd20de8a470aa570a852859ac87e'; // useRecords
-  // 'https://fumage-example.canvasmedical.com/Immunization?patient=Patient/4d9c4a797b8c4a58872017e7a19a474e';
-  // 'https://fumage-example.canvasmedical.com/AllergyIntolerance?patient=Patient%2Fb8dfa97bdcdf4754bcd8197ca78ef0f0';
-  'https://fumage-example.canvasmedical.com/DiagnosticReport?patient=Patient%2Fca52f2b76011429d8a0e4aa2b56b18bc&code=73562&date=ge2023-09-12'; // useRecords
-  // 'https://fumage-example.canvasmedical.com/Goal?patient=Patient/f3d750f5d77d403c96baef6a6055c6e7';
-  'https://fumage-example.canvasmedical.com/DocumentReference?subject=Patient%2Fcfd91cd3bd9046db81199aa8ee4afd7f&status=current&type=http%3A%2F%2Floinc.org%7C11502-2'; // useDocumentReferences
-  // 'https://fumage-example.canvasmedical.com/Observation?category=vital-signs&patient=Patient%2Fa1197fa9e65b4a5195af15e0234f61c2';
-
+  const router = useRouter();
   const { data: consents } = useRecords('Consent');
   const { data: conditions } = useRecords('Condition');
   const { data: medications } = useRecords('MedicationStatement');
-  const { data: appointments } = useRecords('Appointment'); // may need further parameters - see uncommented paths above
+  const { data: appointments } = useRecords('Appointment');
   const { data: immunizations } = useRecords('Immunization');
   const { data: allergyIntolerance } = useRecords('AllergyIntolerance');
-  const { data: diagnosticReport } = useRecords('DiagnosticReport'); // may need further parameters - see uncommented paths above
+  const { data: diagnosticReport } = useRecords('DiagnosticReport');
   const { data: goals } = useRecords('Goal');
-  const { data: documentReferences } = useDocumentReferences(); // may need further parameters - see uncommented paths above
+  const { data: documentReferences } = useDocumentReferences();
   const { data: observation } = useObservation();
 
   console.log('Consents: ', consents);
@@ -54,7 +34,36 @@ export default function Dashboard() {
     <Screen>
       <View />
       <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
-        <Search />
+        <TouchableOpacity
+          // onPress={() => null}
+          onPress={() => {
+            Alert.alert(
+              'Are you sure?',
+              'This will delete all of your data and log you out.',
+              [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Log Out',
+                  style: 'destructive',
+                  onPress: () => {
+                    SecureStore.deleteItemAsync('patient_id');
+                    router.replace('initial');
+                  },
+                },
+              ],
+            );
+          }}
+          style={{
+            padding: g.size(8),
+            borderRadius: g.size(4),
+            backgroundColor: g.white,
+          }}
+        >
+          <Text>&quot;Logout&quot;</Text>
+        </TouchableOpacity>
       </View>
     </Screen>
   );
