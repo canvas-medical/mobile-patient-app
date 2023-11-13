@@ -32,7 +32,6 @@ export default function Dashboard() {
 
   return (
     <Screen>
-      <View />
       <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
         <TouchableOpacity
           onPress={() => {
