@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useDocumentReferences, useObservation, useRecords } from '@services';
 import { Screen } from '@components';
-import { g } from '@style-variables';
+import { g } from '@styles';
 
 export default function Dashboard() {
   const router = useRouter();
