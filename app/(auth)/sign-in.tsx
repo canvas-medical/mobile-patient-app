@@ -166,7 +166,7 @@ export default function SignIn() {
                 </View>
               </View>
               <Button
-                onPress={() => router.push('/records')} // TODO: handle submit
+                onPress={() => router.push('records')} // TODO: handle submit
                 label="Sign In"
                 theme="primary"
               />

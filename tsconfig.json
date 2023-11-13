@@ -15,11 +15,17 @@
       "@interfaces/*": [
         "interfaces/*"
       ],
+      "@services/*": [
+        "services/*"
+      ],
       "@styles": [
         "style-variables.ts"
       ],
       "@ui/*": [
         "ui/*"
+      ],
+      "@utils/*": [
+        "utils/*"
       ],
     }
   },

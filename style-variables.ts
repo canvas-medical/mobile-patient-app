@@ -14,7 +14,7 @@ const global = {
   secondaryBlue: '#0039AA', // Darker
   blurBlue: '#5288EB',
   error: '#DF3C3C30',
-  red: '#CC0000',
+  red: '#ED4337',
   neutral50: '#CECECE36',
   neutral100: '#D9D9D9',
   neutral200: '#C3C3C3',
