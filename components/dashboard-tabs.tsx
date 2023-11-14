@@ -15,7 +15,7 @@ const s = StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    ...g.shadow,
+    // ...g.shadow, // TODO: I'm leaving this here for now. It was causing a performance warning but I'd like to revisit it if we end up using it.
     position: 'absolute',
     bottom: g.size(32),
     left: '50%',

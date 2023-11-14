@@ -1,11 +1,12 @@
-import { router } from 'expo-router';
-import { useMutation } from '@tanstack/react-query';
-import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
+import { router } from 'expo-router';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import * as SecureStore from 'expo-secure-store';
+import { getToken } from './access-token';
 
-export async function patientCreate(data) {
-  const token = await SecureStore.getItemAsync('client_token');
-  const res = await fetch('https://fumage-brewerdigital-apiprize.canvasmedical.com/Patient', {
+async function patientCreate(data) {
+  const token = await getToken();
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -24,12 +25,12 @@ export async function patientCreate(data) {
         {
           use: 'official',
           family: data.lastName,
-          given: [data.firstName, data.middleName]
+          given: [data.firstName, ...(data.middleName ? [data.middleName] : [])]
         },
-        {
+        ...(data.preferredName ? [{
           use: 'nickname',
           given: [data.preferredName]
-        }
+        }] : [])
       ],
       telecom: [
         {
@@ -42,16 +43,16 @@ export async function patientCreate(data) {
         }
       ],
       gender: data.gender.toLowerCase(),
-      birthDate: '1990-06-21',
+      birthDate: data.birthDate,
     })
   });
   const urlParts = res.headers.get('Location').split('/');
   await SecureStore.setItemAsync('patient_id', urlParts[urlParts.length - 3]);
 }
 
-export function useCreatePatient(data) {
+export function useCreatePatient() {
   return useMutation({
-    mutationFn: () => patientCreate(data),
+    mutationFn: (data) => patientCreate(data),
     onSuccess: () => router.push('records'),
     onError: () => {
       Alert.alert(
@@ -64,4 +65,26 @@ export function useCreatePatient(data) {
       );
     },
   });
+}
+
+async function getPatient() {
+  const token = await getToken();
+  const patientId = await SecureStore.getItemAsync('patient_id');
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json'
+    }
+  });
+  const patient = await res.json();
+  return patient;
+}
+
+export function usePatient() {
+  const patientQuery = useQuery({
+    queryKey: ['patient_data'],
+    queryFn: () => getPatient(),
+  });
+  return patientQuery;
 }

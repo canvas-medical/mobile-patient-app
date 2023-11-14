@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useRouter, useRootNavigationState } from 'expo-router';
-import { useAccessToken, usePatientId } from '@services';
+import { usePatient } from '@services';
 import { Screen } from '@components';
 import { Image } from 'expo-image';
 import logo from '@assets/logos/bd-logo-white.png';
@@ -22,15 +22,14 @@ const s = StyleSheet.create({
 export default function Index() {
   const navigationState = useRootNavigationState();
   const router = useRouter();
-  const patientID = usePatientId();
-  const accessToken = useAccessToken();
+  const { isFetching, data: patient } = usePatient();
 
   useEffect(() => {
-    if (!navigationState?.key || !accessToken) return;
-    if (patientID) {
+    if (!navigationState?.key || isFetching) return;
+    if (patient?.id) {
       router.replace('records');
     } else router.replace('initial');
-  }, [navigationState, accessToken, patientID]);
+  }, [navigationState, patient, isFetching]);
 
   return (
     <Screen>

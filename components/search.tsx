@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { Feather } from '@expo/vector-icons';
 import { g } from '@styles';
-import { BlurView } from 'expo-blur';
 
 const s = StyleSheet.create({
   searchButton: {
