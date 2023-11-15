@@ -2,7 +2,7 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useDocumentReferences, useObservation, useRecords } from '@services';
+import { useDocumentReferences, useObservation, useRecords, useQuestionnaires } from '@services';
 import { Screen } from '@components';
 import { g } from '@styles';
 
@@ -18,6 +18,7 @@ export default function Dashboard() {
   const { data: goals } = useRecords('Goal');
   const { data: documentReferences } = useDocumentReferences();
   const { data: observation } = useObservation();
+  const { data: questionnaires } = useQuestionnaires();
 
   console.log('Consents: ', consents);
   console.log('Conditions: ', conditions);
@@ -29,6 +30,8 @@ export default function Dashboard() {
   console.log('Goals: ', goals);
   console.log('Document References: ', documentReferences);
   console.log('Observation: ', observation);
+  console.log('Questionnaires: ', questionnaires);
+
 
   return (
     <Screen>
