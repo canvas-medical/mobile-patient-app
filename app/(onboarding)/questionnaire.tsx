@@ -13,9 +13,9 @@ import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { Button, Screen, Input } from '@components';
-import { useCreatePatient, useQuestionnaires } from '@services';
 import { g } from '@styles';
-import { QuestionnaireIds, useQuestionnaire } from '@services/questionnaires';
+import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
+import { Question } from 'interfaces/question';
 
 const s = StyleSheet.create({
   container: {
@@ -63,41 +63,27 @@ const s = StyleSheet.create({
   },
 });
 
-type FormData = {
-  preferredName: string
-  firstName: string
-  middleName: string
-  lastName: string
-  phone: string
-  email: string
-  gender: string
-  birthSex: string
-  birthDate: string
-}
-
 export default function Questionnaire() {
+  const { isFetching, data } = useQuestionnaire(QuestionnaireIds['Alcohol, Tobacco, and Other Substances']);
+  const { mutate: onQuestionnaireSubmit, isPending } = useQuestionnaireSubmit();
   const {
     control,
     setFocus,
     handleSubmit,
     clearErrors,
     formState: { errors },
-  } = useForm<FormData>({
-    defaultValues: {
-    },
+  } = useForm<any>({
     shouldFocusError: false,
   });
-  // const { data: questionnaires } = useQuestionnaires();
-  const { isFetching, data } = useQuestionnaire(QuestionnaireIds['Alcohol, Tobacco, and Other Substances']);
 
-  const questions = data?.item?.map((item) => {
+  const questions = data?.item?.map((item: Question) => {
     console.log('============');
-    console.log('question', item.text);
+    console.log('question', item);
     item.answerOption.map((answer) => console.log(answer.valueCoding.display));
     console.log('============');
     return (
       <Controller
-        name="preferredName"
+        name={item.linkId}
         control={control}
         key={item.linkId}
         render={({ field: { onChange, value, ref } }) => (
@@ -109,7 +95,7 @@ export default function Questionnaire() {
             onFocus={() => clearErrors()}
             onChange={onChange}
             value={value}
-            error={errors.birthSex}
+            error={errors[item.linkId]}
           />
         )}
       />
@@ -148,8 +134,8 @@ export default function Questionnaire() {
                   <View style={s.formInputs}>
                     {questions}
                     <Button
-                    // onPress={handleSubmit((data) => onCreatePatient(data))}
-                      label={false ? 'Registering...' : 'Register'}
+                      onPress={handleSubmit((data) => onQuestionnaireSubmit(data))}
+                      label={false ? 'Submitting...' : 'Submit'}
                       theme="primary"
                     />
                   </View>
