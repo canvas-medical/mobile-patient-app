@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
-import { useMutation } from '@tanstack/react-query/build/modern';
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
 import { getToken } from './access-token';

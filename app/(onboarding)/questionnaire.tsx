@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import { useForm, Controller } from 'react-hook-form';
-import { Button, Screen, Input } from '@components';
+import { Screen } from '@components';
 import { g } from '@styles';
 import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
-import { Question } from 'interfaces/question';
+import QuestionnaireForm from '@components/questionnaire-form';
 
 const s = StyleSheet.create({
   container: {
@@ -66,41 +65,7 @@ const s = StyleSheet.create({
 export default function Questionnaire() {
   const { isFetching, data } = useQuestionnaire(QuestionnaireIds['Alcohol, Tobacco, and Other Substances']);
   const { mutate: onQuestionnaireSubmit, isPending } = useQuestionnaireSubmit();
-  const {
-    control,
-    setFocus,
-    handleSubmit,
-    clearErrors,
-    formState: { errors },
-  } = useForm<any>({
-    shouldFocusError: false,
-  });
-
-  const questions = data?.item?.map((item: Question) => {
-    console.log('============');
-    console.log('question', item);
-    item.answerOption.map((answer) => console.log(answer.valueCoding.display));
-    console.log('============');
-    return (
-      <Controller
-        name={item.linkId}
-        control={control}
-        key={item.linkId}
-        render={({ field: { onChange, value, ref } }) => (
-          <Input
-            type="selector"
-            name={item.text}
-            label={item.text}
-            options={item.answerOption.map((answer) => answer.valueCoding.display)}
-            onFocus={() => clearErrors()}
-            onChange={onChange}
-            value={value}
-            error={errors[item.linkId]}
-          />
-        )}
-      />
-    );
-  });
+  console.log('parent data', data?.item);
 
   return (
     <Screen>
@@ -132,12 +97,7 @@ export default function Questionnaire() {
                 </View>
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
-                    {questions}
-                    <Button
-                      onPress={handleSubmit((data) => onQuestionnaireSubmit(data))}
-                      label={false ? 'Submitting...' : 'Submit'}
-                      theme="primary"
-                    />
+                    {(data?.item) && <QuestionnaireForm items={data.item} />}
                   </View>
                 </View>
               </View>
