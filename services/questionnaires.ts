@@ -54,6 +54,33 @@ async function questionnaireSubmit(data) {
   const token = await getToken();
   console.log(data);
   const patientId = await SecureStore.getItemAsync('patient_id');
+  const body = {
+    resourceType: 'QuestionnaireResponse',
+    questionnaire: `Questionnaire/${data.questionnaireData.id}`,
+    status: 'completed',
+    subject: {
+      reference: patientId,
+      type: 'Patient'
+    },
+    author: {
+      reference: patientId,
+      type: 'Patient'
+    },
+    item: Object.keys(data.formData).map((key) => {
+      const question = data.questionnaireData.item.find((item) => item.linkId === key);
+      // For multiple-choice questions we need to return the code nd system of the item(s) selected, for text fields we only need to return text
+      const choiceAnswer = question.type === 'choice' && question.answerOption.find((obj) => obj.valueCoding.code === data.formData[key]);
+      const answer = choiceAnswer || { valueString: data.formData[key] };
+      return {
+        linkId: key,
+        text: question.text,
+        answer: [
+          answer
+        ]
+      };
+    })
+  };
+  console.log(body);
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/QuestionnaireResponse`, {
     method: 'POST',
     headers: {
@@ -61,31 +88,7 @@ async function questionnaireSubmit(data) {
       accept: 'application/json',
       'content-type': 'application/json',
     },
-    body: JSON.stringify({
-      resourceType: 'QuestionnaireResponse',
-      questionnaire: data.questionnaireId,
-      status: 'completed',
-      subject: {
-        reference: patientId,
-        type: 'Patient'
-      },
-      author: {
-        reference: patientId,
-        type: 'Patient'
-      },
-      item: Object.keys(data.formData).map((key) => {
-        // TODO: tomorrow I need to find the values in the original dataset because they need so much data posted over, not just IDs
-        const isCode = false;
-        const answer = isCode ? { valueCoding: { code: sanitized[0], system: 'http://loinc.org' } } : { valueText: data.formData[key] };
-        console.log(isCode);
-        return {
-          linkId: key,
-          answer: [
-            answer
-          ]
-        };
-      })
-    })
+    body: JSON.stringify(body)
   });
   const Json = await res.json();
   console.log(Json);
