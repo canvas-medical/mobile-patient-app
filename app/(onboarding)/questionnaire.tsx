@@ -83,7 +83,7 @@ export default function Questionnaire() {
   return (
     <Screen>
       <View style={s.scrollCover} />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={s.container}>
