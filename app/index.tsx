@@ -28,7 +28,7 @@ export default function Index() {
     if (!navigationState?.key || isFetching) return;
     if (patient?.id) {
       router.replace('records');
-    } else router.replace('questionnaire');
+    } else router.replace('initial');
   }, [navigationState, patient, isFetching]);
 
   return (

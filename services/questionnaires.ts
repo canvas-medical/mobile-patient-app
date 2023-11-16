@@ -1,32 +1,13 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
+import { Question } from '@interfaces/question';
+import { ApiError } from '@interfaces';
 import { getToken } from './access-token';
 
 export enum QuestionnaireIds {
   'Alcohol, Tobacco, and Other Substances' = 'c8e0a3f7-9f51-47d3-9562-996b619b25e3'
-}
-
-async function getQuestionnaires() {
-  const token = await getToken();
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Questionnaire`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      accept: 'application/json'
-    }
-  });
-  const json = await res.json();
-  return json;
-}
-
-export function useQuestionnaires() {
-  const questionnairesQuery = useQuery({
-    queryKey: ['questionnaires'],
-    queryFn: () => getQuestionnaires(),
-  });
-  return questionnairesQuery;
 }
 
 async function getQuestionnaire(id: string) {
@@ -38,49 +19,38 @@ async function getQuestionnaire(id: string) {
       accept: 'application/json'
     }
   });
-  const json = await res.json();
-  return json;
+  return await res.json();
 }
 
 export function useQuestionnaire(id: string) {
-  const questionnairesQuery = useQuery({
+  return useQuery({
     queryKey: ['questionnaires'],
     queryFn: () => getQuestionnaire(id),
   });
-  return questionnairesQuery;
 }
 
-async function questionnaireSubmit(data) {
+async function questionnaireSubmit(data: { formData: { key: string }; questionnaireData: { id: string, item: Question[] } }) {
   const token = await getToken();
-  console.log(data);
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const body = {
-    resourceType: 'QuestionnaireResponse',
-    questionnaire: `Questionnaire/${data.questionnaireData.id}`,
-    status: 'completed',
-    subject: {
-      reference: patientId,
-      type: 'Patient'
-    },
-    author: {
-      reference: patientId,
-      type: 'Patient'
-    },
-    item: Object.keys(data.formData).map((key) => {
-      const question = data.questionnaireData.item.find((item) => item.linkId === key);
-      // For multiple-choice questions we need to return the code nd system of the item(s) selected, for text fields we only need to return text
-      const choiceAnswer = question.type === 'choice' && question.answerOption.find((obj) => obj.valueCoding.code === data.formData[key]);
-      const answer = choiceAnswer || { valueString: data.formData[key] };
-      return {
-        linkId: key,
-        text: question.text,
-        answer: [
-          answer
-        ]
-      };
-    })
-  };
-  console.log(body);
+
+  const answers = Object.keys(data.formData).reduce((arr, key) => {
+    if (!data.formData[key]) return arr;
+
+    const question = data.questionnaireData.item.find((item) => item.linkId === key);
+    // For multiple-choice questions we need to return the code and system of the item(s) selected, for text fields we only need to return text
+    // TODO: Add support for multi-select choice questions, these have repeat: true in the question object
+    const choiceAnswer = question.type === 'choice' && question.answerOption.find((obj) => obj.valueCoding.code === data.formData[key]);
+    const answer = choiceAnswer || { valueString: data.formData[key] };
+    arr.push({
+      linkId: key,
+      text: question.text,
+      answer: [
+        answer
+      ]
+    });
+    return arr;
+  }, []);
+
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/QuestionnaireResponse`, {
     method: 'POST',
     headers: {
@@ -88,16 +58,31 @@ async function questionnaireSubmit(data) {
       accept: 'application/json',
       'content-type': 'application/json',
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(
+      {
+        resourceType: 'QuestionnaireResponse',
+        questionnaire: `Questionnaire/${data.questionnaireData.id}`,
+        status: 'completed',
+        subject: {
+          reference: `Patient/${patientId}`,
+          type: 'Patient'
+        },
+        author: {
+          reference: `Patient/${patientId}`,
+          type: 'Patient'
+        },
+        item: answers
+      }
+    )
   });
-  const Json = await res.json();
-  console.log(Json);
+  const Json: null | ApiError = await res.json();
+  if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
 export function useQuestionnaireSubmit() {
   return useMutation({
     mutationFn: (data: {formData: {}, questionnaireData: {}}) => questionnaireSubmit(data),
-    // onSuccess: () => router.push('records'),
+    onSuccess: () => router.push('records'),
     onError: (e) => {
       console.log(e);
       Alert.alert(
