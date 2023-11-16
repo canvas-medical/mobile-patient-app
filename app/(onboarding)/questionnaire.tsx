@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import { Screen } from '@components';
+import { Screen, Input, Button } from '@components';
 import { g } from '@styles';
 import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
-import QuestionnaireForm from '@components/questionnaire-form';
+import { Question } from '@interfaces/question';
+import { Controller, useForm } from 'react-hook-form';
 
 const s = StyleSheet.create({
   container: {
@@ -63,9 +64,21 @@ const s = StyleSheet.create({
 });
 
 export default function Questionnaire() {
-  const { isFetching, data } = useQuestionnaire(QuestionnaireIds['Alcohol, Tobacco, and Other Substances']);
+  const { isFetching, data: questionnaire } = useQuestionnaire(QuestionnaireIds['Alcohol, Tobacco, and Other Substances']);
   const { mutate: onQuestionnaireSubmit, isPending } = useQuestionnaireSubmit();
-  console.log('parent data', data?.item);
+  const dataTypeMap = {
+    choice: 'selector',
+    text: 'text'
+  };
+
+  const {
+    control,
+    handleSubmit,
+    clearErrors,
+    formState: { errors },
+  } = useForm<any>({
+    shouldFocusError: false,
+  });
 
   return (
     <Screen>
@@ -97,7 +110,33 @@ export default function Questionnaire() {
                 </View>
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
-                    {(data?.item) && <QuestionnaireForm items={data.item} />}
+                    {!isFetching && questionnaire.item.map((question: Question) =>
+                      (
+                        <Controller
+                          name={question.linkId}
+                          control={control}
+                          rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
+                          key={question.linkId}
+                          render={({ field: { onChange, value } }) => (
+                            <Input
+                              type={dataTypeMap[question.type]}
+                              name={question.text}
+                              label={question.text}
+                              options={question.answerOption.map((answer) => (
+                                { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
+                              onFocus={() => clearErrors()}
+                              onChange={(e) => { console.log(e, value); onChange(e); }}
+                              value={value}
+                              error={errors[question.linkId]}
+                            />
+                          )}
+                        />
+                      ))}
+                    <Button
+                      onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
+                      label={isPending ? 'Submitting...' : 'Submit'}
+                      theme="primary"
+                    />
                   </View>
                 </View>
               </View>

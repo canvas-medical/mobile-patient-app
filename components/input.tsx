@@ -214,7 +214,11 @@ function SelectorComponent(props) {
   const [selectedLabel, setSelectedLabel] = useState<string>('');
 
   useEffect(() => {
-    if (!value && show) onChange(typeof options[0] === 'string' ? options[0] : options[0].label);
+    if (!value && show) {
+      const isString = typeof options[0] === 'string';
+      onChange(isString ? options[0] : options[0].value);
+      setSelectedLabel(isString ? options[0] : options[0].label);
+    }
   }, [show]);
 
   return (

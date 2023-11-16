@@ -52,9 +52,9 @@ export function useQuestionnaire(id: string) {
 
 async function questionnaireSubmit(data) {
   const token = await getToken();
+  console.log(data);
   const patientId = await SecureStore.getItemAsync('patient_id');
-  // const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/QuestionnaireResponse`, {
-  console.log({
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/QuestionnaireResponse`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -73,59 +73,30 @@ async function questionnaireSubmit(data) {
         reference: patientId,
         type: 'Patient'
       },
-      item: [
-        {
-          linkId: 'e2e5ddc3-a0ec-4a1b-9c53-bf2e2e990fe1',
-          text: 'Tobacco status',
+      item: Object.keys(data.formData).map((key) => {
+        // TODO: tomorrow I need to find the values in the original dataset because they need so much data posted over, not just IDs
+        const isCode = false;
+        const answer = isCode ? { valueCoding: { code: sanitized[0], system: 'http://loinc.org' } } : { valueText: data.formData[key] };
+        console.log(isCode);
+        return {
+          linkId: key,
           answer: [
-            {
-              valueCoding: {
-                system: 'http://snomed.info/sct',
-                code: '8517006',
-                display: 'Former user'
-              }
-            }
+            answer
           ]
-        },
-        {
-          linkId: 'd210dc3a-3427-4f58-8707-3f38393a8416',
-          text: 'Tobacco type',
-          answer: [
-            {
-              valueCoding: {
-                system: 'http://snomed.info/sct',
-                code: '722496004',
-                display: 'Cigarettes'
-              }
-            },
-            {
-              valueCoding: {
-                system: 'http://snomed.info/sct',
-                code: '722498003',
-                display: 'eCigarette'
-              }
-            }
-          ]
-        },
-        {
-          linkId: 'a656c6c8-ecea-403f-a430-f80899f26914',
-          text: 'Tobacco comment',
-          answer: [
-            {
-              valueString: 'Yep'
-            }
-          ]
-        }
-      ]
+        };
+      })
     })
   });
+  const Json = await res.json();
+  console.log(Json);
 }
 
 export function useQuestionnaireSubmit() {
   return useMutation({
-    mutationFn: (data) => questionnaireSubmit(data),
-    onSuccess: () => router.push('records'),
-    onError: () => {
+    mutationFn: (data: {formData: {}, questionnaireData: {}}) => questionnaireSubmit(data),
+    // onSuccess: () => router.push('records'),
+    onError: (e) => {
+      console.log(e);
       Alert.alert(
         'Error',
         'There was an error submitting the form. Please try again.',
