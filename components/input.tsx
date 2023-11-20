@@ -120,7 +120,7 @@ interface DateInputProps extends InputProps {
 
 interface SelectorInputProps extends InputProps {
   type: 'selector',
-  options: string[],
+  options: string[] | { value: string, label: string }[],
 }
 
 function TextComponent(props) {
@@ -211,9 +211,14 @@ function SelectorComponent(props) {
     error,
   } = props;
   const [show, setShow] = useState<boolean>(false);
+  const [selectedLabel, setSelectedLabel] = useState<string>('');
 
   useEffect(() => {
-    if (!value && show) onChange(options[0]);
+    if (!value && show) {
+      const isString = typeof options[0] === 'string';
+      onChange(isString ? options[0] : options[0].value);
+      setSelectedLabel(isString ? options[0] : options[0].label);
+    }
   }, [show]);
 
   return (
@@ -232,7 +237,7 @@ function SelectorComponent(props) {
             (!value && error) && s.selectorButtonPlaceholderError,
           ]}
         >
-          {value || placeholder}
+          {selectedLabel || value || placeholder}
         </Text>
       </TouchableOpacity>
       {show && (
@@ -243,15 +248,18 @@ function SelectorComponent(props) {
         >
           <Picker
             selectedValue={value}
-            onValueChange={(itemValue) => onChange(itemValue)}
+            onValueChange={(itemValue, index) => { onChange(itemValue); setSelectedLabel(options[index].label); }}
           >
-            {options.map((option) => (
-              <Picker.Item
-                key={option}
-                label={option}
-                value={option}
-              />
-            ))}
+            {options.map((option) => {
+              const isString = typeof option === 'string';
+              return (
+                <Picker.Item
+                  key={isString ? option : option.value}
+                  label={isString ? option : option.label}
+                  value={isString ? option : option.value}
+                />
+              );
+            })}
           </Picker>
         </Overlay>
       )}
