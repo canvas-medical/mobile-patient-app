@@ -15,7 +15,7 @@ import { Button, Screen } from '@components';
 import { g } from '@styles';
 import { PdfModal } from '@components/pdf-modal';
 import { useState } from 'react';
-import { ConsentPdfs, useConsentCreate } from '@services/consent';
+import { ConsentPdfs, useConsentCreate } from '@services';
 
 const s = StyleSheet.create({
   button: {
@@ -77,7 +77,7 @@ const s = StyleSheet.create({
 
 export default function Consents() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { mutate: onCreateConsent, isSuccess } = useConsentCreate();
+  const { mutate: onCreateConsent, isSuccess, isPending } = useConsentCreate();
 
   const onClick = async () => {
     onCreateConsent({ consent: 'Consent Document' });
@@ -115,9 +115,9 @@ export default function Consents() {
                 <View style={s.formContainer}>
                   <TouchableOpacity style={s.consentItem} onPress={() => setModalVisible(true)}>
                     <Feather
-                      name={isSuccess ? 'check-square' : 'square'}
+                      name={isSuccess ? 'check-square' : (isPending ? 'loader' : 'square')}
                       size={g.size(26)}
-                      color={g.neutral200}
+                      color={isSuccess ? 'green' : g.neutral200}
                     />
                     <Text>General Consent Document</Text>
                   </TouchableOpacity>

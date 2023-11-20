@@ -19,7 +19,7 @@ async function consentCreate(data: {consent: string}) {
   const pdfResponse = await fetch(ConsentPdfs[data.consent]);
   const blob = await pdfResponse.blob();
   const reader = new FileReader();
-  await reader.readAsDataURL(blob);
+  reader.readAsDataURL(blob);
   const base64 = await new Promise((res) => {
     reader.onloadend = () => {
       res(reader.result);
