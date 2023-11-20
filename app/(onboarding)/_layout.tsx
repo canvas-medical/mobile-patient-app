@@ -5,6 +5,7 @@ export default function OnboardingStack() {
     <Stack>
       <Stack.Screen name="initial" options={{ headerShown: false }} />
       <Stack.Screen name="personal-details-one" options={{ headerShown: false }} />
+      <Stack.Screen name="consents" options={{ headerShown: false }} />
     </Stack>
   );
 }
