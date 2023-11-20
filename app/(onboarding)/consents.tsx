@@ -77,10 +77,10 @@ const s = StyleSheet.create({
 
 export default function Consents() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { mutate: onCreateConsent, isPending, isSuccess } = useConsentCreate();
+  const { mutate: onCreateConsent, isSuccess } = useConsentCreate();
 
   const onClick = async () => {
-    await onCreateConsent({ consent: 'Consent Document' });
+    onCreateConsent({ consent: 'Consent Document' });
     setModalVisible(false);
   };
 
@@ -127,7 +127,7 @@ export default function Consents() {
                     <Button
                       disabled={!isSuccess}
                       theme="primary"
-                      onPress={() => router.push('records')}
+                      onPress={() => router.push('questionnaire')}
                       label="Next"
                     />
                   </View>

@@ -27,7 +27,7 @@ export default function Index() {
   useEffect(() => {
     if (!navigationState?.key || isFetching) return;
     if (patient?.id) {
-      router.replace('records');
+      router.replace('questionnaire');
     } else router.replace('initial');
   }, [navigationState, patient, isFetching]);
 

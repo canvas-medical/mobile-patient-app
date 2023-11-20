@@ -123,6 +123,7 @@ export default function Questionnaire() {
                                 key={question.linkId}
                                 render={({ field: { onChange, value } }) => (
                                   <Input
+                                    placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
                                     type={dataTypeMap[question.type]}
                                     name={question.text}
                                     label={question.text}
