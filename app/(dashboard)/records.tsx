@@ -3,7 +3,7 @@ import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import {
-  useDocumentReferences, useObservation, useRecords, useQuestionnaires,
+  useDocumentReferences, useObservation, useRecords,
 } from '@services';
 import { Screen } from '@components';
 import { g } from '@styles';
@@ -20,19 +20,17 @@ export default function Dashboard() {
   const { data: goals } = useRecords('Goal');
   const { data: documentReferences } = useDocumentReferences();
   const { data: observation } = useObservation();
-  const { data: questionnaires } = useQuestionnaires();
 
-  // console.log('User Consents: ', consents);
-  // console.log('Conditions: ', conditions);
-  // console.log('Medications: ', medications);
-  // console.log('Appointments: ', appointments);
-  // console.log('Immunizations: ', immunizations);
-  // console.log('Allergy Intolerance: ', allergyIntolerance);
-  // console.log('Diagnostic Report: ', diagnosticReport);
-  // console.log('Goals: ', goals);
-  // console.log('Document References: ', documentReferences);
-  // console.log('Observation: ', observation);
-  // console.log('Questionnaires: ', questionnaires);
+  console.log('Consents: ', consents);
+  console.log('Conditions: ', conditions);
+  console.log('Medications: ', medications);
+  console.log('Appointments: ', appointments);
+  console.log('Immunizations: ', immunizations);
+  console.log('Allergy Intolerance: ', allergyIntolerance);
+  console.log('Diagnostic Report: ', diagnosticReport);
+  console.log('Goals: ', goals);
+  console.log('Document References: ', documentReferences);
+  console.log('Observation: ', observation);
 
   return (
     <Screen>

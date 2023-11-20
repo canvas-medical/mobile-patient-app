@@ -125,13 +125,14 @@ export default function Consents() {
                 <View style={s.buttonContainer}>
                   <View style={s.button}>
                     <Button
+                      disabled={!isSuccess}
                       theme="primary"
-                      onPress={() => console.log('pressed')}
+                      onPress={() => router.push('records')}
                       label="Next"
                     />
                   </View>
                 </View>
-                <PdfModal modalVisible={modalVisible} setModalVisible={onClick} uri={ConsentPdfs['Consent Document']} />
+                <PdfModal modalVisible={modalVisible} onAccept={onClick} setModalVisible={setModalVisible} uri={ConsentPdfs['Consent Document']} />
               </View>
             </View>
           </TouchableWithoutFeedback>

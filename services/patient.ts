@@ -53,7 +53,7 @@ async function patientCreate(data) {
 export function useCreatePatient() {
   return useMutation({
     mutationFn: (data) => patientCreate(data),
-    onSuccess: () => router.push('records'),
+    onSuccess: () => router.push('consents'),
     onError: () => {
       Alert.alert(
         'Error',

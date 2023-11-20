@@ -2,10 +2,11 @@ import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
+import { ApiError } from '@interfaces';
 import { getToken } from './access-token';
 
 export const ConsentCodes = {
-  'Consent Document': { code: '59284-0', display: 'Consent Document', system: 'http://loinc.org' },
+  'Consent Document': { code: '59284-0', display: 'Consent Document', system: 'LOINC' },
 };
 
 export const ConsentPdfs = {
@@ -38,12 +39,7 @@ async function consentCreate(data: {consent: string}) {
       resourceType: 'Consent',
       status: 'active',
       scope: {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/consentscope',
-            code: 'patient-privacy'
-          }
-        ]
+        coding: [{}]
       },
       category: [
         {
@@ -67,9 +63,8 @@ async function consentCreate(data: {consent: string}) {
       }
     })
   });
-  console.log(res);
-  const json = await res.json();
-  console.log(json);
+  const Json: null | ApiError = await res.json();
+  if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
 export function useConsentCreate() {

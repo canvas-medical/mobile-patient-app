@@ -1,15 +1,22 @@
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import {
+  Modal, StyleSheet, TouchableOpacity, View
+} from 'react-native';
 import { g } from '@styles';
 import Pdf from 'react-native-pdf';
-import { useEffect, useState } from 'react';
 import { Button } from '@components/button';
+import { Feather } from '@expo/vector-icons';
 
 const s = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
     bottom: 30,
     width: 300,
+  },
+  close: {
+    position: 'absolute',
+    top: g.size(36),
+    right: g.size(36),
+    zIndex: 1,
   },
   contentContainer: {
     flex: 1,
@@ -26,9 +33,9 @@ const s = StyleSheet.create({
     width: '100%',
     paddingBottom: 100,
     backgroundColor: g.white,
-  },
+  }
 });
-export function PdfModal({ uri, modalVisible, setModalVisible }: {uri: string, modalVisible: boolean, setModalVisible: (visible: boolean) => void}) {
+export function PdfModal({ uri, modalVisible, onAccept, setModalVisible }: {uri: string, modalVisible: boolean, onAccept: () => void, setModalVisible: (visible: boolean) => void}) {
   return (
     <Modal
       transparent
@@ -38,6 +45,16 @@ export function PdfModal({ uri, modalVisible, setModalVisible }: {uri: string, m
         setModalVisible(!modalVisible);
       }}
     >
+      <TouchableOpacity
+        onPress={() => setModalVisible(!modalVisible)}
+        style={s.close}
+      >
+        <Feather
+          name="x"
+          size={g.size(24)}
+          color={g.neutral500}
+        />
+      </TouchableOpacity>
       <View style={s.contentContainer}>
         <Pdf
           source={{ uri }}
@@ -46,7 +63,7 @@ export function PdfModal({ uri, modalVisible, setModalVisible }: {uri: string, m
         <View style={s.buttonContainer}>
           <Button
             theme="primary"
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={onAccept}
             label="Accept and Continue"
           />
         </View>
