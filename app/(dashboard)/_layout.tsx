@@ -9,7 +9,6 @@ const s = StyleSheet.create({
     position: 'absolute',
     top: g.size(64),
     left: g.size(32),
-    transform: [{ rotate: '180deg' }],
   },
   messageButton: {
     position: 'absolute',

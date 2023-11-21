@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { LabeledToggle, AppointmentList, PrescriptionList } from '@components';
+import { LabeledToggle, AppointmentList, MedicationList } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -25,7 +25,7 @@ const s = StyleSheet.create({
   }
 });
 
-export default function AppointmentsAndPrescriptions() {
+export default function AppointmentsAndMedications() {
   const [toggled, setToggled] = useState(false);
   return (
     <View style={s.container}>
@@ -43,7 +43,7 @@ export default function AppointmentsAndPrescriptions() {
           optionTwo="Prescriptions"
         />
       </View>
-      {toggled ? <PrescriptionList /> : <AppointmentList />}
+      {toggled ? <MedicationList /> : <AppointmentList />}
     </View>
   );
 }

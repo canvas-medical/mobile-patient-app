@@ -57,19 +57,19 @@ export function DashTabs() {
         >
           <TouchableOpacity
             style={s.tabButton}
-            onPress={() => router.push('appointments-prescriptions')}
-            disabled={pathname === '/appointments-prescriptions'}
+            onPress={() => router.push('appointments-medications')}
+            disabled={pathname === '/appointments-medications'}
           >
             <BlurView
               tint="light"
-              intensity={pathname === '/appointments-prescriptions' ? 60 : 0}
+              intensity={pathname === '/appointments-medications' ? 60 : 0}
               style={s.buttonBlur}
             >
               <MaterialCommunityIcons
                 name="calendar-heart"
                 size={40}
                 color={g.primaryBlue}
-                style={pathname === '/appointments-prescriptions' ? s.activeTab : s.inactiveTab}
+                style={pathname === '/appointments-medications' ? s.activeTab : s.inactiveTab}
               />
             </BlurView>
           </TouchableOpacity>

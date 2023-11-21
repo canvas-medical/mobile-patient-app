@@ -20,7 +20,7 @@ const s = StyleSheet.create({
   },
 });
 
-const prescriptions = [
+const medications = [
   {
     id: 1,
     datetimeStart: '2023-11-20T10:00:00',
@@ -58,25 +58,25 @@ const prescriptions = [
   },
 ];
 
-export function PrescriptionList() {
-  const activePrescriptions = prescriptions.filter((prescription) => new Date(prescription.datetimeEnd) > new Date());
-  const expiredPrescriptions = prescriptions.filter((prescription) => new Date(prescription.datetimeEnd) <= new Date());
+export function MedicationList() {
+  const activeMedications = medications.filter((medication) => new Date(medication.datetimeEnd) > new Date());
+  const expiredMedications = medications.filter((medication) => new Date(medication.datetimeEnd) <= new Date());
   return (
     <ScrollView contentContainerStyle={s.contentContainer}>
-      {activePrescriptions.length > 0 && (
+      {activeMedications.length > 0 && (
         <View style={s.scrollSection}>
           <Text style={s.label}>
             Active
           </Text>
-          {activePrescriptions.map((med) => <MedicationCard med={med} />)}
+          {activeMedications.map((med) => <MedicationCard med={med} />)}
         </View>
       )}
-      {expiredPrescriptions.length > 0 && (
+      {expiredMedications.length > 0 && (
         <View style={s.scrollSection}>
           <Text style={s.label}>
             Expired
           </Text>
-          {expiredPrescriptions.map((med) => <MedicationCard med={med} />)}
+          {expiredMedications.map((med) => <MedicationCard med={med} />)}
         </View>
       )}
     </ScrollView>

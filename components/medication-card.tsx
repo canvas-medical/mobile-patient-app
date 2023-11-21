@@ -10,21 +10,12 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   cardBlur: {
-    paddingVertical: g.size(16),
-    paddingHorizontal: g.size(20),
+    padding: g.size(16),
   },
   cardContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: g.size(12),
-  },
-  cube: {
-    width: g.size(70),
-    height: g.size(70),
-    backgroundColor: g.white,
-    borderRadius: g.size(4),
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   dosage: {
     ...g.bodySmall,
@@ -59,9 +50,7 @@ export function MedicationCard({ med }: { med: Medication }) {
         style={s.cardBlur}
       >
         <View style={s.cardContent}>
-          <View style={s.cube}>
-            <MaterialCommunityIcons name="pill" size={48} color={g.blurBlue} />
-          </View>
+          <MaterialCommunityIcons name="pill" size={g.size(48)} color={g.white} />
           <View style={s.medicationInfoContainer}>
             <Text
               style={s.medication}
