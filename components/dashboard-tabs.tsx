@@ -15,7 +15,7 @@ const s = StyleSheet.create({
     alignItems: 'center'
   },
   container: {
-    // ...g.shadow, // TODO: I'm leaving this here for now. It was causing a performance warning but I'd like to revisit it if we end up using it.
+    ...g.shadow,
     position: 'absolute',
     bottom: g.size(32),
     left: '50%',
@@ -57,6 +57,25 @@ export function DashTabs() {
         >
           <TouchableOpacity
             style={s.tabButton}
+            onPress={() => router.push('appointments-prescriptions')}
+            disabled={pathname === '/appointments-prescriptions'}
+          >
+            <BlurView
+              tint="light"
+              intensity={pathname === '/appointments-prescriptions' ? 60 : 0}
+              style={s.buttonBlur}
+            >
+              <MaterialCommunityIcons
+                name="calendar-heart"
+                size={40}
+                color={g.primaryBlue}
+                style={pathname === '/appointments-prescriptions' ? s.activeTab : s.inactiveTab}
+              />
+            </BlurView>
+          </TouchableOpacity>
+          <View style={s.tabDivider} />
+          <TouchableOpacity
+            style={s.tabButton}
             onPress={() => router.push('records')}
             disabled={pathname === '/records'}
           >
@@ -70,25 +89,6 @@ export function DashTabs() {
                 size={40}
                 color={g.primaryBlue}
                 style={pathname === '/records' ? s.activeTab : s.inactiveTab}
-              />
-            </BlurView>
-          </TouchableOpacity>
-          <View style={s.tabDivider} />
-          <TouchableOpacity
-            style={s.tabButton}
-            onPress={() => router.push('appointments')}
-            disabled={pathname === '/appointments'}
-          >
-            <BlurView
-              tint="light"
-              intensity={pathname === '/appointments' ? 60 : 0}
-              style={s.buttonBlur}
-            >
-              <MaterialCommunityIcons
-                name="calendar-heart"
-                size={40}
-                color={g.primaryBlue}
-                style={pathname === '/appointments' ? s.activeTab : s.inactiveTab}
               />
             </BlurView>
           </TouchableOpacity>

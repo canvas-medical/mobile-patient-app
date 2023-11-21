@@ -26,6 +26,10 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  dosage: {
+    ...g.bodySmall,
+    color: g.white,
+  },
   medication: {
     ...g.bodyLarge,
     color: g.white,
@@ -35,34 +39,20 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     overflow: 'hidden',
   },
-  medicationStatusInfo: {
-    ...g.bodySmall,
-    color: g.white,
-  },
-  price: {
-    ...g.bodySmall,
-    color: g.secondaryBlue,
-  },
-  pricePill: {
-    backgroundColor: g.white,
-    paddingVertical: g.size(2),
-    paddingHorizontal: g.size(8),
-    borderRadius: g.size(50),
-    alignSelf: 'flex-start',
-  },
 });
 
 export function MedicationCard({ med }: { med: Medication }) {
   const {
+    id,
     medication,
-    quantity,
-    refills_left: refillsLeft,
-    last_filled: lastFilled,
-    cost,
+    dosage,
   } = med;
 
   return (
-    <View style={s.card}>
+    <View
+      key={id}
+      style={s.card}
+    >
       <BlurView
         intensity={40}
         tint="light"
@@ -75,39 +65,14 @@ export function MedicationCard({ med }: { med: Medication }) {
           <View style={s.medicationInfoContainer}>
             <Text
               style={s.medication}
-              numberOfLines={1}
+              numberOfLines={2}
             >
               {medication}
             </Text>
-            <Text
-              style={s.medicationStatusInfo}
-              numberOfLines={1}
-            >
-              Qty:
-              &nbsp;
-              {quantity}
-            </Text>
-            <Text
-              style={s.medicationStatusInfo}
-              numberOfLines={1}
-            >
-              Refills left:
-              &nbsp;
-              {refillsLeft}
-            </Text>
-            <Text
-              style={s.medicationStatusInfo}
-              numberOfLines={1}
-            >
+            <Text style={s.dosage}>
               Last filled:
               &nbsp;
-              {lastFilled}
-            </Text>
-          </View>
-          <View style={s.pricePill}>
-            <Text style={s.price}>
-              $
-              {cost}
+              {dosage}
             </Text>
           </View>
         </View>
