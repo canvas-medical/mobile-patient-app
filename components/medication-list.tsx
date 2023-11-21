@@ -1,5 +1,3 @@
-/* eslint-disable max-len */ // TODO: REMOVE ME
-/* eslint-disable object-curly-newline */ // TODO: REMOVE ME
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import { g } from '@styles';
 import { MedicationCard } from './medication-card';

@@ -23,13 +23,13 @@ export default function Dashboard() {
       <Slot />
       <TouchableOpacity
         style={s.drawerButton}
-        onPress={() => null}
+        onPress={() => null} // TODO: Open drawer
       >
         <Feather name="menu" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
       <TouchableOpacity
         style={s.messageButton}
-        onPress={() => null}
+        onPress={() => null} // TODO: Open messages
       >
         <Feather name="message-circle" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
