@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "fhir-dashboard",
-    "slug": "fhir-dashboard",
+    "slug": "fhir-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appstore.png",
@@ -17,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.spencerandrew.fhirdashboard"
+      "bundleIdentifier": "com.brewerdigital.fhirdashboard"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +30,7 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "package": "com.spencerandrew.fhirdashboard"
+      "package": "com.brewerdigital.fhirdashboard"
     },
     "web": {
       "favicon": "./assets/appstore.png"
@@ -45,8 +45,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "7e43092f-3cc0-455f-a8d1-234ea56fa16e"
+        "projectId": "eabcadfa-7fee-400e-8e04-f2f5c4d1d35b"
       }
-    }
+    },
+    "owner": "brewerdigital"
   }
 }

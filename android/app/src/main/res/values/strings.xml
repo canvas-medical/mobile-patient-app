@@ -2,5 +2,5 @@
   <string name="app_name">fhir-dashboard</string>
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
-  <string name="blob_provider_authority">com.spencerandrew.fhirdashboard.blobs</string>
+  <string name="blob_provider_authority">com.brewerdigital.fhirdashboard.blobs</string>
 </resources>

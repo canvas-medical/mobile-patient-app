@@ -7,6 +7,7 @@ export default function OnboardingStack() {
       <Stack.Screen name="personal-details-one" options={{ headerShown: false }} />
       <Stack.Screen name="consents" options={{ headerShown: false }} />
       <Stack.Screen name="questionnaire" options={{ headerShown: false }} />
+      <Stack.Screen name="coverage" options={{ headerShown: false }} />
     </Stack>
   );
 }

@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>fhir-dashboard</string>
-          <string>com.spencerandrew.fhirdashboard</string>
+          <string>com.brewerdigital.fhirdashboard</string>
         </array>
       </dict>
       <dict>

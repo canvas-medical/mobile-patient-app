@@ -29,7 +29,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="fhir-dashboard"/>
-        <data android:scheme="com.spencerandrew.fhirdashboard"/>
+        <data android:scheme="com.brewerdigital.fhirdashboard"/>
         <data android:scheme="exp+fhir-dashboard"/>
       </intent-filter>
     </activity>

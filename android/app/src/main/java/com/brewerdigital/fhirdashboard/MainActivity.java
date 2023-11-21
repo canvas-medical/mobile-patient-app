@@ -1,4 +1,4 @@
-package com.spencerandrew.fhirdashboard;
+package com.brewerdigital.fhirdashboard;
 
 import android.os.Build;
 import android.os.Bundle;
