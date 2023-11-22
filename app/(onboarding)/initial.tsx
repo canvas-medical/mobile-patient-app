@@ -52,7 +52,7 @@ export default function Initial() {
 
   useEffect(() => {
     const setDemoPatient = async () => {
-      if (value) {
+      if (value && !show) {
         await SecureStore.setItemAsync('patient_id', value);
         router.push('appointments-medications');
       }
