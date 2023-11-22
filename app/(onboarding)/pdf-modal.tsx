@@ -34,7 +34,7 @@ const s = StyleSheet.create({
 export default function PdfModal() {
   const { mutate: onCreateConsent, isPending, isSuccess } = useConsentCreate();
   const params = useLocalSearchParams();
-  const { uri, consentType } = params;
+  const { uri, consentType, isAccepted } = params;
   const acceptAndClose = () => {
     onCreateConsent({ consent: consentType as string });
   };
@@ -54,7 +54,7 @@ export default function PdfModal() {
         <Button
           theme="primary"
           onPress={acceptAndClose}
-          disabled={isPending || isSuccess}
+          disabled={isPending || isSuccess || !!isAccepted}
           label={isPending ? 'Accepting...' : 'Accept and Continue'}
         />
       </View>

@@ -116,7 +116,7 @@ export default function Consents() {
                   <TouchableOpacity
                     disabled={isPending}
                     onPress={() =>
-                      router.push({ pathname: 'pdf-modal', params: { uri: ConsentPdfs['Consent Document'], consentType: 'Consent Document' } })}
+                      router.push({ pathname: 'pdf-modal', params: { uri: ConsentPdfs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess } })}
                   >
                     <Text style={s.link}>General Consent Document</Text>
                   </TouchableOpacity>
