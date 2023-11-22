@@ -93,7 +93,6 @@ async function coverageCreate(data) {
     })
   });
   const Json: null | ApiError = await res.json();
-  console.log(Json);
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
