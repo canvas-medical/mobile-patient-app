@@ -51,13 +51,13 @@ export default function Initial() {
   ];
 
   useEffect(() => {
-    const setDemoPatient = async () => {
+    const signInDemoPatient = async () => {
       if (value && !show) {
         await SecureStore.setItemAsync('patient_id', value);
         router.push('appointments-medications');
       }
     };
-    setDemoPatient();
+    signInDemoPatient();
   }, [show]);
 
   return (
