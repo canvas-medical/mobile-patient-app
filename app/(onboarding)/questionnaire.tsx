@@ -111,7 +111,7 @@ export default function Questionnaire() {
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
                     {isFetching
-                      ? <ActivityIndicator style={{ flex: 1 }} />
+                      ? <ActivityIndicator size="large" />
                       : (
                         <>
                           {questionnaire.item.map((question: Question) =>
@@ -130,7 +130,7 @@ export default function Questionnaire() {
                                     options={question.answerOption.map((answer) => (
                                       { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
                                     onFocus={() => clearErrors()}
-                                    onChange={(e) => { console.log(e, value); onChange(e); }}
+                                    onChange={(e) => onChange(e)}
                                     value={value}
                                     error={errors[question.linkId]}
                                   />
@@ -139,6 +139,7 @@ export default function Questionnaire() {
                             ))}
                           <Button
                             onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
+                            disabled={isPending}
                             label={isPending ? 'Submitting...' : 'Submit'}
                             theme="primary"
                           />

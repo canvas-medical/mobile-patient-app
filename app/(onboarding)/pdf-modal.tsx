@@ -1,22 +1,18 @@
 import {
-  Modal, StyleSheet, TouchableOpacity, View
+  StyleSheet, View
 } from 'react-native';
 import { g } from '@styles';
 import Pdf from 'react-native-pdf';
 import { Button } from '@components/button';
-import { Feather } from '@expo/vector-icons';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useConsentCreate } from '@services';
+import { useEffect } from 'react';
 
 const s = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
     bottom: 30,
     width: 300,
-  },
-  close: {
-    position: 'absolute',
-    top: g.size(36),
-    right: g.size(36),
-    zIndex: 1,
   },
   contentContainer: {
     flex: 1,
@@ -35,34 +31,32 @@ const s = StyleSheet.create({
     backgroundColor: g.white,
   }
 });
-export function PdfModal(
-  { uri, modalVisible, onAccept, setModalVisible }:
-  { uri: string, modalVisible: boolean, onAccept: () => void, setModalVisible: (visible: boolean) => void }
-) {
+export default function PdfModal() {
+  const { mutate: onCreateConsent, isPending, isSuccess } = useConsentCreate();
+  const params = useLocalSearchParams();
+  const { uri, consentType } = params;
+  const acceptAndClose = () => {
+    onCreateConsent({ consent: consentType as string });
+  };
+
+  useEffect(() => {
+    if (!isSuccess) return;
+    router.replace({ pathname: 'consents', params: { accepted: true } });
+  }, [isSuccess]);
+
   return (
-    <View>
-      <TouchableOpacity
-        onPress={() => setModalVisible(!modalVisible)}
-        style={s.close}
-      >
-        <Feather
-          name="x"
-          size={g.size(24)}
-          color={g.neutral500}
+    <View style={s.contentContainer}>
+      <Pdf
+        source={{ uri: uri as string }}
+        style={s.pdf}
+      />
+      <View style={s.buttonContainer}>
+        <Button
+          theme="primary"
+          onPress={acceptAndClose}
+          disabled={isPending || isSuccess}
+          label={isPending ? 'Accepting...' : 'Accept and Continue'}
         />
-      </TouchableOpacity>
-      <View style={s.contentContainer}>
-        <Pdf
-          source={{ uri }}
-          style={s.pdf}
-        />
-        <View style={s.buttonContainer}>
-          <Button
-            theme="primary"
-            onPress={onAccept}
-            label="Accept and Continue"
-          />
-        </View>
       </View>
     </View>
   );

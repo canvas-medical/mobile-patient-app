@@ -130,7 +130,7 @@ export default function Coverage() {
                           onChange={onChange}
                           value={value}
                           forwardedRef={ref}
-                          error={errors.memberId}
+                          error={errors.insurer}
                         />
                       )}
                     />
@@ -181,7 +181,7 @@ export default function Coverage() {
                   </View>
                   <Button
                     onPress={handleSubmit((data) => onCreateCoverage(data))}
-                    label={isPending ? 'Registering...' : 'Register'}
+                    label={isPending ? 'Submitting...' : 'Submit'}
                     theme="primary"
                   />
                 </View>

@@ -9,23 +9,15 @@ import {
   KeyboardAvoidingView,
   Platform, ActivityIndicator,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Feather, } from '@expo/vector-icons';
 import { Button, Screen } from '@components';
 import { g } from '@styles';
-import { PdfModal } from '@app/(onboarding)/pdf-modal';
-import { useState } from 'react';
 import { ConsentPdfs, useConsentCreate } from '@services';
 
 const s = StyleSheet.create({
-  button: {
-    width: 300,
-  },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 30,
-    width: g.width,
-    alignItems: 'center',
+    marginTop: 'auto',
   },
   consentItem: {
     flexDirection: 'row',
@@ -42,12 +34,7 @@ const s = StyleSheet.create({
     borderTopLeftRadius: g.size(36),
     borderTopRightRadius: g.size(36),
     padding: g.size(36),
-    justifyContent: 'space-between',
     gap: g.size(48),
-  },
-  formContainer: {
-    flex: 1,
-    gap: g.size(56),
   },
   greeting: {
     ...g.labelXLarge,
@@ -80,13 +67,11 @@ const s = StyleSheet.create({
 });
 
 export default function Consents() {
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { mutate: onCreateConsent, isSuccess, isPending } = useConsentCreate();
+  const params = useLocalSearchParams();
+  const { accepted } = params;
 
-  const onClick = async () => {
-    onCreateConsent({ consent: 'Consent Document' });
-    setModalVisible(false);
-  };
+  const isAccepted = isSuccess || accepted;
 
   return (
     <Screen>
@@ -116,35 +101,34 @@ export default function Consents() {
                     Fill out a few personal details to get started
                   </Text>
                 </View>
-                <View style={s.formContainer}>
-                  <View style={s.consentItem}>
-                    <TouchableOpacity onPress={() => router.push('pdf-modal')}>
-                      {isPending ? (
-                        <ActivityIndicator size="small" color={g.neutral500} />
-                      ) : (
-                        <Feather
-                          name={isSuccess ? 'check-square' : 'square'}
-                          size={g.size(26)}
-                          color={isSuccess ? 'green' : g.neutral200}
-                        />
-                      )}
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => router.push('pdf-modal')}>
-                      <Text style={s.link}>General Consent Document</Text>
-                    </TouchableOpacity>
-                  </View>
+                <View style={s.consentItem}>
+                  <TouchableOpacity disabled={!!isAccepted} onPress={() => onCreateConsent({ consent: 'Consent Document' })}>
+                    {isPending ? (
+                      <ActivityIndicator size="small" color={g.neutral500} />
+                    ) : (
+                      <Feather
+                        name={isAccepted ? 'check-square' : 'square'}
+                        size={g.size(26)}
+                        color={isAccepted ? 'green' : g.neutral200}
+                      />
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={isPending}
+                    onPress={() =>
+                      router.push({ pathname: 'pdf-modal', params: { uri: ConsentPdfs['Consent Document'], consentType: 'Consent Document' } })}
+                  >
+                    <Text style={s.link}>General Consent Document</Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={s.buttonContainer}>
-                  <View style={s.button}>
-                    <Button
-                      disabled={!isSuccess}
-                      theme="primary"
-                      onPress={() => router.push('questionnaire')}
-                      label="Next"
-                    />
-                  </View>
+                  <Button
+                    disabled={!isAccepted}
+                    theme="primary"
+                    onPress={() => router.push('questionnaire')}
+                    label="Next"
+                  />
                 </View>
-                {/* <PdfModal modalVisible={modalVisible} onAccept={onClick} setModalVisible={setModalVisible} uri={ConsentPdfs['Consent Document']} /> */}
               </View>
             </View>
           </TouchableWithoutFeedback>

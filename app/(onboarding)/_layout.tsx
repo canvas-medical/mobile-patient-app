@@ -8,7 +8,7 @@ export default function OnboardingStack() {
       <Stack.Screen name="consents" options={{ headerShown: false }} />
       <Stack.Screen name="questionnaire" options={{ headerShown: false }} />
       <Stack.Screen name="coverage" options={{ headerShown: false }} />
-      <Stack.Screen name="pdf-modal" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
     </Stack>
   );
 }
