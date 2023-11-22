@@ -84,7 +84,7 @@ async function coverageCreate(data) {
         coding: [
           {
             system: 'http://hl7.org/fhir/ValueSet/subscriber-relationship',
-            code: data.relationship,
+            code: 'self',
           }
         ]
       },
