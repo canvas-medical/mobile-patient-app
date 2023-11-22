@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Appointment } from '@interfaces';
 import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome } from '@expo/vector-icons';
+import { formatTime } from '@utils';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -44,32 +45,35 @@ const s = StyleSheet.create({
     opacity: 0.75,
     backgroundColor: g.white,
   },
-  physician: {
-    ...g.bodyLarge,
+  practitioner: {
+    ...g.bodyXLarge,
     color: g.white,
   },
-  physicianData: {
+  practitionerData: {
     flex: 1,
   },
-  physicianTypeAndLocation: {
-    ...g.bodySmall,
+  practitionerLocation: {
+    ...g.bodyMedium,
     color: g.white,
   }
 });
 
 export function AppointmentCard({ appt }: { appt: Appointment }) {
   const {
-    date,
-    time,
-    physician,
-    physician_type: physicianType,
+    id,
+    datetimeStart,
+    datetimeEnd,
+    practitioner,
     location,
   } = appt;
 
-  const formattedDate = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
+  const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
 
   return (
-    <View style={s.card}>
+    <View
+      key={id}
+      style={s.card}
+    >
       <BlurView
         intensity={40}
         tint="light"
@@ -87,27 +91,25 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               &nbsp;
               •
               &nbsp;
-              {time}
+              {formatTime(datetimeStart, false)}
+              {' '}
+              -
+              {' '}
+              {formatTime(datetimeEnd, true)}
             </Text>
           </View>
           <View style={s.dataDivider} />
           <View style={s.cardRow}>
             <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
-            <View style={s.physicianData}>
+            <View style={s.practitionerData}>
               <Text
-                style={s.physician}
+                style={s.practitioner}
                 numberOfLines={1}
               >
-                {physician}
+                {practitioner}
               </Text>
               <Text
-                style={s.physicianTypeAndLocation}
-                numberOfLines={1}
-              >
-                {physicianType}
-              </Text>
-              <Text
-                style={s.physicianTypeAndLocation}
+                style={s.practitionerLocation}
                 numberOfLines={1}
               >
                 {location}
