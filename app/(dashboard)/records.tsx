@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useDocumentReferences, useObservations } from '@services';
 import { DiagnosticCard, VitalCard } from '@components';
 import { g } from '@styles';
 
@@ -100,6 +101,11 @@ const diagnosticsData = Array.from(
 );
 
 export default function Dashboard() {
+  const { data: documentReferences } = useDocumentReferences();
+  const { data: observations } = useObservations();
+
+  console.log('Hello: ', documentReferences);
+  console.log('Hello: ', observations);
   return (
     <ScrollView
       style={s.container}
