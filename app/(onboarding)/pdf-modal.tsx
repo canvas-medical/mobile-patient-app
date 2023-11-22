@@ -7,12 +7,18 @@ import { Button } from '@components/button';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useConsentCreate } from '@services';
 import { useEffect } from 'react';
+import { Feather } from '@expo/vector-icons';
 
 const s = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
     bottom: 30,
     width: 300,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20
   },
   contentContainer: {
     flex: 1,
@@ -50,6 +56,7 @@ export default function PdfModal() {
         source={{ uri: uri as string }}
         style={s.pdf}
       />
+      <Feather style={s.closeButton} name="x" size={32} color={g.neutral500} onPress={() => router.canGoBack() && router.back()} />
       <View style={s.buttonContainer}>
         <Button
           theme="primary"
