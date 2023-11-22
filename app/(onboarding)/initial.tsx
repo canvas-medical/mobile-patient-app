@@ -1,7 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
-import { Button, Screen } from '@components';
+import { Button, Input, Screen } from '@components';
 import { g } from '@styles';
+import { Picker } from '@react-native-picker/picker';
+import { Overlay } from '@rneui/themed';
+
+import { useEffect, useState } from 'react';
+import * as SecureStore from 'expo-secure-store';
 
 const s = StyleSheet.create({
   buttonContainer: {
@@ -12,6 +17,15 @@ const s = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: g.size(36),
     paddingBottom: g.size(192),
+  },
+  or: {
+    ...g.titleLarge,
+    textAlign: 'center'
+  },
+  pickerOverlay: {
+    width: '85%',
+    borderRadius: g.size(16),
+    backgroundColor: g.white,
   },
   subtitle: {
     ...g.bodyXLarge,
@@ -27,6 +41,25 @@ const s = StyleSheet.create({
 });
 
 export default function Initial() {
+  const [show, setShow] = useState<boolean>(false);
+  const [value, setValue] = useState<string>('');
+
+  const demoPatients = [
+    { label: 'Kristen - Senior Female', value: 'a2d481743b774bbbb7084254cf384bac' },
+    { label: 'Owen- Onc Single', value: '458b394369f34c50b63e46535b4f7722' },
+    { label: 'Donna - 52 Female', value: 'ae16fa0710894e999390abdec2859906' },
+  ];
+
+  useEffect(() => {
+    const setDemoPatient = async () => {
+      if (value) {
+        await SecureStore.setItemAsync('patient_id', value);
+        router.push('appointments-medications');
+      }
+    };
+    setDemoPatient();
+  }, [show]);
+
   return (
     <Screen style={s.container}>
       <Text style={s.title}>Welcome</Text>
@@ -38,7 +71,27 @@ export default function Initial() {
           theme="tertiary"
           onPress={() => router.push('personal-details-one')}
         />
+        <Text style={s.or}>or</Text>
+        <Button
+          label="Login as a demo user"
+          theme="tertiary"
+          onPress={() => setShow(true)}
+        />
       </View>
+      {show && (
+        <Overlay
+          isVisible={show}
+          onBackdropPress={() => setShow(false)}
+          overlayStyle={s.pickerOverlay}
+        >
+          <Picker
+            selectedValue={value}
+            onValueChange={(patientId: string) => setValue(patientId)}
+          >
+            {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
+          </Picker>
+        </Overlay>
+      )}
     </Screen>
   );
 }
