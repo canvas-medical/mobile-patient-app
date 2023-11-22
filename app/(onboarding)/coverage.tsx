@@ -66,9 +66,6 @@ type FormData = {
   insurer: string
   memberId: string
   groupNumber?: string
-  relationship: 'self' | 'injured'
-  // owner: string // Who signed up or owns the policy, requires a patient ID so can only be the current patient for now
-  // beneficiary: string // This will be the user for now, no ability to select others
 }
 
 export default function Coverage() {
@@ -83,7 +80,6 @@ export default function Coverage() {
       insurer: null,
       memberId: null,
       groupNumber: null,
-      relationship: 'self',
     },
     shouldFocusError: false,
   });
@@ -173,7 +169,6 @@ export default function Coverage() {
                           onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
-                          onSubmitEditing={() => setFocus('relationship')}
                           autoCapitalize="words"
                           keyboardType="default"
                           textContentType="none"
