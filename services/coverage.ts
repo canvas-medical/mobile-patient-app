@@ -7,27 +7,27 @@ import { getToken } from './access-token';
 
 export const Insurers = {
   'CO BCBS': {
-    payerId: '00050', // payor[0].identifier.value
+    payerId: '00050',
     transactorType: 'Commercial',
     code: 'PPO'
   },
   'CO Kaiser Foundation Health Plan': {
-    payerId: '91617', // payor[0].identifier.value
+    payerId: '91617',
     transactorType: 'Commercial',
     code: 'HMO'
   },
   'Colorado Access': {
-    payerId: '84129', // payor[0].identifier.value
+    payerId: '84129',
     transactorType: 'Commercial',
     code: 'SUBSIDIZ'
   },
   'SC BCBS - BlueChoice Commercial': {
-    payerId: 'SX085', // payor[0].identifier.value
+    payerId: 'SX085',
     transactorType: 'Commercial',
     code: 'PPO'
   },
   'CO Medicaid': {
-    payerId: 'SKCO0', // payor[0].identifier.value
+    payerId: 'SKCO0',
     transactorType: 'Medicaid',
     code: 'SUBSIDIZ'
   },
@@ -35,10 +35,6 @@ export const Insurers = {
 
 async function coverageCreate(data) {
   const token = await getToken();
-  // Info needed from form:
-  // subscriberId: seems to be member id
-  // Owner and beneficiary: patient id
-  //
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
   const classes = data.groupNumber ? [
