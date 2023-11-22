@@ -1,8 +1,7 @@
 export interface Medication {
   id: number,
+  datetimeStart: string,
+  datetimeEnd: string,
   medication: string,
-  quantity: number,
-  refills_left: number,
-  last_filled: string,
-  cost: number
+  dosage: string,
 }
