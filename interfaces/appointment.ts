@@ -1,8 +1,7 @@
 export interface Appointment {
   id: number
-  date: string
-  time: string
-  physician: string
-  physician_type: string
+  datetimeStart: string
+  datetimeEnd: string
+  practitioner: string
   location: string
 }

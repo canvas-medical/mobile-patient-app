@@ -2,9 +2,7 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import {
-  useDocumentReferences, useObservation, useRecords,
-} from '@services';
+import { useDocumentReferences, useObservation, useRecords } from '@services';
 import { Screen } from '@components';
 import { g } from '@styles';
 
@@ -33,38 +31,36 @@ export default function Dashboard() {
   console.log('Observation: ', observation);
 
   return (
-    <Screen>
-      <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
-        <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              'Are you sure?',
-              'This will delete all of your data and log you out.',
-              [
-                {
-                  text: 'Cancel',
-                  style: 'cancel',
+    <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
+      <TouchableOpacity
+        onPress={() => {
+          Alert.alert(
+            'Are you sure?',
+            'This will delete all of your data and log you out.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Log Out',
+                style: 'destructive',
+                onPress: () => {
+                  SecureStore.deleteItemAsync('patient_id');
+                  router.replace('initial');
                 },
-                {
-                  text: 'Log Out',
-                  style: 'destructive',
-                  onPress: () => {
-                    SecureStore.deleteItemAsync('patient_id');
-                    router.replace('initial');
-                  },
-                },
-              ],
-            );
-          }}
-          style={{
-            padding: g.size(8),
-            borderRadius: g.size(4),
-            backgroundColor: g.white,
-          }}
-        >
-          <Text>&quot;Logout&quot;</Text>
-        </TouchableOpacity>
-      </View>
-    </Screen>
+              },
+            ],
+          );
+        }}
+        style={{
+          padding: g.size(8),
+          borderRadius: g.size(4),
+          backgroundColor: g.white,
+        }}
+      >
+        <Text>&quot;Logout&quot;</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
