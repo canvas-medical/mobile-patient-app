@@ -27,8 +27,10 @@ export default function Index() {
   useEffect(() => {
     if (!navigationState?.key || isFetching) return;
     if (patient?.id) {
-      router.replace('appointments-medications');
-    } else router.replace('initial');
+      // router.replace('appointments-medications');
+    // } else router.replace('initial');
+      router.replace('consents');
+    } else router.replace('consents');
   }, [navigationState, patient, isFetching]);
 
   return (

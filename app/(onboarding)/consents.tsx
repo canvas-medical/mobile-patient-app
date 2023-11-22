@@ -7,13 +7,13 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
-  Platform,
+  Platform, ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather, } from '@expo/vector-icons';
 import { Button, Screen } from '@components';
 import { g } from '@styles';
-import { PdfModal } from '@components/pdf-modal';
+import { PdfModal } from '@app/(onboarding)/pdf-modal';
 import { useState } from 'react';
 import { ConsentPdfs, useConsentCreate } from '@services';
 
@@ -56,6 +56,10 @@ const s = StyleSheet.create({
   header: {
     padding: g.size(36),
     paddingTop: g.size(72),
+  },
+  link: {
+    ...g.bodyMedium,
+    textDecorationLine: 'underline',
   },
   scrollCover: {
     width: g.width,
@@ -113,14 +117,22 @@ export default function Consents() {
                   </Text>
                 </View>
                 <View style={s.formContainer}>
-                  <TouchableOpacity style={s.consentItem} onPress={() => setModalVisible(true)}>
-                    <Feather
-                      name={isSuccess ? 'check-square' : (isPending ? 'loader' : 'square')}
-                      size={g.size(26)}
-                      color={isSuccess ? 'green' : g.neutral200}
-                    />
-                    <Text>General Consent Document</Text>
-                  </TouchableOpacity>
+                  <View style={s.consentItem}>
+                    <TouchableOpacity onPress={() => router.push('pdf-modal')}>
+                      {isPending ? (
+                        <ActivityIndicator size="small" color={g.neutral500} />
+                      ) : (
+                        <Feather
+                          name={isSuccess ? 'check-square' : 'square'}
+                          size={g.size(26)}
+                          color={isSuccess ? 'green' : g.neutral200}
+                        />
+                      )}
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.push('pdf-modal')}>
+                      <Text style={s.link}>General Consent Document</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <View style={s.buttonContainer}>
                   <View style={s.button}>
@@ -132,7 +144,7 @@ export default function Consents() {
                     />
                   </View>
                 </View>
-                <PdfModal modalVisible={modalVisible} onAccept={onClick} setModalVisible={setModalVisible} uri={ConsentPdfs['Consent Document']} />
+                {/* <PdfModal modalVisible={modalVisible} onAccept={onClick} setModalVisible={setModalVisible} uri={ConsentPdfs['Consent Document']} /> */}
               </View>
             </View>
           </TouchableWithoutFeedback>

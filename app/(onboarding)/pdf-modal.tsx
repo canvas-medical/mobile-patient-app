@@ -35,16 +35,12 @@ const s = StyleSheet.create({
     backgroundColor: g.white,
   }
 });
-export function PdfModal({ uri, modalVisible, onAccept, setModalVisible }: {uri: string, modalVisible: boolean, onAccept: () => void, setModalVisible: (visible: boolean) => void}) {
+export function PdfModal(
+  { uri, modalVisible, onAccept, setModalVisible }:
+  { uri: string, modalVisible: boolean, onAccept: () => void, setModalVisible: (visible: boolean) => void }
+) {
   return (
-    <Modal
-      transparent
-      animationType="slide"
-      visible={modalVisible}
-      onRequestClose={() => {
-        setModalVisible(!modalVisible);
-      }}
-    >
+    <View>
       <TouchableOpacity
         onPress={() => setModalVisible(!modalVisible)}
         style={s.close}
@@ -68,6 +64,6 @@ export function PdfModal({ uri, modalVisible, onAccept, setModalVisible }: {uri:
           />
         </View>
       </View>
-    </Modal>
+    </View>
   );
 }
