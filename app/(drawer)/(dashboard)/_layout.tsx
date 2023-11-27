@@ -3,7 +3,6 @@ import {
   Entypo, Feather, FontAwesome5, Fontisto, MaterialCommunityIcons, FontAwesome
 } from '@expo/vector-icons';
 import { Slot, useNavigation } from 'expo-router';
-import * as routing from 'expo-router';
 
 import { g } from '@styles';
 import { DashTabs, Screen } from '@components';
@@ -37,7 +36,6 @@ const s = StyleSheet.create({
 
 export default function Layout() {
   const navigation = useNavigation();
-  console.log('everything from expo router', routing);
   return (
     <Screen style={s.container}>
       <View style={s.nameAndAvatarContainer}>
@@ -49,6 +47,7 @@ export default function Layout() {
       <Slot />
       <TouchableOpacity
         style={s.drawerButton}
+        // @ts-ignore This must be ignored because openDrawer does not exist on the default useNavigation export
         onPress={() => navigation.openDrawer()}
       >
         <Feather name="menu" size={g.size(48)} color={g.white} />
