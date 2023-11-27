@@ -1,12 +1,12 @@
-import { Screen, DashTabs } from '@components';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
-  TouchableOpacity, Text, View, StyleSheet
-} from 'react-native';
-import { Slot } from 'expo-router';
+  Entypo, Feather, FontAwesome5, Fontisto, MaterialCommunityIcons, FontAwesome
+} from '@expo/vector-icons';
+import { Slot, useNavigation } from 'expo-router';
+import * as routing from 'expo-router';
+
 import { g } from '@styles';
-import { useState } from 'react';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import MenuModal from '@components/menu-modal';
+import { DashTabs, Screen } from '@components';
 
 const s = StyleSheet.create({
   container: {
@@ -17,6 +17,7 @@ const s = StyleSheet.create({
     top: g.size(64),
     left: g.size(32),
   },
+
   messageButton: {
     position: 'absolute',
     top: g.size(64),
@@ -32,11 +33,11 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(8),
   }
-
 });
 
-export default function Dashboard() {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Layout() {
+  const navigation = useNavigation();
+  console.log('everything from expo router', routing);
   return (
     <Screen style={s.container}>
       <View style={s.nameAndAvatarContainer}>
@@ -47,18 +48,17 @@ export default function Dashboard() {
       </View>
       <Slot />
       <TouchableOpacity
-        onPress={() => setMenuOpen(!menuOpen)}
         style={s.drawerButton}
+        onPress={() => navigation.openDrawer()}
       >
         <Feather name="menu" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
       <TouchableOpacity
         style={s.messageButton}
-        onPress={() => null} // TODO: Open messages
+        onPress={() => null}
       >
         <Feather name="message-circle" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
-      <MenuModal setMenuOpen={setMenuOpen} menuOpen={menuOpen} />
       <DashTabs />
     </Screen>
   );
