@@ -54,7 +54,7 @@ export default function Dashboard() {
       </TouchableOpacity>
       <TouchableOpacity
         style={s.messageButton}
-        onPress={() => {
+        onPress={() => { // TODO: Open message modal
           Alert.alert(
             'Are you sure?',
             'This will delete all of your data and log you out.',
