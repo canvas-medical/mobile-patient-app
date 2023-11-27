@@ -4,4 +4,5 @@ export { useDocumentReferences } from '@services/document-reference';
 export { useObservation } from '@services/observation';
 export { useRecords } from '@services/records';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
-export { useCommunication, useSendCommunication } from '@services/communication';
+export { useCommunication, useCommunicationSubmit } from '@services/communication';
+export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';

@@ -2,7 +2,7 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useCommunication, useDocumentReferences, useObservation, useRecords } from '@services';
+import { useCommunication, useDocumentReferences, useObservation, usePaymentNotice, useRecords } from '@services';
 import { g } from '@styles';
 
 export default function Dashboard() {
@@ -18,18 +18,20 @@ export default function Dashboard() {
   const { data: documentReferences } = useDocumentReferences();
   const { data: observation } = useObservation();
   const { data: messages } = useCommunication();
+  const { data: paymentNotices } = usePaymentNotices();
 
-  // console.log('Consents: ', consents);
-  // console.log('Conditions: ', conditions);
-  // console.log('Medications: ', medications);
-  // console.log('Appointments: ', appointments);
-  // console.log('Immunizations: ', immunizations);
-  // console.log('Allergy Intolerance: ', allergyIntolerance);
-  // console.log('Diagnostic Report: ', diagnosticReport);
-  // console.log('Goals: ', goals);
-  // console.log('Document References: ', documentReferences);
-  // console.log('Observation: ', observation);
+  console.log('Consents: ', consents);
+  console.log('Conditions: ', conditions);
+  console.log('Medications: ', medications);
+  console.log('Appointments: ', appointments);
+  console.log('Immunizations: ', immunizations);
+  console.log('Allergy Intolerance: ', allergyIntolerance);
+  console.log('Diagnostic Report: ', diagnosticReport);
+  console.log('Goals: ', goals);
+  console.log('Document References: ', documentReferences);
+  console.log('Observation: ', observation);
   console.log('Messages: ', messages);
+  console.log('Payment Notices: ', paymentNotices);
 
   return (
     <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>

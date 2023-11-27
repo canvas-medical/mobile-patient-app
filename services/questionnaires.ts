@@ -19,7 +19,7 @@ async function getQuestionnaire(id: string) {
       accept: 'application/json'
     }
   });
-  return await res.json();
+  return res.json();
 }
 
 export function useQuestionnaire(id: string) {
@@ -81,7 +81,7 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
 
 export function useQuestionnaireSubmit() {
   return useMutation({
-    mutationFn: (data: {formData: {}, questionnaireData: {}}) => questionnaireSubmit(data),
+    mutationFn: (data: { formData: { key: string }; questionnaireData: { id: string, item: Question[] } }) => questionnaireSubmit(data),
     onSuccess: () => router.push('records'),
     onError: (e) => {
       console.log(e);

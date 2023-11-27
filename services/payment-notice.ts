@@ -5,11 +5,11 @@ import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
 import { getToken } from './access-token';
 
-async function getCommunication() {
+async function getPaymentNotices() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  console.log(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`);
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
+  console.log(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice?recipient=Patient/${patientId}`);
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice?recipient=Patient/${patientId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -19,19 +19,18 @@ async function getCommunication() {
   return res.json();
 }
 
-export function useCommunication() {
+export function usePaymentNotices() {
   return useQuery({
-    queryKey: ['communications'],
-    queryFn: () => getCommunication(),
+    queryKey: ['paymentNotices'],
+    queryFn: () => getPaymentNotices(),
   });
 }
 
-async function communicationSubmit(message: string) {
+async function paymentNoticeSubmit(value: number) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const isoString = new Date().toISOString();
 
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -40,23 +39,18 @@ async function communicationSubmit(message: string) {
     },
     body: JSON.stringify(
       {
-        resourceType: 'Communication',
-        status: 'unknown',
-        sent: isoString,
-        received: isoString,
-        recipient: [
-          {
-            reference: 'Practitioner/5eede137ecfe4124b8b773040e33be14'
-          }
-        ],
-        sender: {
-          reference: `Patient/${patientId}`
+        resourceType: 'PaymentNotice',
+        status: 'active',
+        request: {
+          reference: patientId,
         },
-        payload: [
-          {
-            contentString: message
-          }
-        ]
+        created: new Date(),
+        payment: {},
+        recipient: {},
+        amount: {
+          value,
+          currency: 'USD'
+        }
       }
     )
   });
@@ -64,15 +58,15 @@ async function communicationSubmit(message: string) {
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
-export function useCommunicationSubmit() {
+export function usePaymentNoticeSubmit() {
   return useMutation({
-    mutationFn: (message: string) => communicationSubmit(message),
+    mutationFn: (value: number) => paymentNoticeSubmit(value),
     onSuccess: () => router.push('records'),
     onError: (e) => {
       console.log(e);
       Alert.alert(
         'Error',
-        'There was an error sending the message. Please try again.',
+        'There was an error submitting the payment. Please try again.',
         [
           { text: 'OK' }
         ],
