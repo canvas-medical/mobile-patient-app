@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View, Text, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
 import { Slot, useRouter } from 'expo-router';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
