@@ -20,11 +20,12 @@ const s = StyleSheet.create({
     borderBottomRightRadius: g.size(10),
     opacity: 0.97,
     padding: g.size(20),
-    gap: g.size(20)
   },
   menuItem: {
+    marginLeft: 0,
     flexDirection: 'row',
     alignItems: 'center',
+    gap: g.size(10),
   },
   menuItemText: {
     ...g.bodyLarge,
@@ -34,89 +35,90 @@ const s = StyleSheet.create({
 
 type IconProps = { focused: boolean; size: number; color: string; }
 
-const getIconByText = (text: string, color: string) => {
+const getIconByText = (text: string, color: string, size: number, focused: any) => {
+  console.log(text, focused, size);
   switch (text.toLowerCase()) {
     case 'dashboard':
       return (
-        <>
-          <MaterialCommunityIcons name="view-dashboard-outline" size={24} color={color} />
+        <View style={s.menuItem}>
+          <MaterialCommunityIcons name="view-dashboard-outline" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'medication':
       return (
-        <>
-          <MaterialCommunityIcons name="arrow-right-bottom" size={24} color="black" />
-          <MaterialCommunityIcons name="calendar-clock-outline" size={24} color="black" />
+        <View style={s.menuItem}>
+          <MaterialCommunityIcons name="arrow-right-bottom" size={size} color="black" />
+          <MaterialCommunityIcons name="calendar-clock-outline" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'appointments':
       return (
-        <>
-          <MaterialCommunityIcons name="arrow-right-bottom" size={24} color="black" />
-          <MaterialCommunityIcons name="pill" size={24} color="black" />
+        <View style={s.menuItem}>
+          <MaterialCommunityIcons name="arrow-right-bottom" size={size} color="black" />
+          <MaterialCommunityIcons name="pill" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'records':
       return (
-        <>
-          <MaterialCommunityIcons name="arrow-right-bottom" size={24} color="black" />
-          <Entypo name="box" size={24} color="black" />
+        <View style={s.menuItem}>
+          <MaterialCommunityIcons name="arrow-right-bottom" size={size} color="black" />
+          <Entypo name="box" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'conditions':
       return (
-        <>
-          <FontAwesome5 name="heartbeat" size={24} color="black" />
+        <View style={s.menuItem}>
+          <FontAwesome5 name="heartbeat" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'immunizations':
       return (
-        <>
-          <Fontisto name="injection-syringe" size={24} color="black" />
+        <View style={s.menuItem}>
+          <Fontisto name="injection-syringe" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'allergies':
       return (
-        <>
-          <MaterialCommunityIcons name="peanut-off-outline" size={24} color="black" />
+        <View style={s.menuItem}>
+          <MaterialCommunityIcons name="peanut-off-outline" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'goals':
       return (
-        <>
-          <Feather name="target" size={24} color="black" />
+        <View style={s.menuItem}>
+          <Feather name="target" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'documents':
       return (
-        <>
-          <MaterialCommunityIcons name="file-check-outline" size={24} color="black" />
+        <View style={s.menuItem}>
+          <MaterialCommunityIcons name="file-check-outline" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
 
     case 'bill pay':
       return (
-        <>
-          <Feather name="credit-card" size={24} color="black" />
+        <View style={s.menuItem}>
+          <Feather name="credit-card" size={size} color="black" />
           <Text style={s.menuItemText}>{text}</Text>
-        </>
+        </View>
       );
     default:
       return null;
@@ -139,70 +141,70 @@ export default function Layout() {
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Dashboard')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Dashboard', color, size, focused)}
             />
             <DrawerItem
               label="Medication"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Medication')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Medication', color, size, focused)}
             />
             <DrawerItem
               label="Appointments"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Appointments')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Appointments', color, size, focused)}
             />
             <DrawerItem
               label="Records"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Records')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Records', color, size, focused)}
             />
             <DrawerItem
               label="Conditions"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Conditions')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Conditions', color, size, focused)}
             />
             <DrawerItem
               label="Immunizations"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Immunizations')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Immunizations', color, size, focused)}
             />
             <DrawerItem
               label="Allergies"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Allergies')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Allergies', color, size, focused)}
             />
             <DrawerItem
               label="Goals"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Goals')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Goals', color, size, focused)}
             />
             <DrawerItem
               label="Documents"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Documents')}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Documents', color, size, focused)}
             />
             <DrawerItem
               label="Bill Pay"
               labelStyle={s.menuItemText}
               style={s.menuItem}
               onPress={() => onPress()}
-              icon={({ color, size, focused }: IconProps) => getIconByText('Bill Pay', color)}
+              icon={({ color, size, focused }: IconProps) => getIconByText('Bill Pay', color, size, focused)}
             />
           </View>
         </DrawerContentScrollView>
