@@ -9,6 +9,7 @@ const s = StyleSheet.create({
     borderBottomWidth: g.size(1),
     borderBottomColor: g.white,
     borderBottomStyle: 'solid',
+    marginHorizontal: g.size(16),
   },
   indicator: {
     width: '100%',
