@@ -52,6 +52,7 @@ export default function Layout() {
     'Bill Pay': '(dashboard)'
   };
 
+  // TODO: leaving unused focused param here until we can figure out how to get it to work
   const getIconByText = (text: string, color: string, size: number, focused: any) => {
     switch (text.toLowerCase()) {
       case 'dashboard':
@@ -61,7 +62,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'medication':
         return (
           <View style={s.menuItem}>
@@ -70,7 +70,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'appointments':
         return (
           <View style={s.menuItem}>
@@ -79,7 +78,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'records':
         return (
           <View style={s.menuItem}>
@@ -88,7 +86,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'conditions':
         return (
           <View style={s.menuItem}>
@@ -96,7 +93,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'immunizations':
         return (
           <View style={s.menuItem}>
@@ -104,7 +100,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'allergies':
         return (
           <View style={s.menuItem}>
@@ -112,7 +107,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'goals':
         return (
           <View style={s.menuItem}>
@@ -120,7 +114,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'documents':
         return (
           <View style={s.menuItem}>
@@ -128,7 +121,6 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-
       case 'bill pay':
         return (
           <View style={s.menuItem}>
@@ -141,25 +133,27 @@ export default function Layout() {
     }
   };
 
+  const drawerContent = (props: any) => (
+    <DrawerContentScrollView {...props}>
+      <View style={s.menu}>
+        <Text style={s.header}>Brewer Digital</Text>
+        {Object.keys(routes).map((route) => (
+          <DrawerItem
+            label={route}
+            labelStyle={s.menuItemText}
+            style={s.menuItem}
+            onPress={() => navigation.navigate(routes[route])}
+            icon={({ color, size, focused }: IconProps) => getIconByText(route, color, size, focused)}
+          />
+        ))}
+      </View>
+    </DrawerContentScrollView>
+  );
+
   return (
     <Drawer
       screenOptions={{ headerShown: false }}
-      drawerContent={(props) => (
-        <DrawerContentScrollView {...props}>
-          <View style={s.menu}>
-            <Text style={s.header}>Brewer Digital</Text>
-            {Object.keys(routes).map((route) => (
-              <DrawerItem
-                label={route}
-                labelStyle={s.menuItemText}
-                style={s.menuItem}
-                onPress={() => navigation.navigate(routes[route])}
-                icon={({ color, size, focused }: IconProps) => getIconByText(route, color, size, focused)}
-              />
-            ))}
-          </View>
-        </DrawerContentScrollView>
-      )}
+      drawerContent={drawerContent}
     />
   );
 }
