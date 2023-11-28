@@ -58,8 +58,7 @@ export default function Messaging() {
   };
 
   useEffect(() => {
-    if (!isSuccess) { return; }
-
+    if (!isSuccess) return;
     setMessage('');
     refetch();
     Keyboard.dismiss();
@@ -74,17 +73,14 @@ export default function Messaging() {
         style={s.scroll}
       >
         {messages
-          ? messages.map((mess: Message) => {
-            console.log(mess);
-            console.log('sender:', mess.resource.sender.type);
-            return (
+          ? messages.map((mess: Message) =>
+            (
               <MessageBlock
                 received={mess.resource.sender.type === 'Practitioner'}
                 key={mess.resource.id}
                 message={mess.resource.payload[0].contentString}
               />
-            );
-          })
+            ))
           : <ActivityIndicator />}
       </ScrollView>
       <View style={s.inputContainer}>
