@@ -38,7 +38,7 @@ const s = StyleSheet.create({
     alignItems: 'flex-end',
   },
 });
-export default function MessagingStack() {
+export default function MessagingLayout() {
   return (
     <Screen style={s.container}>
       <View style={s.nameAndAvatarContainer}>
