@@ -150,6 +150,7 @@ export default function Layout() {
     </DrawerContentScrollView>
   );
 
+  // TODO: replace custom drawerContent with Drawer.Screen when all of our routes exist
   return (
     <Drawer
       screenOptions={{ headerShown: false }}
