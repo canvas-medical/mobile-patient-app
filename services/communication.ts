@@ -1,22 +1,36 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
-import { router } from 'expo-router';
 import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
 import { getToken } from './access-token';
 
 async function getCommunication() {
   const token = await getToken();
-  // const patientId = await SecureStore.getItemAsync('patient_id');
-  const patientId = 'a2d481743b774bbbb7084254cf384bac';
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
+  const patientId = await SecureStore.getItemAsync('patient_id');
+  const fromRes = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?sender=Patient/${patientId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
       accept: 'application/json'
     }
   });
-  return res.json();
+  const toRes = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json'
+    }
+  });
+  const messagesFrom = await fromRes.json();
+  const messagesTo = await toRes.json();
+  const fromArray = messagesFrom?.entry || [];
+  const toArray = messagesTo?.entry || [];
+  const allMessages = [...fromArray, ...toArray];
+  return allMessages.sort((a, b) => {
+    const aDate = new Date(a.resource.sent || a.resource.received);
+    const bDate = new Date(b.resource.sent || b.resource.received);
+    return aDate.getTime() - bDate.getTime();
+  });
 }
 
 export function useCommunication() {
@@ -67,7 +81,6 @@ async function communicationSubmit(message: string) {
 export function useCommunicationSubmit() {
   return useMutation({
     mutationFn: (message: string) => communicationSubmit(message),
-    onSuccess: () => router.push('records'),
     onError: (e) => {
       Alert.alert(
         'Error',

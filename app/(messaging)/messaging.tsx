@@ -1,24 +1,22 @@
 import {
-  StyleSheet, TextInput, TouchableOpacity, View
+  ActivityIndicator,
+  StyleSheet, TextInput, TouchableOpacity, View, KeyboardAvoidingView, ScrollView, Keyboard,
 } from 'react-native';
 import { g } from '@styles';
 import { MessageBlock } from '@components';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {
-  QuestionnaireIds,
   useCommunication, useCommunicationSubmit,
-  usePaymentNoticeSubmit,
-  useQuestionnaire,
-  useQuestionnaireSubmit
 } from '@services';
+import { Message } from '@interfaces/message';
 
 const s = StyleSheet.create({
   container: {
-    paddingHorizontal: g.size(36),
-    paddingBottom: g.size(192),
+    paddingHorizontal: g.size(32),
+    height: g.height - g.size(140), // subtract header height, found in _layout
+    alignItems: 'center',
     gap: g.size(16),
-    alignItems: 'center'
   },
   input: {
     ...g.bodyMedium,
@@ -33,31 +31,62 @@ const s = StyleSheet.create({
   inputContainer: {
     position: 'absolute',
     width: g.width * 0.9,
-    bottom: g.size(112),
-    display: 'flex',
+    bottom: g.size(36),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: g.white,
     borderRadius: g.size(25),
   },
+  scroll: {
+    width: '100%',
+    gap: g.size(16),
+    paddingBottom: g.size(32),
+    marginBottom: g.size(80),
+  },
 });
 
 export default function Messaging() {
   const [message, setMessage] = useState<string>('');
   const [size, setSize] = useState<number>(32);
-  const [error, setError] = useState<string>('');
-  const { isFetching, data: messages } = useCommunication();
-  const { mutate: onMessageSubmit, isPending } = useCommunicationSubmit();
+  const { data: messages, refetch } = useCommunication();
+  const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
+
+  const scrollViewRef = useRef();
   const updateSize = (num: number) => {
-    if (num > 32 && num < 500) {
-      setSize(num);
-    }
+    if (num > 32 && num < 500) { setSize(num); }
   };
+
+  useEffect(() => {
+    if (!isSuccess) { return; }
+
+    setMessage('');
+    refetch();
+    Keyboard.dismiss();
+  }, [isSuccess]);
+
   return (
-    <View style={s.container}>
-      <MessageBlock received={false} />
-      <MessageBlock received />
+    <KeyboardAvoidingView style={s.container} behavior="height">
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+        contentContainerStyle={s.scroll}
+        style={s.scroll}
+      >
+        {messages
+          ? messages.map((mess: Message) => {
+            console.log(mess);
+            console.log('sender:', mess.resource.sender.type);
+            return (
+              <MessageBlock
+                received={mess.resource.sender.type === 'Practitioner'}
+                key={mess.resource.id}
+                message={mess.resource.payload[0].contentString}
+              />
+            );
+          })
+          : <ActivityIndicator />}
+      </ScrollView>
       <View style={s.inputContainer}>
         <TextInput
           style={{ ...s.input, height: size }}
@@ -70,22 +99,23 @@ export default function Messaging() {
           autoCapitalize="none"
           keyboardType="default"
           returnKeyType="send"
-          onSubmitEditing={() => null}
+          onSubmitEditing={() => onMessageSubmit(message)}
           textContentType="none"
-          placeholderTextColor={error ? g.neutral500 : g.neutral200}
+          placeholderTextColor={g.neutral200}
           onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
         />
         {isPending ? (
-
-          <Spin
-          ) :
-        <TouchableOpacity
-          onPress={() => onMessageSubmit(message)}
-        >
-          <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} />
-        </TouchableOpacity>
+          <ActivityIndicator />
+        )
+          : (
+            <TouchableOpacity
+              onPress={() => onMessageSubmit(message)}
+            >
+              <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} />
+            </TouchableOpacity>
+          )
         }
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }

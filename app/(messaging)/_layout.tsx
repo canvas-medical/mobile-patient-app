@@ -1,8 +1,9 @@
-import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import { Screen, DashTabs } from '@components';
+import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
+import { Screen } from '@components';
 import { g } from '@styles';
+import * as SecureStore from 'expo-secure-store';
 import { Feather, FontAwesome } from '@expo/vector-icons';
-import { Slot } from 'expo-router';
+import { router, Slot } from 'expo-router';
 
 const s = StyleSheet.create({
   container: {
@@ -41,13 +42,35 @@ const s = StyleSheet.create({
 export default function MessagingLayout() {
   return (
     <Screen style={s.container}>
-      <View style={s.nameAndAvatarContainer}>
+      <TouchableOpacity
+        style={s.nameAndAvatarContainer}
+        onPress={() => {
+          Alert.alert(
+            'Are you sure?',
+            'This will delete all of your data and log you out.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Log Out',
+                style: 'destructive',
+                onPress: () => {
+                  SecureStore.deleteItemAsync('patient_id');
+                  router.replace('initial');
+                },
+              },
+            ],
+          );
+        }}
+      >
         <View style={s.nameContainer}>
           <Text style={s.greeting}>Hello</Text>
           <Text style={s.name}>John Doe</Text>
         </View>
         <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity
         style={s.drawerButton}
         onPress={() => null} // TODO: Open drawer
