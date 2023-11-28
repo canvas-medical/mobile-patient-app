@@ -94,8 +94,6 @@ export default function Messaging() {
           onFocus={() => null}
           autoCapitalize="none"
           keyboardType="default"
-          returnKeyType="send"
-          onSubmitEditing={() => onMessageSubmit(message)}
           textContentType="none"
           placeholderTextColor={g.neutral200}
           onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
