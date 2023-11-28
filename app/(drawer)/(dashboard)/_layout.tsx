@@ -1,11 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import {
-  Entypo, Feather, FontAwesome5, Fontisto, MaterialCommunityIcons, FontAwesome
-} from '@expo/vector-icons';
-import { Slot, useNavigation } from 'expo-router';
-
+import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
+import { Slot, useRouter, useNavigation } from 'expo-router';
+import { Feather, FontAwesome } from '@expo/vector-icons';
+import * as SecureStore from 'expo-secure-store';
+import { Screen, DashTabs } from '@components';
 import { g } from '@styles';
-import { DashTabs, Screen } from '@components';
+import { usePatient } from '@services';
 
 const s = StyleSheet.create({
   container: {
@@ -31,17 +30,21 @@ const s = StyleSheet.create({
   nameAndAvatarContainer: {
     alignItems: 'center',
     gap: g.size(8),
-  }
+    marginBottom: g.size(24),
+  },
 });
 
 export default function Layout() {
   const navigation = useNavigation();
+  const router = useRouter();
+  const { data: { name } } = usePatient();
+  const patientName = `${name[0].given[0]} ${name[0].family}`;
   return (
     <Screen style={s.container}>
       <View style={s.nameAndAvatarContainer}>
         <FontAwesome name="user-circle-o" size={g.size(96)} color={g.white} />
         <Text style={s.name}>
-          John Doe
+          {patientName}
         </Text>
       </View>
       <Slot />
@@ -54,7 +57,26 @@ export default function Layout() {
       </TouchableOpacity>
       <TouchableOpacity
         style={s.messageButton}
-        onPress={() => null}
+        onPress={() => { // TODO: Open message modal
+          Alert.alert(
+            'Are you sure?',
+            'This will delete all of your data and log you out.',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'Log Out',
+                style: 'destructive',
+                onPress: () => {
+                  SecureStore.deleteItemAsync('patient_id');
+                  router.replace('initial');
+                },
+              },
+            ],
+          );
+        }}
       >
         <Feather name="message-circle" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
