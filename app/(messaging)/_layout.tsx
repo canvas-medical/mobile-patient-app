@@ -46,7 +46,7 @@ export default function MessagingLayout() {
           <Text style={s.greeting}>Hello</Text>
           <Text style={s.name}>John Doe</Text>
         </View>
-        <FontAwesome name="user-circle-o" size={g.size(36)} color={g.white} />
+        <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
       </View>
       <TouchableOpacity
         style={s.drawerButton}

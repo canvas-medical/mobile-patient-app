@@ -5,6 +5,7 @@ export { DashTabs } from '@components/dashboard-tabs';
 export { Input } from '@components/input';
 export { LabeledToggle } from '@components/labeled-toggle';
 export { MedicationCard } from '@components/medication-card';
+export { MessageBlock } from '@components/message-block';
 export { MedicationList } from '@components/medication-list';
 export { ProfileCard } from '@components/profile-card';
 export { RecordCard } from '@components/record-card';

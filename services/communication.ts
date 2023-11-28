@@ -7,8 +7,8 @@ import { getToken } from './access-token';
 
 async function getCommunication() {
   const token = await getToken();
-  const patientId = await SecureStore.getItemAsync('patient_id');
-  console.log(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`);
+  // const patientId = await SecureStore.getItemAsync('patient_id');
+  const patientId = 'a2d481743b774bbbb7084254cf384bac';
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
     method: 'GET',
     headers: {
@@ -46,7 +46,7 @@ async function communicationSubmit(message: string) {
         received: isoString,
         recipient: [
           {
-            reference: 'Practitioner/5eede137ecfe4124b8b773040e33be14'
+            reference: 'Practitioner/3b4f8231a0dd4330927b8a8e702ce36b'
           }
         ],
         sender: {

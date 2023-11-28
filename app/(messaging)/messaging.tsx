@@ -1,43 +1,90 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
-import { Button, Screen } from '@components';
+import {
+  StyleSheet, TextInput, TouchableOpacity, View
+} from 'react-native';
 import { g } from '@styles';
+import { MessageBlock } from '@components';
+import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import {
+  QuestionnaireIds,
+  useCommunication, useCommunicationSubmit,
+  usePaymentNoticeSubmit,
+  useQuestionnaire,
+  useQuestionnaireSubmit
+} from '@services';
 
 const s = StyleSheet.create({
-  buttonContainer: {
-    marginTop: g.size(96),
-    gap: g.size(16),
-  },
   container: {
-    justifyContent: 'flex-end',
     paddingHorizontal: g.size(36),
     paddingBottom: g.size(192),
+    gap: g.size(16),
+    alignItems: 'center'
   },
-  subtitle: {
-    ...g.bodyXLarge,
-    color: g.white,
+  input: {
+    ...g.bodyMedium,
+    color: g.black,
+    backgroundColor: g.white,
+    width: g.width * 0.8,
+    borderRadius: g.size(25),
+    paddingTop: g.size(8),
+    paddingBottom: g.size(4),
+    paddingHorizontal: g.size(16),
   },
-  subtitleEmphasized: {
-    ...g.titleSmall,
-  },
-  title: {
-    ...g.titleLarge,
-    marginBottom: g.size(20),
+  inputContainer: {
+    position: 'absolute',
+    width: g.width * 0.9,
+    bottom: g.size(112),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: g.white,
+    borderRadius: g.size(25),
   },
 });
 
 export default function Messaging() {
+  const [message, setMessage] = useState<string>('');
+  const [size, setSize] = useState<number>(32);
+  const [error, setError] = useState<string>('');
+  const { isFetching, data: messages } = useCommunication();
+  const { mutate: onMessageSubmit, isPending } = useCommunicationSubmit();
+  const updateSize = (num: number) => {
+    if (num > 32 && num < 500) {
+      setSize(num);
+    }
+  };
   return (
     <View style={s.container}>
-      <Text style={s.title}>Welcome</Text>
-      <Text style={s.subtitle}>Manage your medical records</Text>
-      <Text style={s.subtitleEmphasized}>seamlessly and intuitively</Text>
-      <View style={s.buttonContainer}>
-        <Button
-          label="Register"
-          theme="tertiary"
-          onPress={() => router.push('personal-details-one')}
+      <MessageBlock received={false} />
+      <MessageBlock received />
+      <View style={s.inputContainer}>
+        <TextInput
+          style={{ ...s.input, height: size }}
+          multiline
+          editable
+          placeholder="Message here..."
+          value={message}
+          onChange={(e) => setMessage(e.nativeEvent.text)}
+          onFocus={() => null}
+          autoCapitalize="none"
+          keyboardType="default"
+          returnKeyType="send"
+          onSubmitEditing={() => null}
+          textContentType="none"
+          placeholderTextColor={error ? g.neutral500 : g.neutral200}
+          onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
         />
+        {isPending ? (
+
+          <Spin
+          ) :
+        <TouchableOpacity
+          onPress={() => onMessageSubmit(message)}
+        >
+          <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} />
+        </TouchableOpacity>
+        }
       </View>
     </View>
   );
