@@ -8,7 +8,6 @@ import { getToken } from './access-token';
 async function getPaymentNotices() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  console.log(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice?recipient=Patient/${patientId}`);
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice?recipient=Patient/${patientId}`, {
     method: 'GET',
     headers: {
@@ -63,7 +62,6 @@ export function usePaymentNoticeSubmit() {
     mutationFn: (value: number) => paymentNoticeSubmit(value),
     onSuccess: () => router.push('records'),
     onError: (e) => {
-      console.log(e);
       Alert.alert(
         'Error',
         'There was an error submitting the payment. Please try again.',

@@ -8,7 +8,6 @@ import { getToken } from './access-token';
 async function getCommunication() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  console.log(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`);
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
     method: 'GET',
     headers: {
@@ -69,7 +68,6 @@ export function useCommunicationSubmit() {
     mutationFn: (message: string) => communicationSubmit(message),
     onSuccess: () => router.push('records'),
     onError: (e) => {
-      console.log(e);
       Alert.alert(
         'Error',
         'There was an error sending the message. Please try again.',

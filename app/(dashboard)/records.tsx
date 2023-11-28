@@ -1,8 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */ // REMOVE ME
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
-import { useRecords, useCommunication, useDocumentReferences, useObservations, usePaymentNotices, useRecords } from '@services';
+import { useCommunication, useDocumentReferences, useObservations, usePaymentNotices, useRecords } from '@services';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { DiagnosticCard, VitalCard } from '@components';
 import { g } from '@styles';
