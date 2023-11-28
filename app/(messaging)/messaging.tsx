@@ -26,9 +26,9 @@ const s = StyleSheet.create({
   },
 });
 
-export default function Initial() {
+export default function Messaging() {
   return (
-    <Screen style={s.container}>
+    <View style={s.container}>
       <Text style={s.title}>Welcome</Text>
       <Text style={s.subtitle}>Manage your medical records</Text>
       <Text style={s.subtitleEmphasized}>seamlessly and intuitively</Text>
@@ -39,6 +39,6 @@ export default function Initial() {
           onPress={() => router.push('personal-details-one')}
         />
       </View>
-    </Screen>
+    </View>
   );
 }
