@@ -7,25 +7,24 @@ import { getToken } from './access-token';
 async function getCommunication() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const fromRes = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?sender=Patient/${patientId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      accept: 'application/json'
-    }
-  });
-  const toRes = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      accept: 'application/json'
-    }
-  });
-  const messagesFrom = await fromRes.json();
-  const messagesTo = await toRes.json();
-  const fromArray = messagesFrom?.entry || [];
-  const toArray = messagesTo?.entry || [];
+  const createFetchRequest = async (params) => {
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication${params}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: 'application/json'
+      }
+    });
+    return response.json();
+  };
+
+  const fromRes = await createFetchRequest(`?sender=Patient/${patientId}`);
+  const toRes = await createFetchRequest(`?recipient=Patient/${patientId}`);
+
+  const fromArray = fromRes?.entry || [];
+  const toArray = toRes?.entry || [];
   const allMessages = [...fromArray, ...toArray];
+
   return allMessages.sort((a, b) => {
     const aDate = new Date(a.resource.sent || a.resource.received);
     const bDate = new Date(b.resource.sent || b.resource.received);
