@@ -8,6 +8,9 @@ const s = StyleSheet.create({
     display: 'flex',
     overflow: 'hidden',
   },
+  disabled: {
+    opacity: 0.5,
+  },
   gradient: {
     paddingVertical: g.size(12),
     alignItems: 'center',
@@ -28,17 +31,18 @@ const s = StyleSheet.create({
   },
   tertiaryLabel: {
     color: g.white,
-  },
+  }
 });
 
 interface Props {
   label: string;
   theme: 'primary' | 'secondary' | 'tertiary';
   onPress: () => void;
+  disabled?: boolean;
 }
 
 export function Button(props: Props) {
-  const { label, onPress, theme } = props;
+  const { label, onPress, theme, disabled } = props;
 
   const gradients = {
     primary: [g.primaryBlue, g.secondaryBlue],
@@ -48,7 +52,8 @@ export function Button(props: Props) {
 
   return (
     <TouchableOpacity
-      style={[s.button, theme === 'tertiary' && s.tertiary]}
+      style={[s.button, theme === 'tertiary' && s.tertiary, disabled && s.disabled]}
+      disabled={disabled}
       onPress={onPress}
     >
       <LinearGradient

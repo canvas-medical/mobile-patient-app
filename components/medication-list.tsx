@@ -5,9 +5,8 @@ import { MedicationCard } from './medication-card';
 const s = StyleSheet.create({
   contentContainer: {
     gap: g.size(24),
-    paddingTop: g.size(12),
+    padding: g.size(16),
     paddingBottom: g.size(120),
-    paddingHorizontal: g.size(16),
   },
   label: {
     ...g.titleXSmall,

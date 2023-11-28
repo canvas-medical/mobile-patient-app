@@ -69,7 +69,6 @@ export function useCommunicationSubmit() {
     mutationFn: (message: string) => communicationSubmit(message),
     onSuccess: () => router.push('records'),
     onError: (e) => {
-      console.log(e);
       Alert.alert(
         'Error',
         'There was an error sending the message. Please try again.',

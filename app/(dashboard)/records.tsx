@@ -1,69 +1,153 @@
 /* eslint-disable react-native/no-inline-styles */ // REMOVE ME
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { useRouter } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
-import { useCommunication, useDocumentReferences, useObservation, usePaymentNotice, useRecords } from '@services';
+import { useCommunication, useDocumentReferences, useObservations, usePaymentNotices, useRecords } from '@services';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { DiagnosticCard, VitalCard } from '@components';
 import { g } from '@styles';
 
+const s = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingHorizontal: g.size(16),
+    paddingBottom: g.size(120),
+    gap: g.size(24),
+  },
+  diagnosticContainer: {
+    rowGap: g.size(16),
+  },
+  label: {
+    ...g.titleXSmall,
+    color: g.white,
+  },
+  sectionContainer: {
+    flex: 1,
+    gap: g.size(16),
+  },
+  vitalsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: g.size(16),
+    justifyContent: 'space-between',
+  },
+});
+
+const recordsData = Array.from(
+  new Set([
+    {
+      id: 1,
+      date: '2023-11-20T10:00:00',
+      type: 'Blood Pressure',
+      value: '120/80',
+    },
+    {
+      id: 2,
+      date: '2023-11-01T11:30:00',
+      type: 'Heart Rate',
+      value: '80',
+    },
+    {
+      id: 3,
+      date: '2023-11-22T14:15:00',
+      type: 'Temperature',
+      value: '98.6',
+    },
+    {
+      id: 4,
+      date: '2023-11-23T16:45:00',
+      type: 'Blood Sugar',
+      value: '100',
+    },
+    {
+      id: 5,
+      date: '2023-11-24T09:30:00',
+      type: 'Oxygen Level',
+      value: '95',
+    },
+  ]),
+);
+const diagnosticsData = Array.from(
+  new Set([
+    {
+      id: 1,
+      date: '2023-11-20T10:00:00',
+      type: 'Radiology',
+      value: 'XRAY, knee; 3 views',
+    },
+    {
+      id: 2,
+      date: '2023-11-25T14:30:00',
+      type: 'Lab Test',
+      value: 'Complete Blood Count',
+    },
+    {
+      id: 3,
+      date: '2023-11-26T09:00:00',
+      type: 'Radiology',
+      value: 'MRI, brain; w/o contrast',
+    },
+    {
+      id: 4,
+      date: '2023-11-27T16:45:00',
+      type: 'Endoscopy',
+      value: 'Colonoscopy; w/ biopsy, polypectomy',
+    },
+    {
+      id: 5,
+      date: '2023-11-28T11:30:00',
+      type: 'Radiology',
+      value: 'CT, abdomen and pelvis; w/ contrast',
+    },
+  ]),
+);
+
 export default function Dashboard() {
-  const router = useRouter();
-  const { data: consents } = useRecords('Consent');
-  const { data: conditions } = useRecords('Condition');
-  const { data: medications } = useRecords('MedicationStatement');
-  const { data: appointments } = useRecords('Appointment');
-  const { data: immunizations } = useRecords('Immunization');
-  const { data: allergyIntolerance } = useRecords('AllergyIntolerance');
   const { data: diagnosticReport } = useRecords('DiagnosticReport');
   const { data: goals } = useRecords('Goal');
   const { data: documentReferences } = useDocumentReferences();
-  const { data: observation } = useObservation();
   const { data: messages } = useCommunication();
   const { data: paymentNotices } = usePaymentNotices();
+  const { data: observations } = useObservations();
 
-  console.log('Consents: ', consents);
-  console.log('Conditions: ', conditions);
-  console.log('Medications: ', medications);
-  console.log('Appointments: ', appointments);
-  console.log('Immunizations: ', immunizations);
-  console.log('Allergy Intolerance: ', allergyIntolerance);
   console.log('Diagnostic Report: ', diagnosticReport);
   console.log('Goals: ', goals);
   console.log('Document References: ', documentReferences);
-  console.log('Observation: ', observation);
   console.log('Messages: ', messages);
   console.log('Payment Notices: ', paymentNotices);
+  console.log('Observations: ', observations);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'center' }}>
-      <TouchableOpacity
-        onPress={() => {
-          Alert.alert(
-            'Are you sure?',
-            'This will delete all of your data and log you out.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {
-                text: 'Log Out',
-                style: 'destructive',
-                onPress: () => {
-                  SecureStore.deleteItemAsync('patient_id');
-                  router.replace('initial');
-                },
-              },
-            ],
-          );
-        }}
-        style={{
-          padding: g.size(8),
-          borderRadius: g.size(4),
-          backgroundColor: g.white,
-        }}
-      >
-        <Text>&quot;Logout&quot;</Text>
-      </TouchableOpacity>
-    </View>
+    <ScrollView
+      style={s.container}
+      contentContainerStyle={s.contentContainer}
+    >
+      {recordsData.length > 0 && (
+        <View style={s.sectionContainer}>
+          <Text style={s.label}>
+            Vitals
+          </Text>
+          <View style={s.vitalsContainer}>
+            {recordsData.map((vital, i) => (
+              <VitalCard
+                i={i}
+                key={vital.id}
+                vital={vital}
+                vitalsOdd={recordsData.length % 2 !== 0}
+              />
+            ))}
+          </View>
+        </View>
+      )}
+      {diagnosticsData.length > 0 && (
+        <View style={s.sectionContainer}>
+          <Text style={s.label}>
+            Diagnostics
+          </Text>
+          <View style={s.diagnosticContainer}>
+            {diagnosticsData.map((data) => <DiagnosticCard key={data.id} data={data} />)}
+          </View>
+        </View>
+      )}
+    </ScrollView>
   );
 }

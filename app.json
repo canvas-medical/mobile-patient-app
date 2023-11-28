@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "fhir-dashboard",
-    "slug": "fhir-dashboard",
+    "slug": "fhir-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appstore.png",
     "userInterfaceStyle": "light",
     "scheme": "fhir-dashboard",
     "splash": {
@@ -16,19 +16,38 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.brewerdigital.fhirdashboard"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ],
+      "package": "com.brewerdigital.fhirdashboard"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/appstore.png"
     },
     "plugins": [
-      "expo-router"
-    ]
+      "expo-router",
+      "@config-plugins/react-native-blob-util",
+      "@config-plugins/react-native-pdf"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "eabcadfa-7fee-400e-8e04-f2f5c4d1d35b"
+      }
+    },
+    "owner": "brewerdigital"
   }
 }
