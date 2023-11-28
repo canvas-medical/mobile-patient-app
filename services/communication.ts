@@ -7,7 +7,7 @@ import { getToken } from './access-token';
 async function getCommunication() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const createFetchRequest = async (params) => {
+  const createFetchRequest = async (params: string) => {
     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication${params}`, {
       method: 'GET',
       headers: {
