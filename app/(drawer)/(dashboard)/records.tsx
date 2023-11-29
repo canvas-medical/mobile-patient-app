@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */ // REMOVE ME
+import { useCommunication, useDocumentReferences, useObservations, usePaymentNotices, useRecords } from '@services';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useRecords, useObservations } from '@services';
 import { DiagnosticCard, VitalCard } from '@components';
 import { g } from '@styles';
 
@@ -102,9 +103,17 @@ const diagnosticsData = Array.from(
 
 export default function Dashboard() {
   const { data: diagnosticReport } = useRecords('DiagnosticReport');
+  const { data: goals } = useRecords('Goal');
+  const { data: documentReferences } = useDocumentReferences();
+  const { data: messages } = useCommunication();
+  const { data: paymentNotices } = usePaymentNotices();
   const { data: observations } = useObservations();
 
   console.log('Diagnostic Report: ', diagnosticReport);
+  console.log('Goals: ', goals);
+  console.log('Document References: ', documentReferences);
+  console.log('Messages: ', messages);
+  console.log('Payment Notices: ', paymentNotices);
   console.log('Observations: ', observations);
 
   return (

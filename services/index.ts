@@ -5,4 +5,6 @@ export { useObservations } from '@services/observations';
 export { useRecords } from '@services/records';
 export { ConsentCodes, ConsentPdfs, useConsentCreate } from '@services/consent';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
+export { useCommunication, useCommunicationSubmit } from '@services/communication';
+export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { useCreateCoverage, Insurers } from '@services/coverage';
