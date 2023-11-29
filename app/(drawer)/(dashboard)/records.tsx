@@ -105,6 +105,7 @@ export default function Dashboard() {
   const { data: diagnosticReport } = useRecords('DiagnosticReport');
   const { data: goals } = useRecords('Goal');
   const { data: documentReferences } = useDocumentReferences();
+  const { data: invoices } = useDocumentReferences('invoicefull');
   const { data: messages } = useCommunication();
   const { data: paymentNotices } = usePaymentNotices();
   const { data: observations } = useObservations();
@@ -112,6 +113,7 @@ export default function Dashboard() {
   console.log('Diagnostic Report: ', diagnosticReport);
   console.log('Goals: ', goals);
   console.log('Document References: ', documentReferences);
+  console.log('Invoices: ', invoices);
   console.log('Messages: ', messages);
   console.log('Payment Notices: ', paymentNotices);
   console.log('Observations: ', observations);

@@ -1,5 +1,5 @@
 import {
-  StyleSheet, View
+  StyleSheet, TouchableOpacity, View
 } from 'react-native';
 import { g } from '@styles';
 import Pdf from 'react-native-pdf';
@@ -17,7 +17,7 @@ const s = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: 20,
+    top: 40,
     right: 20
   },
   contentContainer: {
@@ -40,9 +40,13 @@ const s = StyleSheet.create({
 export default function PdfModal() {
   const { mutate: onCreateConsent, isPending, isSuccess } = useConsentCreate();
   const params = useLocalSearchParams();
-  const { uri, consentType, isAccepted } = params;
+  const { uri, consentType, isAccepted, noActionOnClose } = params;
   const acceptAndClose = () => {
-    onCreateConsent({ consent: consentType as string });
+    if (noActionOnClose) {
+      router.back();
+    } else {
+      onCreateConsent({ consent: consentType as string });
+    }
   };
 
   useEffect(() => {
@@ -50,19 +54,23 @@ export default function PdfModal() {
     router.replace({ pathname: 'consents', params: { accepted: true } });
   }, [isSuccess]);
 
+  const text = noActionOnClose ? 'Close' : 'Accept and Continue';
+
   return (
     <View style={s.contentContainer}>
       <Pdf
         source={{ uri: uri as string }}
         style={s.pdf}
       />
-      <Feather style={s.closeButton} name="x" size={32} color={g.neutral500} onPress={() => router.canGoBack() && router.back()} />
+      <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
+        <Feather name="x" size={32} color={g.neutral500} />
+      </TouchableOpacity>
       <View style={s.buttonContainer}>
         <Button
           theme="primary"
           onPress={acceptAndClose}
           disabled={isPending || isSuccess || !!isAccepted}
-          label={isPending ? 'Accepting...' : 'Accept and Continue'}
+          label={isPending ? 'Accepting...' : text}
         />
       </View>
     </View>

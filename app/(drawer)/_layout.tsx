@@ -49,6 +49,7 @@ export default function Layout() {
     Allergies: '(dashboard)',
     Goals: '(dashboard)',
     Documents: '(dashboard)',
+    Invoices: 'invoices',
     'Bill Pay': '(dashboard)'
   };
 
@@ -118,6 +119,13 @@ export default function Layout() {
         return (
           <View style={s.menuItem}>
             <MaterialCommunityIcons name="file-check-outline" size={size} color="black" />
+            <Text style={s.menuItemText}>{text}</Text>
+          </View>
+        );
+      case 'invoices':
+        return (
+          <View style={s.menuItem}>
+            <FontAwesome5 name="file-invoice-dollar" size={size} color="black" />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
