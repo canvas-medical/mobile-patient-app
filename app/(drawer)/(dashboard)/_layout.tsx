@@ -57,7 +57,7 @@ export default function Layout() {
       <TouchableOpacity
         style={s.messageButton}
         onPress={() => {
-          router.push('messaging');
+          router.push('(drawer)/messaging');
         }}
       >
         <Feather name="message-circle" size={g.size(48)} color={g.white} />
