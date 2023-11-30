@@ -53,6 +53,7 @@ export default function Messaging() {
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
   const scrollViewRef = useRef();
+  const buttonDisabled = message.length === 0;
   const updateSize = (num: number) => {
     if (num > 32 && num < 500) { setSize(num); }
   };
@@ -61,6 +62,7 @@ export default function Messaging() {
     if (!isSuccess) return;
     setMessage('');
     refetch();
+    setSize(32);
     Keyboard.dismiss();
   }, [isSuccess]);
 
@@ -99,13 +101,14 @@ export default function Messaging() {
           onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
         />
         {isPending ? (
-          <ActivityIndicator />
+          <ActivityIndicator size={g.size(39)} />
         )
           : (
             <TouchableOpacity
               onPress={() => onMessageSubmit(message)}
+              disabled={buttonDisabled}
             >
-              <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} />
+              <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={{ opacity: buttonDisabled && 0.5 }} />
             </TouchableOpacity>
           )
         }
