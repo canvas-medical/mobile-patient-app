@@ -17,7 +17,7 @@ import {
 } from '@components';
 import { usePatient } from '@services';
 import { g } from '@styles';
-import { recordsData, medicationData } from '../../dummyData';
+import { recordsData, medicationData } from '../../../dummyData';
 
 const s = StyleSheet.create({
   dataContainer: {
