@@ -3,6 +3,7 @@ export { AppointmentList } from '@components/appointment-list';
 export { Button } from '@components/button';
 export { DashTabs } from '@components/dashboard-tabs';
 export { DiagnosticCard } from '@components/diagnostic-card';
+export { Header } from '@components/header';
 export { Input } from '@components/input';
 export { LabeledToggle } from '@components/labeled-toggle';
 export { MedicationCard } from '@components/medication-card';

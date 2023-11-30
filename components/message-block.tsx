@@ -8,8 +8,8 @@ const s = StyleSheet.create({
     borderColor: 'transparent',
     borderTopColor: g.primaryBlue,
     borderLeftColor: g.primaryBlue,
-    bottom: -15,
-    left: -0
+    bottom: g.size(-15),
+    left: 0
   },
   message: {
     backgroundColor: g.neutral100,
@@ -41,10 +41,10 @@ const s = StyleSheet.create({
   rightArrow: {
     position: 'absolute',
     borderWidth: g.size(10),
-    borderColor: 'transparent',
+    borderColor: g.transparent,
     borderTopColor: g.neutral100,
     borderRightColor: g.neutral100,
-    bottom: -15,
+    bottom: g.size(-15),
     right: 0
   },
 });

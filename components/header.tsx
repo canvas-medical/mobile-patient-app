@@ -1,13 +1,12 @@
-import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
-import { Screen } from '@components';
+import { Alert, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import { g } from '@styles';
-import * as SecureStore from 'expo-secure-store';
 import { Feather, FontAwesome } from '@expo/vector-icons';
-import { router, Slot } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { router, useNavigation } from 'expo-router';
 
 const s = StyleSheet.create({
   container: {
-    paddingTop: g.size(140),
+    height: g.size(125)
   },
   drawerButton: {
     position: 'absolute',
@@ -39,9 +38,10 @@ const s = StyleSheet.create({
     alignItems: 'flex-end',
   },
 });
-export default function MessagingLayout() {
+export function Header() {
+  const navigation = useNavigation();
   return (
-    <Screen style={s.container}>
+    <View style={s.container}>
       <TouchableOpacity
         style={s.nameAndAvatarContainer}
         onPress={() => {
@@ -61,7 +61,7 @@ export default function MessagingLayout() {
                   router.replace('initial');
                 },
               },
-            ],
+            ]
           );
         }}
       >
@@ -73,11 +73,11 @@ export default function MessagingLayout() {
       </TouchableOpacity>
       <TouchableOpacity
         style={s.drawerButton}
-        onPress={() => null} // TODO: Open drawer
+        // @ts-ignore
+        onPress={() => navigation.openDrawer()}
       >
         <Feather name="menu" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
-      <Slot />
-    </Screen>
+    </View>
   );
 }

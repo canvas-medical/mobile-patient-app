@@ -59,7 +59,7 @@ async function communicationSubmit(message: string) {
         received: isoString,
         recipient: [
           {
-            reference: 'Practitioner/3b4f8231a0dd4330927b8a8e702ce36b'
+            reference: `Practitioner/${process.env.EXPO_PUBLIC_PRACTITIONER_ID}`,
           }
         ],
         sender: {
