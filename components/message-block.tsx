@@ -53,12 +53,12 @@ export function MessageBlock({ received, message }:{received: boolean, message: 
     <>
       {received ? (
         <View style={s.messageReceived}>
-          <Text style={s.messageReceivedText}>{message}</Text>
+          <Text style={s.messageReceivedText}>{message.replaceAll('<br>', '\n')}</Text>
           <View style={s.leftArrow} />
         </View>
       ) : (
         <View style={s.message}>
-          <Text style={s.messageText}>{message}</Text>
+          <Text style={s.messageText}>{message.replaceAll('<br>', '\n')}</Text>
           <View style={s.rightArrow} />
         </View>
       )}
