@@ -5,6 +5,7 @@ export { DashTabs } from '@components/dashboard-tabs';
 export { DiagnosticCard } from '@components/diagnostic-card';
 export { Input } from '@components/input';
 export { LabeledToggle } from '@components/labeled-toggle';
+export { ListView } from '@components/list-view';
 export { MedicationCard } from '@components/medication-card';
 export { MedicationList } from '@components/medication-list';
 export { ProfileCard } from '@components/profile-card';

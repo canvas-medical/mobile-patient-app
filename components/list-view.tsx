@@ -39,6 +39,8 @@ const s = StyleSheet.create({
 
 export function ListView({ items, icon, title, clickable, isFetching }:
     {items: Immunization[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  const type = items[0] instanceof Immunization;
+  console.log(type)
   return (
     <Screen>
       <Header />
@@ -55,14 +57,8 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         {!isFetching && (
           <View style={s.sectionContainer}>
             <View style={s.invoicesContainer}>
-              {clickable && items.map((item) => (
-                <ClickableCard
-                  key={item.resource.id}
-                  resource={item}
-                  uri={item.resource.content[0].attachment.url}
-                />
-              )}
               {items[0] instanceof Immunization && items.map((item) => (
+                <Text>Hello</Text>
               )}
             </View>
           </View>
