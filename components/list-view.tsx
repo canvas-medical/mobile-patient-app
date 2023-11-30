@@ -1,8 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */ // REMOVE ME
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen } from '@components';
+import { Header, Screen, ClickableCard } from '@components';
 import { g } from '@styles';
-import { ClickableCard } from '@components/clickable-card';
 import { DocumentResource } from '@interfaces';
 import React from 'react';
 
@@ -55,13 +54,16 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         {!isFetching && (
           <View style={s.sectionContainer}>
             <View style={s.invoicesContainer}>
-              {clickable && items.map((item) => (
-                <ClickableCard
-                  key={item.resource.id}
-                  resource={item}
-                  uri={item.resource.content[0].attachment.url}
-                />
-              ))}
+              {clickable && items.map((item) => {
+                if (!item.resource.content[0].attachment.url) return null;
+                return (
+                  <ClickableCard
+                    key={item.resource.id}
+                    object={item}
+                    uri={item.resource.content[0].attachment.url}
+                  />
+                );
+              })}
             </View>
           </View>
         )}

@@ -53,6 +53,7 @@ export default function PdfModal() {
     if (!isSuccess) return;
     router.replace({ pathname: 'consents', params: { accepted: true } });
   }, [isSuccess]);
+  console.log(uri);
 
   const text = noActionOnClose ? 'Close' : 'Accept and Continue';
 

@@ -36,8 +36,8 @@ const s = StyleSheet.create({
   },
 });
 
-export function ClickableCard({ resource, uri }: {
-  resource: DocumentResource, // TODO: add types as this card is used for more resources
+export function ClickableCard({ object, uri }: {
+  object: DocumentResource, // TODO: add types as this card is used for more resources
   uri: string,
 }) {
   return (
@@ -52,22 +52,20 @@ export function ClickableCard({ resource, uri }: {
       >
         <View style={s.invoiceRow}>
           <Text style={s.invoiceLabel}>
-            Text
+            {object.resource.type.coding[0].display}
           </Text>
           <Entypo name="chevron-thin-right" size={20} color={g.white} />
         </View>
         <View style={s.invoiceRow}>
           <Text style={s.invoiceDate}>
             <Text style={s.invoiceDate}>
-              {new Date().toLocaleDateString('en-US', {
-                year: '2-digit',
+              {new Date(object.resource.date).toLocaleDateString(''
+                + 'en-US', {
+                year: 'numeric',
                 month: 'short',
                 day: 'numeric'
               })}
             </Text>
-          </Text>
-          <Text style={s.invoiceData}>
-            Text
           </Text>
         </View>
       </BlurView>
