@@ -3,6 +3,7 @@ import { BlurView } from 'expo-blur';
 import { Entypo } from '@expo/vector-icons';
 import { g } from '@styles';
 import { router } from 'expo-router';
+import { DocumentResource } from '@interfaces';
 
 const s = StyleSheet.create({
   blurContainer: {
@@ -35,11 +36,10 @@ const s = StyleSheet.create({
   },
 });
 
-export function InvoiceCard({ invoice, uri }: {
-  invoice: any, // TODO: type
+export function ClickableCard({ resource, uri }: {
+  resource: DocumentResource, // TODO: add types as this card is used for more resources
   uri: string,
 }) {
-  console.log(invoice, uri);
   return (
     <TouchableOpacity
       style={s.blurContainer}

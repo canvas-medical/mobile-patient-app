@@ -1,62 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */ // REMOVE ME
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen, InvoiceCard } from '@components';
+import { ListView } from '@components';
 import { g } from '@styles';
 import { FontAwesome5 } from '@expo/vector-icons';
-
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    paddingHorizontal: g.size(16),
-    paddingBottom: g.size(120),
-    gap: g.size(24),
-  },
-  invoicesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: g.size(16),
-    justifyContent: 'space-between',
-  },
-  sectionContainer: {
-    flex: 1,
-    gap: g.size(16),
-  },
-  title: {
-    ...g.titleLarge,
-  },
-  titleContainer: {
-    marginTop: g.size(16),
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: g.size(20),
-    paddingLeft: g.size(20)
-  },
-});
+import { DocumentResource } from '@interfaces';
 
 export default function Invoices() {
   // const { data: invoices, isFetching } = useDocumentReferences('invoicefull');
   // const { data: allDocs } = useDocumentReferences();
-  const invoices = {
-    resourceType: 'Bundle',
-    type: 'searchset',
-    total: 1,
-    link:
-      [
-        {
-          relation: 'self',
-          url: '/DocumentReference?subject=Patient%2Fcfd91cd3bd9046db81199aa8ee4afd7f&status=current&type=http%3A%2F%2Floinc.org%7C11502-2&_count=10&_offset=0'
-        },
-        {
-          relation: 'first',
-          url: '/DocumentReference?subject=Patient%2Fcfd91cd3bd9046db81199aa8ee4afd7f&status=current&type=http%3A%2F%2Floinc.org%7C11502-2&_count=10&_offset=0'
-        },
-        {
-          relation: 'last',
-          url: '/DocumentReference?subject=Patient%2Fcfd91cd3bd9046db81199aa8ee4afd7f&status=current&type=http%3A%2F%2Floinc.org%7C11502-2&_count=10&_offset=0'
-        }
-      ],
+  const invoices: {entry: DocumentResource[] } = {
     entry:
       [
         {
@@ -142,35 +93,10 @@ export default function Invoices() {
 
   console.log('Invoices: ', invoices);
   const isFetching = false;
-  const invoiceArray = invoices?.entry || [];
+  const icon = <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />;
 
   return (
-    <Screen>
-      <Header />
-      <ScrollView
-        style={s.container}
-        contentContainerStyle={s.contentContainer}
-      >
-        <View style={s.titleContainer}>
-          <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />
-          <Text style={s.title}>
-            Invoices
-          </Text>
-        </View>
-        {!isFetching && (
-          <View style={s.sectionContainer}>
-            <View style={s.invoicesContainer}>
-              {invoiceArray.map((invoice) => (
-                <InvoiceCard
-                  key={invoice.resource.id}
-                  invoice={invoice.resource}
-                  uri={invoice.resource.content[0].attachment.url}
-                />
-              ))}
-            </View>
-          </View>
-        )}
-      </ScrollView>
-    </Screen>
+
+    <ListView clickable icon={icon} items={invoices.entry} title="Invoices" isFetching={isFetching} />
   );
 }
