@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */ // REMOVE ME
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Header, Screen, ClickableCard } from '@components';
 import { g } from '@styles';

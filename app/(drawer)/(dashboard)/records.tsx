@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */ // REMOVE ME
 import { useCommunication, useDocumentReferences, useObservations, usePaymentNotices, useRecords } from '@services';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { DiagnosticCard, VitalCard } from '@components';

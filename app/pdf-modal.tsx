@@ -12,13 +12,13 @@ import { Feather } from '@expo/vector-icons';
 const s = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
-    bottom: 30,
-    width: 300,
+    bottom: g.size(30),
+    width: g.size(300),
   },
   closeButton: {
     position: 'absolute',
-    top: 40,
-    right: 20
+    top: g.size(40),
+    right: g.size(20)
   },
   contentContainer: {
     flex: 1,
@@ -33,7 +33,7 @@ const s = StyleSheet.create({
   pdf: {
     height: '100%',
     width: '100%',
-    paddingBottom: 100,
+    paddingBottom: g.size(100),
     backgroundColor: g.white,
   }
 });

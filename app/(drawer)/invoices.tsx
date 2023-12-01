@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */ // REMOVE ME
 import { ListView } from '@components';
 import { g } from '@styles';
 import { FontAwesome5 } from '@expo/vector-icons';
