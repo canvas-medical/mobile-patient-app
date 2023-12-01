@@ -1,3 +1,4 @@
+export type { Allergy } from '@interfaces/allergy';
 export type { ApiError } from '@interfaces/api_error';
 export type { Appointment } from '@interfaces/appointment';
 export type { DocumentResource } from '@interfaces/document-resource';

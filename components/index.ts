@@ -1,3 +1,4 @@
+export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { AppointmentList } from '@components/appointment-list';
 export { Button } from '@components/button';

@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen, ClickableCard } from '@components';
+import { Header, Screen, ClickableCard, AllergyCard } from '@components';
 import { g } from '@styles';
-import { DocumentResource, Immunization } from '@interfaces';
+import { Allergy, DocumentResource, Immunization } from '@interfaces';
 import React from 'react';
 import { ImmunizationCard } from '@components/immunization-card';
 
@@ -39,8 +39,12 @@ export function isImmunization(arg: any): arg is Immunization {
   return arg?.resource?.vaccineCode !== undefined;
 }
 
+export function isAllergy(arg: any): arg is Immunization {
+  return arg?.resource?.reaction !== undefined;
+}
+
 export function ListView({ items, icon, title, clickable, isFetching }:
-  {items: DocumentResource[] | Immunization[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  {items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
   return (
     <Screen>
       <Header />
@@ -59,6 +63,9 @@ export function ListView({ items, icon, title, clickable, isFetching }:
             <View style={s.invoicesContainer}>
               {isImmunization(items[0]) && items.map((item) => (
                 <ImmunizationCard immunization={item} />
+              ))}
+              {isAllergy(items[0]) && items.map((item) => (
+                <AllergyCard allergy={item} />
               ))}
               {clickable && items.map((item) => {
                 if (!item.resource.content[0].attachment.url) return null;

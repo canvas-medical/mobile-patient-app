@@ -2,6 +2,7 @@ export { getToken } from '@services/access-token';
 export { useCreatePatient, usePatient } from '@services/patient';
 export { useDocumentReferences } from '@services/document-reference';
 export { useObservations } from '@services/observations';
+export { useAllergies } from '@services/allergies';
 export { useImmunizations } from '@services/immunization';
 export { useRecords } from '@services/records';
 export { ConsentCodes, ConsentPdfs, useConsentCreate } from '@services/consent';
