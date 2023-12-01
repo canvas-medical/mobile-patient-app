@@ -6,7 +6,6 @@ export { Header } from '@components/header';
 export { DiagnosticCard } from '@components/diagnostic-card';
 export { Input } from '@components/input';
 export { ClickableCard } from '@components/clickable-card';
-export { ListView } from '@components/list-view';
 export { LabeledToggle } from '@components/labeled-toggle';
 export { ListView } from '@components/list-view';
 export { MedicationCard } from '@components/medication-card';

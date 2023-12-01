@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   Entypo,
   Feather,
@@ -8,7 +8,7 @@ import {
 } from '@expo/vector-icons';
 import { g } from '@styles';
 import { Drawer } from 'expo-router/drawer';
-import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useNavigation } from 'expo-router';
 import { NativeStackNavigationProp } from '@node_modules/react-native-screens/lib/typescript/native-stack';
 
@@ -45,7 +45,7 @@ export default function Layout() {
     Appointments: '(dashboard)',
     Records: '(dashboard)',
     Conditions: '(dashboard)',
-    Immunizations: '(dashboard)',
+    Immunizations: 'immunizations',
     Allergies: '(dashboard)',
     Goals: '(dashboard)',
     Documents: '(dashboard)',

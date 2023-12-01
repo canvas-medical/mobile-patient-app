@@ -14,11 +14,13 @@ interface Patient {
 }
 
 export interface Immunization {
-  resourceType: string;
-  id: string;
-  status: string;
-  vaccineCode: VaccineCode;
-  patient: Patient;
-  occurrenceDateTime: string;
-  primarySource: boolean;
+  resource: {
+    resourceType: string;
+    id: string;
+    status: string;
+    vaccineCode: VaccineCode;
+    patient: Patient;
+    occurrenceDateTime: string;
+    primarySource: boolean;
+  }
 }
