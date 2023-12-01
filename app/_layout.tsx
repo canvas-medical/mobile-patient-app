@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
+import PdfModal from './pdf-modal';
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ export default function RootLayout() {
         <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+        <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
       </Stack>
     </QueryClientProvider>
   );
