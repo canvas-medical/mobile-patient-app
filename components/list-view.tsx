@@ -14,6 +14,13 @@ const s = StyleSheet.create({
     paddingBottom: g.size(120),
     gap: g.size(24),
   },
+  defaultText: {
+    ...g.bodyLarge,
+    color: g.white,
+    opacity: 0.8,
+    paddingLeft: g.size(30),
+    paddingTop: g.size(10),
+  },
   invoicesContainer: {
     rowGap: g.size(16),
     justifyContent: 'space-between',
@@ -45,6 +52,38 @@ export function isAllergy(arg: any): arg is Immunization {
 
 export function ListView({ items, icon, title, clickable, isFetching }:
   {items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  const listItems = () => {
+    if (isImmunization(items[0])) {
+      return items.map((item) => (
+        <ImmunizationCard immunization={item} />
+      ));
+    } if (isAllergy(items[0])) {
+      return items.map((item) => (
+        <AllergyCard allergy={item} />
+      ));
+    } if (clickable) {
+      return items.map((item) => {
+        if (!item.resource.content[0].attachment.url) return null;
+        return (
+          <ClickableCard
+            key={item.resource.id}
+            object={item}
+            uri={item.resource.content[0].attachment.url}
+          />
+        );
+      });
+    }
+    return (
+      <Text style={s.defaultText}>
+        No
+        {' '}
+        {title}
+        {' '}
+        to display
+      </Text>
+    );
+  };
+
   return (
     <Screen>
       <Header />
@@ -61,22 +100,7 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         {!isFetching && (
           <View style={s.sectionContainer}>
             <View style={s.invoicesContainer}>
-              {isImmunization(items[0]) && items.map((item) => (
-                <ImmunizationCard immunization={item} />
-              ))}
-              {isAllergy(items[0]) && items.map((item) => (
-                <AllergyCard allergy={item} />
-              ))}
-              {clickable && items.map((item) => {
-                if (!item.resource.content[0].attachment.url) return null;
-                return (
-                  <ClickableCard
-                    key={item.resource.id}
-                    object={item}
-                    uri={item.resource.content[0].attachment.url}
-                  />
-                );
-              })}
+              {listItems()}
             </View>
           </View>
         )}
