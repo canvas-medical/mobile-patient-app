@@ -24,10 +24,8 @@ const s = StyleSheet.create({
     right: g.size(0),
   },
   container: {
-    paddingHorizontal: g.size(32),
     height: g.height - g.size(140), // subtract header height
     alignItems: 'center',
-    gap: g.size(16),
   },
   input: {
     ...g.bodyMedium,
@@ -52,9 +50,12 @@ const s = StyleSheet.create({
   },
   scroll: {
     width: '100%',
+    paddingHorizontal: g.size(20),
+    marginBottom: g.size(80),
+  },
+  scrollContent: {
     gap: g.size(16),
     paddingBottom: g.size(32),
-    marginBottom: g.size(80),
   },
 });
 
@@ -85,7 +86,7 @@ export default function Messaging() {
         <ScrollView
           ref={scrollViewRef}
           onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-          contentContainerStyle={s.scroll}
+          contentContainerStyle={s.scrollContent}
           style={s.scroll}
         >
           {messages
