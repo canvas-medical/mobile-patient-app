@@ -12,6 +12,17 @@ import {
 import { Message } from '@interfaces/message';
 
 const s = StyleSheet.create({
+  button: {
+    position: 'absolute',
+    bottom: g.size(-1),
+    right: g.size(0),
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+    position: 'absolute',
+    bottom: g.size(-1),
+    right: g.size(0),
+  },
   container: {
     paddingHorizontal: g.size(32),
     height: g.height - g.size(140), // subtract header height
@@ -23,7 +34,8 @@ const s = StyleSheet.create({
     color: g.black,
     backgroundColor: g.white,
     width: g.width * 0.8,
-    borderRadius: g.size(25),
+    alignSelf: 'center',
+    borderRadius: g.size(20),
     paddingTop: g.size(8),
     paddingBottom: g.size(4),
     paddingHorizontal: g.size(16),
@@ -33,10 +45,10 @@ const s = StyleSheet.create({
     width: g.width * 0.9,
     bottom: g.size(36),
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: g.white,
-    borderRadius: g.size(25),
+    borderRadius: g.size(20),
+    minHeight: g.size(36),
   },
   scroll: {
     width: '100%',
@@ -48,21 +60,21 @@ const s = StyleSheet.create({
 
 export default function Messaging() {
   const [message, setMessage] = useState<string>('');
-  const [size, setSize] = useState<number>(32);
+  const [size, setSize] = useState<number>(g.size(32));
   const { data: messages, refetch } = useCommunication();
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
   const scrollViewRef = useRef();
   const buttonDisabled = message.length === 0;
   const updateSize = (num: number) => {
-    if (num > 32 && num < 500) { setSize(num); }
+    if (num > g.size(32) && num < g.size(500)) { setSize(num); }
   };
 
   useEffect(() => {
     if (!isSuccess) return;
     setMessage('');
     refetch();
-    setSize(32);
+    setSize(g.size(32));
     Keyboard.dismiss();
   }, [isSuccess]);
 
@@ -103,14 +115,14 @@ export default function Messaging() {
             onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
           />
           {isPending ? (
-            <ActivityIndicator size={g.size(39)} />
+            <ActivityIndicator size={g.size(39)} style={s.button} />
           )
             : (
               <TouchableOpacity
                 onPress={() => onMessageSubmit(message)}
                 disabled={buttonDisabled}
               >
-                <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={{ opacity: buttonDisabled && 0.5 }} />
+                <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={buttonDisabled ? s.buttonDisabled : s.button} />
               </TouchableOpacity>
             )
         }

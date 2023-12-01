@@ -5,7 +5,7 @@ const s = StyleSheet.create({
   leftArrow: {
     position: 'absolute',
     borderWidth: g.size(10),
-    borderColor: 'transparent',
+    borderColor: g.transparent,
     borderTopColor: g.primaryBlue,
     borderLeftColor: g.primaryBlue,
     bottom: g.size(-15),
