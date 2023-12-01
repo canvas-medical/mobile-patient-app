@@ -1,9 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */ // REMOVE ME
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen } from '@components';
+import { Header, Screen, ClickableCard } from '@components';
 import { g } from '@styles';
 import { ClickableCard } from '@components/clickable-card';
-import { Immunization } from '@interfaces';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { DocumentResource, Immunization } from '@interfaces';
 import React from 'react';
 
 const s = StyleSheet.create({
@@ -38,9 +39,9 @@ const s = StyleSheet.create({
 });
 
 export function ListView({ items, icon, title, clickable, isFetching }:
-    {items: Immunization[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
-  const type = items[0] instanceof Immunization;
-  console.log(type)
+  {items: DocumentResource[] | Immunization[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  const { type } = items[0];
+  console.log(type);
   return (
     <Screen>
       <Header />
@@ -57,9 +58,19 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         {!isFetching && (
           <View style={s.sectionContainer}>
             <View style={s.invoicesContainer}>
-              {items[0] instanceof Immunization && items.map((item) => (
-                <Text>Hello</Text>
-              )}
+              {/* {items[0] instanceof Immunization && items.map((item) => ( */}
+              {/*  <Text>Hello</Text> */}
+              {/* )} */}
+              {clickable && items.map((item) => {
+                if (!item.resource.content[0].attachment.url) return null;
+                return (
+                  <ClickableCard
+                    key={item.resource.id}
+                    object={item}
+                    uri={item.resource.content[0].attachment.url}
+                  />
+                );
+              })}
             </View>
           </View>
         )}
