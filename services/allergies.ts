@@ -12,7 +12,6 @@ async function getAllergies() {
       accept: 'application/json'
     }
   });
-  console.log(res);
   return res.json();
 }
 

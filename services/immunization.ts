@@ -12,7 +12,6 @@ async function getImmunizations() {
       accept: 'application/json'
     }
   });
-  console.log(res);
   return res.json();
 }
 
