@@ -23,7 +23,7 @@ const appointments = [
     datetimeStart: '2023-11-20T10:00:00',
     datetimeEnd: '2023-11-20T11:00:00',
     practitioner: 'Dr. Smith',
-    location: '1545 Eaton St',
+    location: '1644 Platte St',
     appointmentType: {
       coding: {
         display: 'Not Telemedicine'
