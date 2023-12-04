@@ -21,7 +21,9 @@ const global = {
   neutral300: '#989898',
   neutral500: '#6C6C6C',
   transparent: '#00000000',
-
+  severityRed: 'rgb(178, 34, 34)', // or in hexadecimal '#B22222'
+  severityYellow: 'rgb(255, 255, 0)', // or '#FFFF00'
+  severityGreen: 'rgb(0, 255, 0)', // or '#00FF00'
   shadow: {
     shadowOffset: {
       width: 0,
