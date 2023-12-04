@@ -71,8 +71,6 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
     contained: { address },
   } = appt;
   const display = appointmentType?.coding?.display;
-  console.log('display', display);
-  console.log('appt', appt);
 
   const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
   const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth';

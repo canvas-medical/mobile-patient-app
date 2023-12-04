@@ -46,7 +46,7 @@ interface Participant {
   status: string;
 }
 
-interface Appointment {
+export interface Appointment {
   resourceType: string;
   id: string;
   contained: Endpoint[];
@@ -58,21 +58,4 @@ interface Appointment {
   start: string;
   end: string;
   participant: Participant[];
-}
-
-interface Entry {
-  resource: Appointment;
-}
-
-interface Link {
-  relation: string;
-  url: string;
-}
-
-export interface AppointmentBundle {
-  resourceType: string;
-  type: string;
-  total: number;
-  link: Link[];
-  entry: Entry[];
 }
