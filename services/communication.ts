@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
-import { router } from 'expo-router';
 import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
 import { getToken } from './access-token';
@@ -8,14 +7,29 @@ import { getToken } from './access-token';
 async function getCommunication() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?recipient=Patient/${patientId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      accept: 'application/json'
-    }
+  const createFetchRequest = async (params: string) => {
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication${params}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: 'application/json'
+      }
+    });
+    return response.json();
+  };
+
+  const fromRes = await createFetchRequest(`?sender=Patient/${patientId}`);
+  const toRes = await createFetchRequest(`?recipient=Patient/${patientId}`);
+
+  const fromArray = fromRes?.entry || [];
+  const toArray = toRes?.entry || [];
+  const allMessages = [...fromArray, ...toArray];
+
+  return allMessages.sort((a, b) => {
+    const aDate = new Date(a.resource.sent || a.resource.received);
+    const bDate = new Date(b.resource.sent || b.resource.received);
+    return aDate.getTime() - bDate.getTime();
   });
-  return res.json();
 }
 
 export function useCommunication() {
@@ -45,7 +59,7 @@ async function communicationSubmit(message: string) {
         received: isoString,
         recipient: [
           {
-            reference: 'Practitioner/5eede137ecfe4124b8b773040e33be14'
+            reference: `Practitioner/${process.env.EXPO_PUBLIC_PRACTITIONER_ID}`,
           }
         ],
         sender: {
@@ -66,7 +80,6 @@ async function communicationSubmit(message: string) {
 export function useCommunicationSubmit() {
   return useMutation({
     mutationFn: (message: string) => communicationSubmit(message),
-    onSuccess: () => router.push('records'),
     onError: (e) => {
       Alert.alert(
         'Error',

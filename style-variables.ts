@@ -20,6 +20,7 @@ const global = {
   neutral200: '#C3C3C3',
   neutral300: '#989898',
   neutral500: '#6C6C6C',
+  transparent: '#00000000',
 
   shadow: {
     shadowOffset: {

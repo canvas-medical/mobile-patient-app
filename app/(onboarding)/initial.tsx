@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
-import { Button, Input, Screen } from '@components';
+import { Button, Screen } from '@components';
 import { g } from '@styles';
 import { Picker } from '@react-native-picker/picker';
 import { Overlay } from '@rneui/themed';

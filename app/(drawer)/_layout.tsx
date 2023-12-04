@@ -125,7 +125,7 @@ export default function Layout() {
       case 'invoices':
         return (
           <View style={s.menuItem}>
-            <FontAwesome5 name="file-invoice-dollar" size={size} color="black" />
+            <FontAwesome5 name="file-invoice-dollar" size={size} style={{ paddingHorizontal: g.size(3) }} color="black" />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );

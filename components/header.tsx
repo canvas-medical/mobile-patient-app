@@ -3,6 +3,7 @@ import { g } from '@styles';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import { router, useNavigation } from 'expo-router';
+import { usePatient } from '@services';
 
 const s = StyleSheet.create({
   container: {
@@ -40,6 +41,8 @@ const s = StyleSheet.create({
 });
 export function Header() {
   const navigation = useNavigation();
+  const { data: { name } } = usePatient();
+  const patientName = `${name[0].given[0]} ${name[0].family}`;
   return (
     <View style={s.container}>
       <TouchableOpacity
@@ -67,7 +70,7 @@ export function Header() {
       >
         <View style={s.nameContainer}>
           <Text style={s.greeting}>Hello</Text>
-          <Text style={s.name}>John Doe</Text>
+          <Text style={s.name}>{patientName}</Text>
         </View>
         <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
