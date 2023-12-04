@@ -28,6 +28,9 @@ const appointments = [
       coding: {
         display: 'Not Telemedicine'
       }
+    },
+    contained: {
+      address: '1644 Platte St'
     }
   },
   {
@@ -40,6 +43,9 @@ const appointments = [
       coding: {
         display: 'Telemedicine'
       }
+    },
+    contained: {
+      address: 'https://zoom.us/j/91537108094?pwd=RlNwUmd2MGNjMmdmZEQ2VTluWFJaUT09'
     }
   },
   {
@@ -52,6 +58,9 @@ const appointments = [
       coding: {
         display: 'Telemedicine'
       }
+    },
+    contained: {
+      address: 'https://meet.google.com/dic-wcwq-csh?ijlm=1701723603749&hs=185'
     }
   },
   {
@@ -64,6 +73,9 @@ const appointments = [
       coding: {
         display: 'Telemedicine'
       }
+    },
+    contained: {
+      address: 'broken link'
     }
   },
   {
@@ -76,6 +88,9 @@ const appointments = [
       coding: {
         display: 'Telemedicine'
       }
+    },
+    contained: {
+      address: 'broken link'
     }
   }
 ];

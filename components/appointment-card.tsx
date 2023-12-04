@@ -68,16 +68,18 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
     practitioner,
     location,
     appointmentType,
+    contained: { address },
   } = appt;
   const display = appointmentType?.coding?.display;
   console.log('display', display);
   console.log('appt', appt);
 
   const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
+  const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth';
 
-  const url = Platform.select({
-    ios: `https://maps.apple.com?address=${location}`,
-    android: `https://www.google.com/maps/search/?api=1&query=${location}`,
+  const url = needsMapLink && Platform.select({
+    ios: `https://maps.apple.com?address=${address}`,
+    android: `https://www.google.com/maps/search/?api=1&query=${address}`,
   });
 
   return (
@@ -119,28 +121,16 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               >
                 {practitioner}
               </Text>
-              {display === 'Telemedicine' || display === 'Telehealth'
-                ? (
-                  <Text
-                    style={s.practitionerLocation}
-                    numberOfLines={1}
-                  >
-                    {location}
-                  </Text>
-                )
-                : (
-                  <TouchableOpacity
-                    onPress={() => Linking.openURL(url)}
-                  >
-                    <Text
-                      style={s.practitionerLocation}
-                      numberOfLines={1}
-                    >
-                      {location}
-                    </Text>
-                  </TouchableOpacity>
-                )
-              }
+              <TouchableOpacity
+                onPress={() => Linking.openURL(url || address)}
+              >
+                <Text
+                  style={s.practitionerLocation}
+                  numberOfLines={1}
+                >
+                  {location}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
