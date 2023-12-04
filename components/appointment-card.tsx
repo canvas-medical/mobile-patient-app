@@ -1,4 +1,6 @@
-import { StyleSheet, View, Text } from 'react-native';
+import {
+  StyleSheet, View, Text, TouchableOpacity, Platform, Linking
+} from 'react-native';
 import { Appointment } from '@interfaces';
 import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome } from '@expo/vector-icons';
@@ -65,9 +67,18 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
     datetimeEnd,
     practitioner,
     location,
+    appointmentType,
   } = appt;
+  const display = appointmentType?.coding?.display;
+  console.log('display', display);
+  console.log('appt', appt);
 
   const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
+
+  const url = Platform.select({
+    ios: `https://maps.apple.com?address=${location}`,
+    android: `https://www.google.com/maps/search/?api=1&query=${location}`,
+  });
 
   return (
     <View
@@ -108,12 +119,28 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               >
                 {practitioner}
               </Text>
-              <Text
-                style={s.practitionerLocation}
-                numberOfLines={1}
-              >
-                {location}
-              </Text>
+              {display === 'Telemedicine' || display === 'Telehealth'
+                ? (
+                  <Text
+                    style={s.practitionerLocation}
+                    numberOfLines={1}
+                  >
+                    {location}
+                  </Text>
+                )
+                : (
+                  <TouchableOpacity
+                    onPress={() => Linking.openURL(url)}
+                  >
+                    <Text
+                      style={s.practitionerLocation}
+                      numberOfLines={1}
+                    >
+                      {location}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              }
             </View>
           </View>
         </View>
