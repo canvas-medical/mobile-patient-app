@@ -1,7 +1,6 @@
 import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
 import { Slot, useRouter, useNavigation } from 'expo-router';
 import { Feather, FontAwesome } from '@expo/vector-icons';
-import * as SecureStore from 'expo-secure-store';
 import { Screen, DashTabs } from '@components';
 import { g } from '@styles';
 import { usePatient } from '@services';
@@ -57,25 +56,8 @@ export default function Layout() {
       </TouchableOpacity>
       <TouchableOpacity
         style={s.messageButton}
-        onPress={() => { // TODO: Open message modal
-          Alert.alert(
-            'Are you sure?',
-            'This will delete all of your data and log you out.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {
-                text: 'Log Out',
-                style: 'destructive',
-                onPress: () => {
-                  SecureStore.deleteItemAsync('patient_id');
-                  router.replace('initial');
-                },
-              },
-            ],
-          );
+        onPress={() => {
+          router.push('(drawer)/messaging');
         }}
       >
         <Feather name="message-circle" size={g.size(48)} color={g.white} />
