@@ -1,8 +1,9 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen, ClickableCard } from '@components';
+import { Header, Screen, ClickableCard, AllergyCard } from '@components';
 import { g } from '@styles';
-import { DocumentResource } from '@interfaces';
+import { Allergy, DocumentResource, Immunization } from '@interfaces';
 import React from 'react';
+import { ImmunizationCard } from '@components/immunization-card';
 
 const s = StyleSheet.create({
   container: {
@@ -13,9 +14,14 @@ const s = StyleSheet.create({
     paddingBottom: g.size(120),
     gap: g.size(24),
   },
+  defaultText: {
+    ...g.bodyLarge,
+    color: g.white,
+    opacity: 0.8,
+    paddingLeft: g.size(30),
+    paddingTop: g.size(10),
+  },
   invoicesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     rowGap: g.size(16),
     justifyContent: 'space-between',
   },
@@ -35,8 +41,49 @@ const s = StyleSheet.create({
   },
 });
 
+// Type-guard
+export function isImmunization(arg: any): arg is Immunization {
+  return arg?.resource?.vaccineCode !== undefined;
+}
+
+export function isAllergy(arg: any): arg is Immunization {
+  return arg?.resource?.reaction !== undefined;
+}
+
 export function ListView({ items, icon, title, clickable, isFetching }:
-    {items: DocumentResource[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  {items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  const listItems = () => {
+    if (isImmunization(items[0])) {
+      return items.map((item) => (
+        <ImmunizationCard immunization={item} />
+      ));
+    } if (isAllergy(items[0])) {
+      return items.map((item) => (
+        <AllergyCard allergy={item} />
+      ));
+    } if (clickable) {
+      return items.map((item) => {
+        if (!item.resource.content[0].attachment.url) return null;
+        return (
+          <ClickableCard
+            key={item.resource.id}
+            object={item}
+            uri={item.resource.content[0].attachment.url}
+          />
+        );
+      });
+    }
+    return (
+      <Text style={s.defaultText}>
+        No
+        {' '}
+        {title}
+        {' '}
+        to display
+      </Text>
+    );
+  };
+
   return (
     <Screen>
       <Header />
@@ -53,16 +100,7 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         {!isFetching && (
           <View style={s.sectionContainer}>
             <View style={s.invoicesContainer}>
-              {clickable && items.map((item) => {
-                if (!item.resource.content[0].attachment.url) return null;
-                return (
-                  <ClickableCard
-                    key={item.resource.id}
-                    object={item}
-                    uri={item.resource.content[0].attachment.url}
-                  />
-                );
-              })}
+              {listItems()}
             </View>
           </View>
         )}

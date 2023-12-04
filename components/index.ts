@@ -1,3 +1,4 @@
+export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { AppointmentList } from '@components/appointment-list';
 export { Button } from '@components/button';
@@ -7,8 +8,8 @@ export { DiagnosticCard } from '@components/diagnostic-card';
 export { Header } from '@components/header';
 export { Input } from '@components/input';
 export { ClickableCard } from '@components/clickable-card';
-export { ListView } from '@components/list-view';
 export { LabeledToggle } from '@components/labeled-toggle';
+export { ListView } from '@components/list-view';
 export { MedicationCard } from '@components/medication-card';
 export { MessageBlock } from '@components/message-block';
 export { MedicationList } from '@components/medication-list';

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import {
   Entypo,
   Feather,
@@ -8,7 +8,7 @@ import {
 } from '@expo/vector-icons';
 import { g } from '@styles';
 import { Drawer } from 'expo-router/drawer';
-import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useNavigation } from 'expo-router';
 import { NativeStackNavigationProp } from '@node_modules/react-native-screens/lib/typescript/native-stack';
 
@@ -45,8 +45,8 @@ export default function Layout() {
     Appointments: '(dashboard)',
     Records: '(dashboard)',
     Conditions: '(dashboard)',
-    Immunizations: '(dashboard)',
-    Allergies: '(dashboard)',
+    Immunizations: 'immunizations',
+    Allergies: 'allergies',
     Goals: '(dashboard)',
     Documents: '(dashboard)',
     Invoices: 'invoices',
@@ -59,80 +59,80 @@ export default function Layout() {
       case 'dashboard':
         return (
           <View style={s.menuItem}>
-            <MaterialCommunityIcons name="view-dashboard-outline" size={size} color="black" />
+            <MaterialCommunityIcons name="view-dashboard-outline" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'medication':
         return (
           <View style={s.menuItem}>
-            <MaterialCommunityIcons name="arrow-right-bottom" size={size} color="black" />
-            <MaterialCommunityIcons name="calendar-clock-outline" size={size} color="black" />
+            <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
+            <MaterialCommunityIcons name="calendar-clock-outline" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'appointments':
         return (
           <View style={s.menuItem}>
-            <MaterialCommunityIcons name="arrow-right-bottom" size={size} color="black" />
-            <MaterialCommunityIcons name="pill" size={size} color="black" />
+            <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
+            <MaterialCommunityIcons name="pill" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'records':
         return (
           <View style={s.menuItem}>
-            <MaterialCommunityIcons name="arrow-right-bottom" size={size} color="black" />
-            <Entypo name="box" size={size} color="black" />
+            <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
+            <Entypo name="box" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'conditions':
         return (
           <View style={s.menuItem}>
-            <FontAwesome5 name="heartbeat" size={size} color="black" />
+            <FontAwesome5 name="heartbeat" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'immunizations':
         return (
           <View style={s.menuItem}>
-            <Fontisto name="injection-syringe" size={size} color="black" />
+            <Fontisto name="injection-syringe" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'allergies':
         return (
           <View style={s.menuItem}>
-            <MaterialCommunityIcons name="peanut-off-outline" size={size} color="black" />
+            <MaterialCommunityIcons name="peanut-off-outline" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'goals':
         return (
           <View style={s.menuItem}>
-            <Feather name="target" size={size} color="black" />
+            <Feather name="target" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'documents':
         return (
           <View style={s.menuItem}>
-            <MaterialCommunityIcons name="file-check-outline" size={size} color="black" />
+            <MaterialCommunityIcons name="file-check-outline" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'invoices':
         return (
           <View style={s.menuItem}>
-            <FontAwesome5 name="file-invoice-dollar" size={size} style={{ paddingHorizontal: g.size(3) }} color="black" />
+            <FontAwesome5 name="file-invoice-dollar" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
       case 'bill pay':
         return (
           <View style={s.menuItem}>
-            <Feather name="credit-card" size={size} color="black" />
+            <Feather name="credit-card" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
