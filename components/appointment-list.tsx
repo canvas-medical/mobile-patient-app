@@ -1,6 +1,9 @@
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import { g } from '@styles';
 import { Appointment } from '@interfaces';
+import { useEffect } from 'react';
+import { sendPushNotification } from '@services/push_notifications';
+import { formatTime } from '@utils';
 import { AppointmentCard } from './appointment-card';
 
 const s = StyleSheet.create({
@@ -115,6 +118,16 @@ const appointments: Appointment[] = [
 export function AppointmentList() {
   const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.start) > new Date());
   const pastAppointments = appointments.filter((appointment) => new Date(appointment.start) <= new Date());
+
+  // TODO: improve placement of this loop once we are requesting data from the API
+  useEffect(() => {
+    const scheduleNotifications = async () => {
+      upcomingAppointments.map((
+        { id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }
+      ) => sendPushNotification(start, formatTime(start, false), reasonDisplay, id));
+    };
+    scheduleNotifications();
+  }, [upcomingAppointments]);
   return (
     <ScrollView contentContainerStyle={s.contentContainer}>
       {upcomingAppointments.length > 0 && (

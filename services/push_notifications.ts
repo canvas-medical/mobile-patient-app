@@ -4,30 +4,28 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
-export async function sendPushNotification() {
-  const expoPushToken = await SecureStore.getItemAsync('push_token');
-  console.log('expoPushToken', expoPushToken);
-  const message = {
-    to: expoPushToken,
-    sound: 'default',
-    title: 'Original Title',
-    body: 'And here is the body!',
-    data: { someData: 'goes here' },
-  };
+export async function sendPushNotification(start: string, formattedDate: string, appointmentDescription: string, appointmentId: string) {
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  console.log('SCHEDULED:', scheduled);
+  const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentId);
+  console.log('ALREADY SCHEDULED:', alreadyScheduled);
+  if (alreadyScheduled) { return; }
 
-  console.log('message', message);
-  const response = await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
+  const time = new Date(start);
+  time.setMinutes(time.getMinutes() - 30);
+  // TODO: replace trigger with time once testing is complete
+
+  const trigger = new Date(Date.now());
+  trigger.setSeconds(trigger.getSeconds() + 60);
+
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: appointmentDescription,
+      body: `${appointmentDescription} starts in 30 minutes at ${formattedDate}`,
+      data: { data: appointmentId },
     },
-    body: JSON.stringify(message),
+    trigger,
   });
-  console.log('response', response);
-  const json = await response.json();
-  console.log('json', json);
 }
 export async function registerForPushNotificationsAsync(): Promise<any> {
   let token: Notifications.ExpoPushToken;
@@ -47,6 +45,7 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
+      return;
     }
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,

@@ -7,6 +7,7 @@ import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icon
 import { formatTime } from '@utils';
 import { g } from '@styles';
 import { sendPushNotification } from '@services/push_notifications';
+import { useEffect } from 'react';
 
 const s = StyleSheet.create({
   card: {
@@ -115,12 +116,6 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
             </Text>
           </View>
           <View style={s.dataDivider} />
-          <TouchableOpacity
-            onPress={sendPushNotification}
-            style={s.pressable}
-          >
-            <Text>Send notification</Text>
-          </TouchableOpacity>
           <View style={s.cardRow}>
             <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
             <View style={s.practitionerData}>
