@@ -37,17 +37,17 @@ const s = StyleSheet.create({
   },
 });
 
-export function VitalCard({ vital, vitalsOdd, i }: {
+export function VitalCard({ vital, vitalsOdd, index }: {
   vital: any, // TODO: type
   vitalsOdd: boolean,
-  i: number,
+  index: number,
 }) {
   const { date, type, value } = vital;
   return (
     <View
       style={[
         s.blurContainer,
-        i === 0 && vitalsOdd && s.firstBlurContainer
+        index === 0 && vitalsOdd && s.firstBlurContainer
       ]}
     >
       <BlurView

@@ -17,9 +17,20 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     gap: g.size(12),
   },
-  dosage: {
+  date: {
     ...g.bodySmall,
     color: g.white,
+  },
+  dosage: {
+    ...g.bodyMedium,
+    color: g.white,
+    flex: 1,
+  },
+  dosageAndDateContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    gap: g.size(12),
   },
   medication: {
     ...g.bodyLarge,
@@ -28,22 +39,21 @@ const s = StyleSheet.create({
   medicationInfoContainer: {
     flex: 1,
     justifyContent: 'space-between',
-    overflow: 'hidden',
+    gap: g.size(8),
   },
 });
 
 export function MedicationCard({ med }: { med: Medication }) {
   const {
-    id,
-    medication,
+    medicationCodeableConcept: {
+      coding: [{ display: medication }],
+    },
     dosage,
+    dateAsserted,
   } = med;
 
   return (
-    <View
-      key={id}
-      style={s.card}
-    >
+    <View style={s.card}>
       <BlurView
         intensity={40}
         tint="light"
@@ -52,17 +62,21 @@ export function MedicationCard({ med }: { med: Medication }) {
         <View style={s.cardContent}>
           <MaterialCommunityIcons name="pill" size={g.size(48)} color={g.white} />
           <View style={s.medicationInfoContainer}>
-            <Text
-              style={s.medication}
-              numberOfLines={2}
-            >
-              {medication}
+            <Text style={s.medication}>
+              {medication.charAt(0).toUpperCase() + medication.slice(1)}
             </Text>
-            <Text style={s.dosage}>
-              Last filled:
-              &nbsp;
-              {dosage}
-            </Text>
+            <View style={s.dosageAndDateContainer}>
+              <Text style={s.dosage}>
+                {dosage[0].text}
+              </Text>
+              <Text style={s.date}>
+                {new Date(dateAsserted).toLocaleDateString('en-US', {
+                  year: '2-digit',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </Text>
+            </View>
           </View>
         </View>
       </BlurView>

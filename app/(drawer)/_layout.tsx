@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { StyleSheet, Text, View } from 'react-native';
 import {
   Entypo,
@@ -43,7 +44,7 @@ export default function Layout() {
     Dashboard: '(dashboard)',
     Medication: '(dashboard)',
     Appointments: '(dashboard)',
-    Records: '(dashboard)',
+    Reports: '(dashboard)',
     Conditions: '(dashboard)',
     Immunizations: 'immunizations',
     Allergies: 'allergies',
@@ -54,6 +55,7 @@ export default function Layout() {
   };
 
   // TODO: leaving unused focused param here until we can figure out how to get it to work
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getIconByText = (text: string, color: string, size: number, focused: any) => {
     switch (text.toLowerCase()) {
       case 'dashboard':
@@ -79,7 +81,7 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-      case 'records':
+      case 'reports':
         return (
           <View style={s.menuItem}>
             <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
@@ -147,6 +149,7 @@ export default function Layout() {
         <Text style={s.header}>Brewer Digital</Text>
         {Object.keys(routes).map((route) => (
           <DrawerItem
+            key={route}
             label={route}
             labelStyle={s.menuItemText}
             style={s.menuItem}

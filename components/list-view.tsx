@@ -1,9 +1,14 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen, ClickableCard, AllergyCard } from '@components';
+// eslint-disable-next-line max-len
+// import { Header, Screen, ClickableCard, AllergyCard, ImmunizationCard } from '@components'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { Header } from '@components/header';
+import { Screen } from '@components/screen';
+import { ClickableCard } from '@components/clickable-card';
+import { AllergyCard } from '@components/allergy-card';
+import { ImmunizationCard } from '@components/immunization-card';
 import { g } from '@styles';
 import { Allergy, DocumentResource, Immunization } from '@interfaces';
 import React from 'react';
-import { ImmunizationCard } from '@components/immunization-card';
 
 const s = StyleSheet.create({
   container: {
@@ -20,10 +25,6 @@ const s = StyleSheet.create({
     opacity: 0.8,
     paddingLeft: g.size(30),
     paddingTop: g.size(10),
-  },
-  invoicesContainer: {
-    rowGap: g.size(16),
-    justifyContent: 'space-between',
   },
   sectionContainer: {
     flex: 1,
@@ -51,7 +52,7 @@ export function isAllergy(arg: any): arg is Immunization {
 }
 
 export function ListView({ items, icon, title, clickable, isFetching }:
-  {items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  { items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
   const listItems = () => {
     if (isImmunization(items[0])) {
       return items.map((item) => (
@@ -99,9 +100,7 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         </View>
         {!isFetching && (
           <View style={s.sectionContainer}>
-            <View style={s.invoicesContainer}>
-              {listItems()}
-            </View>
+            {listItems()}
           </View>
         )}
       </ScrollView>

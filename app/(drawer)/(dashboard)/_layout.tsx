@@ -1,9 +1,10 @@
-import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { Slot, useRouter, useNavigation } from 'expo-router';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { Screen, DashTabs } from '@components';
 import { g } from '@styles';
 import { usePatient } from '@services';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 const s = StyleSheet.create({
   container: {
@@ -34,7 +35,7 @@ const s = StyleSheet.create({
 });
 
 export default function Layout() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const router = useRouter();
   const { data: { name } } = usePatient();
   const patientName = `${name[0].given[0]} ${name[0].family}`;
@@ -49,7 +50,6 @@ export default function Layout() {
       <Slot />
       <TouchableOpacity
         style={s.drawerButton}
-        // @ts-ignore This must be ignored because openDrawer does not exist on the default useNavigation export
         onPress={() => navigation.openDrawer()}
       >
         <Feather name="menu" size={g.size(48)} color={g.white} />

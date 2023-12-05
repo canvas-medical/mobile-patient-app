@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import { g } from '@styles';
-import { AppointmentCard } from './appointment-card';
+import { AppointmentCard } from '@components/appointment-card';
+// import { useRecords } from '@services';
 
 const s = StyleSheet.create({
   contentContainer: {
@@ -58,6 +59,9 @@ const appointments = [
 export function AppointmentList() {
   const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.datetimeStart) > new Date());
   const pastAppointments = appointments.filter((appointment) => new Date(appointment.datetimeStart) <= new Date());
+  // const { data } = useRecords('Appointment');
+  // console.log('Appts: ', data);
+
   return (
     <ScrollView contentContainerStyle={s.contentContainer}>
       {upcomingAppointments.length > 0 && (
@@ -65,7 +69,7 @@ export function AppointmentList() {
           <Text style={s.label}>
             Upcoming
           </Text>
-          {upcomingAppointments.map((appt) => <AppointmentCard appt={appt} />)}
+          {upcomingAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
         </View>
       )}
       {pastAppointments.length > 0 && (
@@ -73,7 +77,7 @@ export function AppointmentList() {
           <Text style={s.label}>
             Past
           </Text>
-          {pastAppointments.map((appt) => <AppointmentCard appt={appt} />)}
+          {pastAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
         </View>
       )}
     </ScrollView>

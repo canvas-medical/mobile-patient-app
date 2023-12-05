@@ -13,7 +13,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Feather, } from '@expo/vector-icons';
 import { Button, Screen } from '@components';
 import { g } from '@styles';
-import { ConsentPdfs, useConsentCreate } from '@services';
+import { ConsentPDFs, useConsentCreate } from '@services';
 
 const s = StyleSheet.create({
   buttonContainer: {
@@ -118,7 +118,7 @@ export default function Consents() {
                     onPress={() =>
                       router.push({
                         pathname: 'pdf-modal',
-                        params: { uri: ConsentPdfs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess }
+                        params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess }
                       })}
                   >
                     <Text style={s.link}>General Consent Document</Text>

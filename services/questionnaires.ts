@@ -82,7 +82,7 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
 export function useQuestionnaireSubmit() {
   return useMutation({
     mutationFn: (data: { formData: { key: string }; questionnaireData: { id: string, item: Question[] } }) => questionnaireSubmit(data),
-    onSuccess: () => router.push('records'),
+    onSuccess: () => router.push('appointments-medications'),
     onError: (e) => {
       console.log(e);
       Alert.alert(

@@ -9,14 +9,14 @@ export const ConsentCodes = {
   'Consent Document': { code: '59284-0', display: 'Consent Document', system: 'LOINC' },
 };
 
-export const ConsentPdfs = {
+export const ConsentPDFs = {
   'Consent Document': 'https://www.mainemed.com/sites/default/files/content/Consent%20to%20Treat%20%26%20Acknowledgement.pdf',
 };
 
-async function consentCreate(data: {consent: string}) {
+async function consentCreate(data: { consent: string }) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const pdfResponse = await fetch(ConsentPdfs[data.consent]);
+  const pdfResponse = await fetch(ConsentPDFs[data.consent]);
   const blob = await pdfResponse.blob();
   const reader = new FileReader();
   reader.readAsDataURL(blob);
@@ -69,7 +69,7 @@ async function consentCreate(data: {consent: string}) {
 
 export function useConsentCreate() {
   return useMutation({
-    mutationFn: (data: {consent: string}) => consentCreate(data),
+    mutationFn: (data: { consent: string }) => consentCreate(data),
     onError: () => {
       Alert.alert(
         'Error',
