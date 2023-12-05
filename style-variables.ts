@@ -21,7 +21,9 @@ const global = {
   neutral300: '#989898',
   neutral500: '#6C6C6C',
   transparent: '#00000000',
-
+  severityRed: '#B22222',
+  severityYellow: '#FFFF00',
+  severityGreen: '#00FF00',
   shadow: {
     shadowOffset: {
       width: 0,
