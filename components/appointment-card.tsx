@@ -3,7 +3,7 @@ import {
 } from 'react-native';
 import { Appointment } from '@interfaces';
 import { BlurView } from 'expo-blur';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { formatTime } from '@utils';
 import { g } from '@styles';
 
@@ -57,6 +57,12 @@ const s = StyleSheet.create({
   practitionerLocation: {
     ...g.bodyMedium,
     color: g.white,
+    textDecorationLine: 'underline',
+  },
+  pressable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: g.size(4),
   }
 });
 
@@ -73,7 +79,7 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
   const display = appointmentType?.coding?.display;
 
   const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
-  const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth';
+  const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth'; // TODO: review displays to see if there are any other ways that telemedicine is displayed
 
   const url = needsMapLink && Platform.select({
     ios: `https://maps.apple.com?address=${address}`,
@@ -121,7 +127,12 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               </Text>
               <TouchableOpacity
                 onPress={() => Linking.openURL(url || address)}
+                style={s.pressable}
               >
+                {needsMapLink
+                  ? <Ionicons name="navigate" size={g.size(18)} color={g.white} />
+                  : <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />
+                }
                 <Text
                   style={s.practitionerLocation}
                   numberOfLines={1}
