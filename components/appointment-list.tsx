@@ -23,36 +23,76 @@ const appointments = [
     datetimeStart: '2023-11-20T10:00:00',
     datetimeEnd: '2023-11-20T11:00:00',
     practitioner: 'Dr. Smith',
-    location: 'Clinic A'
+    location: '1644 Platte St',
+    appointmentType: {
+      coding: {
+        display: 'Not Telemedicine'
+      }
+    },
+    contained: {
+      address: '1644 Platte St'
+    }
   },
   {
     id: 2,
     datetimeStart: '2023-11-21T11:30:00',
     datetimeEnd: '2023-11-21T12:30:00',
     practitioner: 'Dr. Johnson',
-    location: 'Clinic B'
+    location: 'Clinic B',
+    appointmentType: {
+      coding: {
+        display: 'Telemedicine'
+      }
+    },
+    contained: {
+      address: 'https://zoom.us/j/91537108094?pwd=RlNwUmd2MGNjMmdmZEQ2VTluWFJaUT09'
+    }
   },
   {
     id: 3,
     datetimeStart: '2023-11-22T14:15:00',
     datetimeEnd: '2023-11-22T15:15:00',
     practitioner: 'Dr. Davis',
-    location: 'Clinic C'
+    location: 'Clinic C',
+    appointmentType: {
+      coding: {
+        display: 'Telemedicine'
+      }
+    },
+    contained: {
+      address: 'https://meet.google.com/dic-wcwq-csh?ijlm=1701723603749&hs=185'
+    }
   },
   {
     id: 4,
     datetimeStart: '2023-11-23T16:45:00',
     datetimeEnd: '2023-11-23T17:45:00',
     practitioner: 'Dr. Wilson',
-    location: 'Clinic D'
+    location: 'Clinic D',
+    appointmentType: {
+      coding: {
+        display: 'Telemedicine'
+      }
+    },
+    contained: {
+      address: 'broken link'
+    }
   },
   {
     id: 5,
     datetimeStart: '2023-11-24T09:30:00',
     datetimeEnd: '2023-11-24T10:30:00',
     practitioner: 'Dr. Anderson',
-    location: 'Clinic E'
-  },
+    location: 'Clinic E',
+    appointmentType: {
+      coding: {
+        display: 'Telemedicine'
+      }
+    },
+    contained: {
+      address: 'broken link'
+    }
+  }
 ];
 
 export function AppointmentList() {

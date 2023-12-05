@@ -25,10 +25,6 @@ const s = StyleSheet.create({
     rowGap: g.size(16),
     justifyContent: 'space-between',
   },
-  sectionContainer: {
-    flex: 1,
-    gap: g.size(16),
-  },
   title: {
     ...g.titleLarge,
   },
@@ -98,11 +94,9 @@ export function ListView({ items, icon, title, clickable, isFetching }:
           </Text>
         </View>
         {!isFetching && (
-          <View style={s.sectionContainer}>
-            <View style={s.invoicesContainer}>
-              {listItems()}
-            </View>
-          </View>
+        <View style={s.invoicesContainer}>
+          {listItems()}
+        </View>
         )}
       </ScrollView>
     </Screen>
