@@ -1,7 +1,6 @@
 {
   "cli": {
     "version": ">= 5.9.0",
-    "promptToConfigurePushNotifications": false
   },
   "build": {
     "development-simulator": {

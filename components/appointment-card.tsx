@@ -6,6 +6,7 @@ import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { formatTime } from '@utils';
 import { g } from '@styles';
+import { sendPushNotification } from '@services/push_notifications';
 
 const s = StyleSheet.create({
   card: {
@@ -69,16 +70,14 @@ const s = StyleSheet.create({
 export function AppointmentCard({ appt }: { appt: Appointment }) {
   const {
     id,
-    datetimeStart,
-    datetimeEnd,
-    practitioner,
-    location,
-    appointmentType,
-    contained: { address },
+    start,
+    end,
+    reasonCode: [{ coding: [{ display: reasonDisplay }] }],
+    appointmentType: { coding: [{ display }] },
+    contained: [{ address }],
   } = appt;
-  const display = appointmentType?.coding?.display;
 
-  const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
+  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
   const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth'; // TODO: review displays to see if there are any other ways that telemedicine is displayed
 
   const url = needsMapLink && Platform.select({
@@ -108,14 +107,20 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               &nbsp;
               •
               &nbsp;
-              {formatTime(datetimeStart, false)}
+              {formatTime(start, false)}
               {' '}
               -
               {' '}
-              {formatTime(datetimeEnd, true)}
+              {formatTime(end, true)}
             </Text>
           </View>
           <View style={s.dataDivider} />
+          <TouchableOpacity
+            onPress={sendPushNotification}
+            style={s.pressable}
+          >
+            <Text>Send notification</Text>
+          </TouchableOpacity>
           <View style={s.cardRow}>
             <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
             <View style={s.practitionerData}>
@@ -123,7 +128,7 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
                 style={s.practitioner}
                 numberOfLines={1}
               >
-                {practitioner}
+                {reasonDisplay}
               </Text>
               <TouchableOpacity
                 onPress={() => Linking.openURL(url || address)}
@@ -137,7 +142,7 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
                   style={s.practitionerLocation}
                   numberOfLines={1}
                 >
-                  {location}
+                  {url ? address : 'Join video call'}
                 </Text>
               </TouchableOpacity>
             </View>

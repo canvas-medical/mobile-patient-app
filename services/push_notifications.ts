@@ -1,9 +1,12 @@
 import { Platform } from 'react-native';
-import * as Notifications from '@node_modules/expo-notifications';
-import * as Device from '@node_modules/expo-device';
-import Constants from '@node_modules/expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
 
-export async function sendPushNotification(expoPushToken) {
+export async function sendPushNotification() {
+  const expoPushToken = await SecureStore.getItemAsync('push_token');
+  console.log('expoPushToken', expoPushToken);
   const message = {
     to: expoPushToken,
     sound: 'default',
@@ -12,7 +15,8 @@ export async function sendPushNotification(expoPushToken) {
     data: { someData: 'goes here' },
   };
 
-  await fetch('https://exp.host/--/api/v2/push/send', {
+  console.log('message', message);
+  const response = await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -21,8 +25,11 @@ export async function sendPushNotification(expoPushToken) {
     },
     body: JSON.stringify(message),
   });
+  console.log('response', response);
+  const json = await response.json();
+  console.log('json', json);
 }
-export async function registerForPushNotificationsAsync(): Promise<string | null> {
+export async function registerForPushNotificationsAsync(): Promise<any> {
   let token: Notifications.ExpoPushToken;
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
@@ -40,14 +47,12 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
       finalStatus = status;
     }
     if (finalStatus !== 'granted') {
-      return null;
     }
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,
     });
   } else {
     alert('Must use physical device for Push Notifications');
-    return null;
   }
-  return token ? token.data : null;
+  await SecureStore.setItemAsync('push_token', token.data);
 }
