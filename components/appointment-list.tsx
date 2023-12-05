@@ -79,8 +79,8 @@ const appointments: Appointment[] = [
   },
   {
     id: '4',
-    start: '2023-11-23T16:45:00',
-    end: '2023-11-23T17:45:00',
+    start: '2023-12-23T16:45:00',
+    end: '2023-12-23T17:45:00',
     appointmentType: {
       coding: [{
         display: 'Telemedicine'
@@ -97,8 +97,8 @@ const appointments: Appointment[] = [
   },
   {
     id: '5',
-    start: '2023-11-24T09:30:00',
-    end: '2023-11-24T10:30:00',
+    start: '2023-12-24T09:30:00',
+    end: '2023-12-24T10:30:00',
     appointmentType: {
       coding: [{
         display: 'Telemedicine'
@@ -122,9 +122,9 @@ export function AppointmentList() {
   // TODO: improve placement of this loop once we are requesting data from the API
   useEffect(() => {
     const scheduleNotifications = async () => {
-      upcomingAppointments.map((
+      upcomingAppointments.map(async (
         { id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }
-      ) => sendPushNotification(start, formatTime(start, false), reasonDisplay, id));
+      ) => sendPushNotification(start, formatTime(start, true), reasonDisplay, id));
     };
     scheduleNotifications();
   }, [upcomingAppointments]);

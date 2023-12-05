@@ -4,11 +4,9 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
-export async function sendPushNotification(start: string, formattedDate: string, appointmentDescription: string, appointmentId: string) {
+export async function sendPushNotification(start: string, formattedTime: string, appointmentDescription: string, appointmentId: string) {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-  console.log('SCHEDULED:', scheduled);
   const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentId);
-  console.log('ALREADY SCHEDULED:', alreadyScheduled);
   if (alreadyScheduled) { return; }
 
   const time = new Date(start);
@@ -21,7 +19,7 @@ export async function sendPushNotification(start: string, formattedDate: string,
   await Notifications.scheduleNotificationAsync({
     content: {
       title: appointmentDescription,
-      body: `${appointmentDescription} starts in 30 minutes at ${formattedDate}`,
+      body: `Your appointment starts in 30 minutes at ${formattedTime}`,
       data: { data: appointmentId },
     },
     trigger,
