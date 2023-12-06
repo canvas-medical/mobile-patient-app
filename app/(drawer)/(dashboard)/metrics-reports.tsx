@@ -21,9 +21,9 @@ const s = StyleSheet.create({
 
 export default function MetricsAndReports() {
   const [toggled, setToggled] = useState(false);
-  const { data: reports, isLoading: fetchingReports } = useReports();
-  const { data: diagnostics, isLoading: fetchingDiagnostics } = useDiagnostics();
-  const { data: observations, isLoading: fetchingObservations } = useObservations();
+  const { data: reports, isLoading: loadingReports } = useReports();
+  const { data: diagnostics, isLoading: loadingDiagnostics } = useDiagnostics();
+  const { data: observations, isLoading: loadingObservations } = useObservations();
 
   return (
     <View style={s.container}>
@@ -33,7 +33,7 @@ export default function MetricsAndReports() {
         optionOne="Metrics"
         optionTwo="Reports"
       />
-      {(toggled && fetchingReports) || (!toggled && (fetchingObservations || fetchingDiagnostics)) ? (
+      {(toggled && loadingReports) || (!toggled && (loadingObservations || loadingDiagnostics)) ? (
         <ActivityIndicator size="large" color={g.white} style={s.loading} />
       ) : (
         <ScrollView

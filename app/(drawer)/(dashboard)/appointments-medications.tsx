@@ -21,8 +21,8 @@ const s = StyleSheet.create({
 });
 
 export default function AppointmentsAndMedications() {
-  const { data: medications, isLoading: fetchingMedications } = useMedications();
-  const { data: appointments, isLoading: fetchingAppointments } = useAppointments();
+  const { data: medications, isLoading: loadingMedications } = useMedications();
+  const { data: appointments, isLoading: loadingAppointments } = useAppointments();
   const [toggled, setToggled] = useState(false);
 
   return (
@@ -33,7 +33,7 @@ export default function AppointmentsAndMedications() {
         optionOne="Appointments"
         optionTwo="Prescriptions"
       />
-      {(toggled && fetchingMedications) || (!toggled && fetchingAppointments) ? (
+      {(toggled && loadingMedications) || (!toggled && loadingAppointments) ? (
         <ActivityIndicator size="large" color={g.white} style={s.loading} />
       ) : (
         <ScrollView
