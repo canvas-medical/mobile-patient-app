@@ -15,10 +15,6 @@ const s = StyleSheet.create({
     ...g.labelSmall,
     color: g.white,
   },
-  goalDate: {
-    ...g.bodySmall,
-    color: g.white,
-  },
   goalInfo: {
     flex: 1,
     alignItems: 'flex-end',
@@ -27,9 +23,14 @@ const s = StyleSheet.create({
     flex: 1,
     gap: g.size(4),
   },
+  goalText: {
+    ...g.bodySmall,
+    color: g.white,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
 });
 
@@ -64,21 +65,21 @@ export function GoalCard({ goal }: { goal: Goal }) {
             {description}
           </Text>
           <Text
-            style={s.goalDate}
+            style={s.goalText}
           >
             {note}
           </Text>
           <View style={s.row}>
             <Text
-              style={s.goalDate}
+              style={s.goalText}
             >
               {achievementStatus}
             </Text>
             <View style={s.goalInfo}>
-              <Text style={s.goalDate}>
+              <Text style={s.goalText}>
                 {priority}
               </Text>
-              <Text style={s.goalDate}>
+              <Text style={s.goalText}>
                 {formattedDate(startDate)}
                 {' to '}
                 {formattedDate(targetDate)}

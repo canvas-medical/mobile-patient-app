@@ -4,26 +4,34 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
-export async function schedulePushNotification(start: string, formattedTime: string, appointmentDescription: string, appointmentId: string, checkedIfScheduled?: boolean): Promise<void> {
-  //  Returning if the appointment already has a push notification scheduled
+export async function schedulePushNotification({
+  appointmentStartTime,
+  formattedTime,
+  appointmentDescription,
+  appointmentID,
+  checkedIfScheduled,
+}: {
+  appointmentStartTime: string,
+  formattedTime: string,
+  appointmentDescription: string,
+  appointmentID: string,
+  checkedIfScheduled?: boolean,
+}): Promise<void> {
+  // Checking to see if this appointment already has a push notification scheduled
   if (!checkedIfScheduled) {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-    const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentId);
+    const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentID);
     if (alreadyScheduled) { return; }
   }
 
-  const time = new Date(start);
-  time.setMinutes(time.getMinutes() - 30);
-  // TODO: replace trigger with time once testing is complete
-
-  const trigger = new Date(Date.now());
-  trigger.setSeconds(trigger.getSeconds() + 60);
+  const trigger = new Date(appointmentStartTime);
+  trigger.setMinutes(trigger.getMinutes() - 30);
 
   await Notifications.scheduleNotificationAsync({
     content: {
       title: appointmentDescription,
       body: `Your appointment starts in 30 minutes at ${formattedTime}`,
-      data: { data: appointmentId },
+      data: { data: appointmentID },
     },
     trigger,
   });

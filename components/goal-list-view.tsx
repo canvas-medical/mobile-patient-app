@@ -1,9 +1,8 @@
+import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Header, Screen, ClickableCard, AllergyCard, GoalCard } from '@components';
+import { Goal } from '@interfaces';
 import { g } from '@styles';
-import { Allergy, DocumentResource, Goal, Immunization } from '@interfaces';
-import React from 'react';
-import { ImmunizationCard } from '@components/immunization-card';
 
 const s = StyleSheet.create({
   container: {
@@ -44,19 +43,6 @@ const s = StyleSheet.create({
   },
 });
 
-// Type-guard
-export function isImmunization(arg: any): arg is Immunization {
-  return arg?.resource?.vaccineCode !== undefined;
-}
-
-export function isAllergy(arg: any): arg is Allergy {
-  return arg?.resource?.reaction !== undefined;
-}
-
-export function isGoal(arg: any): arg is Goal {
-  return arg?.resource?.achievementStatus !== undefined;
-}
-
 export function GoalListView({ items, icon, title, clickable, isFetching }:
   {items: Goal[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
   const activeStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
@@ -79,18 +65,30 @@ export function GoalListView({ items, icon, title, clickable, isFetching }:
         </View>
         {!isFetching && (
         <View style={s.invoicesContainer}>
+          {active.length
+          && (
           <View style={s.scrollSection}>
             <Text style={s.label}>
               Active
             </Text>
             {active.map((item) => <GoalCard goal={item} />)}
           </View>
+          )
+          }
+          {notActive.length
+            && (
           <View style={s.scrollSection}>
             <Text style={s.label}>
               Not Active
             </Text>
             {notActive.map((item) => <GoalCard goal={item} />)}
           </View>
+          }
+          {!notActive.length && !active.length && (
+            <Text style={s.defaultText}>
+              No goals found
+            </Text>
+          )}
         </View>
         )}
       </ScrollView>

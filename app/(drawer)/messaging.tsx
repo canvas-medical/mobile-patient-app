@@ -1,14 +1,18 @@
 import {
   ActivityIndicator,
-  StyleSheet, TextInput, TouchableOpacity, View, KeyboardAvoidingView, ScrollView, Keyboard,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  Keyboard,
 } from 'react-native';
 import { g } from '@styles';
 import { MessageBlock, Screen, Header } from '@components';
 import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  useCommunication, useCommunicationSubmit,
-} from '@services';
+import { useCommunication, useCommunicationSubmit } from '@services';
 import { Message } from '@interfaces/message';
 
 const s = StyleSheet.create({
@@ -65,7 +69,7 @@ export default function Messaging() {
   const { data: messages, refetch } = useCommunication();
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
-  const scrollViewRef = useRef();
+  const scrollViewRef = useRef<ScrollView>();
   const buttonDisabled = message.length === 0;
   const updateSize = (num: number) => {
     if (num > g.size(32) && num < g.size(500)) { setSize(num); }
@@ -89,16 +93,13 @@ export default function Messaging() {
           contentContainerStyle={s.scrollContent}
           style={s.scroll}
         >
-          {messages
-            ? messages.map((mess: Message) =>
-              (
-                <MessageBlock
-                  received={mess.resource.sender.type === 'Practitioner'}
-                  key={mess.resource.id}
-                  message={mess.resource.payload[0].contentString}
-                />
-              ))
-            : <ActivityIndicator />}
+          {messages ? messages.map((mess: Message) => (
+            <MessageBlock
+              received={mess.resource.sender.type === 'Practitioner'}
+              key={mess.resource.id}
+              message={mess.resource.payload[0].contentString}
+            />
+          )) : <ActivityIndicator />}
         </ScrollView>
         <View style={s.inputContainer}>
           <TextInput
@@ -126,7 +127,7 @@ export default function Messaging() {
                 <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={buttonDisabled ? s.buttonDisabled : s.button} />
               </TouchableOpacity>
             )
-        }
+          }
         </View>
       </KeyboardAvoidingView>
     </Screen>
