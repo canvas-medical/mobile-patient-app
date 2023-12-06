@@ -65,14 +65,16 @@ export default function PdfModal() {
       <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
         <Feather name="x" size={32} color={g.neutral500} />
       </TouchableOpacity>
-      <View style={s.buttonContainer}>
-        <Button
-          theme="primary"
-          onPress={acceptAndClose}
-          disabled={isPending || isSuccess || !!isAccepted}
-          label={isPending ? 'Accepting...' : text}
-        />
-      </View>
+      {!!consentType && (
+        <View style={s.buttonContainer}>
+          <Button
+            theme="primary"
+            onPress={acceptAndClose}
+            disabled={isPending || isSuccess || !!isAccepted}
+            label={isPending ? 'Accepting...' : text}
+          />
+        </View>
+      )}
     </View>
   );
 }

@@ -1,6 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { FontAwesome5, Feather } from '@expo/vector-icons';
+import { useDiagnosticURI } from '@services/diagnostics';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -36,11 +38,17 @@ const s = StyleSheet.create({
 });
 
 export function DiagnosticCard({ data }: { data: any, }) { // TODO: type
-  const { issued, code: { text }, category: [{ coding: [{ display }] }] } = data;
+  const { id, issued, code: { text }, category: [{ coding: [{ display }] }] } = data;
+  const { data: uri } = useDiagnosticURI(id);
+
   return (
     <TouchableOpacity
       style={s.blurContainer}
-      onPress={() => null} // TODO: navigate to diagnostic
+      onPress={() =>
+        router.push({
+          pathname: 'pdf-modal',
+          params: { uri }
+        })}
     >
       <BlurView
         style={s.diagnosticBlur}

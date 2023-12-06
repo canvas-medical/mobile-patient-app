@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { g } from '@styles';
+import { router } from 'expo-router';
 
 const s = StyleSheet.create({
-  card: {
+  blurContainer: {
     borderRadius: g.size(8),
     overflow: 'hidden',
   },
@@ -33,12 +34,22 @@ const s = StyleSheet.create({
 export function ReportCard({ report }: { report: any }) { // TODO: type report
   const {
     date,
-    type: {
-      coding: [{ display: type }],
-    }
+    type: { coding: [{ display: type }] },
+    content: [{ attachment: { url: uri } }]
   } = report;
+
+  console.log('Hello: ', uri);
+
   return (
-    <View style={s.card}>
+    <TouchableOpacity
+      style={s.blurContainer}
+      onPress={() =>
+        router.push({
+          pathname: 'pdf-modal',
+          params: { uri }
+        })}
+      disabled={!uri}
+    >
       <BlurView
         intensity={40}
         tint="light"
@@ -56,8 +67,8 @@ export function ReportCard({ report }: { report: any }) { // TODO: type report
             })}
           </Text>
         </View>
-        <Feather name="chevron-right" size={g.size(32)} color={g.white} />
+        {!!uri && <Feather name="chevron-right" size={g.size(32)} color={g.white} />}
       </BlurView>
-    </View>
+    </TouchableOpacity>
   );
 }

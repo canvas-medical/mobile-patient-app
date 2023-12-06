@@ -23,3 +23,24 @@ export function useDiagnostics() {
   });
   return diagnosticQuery;
 }
+
+async function getDiagnosticURI(id: string) {
+  const token = await getToken();
+  const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/DiagnosticReport/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json'
+    }
+  });
+  const json = await response.json();
+  return json.presentedForm[0].url;
+}
+
+export function useDiagnosticURI(id: string) {
+  const diagnosticQuery = useQuery({
+    queryKey: [`diagnostic-id: ${id}`],
+    queryFn: () => getDiagnosticURI(id),
+  });
+  return diagnosticQuery;
+}
