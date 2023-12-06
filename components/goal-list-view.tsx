@@ -66,29 +66,29 @@ export function GoalListView({ items, icon, title, clickable, isFetching }:
         {!isFetching && (
         <View style={s.invoicesContainer}>
           {active.length
-          && (
-          <View style={s.scrollSection}>
-            <Text style={s.label}>
-              Active
-            </Text>
-            {active.map((item) => <GoalCard goal={item} />)}
-          </View>
-          )
-          }
+            ? (
+              <View style={s.scrollSection}>
+                <Text style={s.label}>
+                  Active
+                </Text>
+                {active.map((item) => <GoalCard goal={item} />)}
+              </View>
+            ) : null}
           {notActive.length
-            && (
-          <View style={s.scrollSection}>
-            <Text style={s.label}>
-              Not Active
-            </Text>
-            {notActive.map((item) => <GoalCard goal={item} />)}
-          </View>
-          }
-          {!notActive.length && !active.length && (
-            <Text style={s.defaultText}>
-              No goals found
-            </Text>
-          )}
+            ? (
+              <View style={s.scrollSection}>
+                <Text style={s.label}>
+                  Not Active
+                </Text>
+                {notActive.map((item) => <GoalCard goal={item} />)}
+              </View>
+            ) : null}
+          {!notActive.length && !active.length
+            ? (
+              <Text style={s.defaultText}>
+                No goals found
+              </Text>
+            ) : null}
         </View>
         )}
       </ScrollView>
