@@ -25,12 +25,8 @@ export async function schedulePushNotification({
     if (alreadyScheduled) { return; }
   }
 
-  const time = new Date(appointmentStartTime);
-  time.setMinutes(time.getMinutes() - 30);
-  // TODO: replace trigger with time once testing is complete
-
-  const trigger = new Date(Date.now());
-  trigger.setSeconds(trigger.getSeconds() + 60);
+  const trigger = new Date(appointmentStartTime);
+  trigger.setMinutes(trigger.getMinutes() - 30);
 
   await Notifications.scheduleNotificationAsync({
     content: {
