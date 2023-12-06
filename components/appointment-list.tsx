@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { g } from '@styles';
-import { AppointmentCard } from '@components/appointment-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { Appointment } from '@interfaces';
+import { AppointmentCard } from '@components/appointment-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   label: {

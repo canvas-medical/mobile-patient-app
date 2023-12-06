@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { FontAwesome5, Feather } from '@expo/vector-icons';
+import { DiagnosticReport } from '@interfaces';
 import { useDiagnosticURI } from '@services';
 import { g } from '@styles';
-import { DiagnosticReport } from '@interfaces';
 
 const s = StyleSheet.create({
   blurContainer: {

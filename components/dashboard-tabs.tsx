@@ -1,8 +1,8 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { router, usePathname } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { g } from '@styles';
-import { router, usePathname } from 'expo-router';
 
 const s = StyleSheet.create({
   activeTab: {

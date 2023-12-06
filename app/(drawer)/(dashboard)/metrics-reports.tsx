@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useObservations, useDiagnostics, useReports } from '@services';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { useObservations, useDiagnostics, useReports } from '@services';
 import { DiagnosticList, LabeledToggle, VitalsGrid, ReportList } from '@components';
 import { g } from '@styles';
 

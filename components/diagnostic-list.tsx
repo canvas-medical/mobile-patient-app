@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { DiagnosticReport } from '@interfaces';
 import { DiagnosticCard } from '@components'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { g } from '@styles';
-import { DiagnosticReport } from '@interfaces';
 
 const s = StyleSheet.create({
   diagnosticContainer: {

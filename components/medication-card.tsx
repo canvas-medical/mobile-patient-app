@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Medication } from '@interfaces';
-import { BlurView } from 'expo-blur';
 import { g } from '@styles';
 
 const s = StyleSheet.create({

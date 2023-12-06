@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Allergy, DocumentResource, Immunization } from '@interfaces';
 // eslint-disable-next-line max-len
 // import { Header, Screen, ClickableCard, AllergyCard, ImmunizationCard } from '@components'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { Header } from '@components/header';
@@ -7,8 +8,6 @@ import { ClickableCard } from '@components/clickable-card';
 import { AllergyCard } from '@components/allergy-card';
 import { ImmunizationCard } from '@components/immunization-card';
 import { g } from '@styles';
-import { Allergy, DocumentResource, Immunization } from '@interfaces';
-import React from 'react';
 
 const s = StyleSheet.create({
   container: {
@@ -52,7 +51,7 @@ export function isAllergy(arg: any): arg is Immunization {
 }
 
 export function ListView({ items, icon, title, clickable, isFetching }:
-  { items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  { items: DocumentResource[] | Immunization[] | Allergy[], icon: JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
   const listItems = () => {
     if (isImmunization(items[0])) {
       return items.map((item) => (

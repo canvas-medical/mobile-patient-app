@@ -1,13 +1,11 @@
-import {
-  StyleSheet, TouchableOpacity, View
-} from 'react-native';
-import { g } from '@styles';
-import Pdf from 'react-native-pdf';
-import { Button } from '@components/button';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useConsentCreate } from '@services';
 import { useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
+import Pdf from 'react-native-pdf';
+import { useConsentCreate } from '@services';
+import { Button } from '@components/button';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   buttonContainer: {

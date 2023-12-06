@@ -1,15 +1,19 @@
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  StyleSheet, TextInput, TouchableOpacity, View, KeyboardAvoidingView, ScrollView, Keyboard,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  Keyboard,
 } from 'react-native';
-import { g } from '@styles';
-import { MessageBlock, Screen, Header } from '@components';
-import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  useCommunication, useCommunicationSubmit,
-} from '@services';
 import { Message } from '@interfaces';
+import { useCommunication, useCommunicationSubmit } from '@services';
+import { MessageBlock, Screen, Header } from '@components';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   button: {

@@ -3,10 +3,10 @@ import {
   View,
   Text,
 } from 'react-native';
-import { Appointment } from '@interfaces';
 import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 // import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Appointment } from '@interfaces';
 import { formatTime } from '@utils';
 import { g } from '@styles';
 

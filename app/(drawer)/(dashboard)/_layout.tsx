@@ -1,10 +1,10 @@
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { Slot, useRouter, useNavigation } from 'expo-router';
 import { Feather, FontAwesome } from '@expo/vector-icons';
+import { usePatient } from '@services';
 import { Screen, DashTabs } from '@components';
 import { g } from '@styles';
-import { usePatient } from '@services';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 const s = StyleSheet.create({
   container: {

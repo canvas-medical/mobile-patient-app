@@ -1,7 +1,7 @@
-import { ListView } from '@components';
-import { g } from '@styles';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useInvoices } from '@services';
+import { ListView } from '@components';
+import { g } from '@styles';
 
 export default function Invoices() {
   const { data: invoices, isFetching } = useInvoices();

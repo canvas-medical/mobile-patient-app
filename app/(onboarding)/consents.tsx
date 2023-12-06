@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Feather, } from '@expo/vector-icons';
+import { ConsentPDFs, useConsentCreate } from '@services';
 import { Button, Screen } from '@components';
 import { g } from '@styles';
-import { ConsentPDFs, useConsentCreate } from '@services';
 
 const s = StyleSheet.create({
   buttonContainer: {

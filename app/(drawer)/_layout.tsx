@@ -1,5 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { StyleSheet, Text, View } from 'react-native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { useNavigation } from 'expo-router';
+import { Drawer } from 'expo-router/drawer';
 import {
   Entypo,
   Feather,
@@ -8,10 +11,6 @@ import {
   MaterialCommunityIcons
 } from '@expo/vector-icons';
 import { g } from '@styles';
-import { Drawer } from 'expo-router/drawer';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { useNavigation } from 'expo-router';
-import { NativeStackNavigationProp } from '@node_modules/react-native-screens/lib/typescript/native-stack';
 
 const s = StyleSheet.create({
   header: {
@@ -39,7 +38,7 @@ const s = StyleSheet.create({
 type IconProps = { focused: boolean; size: number; color: string; }
 
 export default function Layout() {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation();
   const routes = {
     Dashboard: '(dashboard)',
     Medication: '(dashboard)',
@@ -153,7 +152,7 @@ export default function Layout() {
             label={route}
             labelStyle={s.menuItemText}
             style={s.menuItem}
-            onPress={() => navigation.navigate(routes[route])}
+            onPress={() => navigation.navigate(routes[route] as never)}
             icon={({ color, size, focused }: IconProps) => getIconByText(route, color, size, focused)}
           />
         ))}
