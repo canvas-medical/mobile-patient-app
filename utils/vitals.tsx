@@ -8,9 +8,10 @@ import {
   Ionicons,
   Entypo,
 } from '@expo/vector-icons';
+import { Vital } from '@interfaces';
 import { g } from '@styles';
 
-export function vitalsValueSwitch(type: string, vitalData: any) { // Todo - type any
+export function vitalsValueSwitch(type: string, vitalData: Vital) {
   switch (type) {
     case 'Weight':
     case 'Pulse':

@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { g } from '@styles';
 import { ReportCard } from '@components/report-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { Report } from '@interfaces';
 
 const s = StyleSheet.create({
   label: {
@@ -12,7 +13,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function ReportList({ reports }: { reports: any[] }) { // Todo: type reports
+export function ReportList({ reports }: { reports: Report[] }) {
   const currentReports = reports.filter((report) => report.status === 'current');
   const supersededReports = reports.filter((report) => report.status === 'superseded');
   return (

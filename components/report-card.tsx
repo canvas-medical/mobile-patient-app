@@ -1,8 +1,9 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
+import { Report } from '@interfaces';
 import { g } from '@styles';
-import { router } from 'expo-router';
 
 const s = StyleSheet.create({
   blurContainer: {
@@ -31,7 +32,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function ReportCard({ report }: { report: any }) { // TODO: type report
+export function ReportCard({ report }: { report: Report }) {
   const {
     date,
     type: { coding: [{ display: type }] },

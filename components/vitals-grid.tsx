@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { VitalCard } from '@components/vital-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { g } from '@styles';
+import { Vital } from '@interfaces';
 
 const s = StyleSheet.create({
   label: {
@@ -19,7 +20,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function VitalsGrid({ vitals }: { vitals: any[] }) { // TODO: type vitals
+export function VitalsGrid({ vitals }: { vitals: Vital[] }) {
   return (
     <View style={s.sectionContainer}>
       <Text style={s.label}>
