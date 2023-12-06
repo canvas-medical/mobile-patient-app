@@ -25,12 +25,8 @@ export async function schedulePushNotification({
     if (alreadyScheduled) { return; }
   }
 
-  const time = new Date(appointmentStartTime);
-  time.setMinutes(time.getMinutes() - 30);
-  // TODO: replace trigger with time once testing is complete
-
-  const trigger = new Date(Date.now());
-  trigger.setSeconds(trigger.getSeconds() + 60);
+  const trigger = new Date(appointmentStartTime);
+  trigger.setMinutes(trigger.getMinutes() - 30);
 
   await Notifications.scheduleNotificationAsync({
     content: {
@@ -64,8 +60,6 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,
     });
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
+  } else alert('Must use physical device for Push Notifications');
   await SecureStore.setItemAsync('push_token', token.data);
 }

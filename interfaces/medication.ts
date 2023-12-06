@@ -1,7 +1,13 @@
 export interface Medication {
-  id: number,
-  datetimeStart: string,
-  datetimeEnd: string,
-  medication: string,
-  dosage: string,
+  id: string,
+  medicationCodeableConcept: {
+    coding: [{
+      display: string,
+    }]
+  },
+  dosage: [{
+    text: string,
+  }],
+  dateAsserted: string,
+  status: 'active' | 'stopped';
 }

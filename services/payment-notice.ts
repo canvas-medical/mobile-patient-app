@@ -60,7 +60,7 @@ async function paymentNoticeSubmit(value: number) {
 export function usePaymentNoticeSubmit() {
   return useMutation({
     mutationFn: (value: number) => paymentNoticeSubmit(value),
-    onSuccess: () => router.push('records'),
+    onSuccess: () => router.push('appointments-medications'),
     onError: (e) => {
       Alert.alert(
         'Error',

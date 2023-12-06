@@ -1,18 +1,13 @@
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
-import { g } from '@styles';
-import { Appointment } from '@interfaces';
 import { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import * as Notifications from 'expo-notifications';
+import { Appointment } from '@interfaces';
 import { schedulePushNotification } from '@services';
 import { formatTime } from '@utils';
-import * as Notifications from 'expo-notifications';
-import { AppointmentCard } from './appointment-card';
+import { AppointmentCard } from '@components/appointment-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { g } from '@styles';
 
 const s = StyleSheet.create({
-  contentContainer: {
-    gap: g.size(24),
-    padding: g.size(16),
-    paddingBottom: g.size(120),
-  },
   label: {
     ...g.titleXSmall,
     color: g.white,
@@ -22,101 +17,7 @@ const s = StyleSheet.create({
   },
 });
 
-const appointments: Appointment[] = [
-  {
-    id: '1',
-    start: '2023-11-20T10:00:00',
-    end: '2023-11-20T11:00:00',
-    appointmentType: {
-      coding: [{
-        display: 'Not Telemedicine',
-      }]
-    },
-    contained: [{
-      address: '1644 Platte St'
-    }],
-    reasonCode: [{
-      coding: [{
-        display: 'Follow-up'
-      }]
-    }]
-  },
-  {
-    id: '2',
-    start: '2023-11-21T11:30:00',
-    end: '2023-11-21T12:30:00',
-    appointmentType: {
-      coding: [{
-        display: 'Telemedicine'
-      }]
-    },
-    contained: [{
-      address: 'https://zoom.us/j/91537108094?pwd=RlNwUmd2MGNjMmdmZEQ2VTluWFJaUT09'
-    }],
-    reasonCode: [{
-      coding: [{
-        display: 'Initial Visit'
-      }]
-    }]
-  },
-  {
-    id: '3',
-    start: '2023-11-22T14:15:00',
-    end: '2023-11-22T15:15:00',
-    appointmentType: {
-      coding: [{
-        display: 'Telemedicine'
-      }]
-    },
-    contained: [{
-      address: 'https://meet.google.com/dic-wcwq-csh?ijlm=1701723603749&hs=185'
-    }],
-    reasonCode: [{
-      coding: [{
-        display: 'Initial Visit'
-      }]
-    }]
-
-  },
-  {
-    id: '4',
-    start: '2023-12-23T16:45:00',
-    end: '2023-12-23T17:45:00',
-    appointmentType: {
-      coding: [{
-        display: 'Telemedicine'
-      }]
-    },
-    contained: [{
-      address: 'broken link'
-    }],
-    reasonCode: [{
-      coding: [{
-        display: 'Initial Visit'
-      }]
-    }]
-  },
-  {
-    id: '5',
-    start: '2023-12-24T09:30:00',
-    end: '2023-12-24T10:30:00',
-    appointmentType: {
-      coding: [{
-        display: 'Telemedicine'
-      }]
-    },
-    contained: [{
-      address: 'broken link'
-    }],
-    reasonCode: [{
-      coding: [{
-        display: 'Initial Visit'
-      }]
-    }]
-  }
-];
-
-export function AppointmentList() {
+export function AppointmentList({ appointments }: { appointments: Appointment[] }) {
   const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.start) > new Date());
   const pastAppointments = appointments.filter((appointment) => new Date(appointment.start) <= new Date());
 
@@ -124,7 +25,7 @@ export function AppointmentList() {
   useEffect(() => {
     const scheduleNotifications = async () => {
       const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-      upcomingAppointments.map(async ({ id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }) => {
+      upcomingAppointments.map(async ({ id, start, reasonCode: [{ text: reasonDisplay }] }) => {
         // Checking if notifications are already scheduled to reduce API calls
         if (scheduled.find((notification) => notification.content.data.id === id)) return;
         await schedulePushNotification({
@@ -139,13 +40,13 @@ export function AppointmentList() {
     scheduleNotifications();
   }, [upcomingAppointments]);
   return (
-    <ScrollView contentContainerStyle={s.contentContainer}>
+    <>
       {upcomingAppointments.length > 0 && (
         <View style={s.scrollSection}>
           <Text style={s.label}>
             Upcoming
           </Text>
-          {upcomingAppointments.map((appt) => <AppointmentCard appt={appt} />)}
+          {upcomingAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
         </View>
       )}
       {pastAppointments.length > 0 && (
@@ -153,9 +54,9 @@ export function AppointmentList() {
           <Text style={s.label}>
             Past
           </Text>
-          {pastAppointments.map((appt) => <AppointmentCard appt={appt} />)}
+          {pastAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
         </View>
       )}
-    </ScrollView>
+    </>
   );
 }

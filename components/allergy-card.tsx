@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { Allergy } from '@interfaces';
 import { g } from '@styles';
-import { Allergy, Immunization } from '@interfaces';
 
 const s = StyleSheet.create({
   allergy: {

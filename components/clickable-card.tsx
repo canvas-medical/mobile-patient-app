@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { Entypo } from '@expo/vector-icons';
-import { g } from '@styles';
-import { router } from 'expo-router';
 import { DocumentResource } from '@interfaces';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   blurContainer: {
@@ -15,10 +15,6 @@ const s = StyleSheet.create({
     flex: 1,
     padding: g.size(12),
     gap: g.size(8),
-  },
-  invoiceData: {
-    ...g.labelMedium,
-    color: g.white,
   },
   invoiceDate: {
     ...g.labelSmall,

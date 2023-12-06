@@ -1,10 +1,10 @@
 import { Alert, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
-import { g } from '@styles';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import * as SecureStore from 'expo-secure-store';
-import { router, useNavigation } from 'expo-router';
-import { usePatient } from '@services';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { router, useNavigation } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { Feather, FontAwesome } from '@expo/vector-icons';
+import { usePatient } from '@services';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
