@@ -18,13 +18,13 @@ const s = StyleSheet.create({
   },
 });
 
-// Notifications.setNotificationHandler({
-//   handleNotification: async () => ({
-//     shouldShowAlert: true,
-//     shouldPlaySound: false,
-//     shouldSetBadge: false,
-//   }),
-// });
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -32,7 +32,7 @@ export default function RootLayout() {
     Poetsen,
   });
   useEffect(() => {
-    // registerForPushNotificationsAsync();
+    registerForPushNotificationsAsync();
   }, []);
 
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
