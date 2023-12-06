@@ -13,7 +13,7 @@ async function getMedications() {
     }
   });
   const json = await res.json();
-  return json.entry.map((entry) => entry.resource);
+  return json.entry?.map((entry) => entry.resource) || [];
 }
 
 export function useMedications() {

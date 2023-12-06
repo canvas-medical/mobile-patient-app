@@ -13,7 +13,7 @@ async function getObservations() {
     }
   });
   const json = await res.json();
-  return json.entry.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason);
+  return json.entry?.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason) || [];
 }
 
 export function useObservations() {

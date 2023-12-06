@@ -7,3 +7,4 @@ export type { Immunization } from '@interfaces/immunization';
 export type { Medication } from '@interfaces/medication';
 export type { Message } from '@interfaces/message';
 export type { Question } from '@interfaces/question';
+export type { Vital } from '@interfaces/vital';

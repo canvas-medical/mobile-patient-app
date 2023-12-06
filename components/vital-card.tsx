@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { Vital } from '@interfaces';
 import { vitalsValueSwitch, vitalsIconSwitch } from '@utils';
 import { g } from '@styles';
 
@@ -45,11 +46,12 @@ const s = StyleSheet.create({
 });
 
 export function VitalCard({ vital, vitalsOdd, index }: {
-  vital: any, // TODO: type
+  vital: Vital,
   vitalsOdd: boolean,
   index: number,
 }) {
   const { issued, code: { coding } } = vital;
+  console.log(`${coding[0].display}`, vital);
   return (
     <View
       style={[

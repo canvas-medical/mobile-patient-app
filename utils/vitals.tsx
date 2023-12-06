@@ -5,6 +5,8 @@ import {
   Octicons,
   Feather,
   Fontisto,
+  Ionicons,
+  Entypo,
 } from '@expo/vector-icons';
 import { g } from '@styles';
 
@@ -13,7 +15,11 @@ export function vitalsValueSwitch(type: string, vitalData: any) { // Todo - type
     case 'Weight':
     case 'Pulse':
     case 'Respiration Rate':
+    case 'Waist Circumference':
       return `${vitalData.valueQuantity.value} ${vitalData.valueQuantity.unit}`;
+    case 'Body Temperature':
+    case 'Oxygen Saturation Arterial':
+      return `${vitalData.valueQuantity.value}${vitalData.valueQuantity.unit}`;
     case 'Blood Pressure':
       return `${vitalData.component[0].valueQuantity.value}/${vitalData.component[1].valueQuantity.value}`;
     case 'Height':
@@ -39,6 +45,12 @@ export function vitalsIconSwitch(type: string) {
       return <MaterialCommunityIcons name="human-male-height-variant" size={g.size(20)} color={g.white} />;
     case 'Pulse Rhythm':
       return <Octicons name="pulse" size={g.size(20)} color={g.white} />;
+    case 'Body Temperature':
+      return <FontAwesome5 name="temperature-high" size={g.size(20)} color={g.white} />;
+    case 'Waist Circumference':
+      return <Ionicons name="body" size={g.size(20)} color={g.white} />;
+    case 'Oxygen Saturation Arterial':
+      return <Entypo name="air" size={g.size(20)} color={g.white} />;
     default:
       return <Feather name="heart" size={g.size(20)} color={g.white} />;
   }
