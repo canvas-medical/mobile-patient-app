@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { StyleSheet, Text, View } from 'react-native';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { useNavigation } from 'expo-router';
+import { Drawer } from 'expo-router/drawer';
 import {
   Entypo,
   Feather,
@@ -7,10 +11,6 @@ import {
   MaterialCommunityIcons
 } from '@expo/vector-icons';
 import { g } from '@styles';
-import { Drawer } from 'expo-router/drawer';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { useNavigation } from 'expo-router';
-import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack';
 
 const s = StyleSheet.create({
   header: {
@@ -38,12 +38,12 @@ const s = StyleSheet.create({
 type IconProps = { focused: boolean; size: number; color: string; }
 
 export default function Layout() {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation();
   const routes = {
     Dashboard: '(dashboard)',
     Medication: '(dashboard)',
     Appointments: '(dashboard)',
-    Records: '(dashboard)',
+    Reports: '(dashboard)',
     Conditions: '(dashboard)',
     Immunizations: 'immunizations',
     Allergies: 'allergies',
@@ -54,6 +54,7 @@ export default function Layout() {
   };
 
   // TODO: leaving unused focused param here until we can figure out how to get it to work
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getIconByText = (text: string, color: string, size: number, focused: any) => {
     switch (text.toLowerCase()) {
       case 'dashboard':
@@ -79,7 +80,7 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-      case 'records':
+      case 'reports':
         return (
           <View style={s.menuItem}>
             <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
@@ -147,10 +148,11 @@ export default function Layout() {
         <Text style={s.header}>Brewer Digital</Text>
         {Object.keys(routes).map((route) => (
           <DrawerItem
+            key={route}
             label={route}
             labelStyle={s.menuItemText}
             style={s.menuItem}
-            onPress={() => navigation.navigate(routes[route])}
+            onPress={() => navigation.navigate(routes[route] as never)}
             icon={({ color, size, focused }: IconProps) => getIconByText(route, color, size, focused)}
           />
         ))}

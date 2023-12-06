@@ -1,8 +1,8 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { router, usePathname } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { g } from '@styles';
-import { router, usePathname } from 'expo-router';
 
 const s = StyleSheet.create({
   activeTab: {
@@ -76,19 +76,19 @@ export function DashTabs() {
           <View style={s.tabDivider} />
           <TouchableOpacity
             style={s.tabButton}
-            onPress={() => router.push('records')}
-            disabled={pathname === '/records'}
+            onPress={() => router.push('metrics-reports')}
+            disabled={pathname === '/metrics-reports'}
           >
             <BlurView
               tint="light"
-              intensity={pathname === '/records' ? 60 : 0}
+              intensity={pathname === '/metrics-reports' ? 60 : 0}
               style={s.buttonBlur}
             >
               <MaterialCommunityIcons
                 name="inbox"
                 size={40}
                 color={g.primaryBlue}
-                style={pathname === '/records' ? s.activeTab : s.inactiveTab}
+                style={pathname === '/metrics-reports' ? s.activeTab : s.inactiveTab}
               />
             </BlurView>
           </TouchableOpacity>

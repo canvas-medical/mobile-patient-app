@@ -13,13 +13,13 @@ async function getObservations() {
     }
   });
   const json = await res.json();
-  return json;
+  return json.entry?.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason) || [];
 }
 
 export function useObservations() {
-  const observationQuery = useQuery({
-    queryKey: ['observation'],
+  const observationsQuery = useQuery({
+    queryKey: ['observations'],
     queryFn: () => getObservations(),
   });
-  return observationQuery;
+  return observationsQuery;
 }

@@ -1,8 +1,8 @@
+import { Fontisto } from '@expo/vector-icons';
+import { Immunization } from '@interfaces';
+import { useImmunizations } from '@services';
 import { ListView } from '@components';
 import { g } from '@styles';
-import { Immunization } from '@interfaces';
-import { Fontisto } from '@expo/vector-icons';
-import { useImmunizations } from '@services';
 
 export default function Immunizations() {
   const { data: immunizations, isFetching } = useImmunizations();

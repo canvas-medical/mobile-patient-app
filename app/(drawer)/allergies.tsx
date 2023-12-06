@@ -1,8 +1,8 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Allergy } from '@interfaces';
+import { useAllergies } from '@services';
 import { ListView } from '@components';
 import { g } from '@styles';
-import { Allergy } from '@interfaces';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAllergies } from '@services';
 
 export default function Allergies() {
   const { data: allergies, isFetching } = useAllergies();

@@ -1,6 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { FontAwesome5, Feather } from '@expo/vector-icons';
+import { DiagnosticReport } from '@interfaces';
+import { useDiagnosticURI } from '@services';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -14,6 +17,7 @@ const s = StyleSheet.create({
   },
   dataContainer: {
     flex: 1,
+    gap: g.size(2),
   },
   diagnosticBlur: {
     flex: 1,
@@ -34,12 +38,18 @@ const s = StyleSheet.create({
   },
 });
 
-export function DiagnosticCard({ data }: { data: any, }) { // TODO: type
-  const { date, type, value } = data;
+export function DiagnosticCard({ data }: { data: DiagnosticReport, }) {
+  const { id, issued, code: { text }, category: [{ coding: [{ display }] }] } = data;
+  const { data: uri } = useDiagnosticURI(id);
+
   return (
     <TouchableOpacity
       style={s.blurContainer}
-      onPress={() => null} // TODO: navigate to diagnostic
+      onPress={() =>
+        router.push({
+          pathname: 'pdf-modal',
+          params: { uri }
+        })}
     >
       <BlurView
         style={s.diagnosticBlur}
@@ -51,21 +61,21 @@ export function DiagnosticCard({ data }: { data: any, }) { // TODO: type
           <View style={s.dataContainer}>
             <Text
               style={s.diagnosticData}
-              numberOfLines={1}
+              numberOfLines={2}
             >
-              {value}
+              {text}
             </Text>
             <Text
               style={s.diagnosticType}
               numberOfLines={1}
             >
-              {type}
+              {display}
             </Text>
           </View>
           <Feather name="chevron-right" size={g.size(28)} color={g.white} />
         </View>
         <Text style={s.diagnosticDate}>
-          {new Date(date).toLocaleDateString('en-US', {
+          {new Date(issued).toLocaleDateString('en-US', {
             weekday: 'short',
             year: 'numeric',
             month: 'short',

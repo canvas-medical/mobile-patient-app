@@ -1,13 +1,11 @@
-import {
-  StyleSheet, TouchableOpacity, View
-} from 'react-native';
-import { g } from '@styles';
-import Pdf from 'react-native-pdf';
-import { Button } from '@components/button';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useConsentCreate } from '@services';
 import { useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
+import Pdf from 'react-native-pdf';
+import { useConsentCreate } from '@services';
+import { Button } from '@components/button';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   buttonContainer: {
@@ -65,14 +63,16 @@ export default function PdfModal() {
       <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
         <Feather name="x" size={32} color={g.neutral500} />
       </TouchableOpacity>
-      <View style={s.buttonContainer}>
-        <Button
-          theme="primary"
-          onPress={acceptAndClose}
-          disabled={isPending || isSuccess || !!isAccepted}
-          label={isPending ? 'Accepting...' : text}
-        />
-      </View>
+      {!!consentType && (
+        <View style={s.buttonContainer}>
+          <Button
+            theme="primary"
+            onPress={acceptAndClose}
+            disabled={isPending || isSuccess || !!isAccepted}
+            label={isPending ? 'Accepting...' : text}
+          />
+        </View>
+      )}
     </View>
   );
 }

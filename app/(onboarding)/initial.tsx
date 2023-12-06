@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { router } from 'expo-router';
+import { Overlay } from '@rneui/themed';
 import { Button, Screen } from '@components';
 import { g } from '@styles';
-import { Picker } from '@react-native-picker/picker';
-import { Overlay } from '@rneui/themed';
 
 import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
@@ -69,7 +69,7 @@ export default function Initial() {
         <Button
           label="Register"
           theme="tertiary"
-          onPress={() => router.push('personal-details-one')}
+          onPress={() => router.push('personal-details')}
         />
         <Text style={s.or}>or</Text>
         <Button
