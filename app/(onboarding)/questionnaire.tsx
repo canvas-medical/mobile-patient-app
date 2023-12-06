@@ -15,7 +15,7 @@ import { Screen, Input, Button } from '@components';
 import { g } from '@styles';
 import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
 import { Question } from '@interfaces';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FieldError, useForm } from 'react-hook-form';
 
 const s = StyleSheet.create({
   container: {
@@ -129,7 +129,7 @@ export default function Questionnaire() {
                                 onFocus={() => clearErrors()}
                                 onChange={(e) => onChange(e)}
                                 value={value}
-                                error={errors[question.linkId]}
+                                error={errors[question.linkId] as FieldError}
                               />
                             )}
                           />

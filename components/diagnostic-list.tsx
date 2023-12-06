@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { DiagnosticCard } from '@components'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { g } from '@styles';
+import { DiagnosticReport } from '@interfaces';
 
 const s = StyleSheet.create({
   diagnosticContainer: {
@@ -16,7 +17,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function DiagnosticList({ diagnostics }: { diagnostics: any[] }) { // TODO: type diagnostics
+export function DiagnosticList({ diagnostics }: { diagnostics: DiagnosticReport[] }) {
   return (
     <View style={s.sectionContainer}>
       <Text style={s.label}>

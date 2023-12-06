@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { MedicationCard } from '@components'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { g } from '@styles';
+import { Medication } from '@interfaces';
 
 const s = StyleSheet.create({
   label: {
@@ -12,7 +13,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function MedicationList({ medications }: { medications: any }) { // TODO: type
+export function MedicationList({ medications }: { medications: Medication[] }) {
   const activeMedications = medications.filter((med) => med.status === 'active');
   const expiredMedications = medications.filter((med) => med.status === 'stopped');
 

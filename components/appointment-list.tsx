@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { g } from '@styles';
 import { AppointmentCard } from '@components/appointment-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { Appointment } from '@interfaces';
 
 const s = StyleSheet.create({
   label: {
@@ -12,7 +13,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function AppointmentList({ appointments }: { appointments: any[] }) { // TODO: type appointments
+export function AppointmentList({ appointments }: { appointments: Appointment[] }) {
   const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.start) > new Date());
   const pastAppointments = appointments.filter((appointment) => new Date(appointment.start) <= new Date());
 

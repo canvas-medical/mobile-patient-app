@@ -9,4 +9,5 @@ export interface Medication {
     text: string,
   }],
   dateAsserted: string,
+  status: 'active' | 'stopped';
 }

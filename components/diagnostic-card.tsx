@@ -4,6 +4,7 @@ import { BlurView } from 'expo-blur';
 import { FontAwesome5, Feather } from '@expo/vector-icons';
 import { useDiagnosticURI } from '@services';
 import { g } from '@styles';
+import { DiagnosticReport } from '@interfaces';
 
 const s = StyleSheet.create({
   blurContainer: {
@@ -37,7 +38,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function DiagnosticCard({ data }: { data: any, }) { // TODO: type
+export function DiagnosticCard({ data }: { data: DiagnosticReport, }) {
   const { id, issued, code: { text }, category: [{ coding: [{ display }] }] } = data;
   const { data: uri } = useDiagnosticURI(id);
 
