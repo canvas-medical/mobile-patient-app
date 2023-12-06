@@ -128,6 +128,9 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
                 {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
               </Text>
               {/* <TouchableOpacity
+                {reasonDisplay}
+              </Text>
+              <TouchableOpacity
                 onPress={() => Linking.openURL(url || address)}
                 style={s.pressable}
               >

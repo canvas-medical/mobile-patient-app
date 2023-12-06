@@ -41,6 +41,19 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
       reaction: [{ severity }],
     }
   } = allergy;
+  const severityColor = (): string => {
+    switch (severity.toLowerCase()) {
+      case 'mild':
+        return g.severityGreen;
+      case 'moderate':
+        return g.severityYellow;
+      case 'severe':
+        return g.severityRed;
+      default:
+        return g.white;
+    }
+  };
+
   const capitalizeFirstCharacter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
   return (
     <View
@@ -56,19 +69,13 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
           <Text
             style={s.allergy}
           >
-            Allergen:
-            {' '}
             {capitalizeFirstCharacter(display)}
           </Text>
           <View style={s.extraInfo}>
             <Text style={s.allergyInfo}>
-              Note:
-              {' '}
               {capitalizeFirstCharacter(text)}
             </Text>
-            <Text style={s.allergyInfo}>
-              Severity:
-              {' '}
+            <Text style={{ ...s.allergyInfo, color: severityColor() }}>
               {capitalizeFirstCharacter(severity)}
             </Text>
           </View>

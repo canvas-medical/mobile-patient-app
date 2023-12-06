@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "480881742244",
+    "project_id": "fhir-app-8f90e",
+    "storage_bucket": "fhir-app-8f90e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480881742244:android:a44d1107174dee85ca3131",
+        "android_client_info": {
+          "package_name": "com.brewerdigital.fhirdashboard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL1ztTZWYLhTzS0_L0wS73u-PBpodc5i8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

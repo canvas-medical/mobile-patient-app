@@ -11,6 +11,7 @@ export { useMedications } from '@services/medications';
 export { useObservations } from '@services/observations';
 export { useCreatePatient, usePatient } from '@services/patient';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
+export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
 export { useRecords } from '@services/records';
 export { useReports } from '@services/reports';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';

@@ -26,8 +26,8 @@ const s = StyleSheet.create({
     paddingTop: g.size(10),
   },
   sectionContainer: {
-    flex: 1,
-    gap: g.size(16),
+    rowGap: g.size(16),
+    justifyContent: 'space-between',
   },
   title: {
     ...g.titleLarge,
