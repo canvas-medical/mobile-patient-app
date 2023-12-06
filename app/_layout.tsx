@@ -5,7 +5,7 @@ import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
 import * as Notifications from 'expo-notifications';
-import { registerForPushNotificationsAsync } from '@services/push_notifications';
+import { registerForPushNotificationsAsync } from '@services';
 import { useEffect } from 'react';
 
 const queryClient = new QueryClient();

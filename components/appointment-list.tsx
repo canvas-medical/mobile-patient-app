@@ -2,8 +2,9 @@ import { StyleSheet, ScrollView, Text, View } from 'react-native';
 import { g } from '@styles';
 import { Appointment } from '@interfaces';
 import { useEffect } from 'react';
-import { sendPushNotification } from '@services/push_notifications';
+import { schedulePushNotification } from '@services';
 import { formatTime } from '@utils';
+import * as Notifications from '@node_modules/expo-notifications';
 import { AppointmentCard } from './appointment-card';
 
 const s = StyleSheet.create({
@@ -122,9 +123,12 @@ export function AppointmentList() {
   // TODO: improve placement of this loop once we are requesting data from the API
   useEffect(() => {
     const scheduleNotifications = async () => {
-      upcomingAppointments.map(async (
-        { id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }
-      ) => sendPushNotification(start, formatTime(start, true), reasonDisplay, id));
+      const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+      upcomingAppointments.map(async ({ id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }) => {
+        // Checking if notifications are already scheduled to reduce API calls
+        if (scheduled.find((notification) => notification.content.data.id === id)) return;
+        await schedulePushNotification(start, formatTime(start, true), reasonDisplay, id, true);
+      });
     };
     scheduleNotifications();
   }, [upcomingAppointments]);

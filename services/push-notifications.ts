@@ -4,10 +4,14 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
-export async function sendPushNotification(start: string, formattedTime: string, appointmentDescription: string, appointmentId: string) {
-  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-  const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentId);
-  if (alreadyScheduled) { return; }
+export async function schedulePushNotification(start: string, formattedTime: string, appointmentDescription: string, appointmentId: string, checkedIfScheduled?: boolean): Promise<void> {
+  // Checking to see if this appointment already has a push notification scheduled
+  // This is to prevent duplicate push notifications from being scheduled
+  if (!checkedIfScheduled) {
+    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+    const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentId);
+    if (alreadyScheduled) { return; }
+  }
 
   const time = new Date(start);
   time.setMinutes(time.getMinutes() - 30);

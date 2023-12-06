@@ -6,8 +6,6 @@ import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { formatTime } from '@utils';
 import { g } from '@styles';
-import { sendPushNotification } from '@services/push_notifications';
-import { useEffect } from 'react';
 
 const s = StyleSheet.create({
   card: {
