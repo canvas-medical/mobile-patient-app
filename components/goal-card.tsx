@@ -46,6 +46,7 @@ export function GoalCard({ goal }: { goal: Goal }) {
     }
   } = goal;
   console.log(goal);
+  const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
 
   return (
     <View
@@ -79,9 +80,9 @@ export function GoalCard({ goal }: { goal: Goal }) {
                 {priority}
               </Text>
               <Text style={s.goalDate}>
-                {startDate}
+                {formattedDate(startDate)}
                 {' to '}
-                {targetDate}
+                {formattedDate(targetDate)}
               </Text>
             </View>
           </View>
