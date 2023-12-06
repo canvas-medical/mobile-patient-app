@@ -4,7 +4,7 @@ import { Appointment } from '@interfaces';
 import { useEffect } from 'react';
 import { schedulePushNotification } from '@services';
 import { formatTime } from '@utils';
-import * as Notifications from '@node_modules/expo-notifications';
+import * as Notifications from 'expo-notifications';
 import { AppointmentCard } from './appointment-card';
 
 const s = StyleSheet.create({
