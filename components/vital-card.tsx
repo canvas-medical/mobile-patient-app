@@ -51,7 +51,6 @@ export function VitalCard({ vital, vitalsOdd, index }: {
   index: number,
 }) {
   const { issued, code: { coding } } = vital;
-  console.log(`${coding[0].display}`, vital);
   return (
     <View
       style={[
