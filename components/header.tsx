@@ -4,6 +4,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import { router, useNavigation } from 'expo-router';
 import { usePatient } from '@services';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 const s = StyleSheet.create({
   container: {
@@ -40,7 +41,7 @@ const s = StyleSheet.create({
   },
 });
 export function Header() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const { data: { name } } = usePatient();
   const patientName = `${name[0].given[0]} ${name[0].family}`;
   return (
@@ -76,7 +77,6 @@ export function Header() {
       </TouchableOpacity>
       <TouchableOpacity
         style={s.drawerButton}
-        // @ts-ignore
         onPress={() => navigation.openDrawer()}
       >
         <Feather name="menu" size={g.size(48)} color={g.white} />

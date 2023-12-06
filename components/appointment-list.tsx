@@ -4,7 +4,7 @@ import { Appointment } from '@interfaces';
 import { useEffect } from 'react';
 import { schedulePushNotification } from '@services';
 import { formatTime } from '@utils';
-import * as Notifications from '@node_modules/expo-notifications';
+import * as Notifications from 'expo-notifications';
 import { AppointmentCard } from './appointment-card';
 
 const s = StyleSheet.create({
@@ -127,7 +127,13 @@ export function AppointmentList() {
       upcomingAppointments.map(async ({ id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }) => {
         // Checking if notifications are already scheduled to reduce API calls
         if (scheduled.find((notification) => notification.content.data.id === id)) return;
-        await schedulePushNotification(start, formatTime(start, true), reasonDisplay, id, true);
+        await schedulePushNotification({
+          appointmentStartTime: start,
+          formattedTime: formatTime(start, true),
+          appointmentDescription: reasonDisplay,
+          appointmentID: id,
+          checkedIfScheduled: true,
+        });
       });
     };
     scheduleNotifications();
