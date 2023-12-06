@@ -69,7 +69,7 @@ export default function Initial() {
         <Button
           label="Register"
           theme="tertiary"
-          onPress={() => router.push('personal-details-one')}
+          onPress={() => router.push('personal-details')}
         />
         <Text style={s.or}>or</Text>
         <Button
