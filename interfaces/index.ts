@@ -1,7 +1,9 @@
 export type { Allergy } from '@interfaces/allergy';
 export type { ApiError } from '@interfaces/api_error';
 export type { Appointment } from '@interfaces/appointment';
+export type { Coding } from '@interfaces/coding';
 export type { DocumentResource } from '@interfaces/document-resource';
+export type { Goal } from '@interfaces/goal';
 export type { Immunization } from '@interfaces/immunization';
 export type { MedicalRecord } from '@interfaces/medical-record';
 export type { Medication } from '@interfaces/medication';

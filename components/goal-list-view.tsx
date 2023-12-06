@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header, Screen, ClickableCard, AllergyCard } from '@components';
+import { Header, Screen, ClickableCard, AllergyCard, GoalCard } from '@components';
 import { g } from '@styles';
-import { Allergy, DocumentResource, Immunization } from '@interfaces';
+import { Allergy, DocumentResource, Goal, Immunization } from '@interfaces';
 import React from 'react';
 import { ImmunizationCard } from '@components/immunization-card';
 
@@ -25,6 +25,13 @@ const s = StyleSheet.create({
     rowGap: g.size(16),
     justifyContent: 'space-between',
   },
+  label: {
+    ...g.titleXSmall,
+    color: g.white,
+  },
+  scrollSection: {
+    gap: g.size(16),
+  },
   title: {
     ...g.titleLarge,
   },
@@ -46,39 +53,16 @@ export function isAllergy(arg: any): arg is Allergy {
   return arg?.resource?.reaction !== undefined;
 }
 
-export function ListView({ items, icon, title, clickable, isFetching }:
-  {items: DocumentResource[] | Immunization[] | Allergy[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
-  const listItems = () => {
-    if (isImmunization(items[0])) {
-      return items.map((item) => (
-        <ImmunizationCard immunization={item} />
-      ));
-    } if (isAllergy(items[0])) {
-      return items.map((item) => (
-        <AllergyCard allergy={item} />
-      ));
-    } if (clickable) {
-      return items.map((item) => {
-        if (!item.resource.content[0].attachment.url) return null;
-        return (
-          <ClickableCard
-            key={item.resource.id}
-            object={item}
-            uri={item.resource.content[0].attachment.url}
-          />
-        );
-      });
-    }
-    return (
-      <Text style={s.defaultText}>
-        No
-        {' '}
-        {title}
-        {' '}
-        to display
-      </Text>
-    );
-  };
+export function isGoal(arg: any): arg is Goal {
+  return arg?.resource?.achievementStatus !== undefined;
+}
+
+export function GoalListView({ items, icon, title, clickable, isFetching }:
+  {items: Goal[], icon: React.JSX.Element, title: string, clickable?: boolean, isFetching?: boolean }) {
+  const activeStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
+  const notActiveStates = ['Not Achieved', 'Not Attainable', 'Achieved'];
+  const active = items.filter((item) => activeStates.includes(item.resource.achievementStatus.coding[0].display));
+  const notActive = items.filter((item) => notActiveStates.includes(item.resource.achievementStatus.coding[0].display));
 
   return (
     <Screen>
@@ -95,7 +79,18 @@ export function ListView({ items, icon, title, clickable, isFetching }:
         </View>
         {!isFetching && (
         <View style={s.invoicesContainer}>
-          {listItems()}
+          <View style={s.scrollSection}>
+            <Text style={s.label}>
+              Active
+            </Text>
+            {active.map((item) => <GoalCard goal={item} />)}
+          </View>
+          <View style={s.scrollSection}>
+            <Text style={s.label}>
+              Not Active
+            </Text>
+            {notActive.map((item) => <GoalCard goal={item} />)}
+          </View>
         </View>
         )}
       </ScrollView>

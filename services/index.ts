@@ -10,3 +10,4 @@ export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@ser
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { useCreateCoverage, Insurers } from '@services/coverage';
+export { useGoals } from '@services/goals';

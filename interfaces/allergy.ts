@@ -1,8 +1,4 @@
-interface Coding {
-  system: string;
-  code: string;
-  display: string;
-}
+import { Coding } from './index';
 
 interface ClinicalStatus {
   coding: Coding[];
