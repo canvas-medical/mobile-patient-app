@@ -45,7 +45,6 @@ export function GoalCard({ goal }: { goal: Goal }) {
       startDate
     }
   } = goal;
-  console.log(goal);
   const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
 
   return (
