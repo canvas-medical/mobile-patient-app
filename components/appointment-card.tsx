@@ -1,7 +1,12 @@
-import { StyleSheet, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native';
 import { Appointment } from '@interfaces';
 import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome } from '@expo/vector-icons';
+// import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { formatTime } from '@utils';
 import { g } from '@styles';
 
@@ -52,22 +57,36 @@ const s = StyleSheet.create({
   practitionerData: {
     flex: 1,
   },
-  practitionerLocation: {
-    ...g.bodyMedium,
-    color: g.white,
-  }
+  // practitionerLocation: {
+  //   ...g.bodyMedium,
+  //   color: g.white,
+  //   textDecorationLine: 'underline',
+  // },
+  // pressable: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   gap: g.size(4),
+  // }
 });
 
 export function AppointmentCard({ appt }: { appt: Appointment }) {
   const {
     id,
-    datetimeStart,
-    datetimeEnd,
-    practitioner,
-    location,
+    start,
+    end,
+    reasonCode,
+    // appointmentType: { coding },
+    // contained: [{ address }],
   } = appt;
 
-  const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
+  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  // TODO: review displays to see if there are any other ways that telemedicine is displayed
+  // const needsMapLink = coding[0].display !== 'Telemedicine' && coding[0].display !== 'Telehealth';
+
+  // const url = needsMapLink && Platform.select({
+  //   ios: `https://maps.apple.com?address=${address}`,
+  //   android: `https://www.google.com/maps/search/?api=1&query=${address}`,
+  // });
 
   return (
     <View
@@ -91,11 +110,11 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               &nbsp;
               •
               &nbsp;
-              {formatTime(datetimeStart, false)}
+              {formatTime(start, false)}
               {' '}
               -
               {' '}
-              {formatTime(datetimeEnd, true)}
+              {formatTime(end, true)}
             </Text>
           </View>
           <View style={s.dataDivider} />
@@ -106,14 +125,23 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
                 style={s.practitioner}
                 numberOfLines={1}
               >
-                {practitioner}
+                {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
               </Text>
-              <Text
-                style={s.practitionerLocation}
-                numberOfLines={1}
+              {/* <TouchableOpacity
+                onPress={() => Linking.openURL(url || address)}
+                style={s.pressable}
               >
-                {location}
-              </Text>
+                {needsMapLink
+                  ? <Ionicons name="navigate" size={g.size(18)} color={g.white} />
+                  : <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />
+                }
+                <Text
+                  style={s.practitionerLocation}
+                  numberOfLines={1}
+                >
+                  {url ? address : 'Join video call'}
+                </Text>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>

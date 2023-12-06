@@ -1,7 +1,16 @@
 export interface Appointment {
-  id: number
-  datetimeStart: string
-  datetimeEnd: string
-  practitioner: string
-  location: string
+  id: string;
+  start: string;
+  end: string;
+  reasonCode: {
+    text: string;
+  }[];
+  appointmentType: {
+    coding: {
+      display: string;
+    }[];
+  };
+  contained: {
+    address: string;
+  }[];
 }

@@ -25,8 +25,6 @@ export default function AppointmentsAndMedications() {
   const { data: appointments, isLoading: fetchingAppointments } = useAppointments();
   const [toggled, setToggled] = useState(false);
 
-  console.log('Hello: ', medications);
-
   return (
     <View style={s.container}>
       <LabeledToggle

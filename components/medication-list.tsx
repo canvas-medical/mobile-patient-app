@@ -13,9 +13,8 @@ const s = StyleSheet.create({
 });
 
 export function MedicationList({ medications }: { medications: any }) { // TODO: type
-  const meds = medications.entry.map((med) => med.resource);
-  const activeMedications = meds.filter((med) => med.status === 'active');
-  const expiredMedications = meds.filter((med) => med.status === 'stopped');
+  const activeMedications = medications.filter((med) => med.status === 'active');
+  const expiredMedications = medications.filter((med) => med.status === 'stopped');
 
   return (
     <>

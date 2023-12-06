@@ -5,7 +5,7 @@ import { getToken } from './access-token';
 async function getMedications() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Medication?patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/MedicationStatement?patient=Patient/${patientID}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
