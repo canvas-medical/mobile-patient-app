@@ -1,7 +1,7 @@
 interface Coding {
   system?: string;
-  code: string;
-  display?: string;
+  code?: string;
+  display: string;
   userSelected?: boolean;
 }
 
@@ -14,11 +14,11 @@ interface PayloadType {
 }
 
 interface Endpoint {
-  resourceType: string;
-  id: string;
-  status: string;
-  connectionType: ConnectionType;
-  payloadType: PayloadType[];
+  resourceType?: string;
+  id?: string;
+  status?: string;
+  connectionType?: ConnectionType;
+  payloadType?: PayloadType[];
   address: string;
 }
 
@@ -28,7 +28,7 @@ interface AppointmentType {
 
 interface ReasonCode {
   coding: Coding[];
-  text: string;
+  text?: string;
 }
 
 interface SupportingInformation {
@@ -47,15 +47,15 @@ interface Participant {
 }
 
 export interface Appointment {
-  resourceType: string;
+  resourceType?: string;
   id: string;
   contained: Endpoint[];
-  status: string;
+  status?: string;
   appointmentType: AppointmentType;
   reasonCode: ReasonCode[];
-  description: string;
-  supportingInformation: SupportingInformation[];
+  description?: string;
+  supportingInformation?: SupportingInformation[];
   start: string;
   end: string;
-  participant: Participant[];
+  participant?: Participant[];
 }

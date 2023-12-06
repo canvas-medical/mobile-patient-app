@@ -69,16 +69,14 @@ const s = StyleSheet.create({
 export function AppointmentCard({ appt }: { appt: Appointment }) {
   const {
     id,
-    datetimeStart,
-    datetimeEnd,
-    practitioner,
-    location,
-    appointmentType,
-    contained: { address },
+    start,
+    end,
+    reasonCode: [{ coding: [{ display: reasonDisplay }] }],
+    appointmentType: { coding: [{ display }] },
+    contained: [{ address }],
   } = appt;
-  const display = appointmentType?.coding?.display;
 
-  const formattedDate = new Date(datetimeStart).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
+  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).split(',').join('');
   const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth'; // TODO: review displays to see if there are any other ways that telemedicine is displayed
 
   const url = needsMapLink && Platform.select({
@@ -108,11 +106,11 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
               &nbsp;
               •
               &nbsp;
-              {formatTime(datetimeStart, false)}
+              {formatTime(start, false)}
               {' '}
               -
               {' '}
-              {formatTime(datetimeEnd, true)}
+              {formatTime(end, true)}
             </Text>
           </View>
           <View style={s.dataDivider} />
@@ -123,7 +121,7 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
                 style={s.practitioner}
                 numberOfLines={1}
               >
-                {practitioner}
+                {reasonDisplay}
               </Text>
               <TouchableOpacity
                 onPress={() => Linking.openURL(url || address)}
@@ -137,7 +135,7 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
                   style={s.practitionerLocation}
                   numberOfLines={1}
                 >
-                  {location}
+                  {url ? address : 'Join video call'}
                 </Text>
               </TouchableOpacity>
             </View>
