@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
-async function getObservations() {
+async function getDiagnostics() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Observation?category=vital-signs&patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/DiagnosticReport?patient=Patient/${patientID}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -16,10 +16,10 @@ async function getObservations() {
   return json.entry.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason);
 }
 
-export function useObservations() {
-  const observationsQuery = useQuery({
-    queryKey: ['observations'],
-    queryFn: () => getObservations(),
+export function useDiagnostics() {
+  const diagnosticQuery = useQuery({
+    queryKey: ['diagnostics'],
+    queryFn: () => getDiagnostics(),
   });
-  return observationsQuery;
+  return diagnosticQuery;
 }

@@ -14,7 +14,7 @@ export { ListView } from '@components/list-view';
 export { MedicationCard } from '@components/medication-card';
 export { MedicationList } from '@components/medication-list';
 export { MessageBlock } from '@components/message-block';
-export { ReportsList } from '@components/reports-list';
+export { ReportList } from '@components/report-list';
 export { ReportCard } from '@components/report-card';
 export { Screen } from '@components/screen';
 export { Search } from '@components/search';

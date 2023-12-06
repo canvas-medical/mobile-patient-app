@@ -1,14 +1,8 @@
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { g } from '@styles';
-import { AppointmentCard } from '@components/appointment-card';
-// import { useRecords } from '@services';
+import { AppointmentCard } from '@components/appointment-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
 
 const s = StyleSheet.create({
-  contentContainer: {
-    gap: g.size(24),
-    padding: g.size(16),
-    paddingBottom: g.size(120),
-  },
   label: {
     ...g.titleXSmall,
     color: g.white,
@@ -18,52 +12,53 @@ const s = StyleSheet.create({
   },
 });
 
-const appointments = [
-  {
-    id: 1,
-    datetimeStart: '2023-11-20T10:00:00',
-    datetimeEnd: '2023-11-20T11:00:00',
-    practitioner: 'Dr. Smith',
-    location: 'Clinic A'
-  },
-  {
-    id: 2,
-    datetimeStart: '2023-11-21T11:30:00',
-    datetimeEnd: '2023-11-21T12:30:00',
-    practitioner: 'Dr. Johnson',
-    location: 'Clinic B'
-  },
-  {
-    id: 3,
-    datetimeStart: '2023-11-22T14:15:00',
-    datetimeEnd: '2023-11-22T15:15:00',
-    practitioner: 'Dr. Davis',
-    location: 'Clinic C'
-  },
-  {
-    id: 4,
-    datetimeStart: '2023-11-23T16:45:00',
-    datetimeEnd: '2023-11-23T17:45:00',
-    practitioner: 'Dr. Wilson',
-    location: 'Clinic D'
-  },
-  {
-    id: 5,
-    datetimeStart: '2023-11-24T09:30:00',
-    datetimeEnd: '2023-11-24T10:30:00',
-    practitioner: 'Dr. Anderson',
-    location: 'Clinic E'
-  },
-];
+// const appointments = [
+//   {
+//     id: 1,
+//     datetimeStart: '2023-11-20T10:00:00',
+//     datetimeEnd: '2023-11-20T11:00:00',
+//     practitioner: 'Dr. Smith',
+//     location: 'Clinic A'
+//   },
+//   {
+//     id: 2,
+//     datetimeStart: '2023-11-21T11:30:00',
+//     datetimeEnd: '2023-11-21T12:30:00',
+//     practitioner: 'Dr. Johnson',
+//     location: 'Clinic B'
+//   },
+//   {
+//     id: 3,
+//     datetimeStart: '2023-11-22T14:15:00',
+//     datetimeEnd: '2023-11-22T15:15:00',
+//     practitioner: 'Dr. Davis',
+//     location: 'Clinic C'
+//   },
+//   {
+//     id: 4,
+//     datetimeStart: '2023-11-23T16:45:00',
+//     datetimeEnd: '2023-11-23T17:45:00',
+//     practitioner: 'Dr. Wilson',
+//     location: 'Clinic D'
+//   },
+//   {
+//     id: 5,
+//     datetimeStart: '2023-11-24T09:30:00',
+//     datetimeEnd: '2023-11-24T10:30:00',
+//     practitioner: 'Dr. Anderson',
+//     location: 'Clinic E'
+//   },
+// ];
 
-export function AppointmentList() {
-  const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.datetimeStart) > new Date());
-  const pastAppointments = appointments.filter((appointment) => new Date(appointment.datetimeStart) <= new Date());
-  // const { data } = useRecords('Appointment');
-  // console.log('Appts: ', data);
+export function AppointmentList({ appointments }: { appointments: any[] }) { // TODO: type appointments
+  const upcomingAppointments = [];
+  const pastAppointments = [];
+  // const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.datetimeStart) > new Date());
+  // const pastAppointments = appointments.filter((appointment) => new Date(appointment.datetimeStart) <= new Date());
+  console.log('APPOINTMENTS: ', appointments);
 
   return (
-    <ScrollView contentContainerStyle={s.contentContainer}>
+    <>
       {upcomingAppointments.length > 0 && (
         <View style={s.scrollSection}>
           <Text style={s.label}>
@@ -80,6 +75,6 @@ export function AppointmentList() {
           {pastAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
         </View>
       )}
-    </ScrollView>
+    </>
   );
 }

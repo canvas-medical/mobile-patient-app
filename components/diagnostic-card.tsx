@@ -14,6 +14,7 @@ const s = StyleSheet.create({
   },
   dataContainer: {
     flex: 1,
+    gap: g.size(2),
   },
   diagnosticBlur: {
     flex: 1,
@@ -35,7 +36,7 @@ const s = StyleSheet.create({
 });
 
 export function DiagnosticCard({ data }: { data: any, }) { // TODO: type
-  const { date, type, value } = data;
+  const { issued, code: { text }, category: [{ coding: [{ display }] }] } = data;
   return (
     <TouchableOpacity
       style={s.blurContainer}
@@ -51,21 +52,21 @@ export function DiagnosticCard({ data }: { data: any, }) { // TODO: type
           <View style={s.dataContainer}>
             <Text
               style={s.diagnosticData}
-              numberOfLines={1}
+              numberOfLines={2}
             >
-              {value}
+              {text}
             </Text>
             <Text
               style={s.diagnosticType}
               numberOfLines={1}
             >
-              {type}
+              {display}
             </Text>
           </View>
           <Feather name="chevron-right" size={g.size(28)} color={g.white} />
         </View>
         <Text style={s.diagnosticDate}>
-          {new Date(date).toLocaleDateString('en-US', {
+          {new Date(issued).toLocaleDateString('en-US', {
             weekday: 'short',
             year: 'numeric',
             month: 'short',

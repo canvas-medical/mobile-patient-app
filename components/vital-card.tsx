@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { Feather } from '@expo/vector-icons';
+import { vitalsValueSwitch, vitalsIconSwitch } from '@utils';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -9,13 +9,25 @@ const s = StyleSheet.create({
     borderRadius: g.size(8),
     overflow: 'hidden',
   },
+  bottomRow: {
+    flexDirection: 'row',
+    gap: g.size(8),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: g.size(8),
+  },
   firstBlurContainer: {
     width: g.width - g.size(32),
+  },
+  topRow: {
+    flexDirection: 'row',
+    gap: g.size(8),
+    justifyContent: 'space-between',
   },
   vitalBlur: {
     flex: 1,
     padding: g.size(12),
-    gap: g.size(8),
+    justifyContent: 'space-between',
   },
   vitalData: {
     ...g.labelMedium,
@@ -30,11 +42,6 @@ const s = StyleSheet.create({
     ...g.labelMedium,
     color: g.white,
   },
-  vitalRow: {
-    flexDirection: 'row',
-    gap: g.size(8),
-    justifyContent: 'space-between',
-  },
 });
 
 export function VitalCard({ vital, vitalsOdd, index }: {
@@ -42,7 +49,7 @@ export function VitalCard({ vital, vitalsOdd, index }: {
   vitalsOdd: boolean,
   index: number,
 }) {
-  const { date, type, value } = vital;
+  const { issued, code: { coding } } = vital;
   return (
     <View
       style={[
@@ -55,24 +62,22 @@ export function VitalCard({ vital, vitalsOdd, index }: {
         tint="light"
         intensity={50}
       >
-        <View style={s.vitalRow}>
+        <View style={s.topRow}>
           <Text style={s.vitalLabel}>
-            {type}
+            {coding[0].display}
           </Text>
-          <Feather name="heart" size={g.size(20)} color={g.white} />
+          {vitalsIconSwitch(coding[0].display)}
         </View>
-        <View style={s.vitalRow}>
+        <View style={s.bottomRow}>
           <Text style={s.vitalDate}>
-            <Text style={s.vitalDate}>
-              {new Date(date).toLocaleDateString('en-US', {
-                year: '2-digit',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </Text>
+            {new Date(issued).toLocaleDateString('en-US', {
+              year: '2-digit',
+              month: 'short',
+              day: 'numeric'
+            })}
           </Text>
           <Text style={s.vitalData}>
-            {value}
+            {vitalsValueSwitch(coding[0].display, vital)}
           </Text>
         </View>
       </BlurView>

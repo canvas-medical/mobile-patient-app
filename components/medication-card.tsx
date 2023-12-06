@@ -67,7 +67,7 @@ export function MedicationCard({ med }: { med: Medication }) {
             </Text>
             <View style={s.dosageAndDateContainer}>
               <Text style={s.dosage}>
-                {dosage[0].text}
+                {dosage[0].text.charAt(0).toUpperCase() + dosage[0].text.slice(1)}
               </Text>
               <Text style={s.date}>
                 {new Date(dateAsserted).toLocaleDateString('en-US', {
