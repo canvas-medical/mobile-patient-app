@@ -10,7 +10,7 @@ import { g } from '@styles';
 import { Drawer } from 'expo-router/drawer';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useNavigation } from 'expo-router';
-import { NativeStackNavigationProp } from '@node_modules/react-native-screens/lib/typescript/native-stack';
+import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack';
 
 const s = StyleSheet.create({
   header: {

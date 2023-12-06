@@ -4,7 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
-import PdfModal from './pdf-modal';
+import * as Notifications from 'expo-notifications';
+import { registerForPushNotificationsAsync } from '@services';
+import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
 
@@ -16,11 +18,23 @@ const s = StyleSheet.create({
   },
 });
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     Alata,
     Poetsen,
   });
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
+
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
     <QueryClientProvider client={queryClient}>

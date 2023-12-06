@@ -20,6 +20,8 @@
       "bundleIdentifier": "com.brewerdigital.fhirdashboard"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"

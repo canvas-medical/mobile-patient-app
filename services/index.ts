@@ -11,3 +11,4 @@ export { useCommunication, useCommunicationSubmit } from '@services/communicatio
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { useCreateCoverage, Insurers } from '@services/coverage';
 export { useGoals } from '@services/goals';
+export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
