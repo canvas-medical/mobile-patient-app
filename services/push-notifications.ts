@@ -5,8 +5,7 @@ import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 
 export async function schedulePushNotification(start: string, formattedTime: string, appointmentDescription: string, appointmentId: string, checkedIfScheduled?: boolean): Promise<void> {
-  // Checking to see if this appointment already has a push notification scheduled
-  // This is to prevent duplicate push notifications from being scheduled
+  // Returning if the appointment already has a push notification scheduled
   if (!checkedIfScheduled) {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
     const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentId);
