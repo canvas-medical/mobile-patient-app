@@ -3,7 +3,7 @@ import { Goal } from '@interfaces';
 import { Feather } from '@expo/vector-icons';
 import { useGoals } from '@services';
 import { GoalCard, Header, Screen } from '@components';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 const s = StyleSheet.create({
@@ -45,11 +45,11 @@ const s = StyleSheet.create({
   },
 });
 export default function Goals() {
-  const { data: items, isFetching }: { data: Goal[], isFetching: boolean } = useGoals();
+  const { data, isFetching }: { data: { entry: Goal[] }, isFetching: boolean } = useGoals();
   const activeStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
   const notActiveStates = ['Not Achieved', 'Not Attainable', 'Achieved'];
-  const active = items.filter((item) => activeStates.includes(item.resource.achievementStatus.coding[0].display));
-  const notActive = items.filter((item) => notActiveStates.includes(item.resource.achievementStatus.coding[0].display));
+  const active = data?.entry.filter((item) => activeStates.includes(item.resource.achievementStatus.coding[0].display));
+  const notActive = data?.entry.filter((item) => notActiveStates.includes(item.resource.achievementStatus.coding[0].display));
 
   return (
     <Screen>
@@ -60,7 +60,6 @@ export default function Goals() {
       >
         <View style={s.titleContainer}>
           <Feather name="target" size={g.size(36)} color={g.white} />
-          ;
           <Text style={s.title}>
             Goals
           </Text>
