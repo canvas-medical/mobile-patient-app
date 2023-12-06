@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Vital } from '@interfaces';
 import { VitalCard } from '@components/vital-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { g } from '@styles';
-import { Vital } from '@interfaces';
 
 const s = StyleSheet.create({
   label: {

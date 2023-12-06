@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { g } from '@styles';
-import { ReportCard } from '@components/report-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { Report } from '@interfaces';
+import { ReportCard } from '@components/report-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   label: {

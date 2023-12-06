@@ -5,7 +5,7 @@ export { useCommunication, useCommunicationSubmit } from '@services/communicatio
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useCreateCoverage, Insurers } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
-export { useDocumentReferences } from '@services/document-reference';
+export { useInvoices } from '@services/invoices';
 export { useImmunizations } from '@services/immunization';
 export { useMedications } from '@services/medications';
 export { useObservations } from '@services/observations';

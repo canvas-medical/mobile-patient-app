@@ -1,10 +1,10 @@
 import { ListView } from '@components';
 import { g } from '@styles';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useDocumentReferences } from '@services';
+import { useInvoices } from '@services';
 
 export default function Invoices() {
-  const { data: invoices, isFetching } = useDocumentReferences('invoicefull');
+  const { data: invoices, isFetching } = useInvoices();
   const icon = <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />;
 
   return (
