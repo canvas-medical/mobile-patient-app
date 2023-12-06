@@ -4,7 +4,7 @@ export { useAppointments } from '@services/appointments';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useCreateCoverage, Insurers } from '@services/coverage';
-export { useDiagnostics } from '@services/diagnostics';
+export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
 export { useDocumentReferences } from '@services/document-reference';
 export { useImmunizations } from '@services/immunization';
 export { useMedications } from '@services/medications';

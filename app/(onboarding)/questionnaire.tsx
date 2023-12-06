@@ -14,7 +14,7 @@ import { Feather } from '@expo/vector-icons';
 import { Screen, Input, Button } from '@components';
 import { g } from '@styles';
 import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
-import { Question } from '@interfaces/question';
+import { Question } from '@interfaces';
 import { Controller, useForm } from 'react-hook-form';
 
 const s = StyleSheet.create({
@@ -83,7 +83,7 @@ export default function Questionnaire() {
   return (
     <Screen>
       <View style={s.scrollCover} />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={s.container}>
@@ -110,42 +110,39 @@ export default function Questionnaire() {
                 </View>
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
-                    {isFetching
-                      ? <ActivityIndicator size="large" />
-                      : (
-                        <>
-                          {questionnaire.item.map((question: Question) =>
-                            (
-                              <Controller
-                                name={question.linkId}
-                                control={control}
-                                rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
-                                key={question.linkId}
-                                render={({ field: { onChange, value } }) => (
-                                  <Input
-                                    placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
-                                    type={dataTypeMap[question.type]}
-                                    name={question.text}
-                                    label={question.text}
-                                    options={question.answerOption.map((answer) => (
-                                      { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
-                                    onFocus={() => clearErrors()}
-                                    onChange={(e) => onChange(e)}
-                                    value={value}
-                                    error={errors[question.linkId]}
-                                  />
-                                )}
+                    {isFetching ? <ActivityIndicator size="large" /> : (
+                      <>
+                        {questionnaire.item.map((question: Question) => (
+                          <Controller
+                            name={question.linkId}
+                            control={control}
+                            rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
+                            key={question.linkId}
+                            render={({ field: { onChange, value } }) => (
+                              <Input
+                                placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
+                                type={dataTypeMap[question.type]}
+                                name={question.text}
+                                label={question.text}
+                                options={question.answerOption.map((answer) => (
+                                  { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
+                                onFocus={() => clearErrors()}
+                                onChange={(e) => onChange(e)}
+                                value={value}
+                                error={errors[question.linkId]}
                               />
-                            ))}
-                          <Button
-                            onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
-                            disabled={isPending}
-                            label={isPending ? 'Submitting...' : 'Submit'}
-                            theme="primary"
+                            )}
                           />
-                        </>
-                      )
-                        }
+                        ))}
+                        <Button
+                          onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
+                          disabled={isPending}
+                          label={isPending ? 'Submitting...' : 'Submit'}
+                          theme="primary"
+                        />
+                      </>
+                    )
+                    }
                   </View>
                 </View>
               </View>

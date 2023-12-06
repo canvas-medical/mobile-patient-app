@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { FontAwesome5, Feather } from '@expo/vector-icons';
-import { useDiagnosticURI } from '@services/diagnostics';
+import { useDiagnosticURI } from '@services';
 import { g } from '@styles';
 
 const s = StyleSheet.create({

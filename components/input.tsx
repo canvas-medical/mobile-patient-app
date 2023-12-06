@@ -11,7 +11,7 @@ import {
   TextInputSubmitEditingEventData,
 } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
-import { FieldError, UseFormClearErrors } from 'react-hook-form';
+import { FieldError, FieldErrors, UseFormClearErrors } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { Overlay } from '@rneui/themed';
@@ -96,7 +96,7 @@ interface InputProps {
   onFocus: UseFormClearErrors<{ [key: string]: string }>,
   onChange: (...event: any[]) => void,
   forwardedRef?: Ref<TextInput>,
-  error: FieldError | undefined;
+  error: FieldError | FieldErrors<any> | undefined;
 }
 
 interface TextInputProps extends InputProps {
