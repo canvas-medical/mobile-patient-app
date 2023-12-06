@@ -47,9 +47,9 @@ const s = StyleSheet.create({
 export default function Goals() {
   const { data, isFetching }: { data: { entry: Goal[] }, isFetching: boolean } = useGoals();
   const activeStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
-  const notActiveStates = ['Not Achieved', 'Not Attainable', 'Achieved'];
+  const inactiveStates = ['Not Achieved', 'Not Attainable', 'Achieved'];
   const active = data?.entry.filter((item) => activeStates.includes(item.resource.achievementStatus.coding[0].display));
-  const notActive = data?.entry.filter((item) => notActiveStates.includes(item.resource.achievementStatus.coding[0].display));
+  const inactive = data?.entry.filter((item) => inactiveStates.includes(item.resource.achievementStatus.coding[0].display));
 
   return (
     <Screen>
@@ -75,16 +75,16 @@ export default function Goals() {
                   {active.map((item) => <GoalCard goal={item} />)}
                 </View>
               ) : null}
-            {notActive.length
+            {inactive.length
               ? (
                 <View style={s.scrollSection}>
                   <Text style={s.label}>
                     Not Active
                   </Text>
-                  {notActive.map((item) => <GoalCard goal={item} />)}
+                  {inactive.map((item) => <GoalCard goal={item} />)}
                 </View>
               ) : null}
-            {!notActive.length && !active.length
+            {!inactive.length && !active.length
               ? (
                 <Text style={s.defaultText}>
                   No goals found
