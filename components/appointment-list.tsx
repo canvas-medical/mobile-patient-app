@@ -16,8 +16,6 @@ export function AppointmentList({ appointments }: { appointments: any[] }) { // 
   const upcomingAppointments = appointments.filter((appointment) => new Date(appointment.start) > new Date());
   const pastAppointments = appointments.filter((appointment) => new Date(appointment.start) <= new Date());
 
-  console.log('Hello: ', appointments);
-
   return (
     <>
       {upcomingAppointments.length > 0 && (

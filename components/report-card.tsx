@@ -38,8 +38,6 @@ export function ReportCard({ report }: { report: any }) { // TODO: type report
     content: [{ attachment: { url: uri } }]
   } = report;
 
-  console.log('Hello: ', uri);
-
   return (
     <TouchableOpacity
       style={s.blurContainer}

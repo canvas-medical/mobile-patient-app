@@ -25,8 +25,6 @@ export default function MetricsAndReports() {
   const { data: diagnostics, isLoading: fetchingDiagnostics } = useDiagnostics();
   const { data: observations, isLoading: fetchingObservations } = useObservations();
 
-  console.log('DIAGNOSTICS: ', diagnostics);
-
   return (
     <View style={s.container}>
       <LabeledToggle
