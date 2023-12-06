@@ -48,8 +48,8 @@ export default function Goals() {
   const { data, isFetching }: { data: { entry: Goal[] }, isFetching: boolean } = useGoals();
   const activeStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
   const inactiveStates = ['Not Achieved', 'Not Attainable', 'Achieved'];
-  const active = data?.entry.filter((item) => activeStates.includes(item.resource.achievementStatus.coding[0].display));
-  const inactive = data?.entry.filter((item) => inactiveStates.includes(item.resource.achievementStatus.coding[0].display));
+  const activeGoals = data?.entry.filter((item) => activeStates.includes(item.resource.achievementStatus.coding[0].display));
+  const inactiveGoals = data?.entry.filter((item) => inactiveStates.includes(item.resource.achievementStatus.coding[0].display));
 
   return (
     <Screen>
@@ -66,25 +66,25 @@ export default function Goals() {
         </View>
         {!isFetching ? (
           <View style={s.invoicesContainer}>
-            {active.length
+            {activeGoals.length
               ? (
                 <View style={s.scrollSection}>
                   <Text style={s.label}>
                     Active
                   </Text>
-                  {active.map((item) => <GoalCard goal={item} />)}
+                  {activeGoals.map((item) => <GoalCard goal={item} />)}
                 </View>
               ) : null}
-            {inactive.length
+            {inactiveGoals.length
               ? (
                 <View style={s.scrollSection}>
                   <Text style={s.label}>
-                    Not Active
+                    Inactive
                   </Text>
-                  {inactive.map((item) => <GoalCard goal={item} />)}
+                  {inactiveGoals.map((item) => <GoalCard goal={item} />)}
                 </View>
               ) : null}
-            {!inactive.length && !active.length
+            {!inactiveGoals.length && !activeGoals.length
               ? (
                 <Text style={s.defaultText}>
                   No goals found
