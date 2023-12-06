@@ -127,7 +127,13 @@ export function AppointmentList() {
       upcomingAppointments.map(async ({ id, start, reasonCode: [{ coding: [{ display: reasonDisplay }] }] }) => {
         // Checking if notifications are already scheduled to reduce API calls
         if (scheduled.find((notification) => notification.content.data.id === id)) return;
-        await schedulePushNotification(start, formatTime(start, true), reasonDisplay, id, true);
+        await schedulePushNotification({
+          appointmentStartTime: start,
+          formattedTime: formatTime(start, true),
+          appointmentDescription: reasonDisplay,
+          appointmentID: id,
+          checkedIfScheduled: true,
+        });
       });
     };
     scheduleNotifications();
