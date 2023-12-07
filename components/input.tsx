@@ -183,6 +183,7 @@ function DatePickerComponent(props) {
     minimumDate,
     maximumDate,
     onChange,
+    error,
   } = props;
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
   const dateValue = new Date(new Date(value).getTime() + (new Date(value).getTimezoneOffset() * 60000));
@@ -192,6 +193,8 @@ function DatePickerComponent(props) {
     day: 'numeric'
   });
   const valueIsToday = dateLabel === new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+  console.log('Error: ', error);
 
   return (
     <>
@@ -211,13 +214,14 @@ function DatePickerComponent(props) {
       )}
       {Platform.OS === 'android' && (
         <TouchableOpacity
-          style={[s.selectorButton, !value && s.inputContainerError]}
+          style={[s.selectorButton, !!error && s.inputContainerError]}
           onPress={() => setShowDatePicker(true)}
         >
           <Text
             style={[
               s.selectorButtonLabel,
-              valueIsToday && s.selectorButtonPlaceholder,
+              valueIsToday && !error && s.selectorButtonPlaceholder,
+              valueIsToday && !!error && s.selectorButtonPlaceholderError,
             ]}
           >
             {valueIsToday ? 'Select a date' : dateLabel}
