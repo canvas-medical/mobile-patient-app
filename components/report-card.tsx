@@ -13,7 +13,7 @@ const s = StyleSheet.create({
     paddingLeft: g.size(16),
     paddingRight: g.size(8),
   },
-  container: {
+  card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
   },
@@ -41,7 +41,7 @@ export function ReportCard({ report }: { report: Report }) {
 
   return (
     <TouchableOpacity
-      style={s.container}
+      style={s.card}
       onPress={() =>
         router.push({
           pathname: 'pdf-modal',
