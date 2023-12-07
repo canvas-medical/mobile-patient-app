@@ -186,13 +186,13 @@ function DatePickerComponent(props) {
     error,
   } = props;
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
+  const valueIsToday = value === new Date().toISOString().slice(0, 10);
   const dateValue = new Date(new Date(value).getTime() + (new Date(value).getTimezoneOffset() * 60000));
   const dateLabel = dateValue.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   });
-  const valueIsToday = dateLabel === new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
   return (
     <>
