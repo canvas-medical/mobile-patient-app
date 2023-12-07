@@ -40,12 +40,10 @@ export default function PdfModal() {
   const params = useLocalSearchParams();
   const { consentType, isAccepted } = params;
   // const { uri, consentType, isAccepted } = params;
-  const acceptAndClose = () => {
+  const onCloseModal = () => {
     if (consentType) {
-      router.back();
-    } else {
       onCreateConsent({ consent: consentType as string });
-    }
+    } else router.back();
   };
 
   useEffect(() => {
@@ -67,7 +65,7 @@ export default function PdfModal() {
       <View style={s.buttonContainer}>
         <Button
           theme="primary"
-          onPress={acceptAndClose}
+          onPress={onCloseModal}
           disabled={isPending || isSuccess || !!isAccepted}
           label={isPending ? 'Accepting...' : text}
         />
