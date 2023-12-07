@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
-async function getRecords(recordType: string) {
+async function getConditions() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/${recordType}?patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Condition?patient=Patient/${patientID}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -13,13 +13,13 @@ async function getRecords(recordType: string) {
     }
   });
   const json = await res.json();
-  return json;
+  return json.entry?.map((entry) => entry.resource) || [];
 }
 
-export function useRecords(recordType: string) {
-  const recordsQuery = useQuery({
-    queryKey: [recordType],
-    queryFn: () => getRecords(recordType),
+export function useConditions() {
+  const conditionsQuery = useQuery({
+    queryKey: ['conditions'],
+    queryFn: () => getConditions(),
   });
-  return recordsQuery;
+  return conditionsQuery;
 }

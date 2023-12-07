@@ -8,12 +8,12 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
-    height: g.size(125)
-  },
-  drawerButton: {
-    position: 'absolute',
-    top: g.size(64),
-    left: g.size(32),
+    paddingTop: g.size(72),
+    paddingLeft: g.size(32),
+    paddingRight: g.size(24),
+    marginBottom: g.size(36),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   greeting: {
     ...g.bodySmall,
@@ -24,19 +24,11 @@ const s = StyleSheet.create({
     color: g.white,
   },
   nameAndAvatarContainer: {
-    position: 'absolute',
-    top: g.size(64),
-    right: g.size(32),
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
     gap: g.size(8),
   },
   nameContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
 });
@@ -46,6 +38,9 @@ export function Header() {
   const patientName = `${name[0].given[0]} ${name[0].family}`;
   return (
     <View style={s.container}>
+      <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <Feather name="menu" size={g.size(48)} color={g.white} />
+      </TouchableOpacity>
       <TouchableOpacity
         style={s.nameAndAvatarContainer}
         onPress={() => {
@@ -62,6 +57,7 @@ export function Header() {
                 style: 'destructive',
                 onPress: () => {
                   SecureStore.deleteItemAsync('patient_id');
+                  SecureStore.deleteItemAsync('push_token');
                   router.replace('initial');
                 },
               },
@@ -74,12 +70,6 @@ export function Header() {
           <Text style={s.name}>{patientName}</Text>
         </View>
         <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={s.drawerButton}
-        onPress={() => navigation.openDrawer()}
-      >
-        <Feather name="menu" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
     </View>
   );
