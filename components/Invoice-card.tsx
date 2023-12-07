@@ -29,8 +29,6 @@ const s = StyleSheet.create({
   },
 });
 
-// TODO: check for consistent chevron icons, icon placement, typography across cards, date formats.
-
 export function InvoiceCard({ invoice }: { invoice: Invoice }) {
   const {
     date,
@@ -42,10 +40,7 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
       style={s.card}
       onPress={() => router.push({
         pathname: 'pdf-modal',
-        params: {
-          uri: url,
-          noActionOnClose: true, // TODO: what is this doing?
-        }
+        params: { uri: url }
       })}
     >
       <BlurView
