@@ -194,8 +194,6 @@ function DatePickerComponent(props) {
   });
   const valueIsToday = dateLabel === new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
-  console.log('Error: ', error);
-
   return (
     <>
       {showDatePicker && (
