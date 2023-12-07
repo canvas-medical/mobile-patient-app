@@ -5,6 +5,7 @@ export type { Condition } from '@interfaces/condition';
 export type { DiagnosticReport } from '@interfaces/diagnostic-report';
 export type { DocumentResource } from '@interfaces/document-resource';
 export type { Immunization } from '@interfaces/immunization';
+export type { Invoice } from '@interfaces/invoice';
 export type { Medication } from '@interfaces/medication';
 export type { Message } from '@interfaces/message';
 export type { Question } from '@interfaces/question';

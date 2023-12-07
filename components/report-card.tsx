@@ -6,16 +6,16 @@ import { Report } from '@interfaces';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  blurContainer: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-  },
-  cardBlur: {
+  blur: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: g.size(12),
     paddingLeft: g.size(16),
     paddingRight: g.size(8),
+  },
+  container: {
+    borderRadius: g.size(8),
+    overflow: 'hidden',
   },
   dataContainer: {
     gap: g.size(4),
@@ -41,7 +41,7 @@ export function ReportCard({ report }: { report: Report }) {
 
   return (
     <TouchableOpacity
-      style={s.blurContainer}
+      style={s.container}
       onPress={() =>
         router.push({
           pathname: 'pdf-modal',
@@ -52,7 +52,7 @@ export function ReportCard({ report }: { report: Report }) {
       <BlurView
         intensity={40}
         tint="light"
-        style={s.cardBlur}
+        style={s.blur}
       >
         <View style={s.dataContainer}>
           <Text style={s.label}>
