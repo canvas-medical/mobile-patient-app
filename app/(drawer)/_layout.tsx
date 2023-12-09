@@ -50,7 +50,7 @@ export default function Layout() {
     Goals: '(dashboard)',
     Documents: '(dashboard)',
     Invoices: 'invoices',
-    'Bill Pay': '(dashboard)'
+    'Bill Pay': 'billing'
   };
 
   // TODO: leaving unused focused param here until we can figure out how to get it to work
