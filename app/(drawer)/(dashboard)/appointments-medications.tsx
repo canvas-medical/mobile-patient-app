@@ -9,7 +9,6 @@ const s = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flex: 1,
     padding: g.size(16),
     paddingBottom: g.size(120),
     gap: g.size(24),
@@ -17,6 +16,9 @@ const s = StyleSheet.create({
   loading: {
     flex: 1,
     paddingBottom: g.size(120),
+  },
+  scrollContainer: {
+    flex: 1,
   },
 });
 
@@ -37,8 +39,8 @@ export default function AppointmentsAndMedications() {
         <ActivityIndicator size="large" color={g.white} style={s.loading} />
       ) : (
         <ScrollView
-          style={s.contentContainer}
-          contentContainerStyle={{ paddingBottom: g.size(120) }}
+          style={s.scrollContainer}
+          contentContainerStyle={s.contentContainer}
         >
           {toggled ? <MedicationList medications={medications} /> : <AppointmentList appointments={appointments} />}
         </ScrollView>

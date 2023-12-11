@@ -5,6 +5,7 @@ import { Appointment } from '@interfaces';
 import { schedulePushNotification } from '@services';
 import { formatTime } from '@utils';
 import { AppointmentCard } from '@components/appointment-card'; // TODO - Revisit this to prevent circular dependency and excessive imports
+import { BookAppointment } from '@components/book-appointment'; // TODO - Revisit this to prevent circular dependency and excessive imports
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -41,6 +42,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
   }, [upcomingAppointments]);
   return (
     <>
+      <BookAppointment />
       {upcomingAppointments.length > 0 && (
         <View style={s.scrollSection}>
           <Text style={s.label}>

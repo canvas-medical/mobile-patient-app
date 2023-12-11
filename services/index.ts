@@ -1,6 +1,7 @@
 export { getToken } from '@services/access-token';
 export { useAllergies } from '@services/allergies';
-export { useAppointments } from '@services/appointments';
+// export { useAppointments } from '@services/appointments';
+export { useAppointments, useSchedule, useSlot, useCareTeams } from '@services/appointments';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';

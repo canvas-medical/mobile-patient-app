@@ -1,6 +1,7 @@
 export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { AppointmentList } from '@components/appointment-list';
+export { BookAppointment } from '@components/book-appointment';
 export { Button } from '@components/button';
 export { ConditionCard } from '@components/condition-card';
 export { ClickableCard } from '@components/clickable-card';
