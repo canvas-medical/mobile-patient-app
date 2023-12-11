@@ -87,23 +87,27 @@ export default function Billing() {
 
   const disabled = Number(amount) < 1 || paymentNoticePending || paymentIntentPending;
 
+  const getPaymentMethod = async (clientSecret: string) => {
+    const { error: initPaymentError } = await initPaymentSheet({
+      merchantDisplayName: 'Brewer Digital',
+      paymentIntentClientSecret: clientSecret,
+      allowsDelayedPaymentMethods: false,
+    });
+    const { error: presentPaymentError } = await presentPaymentSheet();
+    if (initPaymentError || presentPaymentError) { setError('Something went wrong. Please try again.'); }
+    return initPaymentError || presentPaymentError;
+  };
+
   const handleSubmit = async () => {
     const cents = Number(amount) * 100;
     if (Number.isNaN(cents)) { setError('Please enter a valid dollar amount'); return; }
-
     // Clear errors on submit
     if (error) setError('');
     const paymentIntent = await getPaymentIntent(cents);
     if (!paymentIntent.paymentIntentId) { setError('Something went wrong. Please try again.'); return; }
     setPaymentIntentId(paymentIntent.paymentIntentId);
-    const { error: initPaymentError } = await initPaymentSheet({
-      merchantDisplayName: 'Brewer Digital',
-      paymentIntentClientSecret: paymentIntent.clientSecret,
-      allowsDelayedPaymentMethods: false,
-    });
-    const { error: presentPaymentError } = await presentPaymentSheet();
-    if (initPaymentError || presentPaymentError) { setError('Something went wrong. Please try again.'); return; }
-    onPaymentNoticeSubmit(amount);
+    const paymentErrors = await getPaymentMethod(paymentIntent.clientSecret);
+    if (!paymentErrors) onPaymentNoticeSubmit(amount);
   };
 
   useEffect(() => {
