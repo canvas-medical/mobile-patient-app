@@ -26,6 +26,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     gap: g.size(16),
     padding: g.size(32),
+    paddingTop: 0,
   },
   disabled: {
     opacity: 0.7,
@@ -63,7 +64,6 @@ const s = StyleSheet.create({
     ...g.titleLarge,
   },
   titleContainer: {
-    marginTop: g.size(16),
     flexDirection: 'row',
     alignItems: 'center',
     gap: g.size(20),
@@ -169,7 +169,7 @@ export default function Billing() {
                   </View>
                 </View>
                 <Text style={s.error}>{error}</Text>
-                {(paymentNotices.length || isLoading) && <Text style={s.label}>Payment History</Text>}
+                {(paymentNotices?.length || isLoading) && <Text style={s.label}>Payment History</Text>}
                 {isLoading
                   ? <ActivityIndicator size="large" color={g.white} />
                   : paymentNotices?.map((notice) => (
