@@ -3,6 +3,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useConditions } from '@services';
 import { ConditionCard, StackListView } from '@components';
 import { g } from '@styles';
+import { Condition } from '@interfaces';
 
 const s = StyleSheet.create({
   label: {
@@ -16,22 +17,27 @@ const s = StyleSheet.create({
 });
 
 export default function Conditions() {
-  const { data, isFetching } = useConditions();
+  const { data, isLoading, refetch } = useConditions();
   const activeConditions = data?.filter((condition) => condition.clinicalStatus.text === 'Active');
   const resolvedConditions = data?.filter((condition) => condition.clinicalStatus.text === 'Resolved');
-
   return (
     <StackListView
       title="Conditions"
       icon={<FontAwesome5 name="heart-broken" size={g.size(36)} color={g.white} />}
-      isFetching={isFetching}
+      isLoading={isLoading}
+      refetch={refetch}
     >
       {activeConditions?.length > 0 && (
         <View style={s.scrollSection}>
           <Text style={s.label}>
             Active
           </Text>
-          {activeConditions.map((condition) => <ConditionCard key={condition.id} condition={condition} />)}
+          {activeConditions.map((condition: Condition) => (
+            <ConditionCard
+              key={condition.id}
+              condition={condition}
+            />
+          ))}
         </View>
       )}
       {resolvedConditions?.length > 0 && (
@@ -39,7 +45,12 @@ export default function Conditions() {
           <Text style={s.label}>
             Resolved
           </Text>
-          {resolvedConditions.map((condition) => <ConditionCard key={condition.id} condition={condition} />)}
+          {resolvedConditions.map((condition: Condition) => (
+            <ConditionCard
+              key={condition.id}
+              condition={condition}
+            />
+          ))}
         </View>
       )}
     </StackListView>

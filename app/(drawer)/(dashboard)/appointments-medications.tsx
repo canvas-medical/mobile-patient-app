@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useMedications, useAppointments } from '@services';
 import { LabeledToggle, AppointmentList, MedicationList } from '@components';
 import { g } from '@styles';
@@ -17,15 +17,20 @@ const s = StyleSheet.create({
     flex: 1,
     paddingBottom: g.size(120),
   },
-  scrollContainer: {
-    flex: 1,
-  },
 });
 
 export default function AppointmentsAndMedications() {
-  const { data: medications, isLoading: loadingMedications } = useMedications();
-  const { data: appointments, isLoading: loadingAppointments } = useAppointments();
+  const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
+  const { data: appointments, isLoading: loadingAppointments, refetch: refetchAppointments } = useAppointments();
   const [toggled, setToggled] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    if (toggled) await refetchMedications();
+    else await refetchAppointments();
+    setRefreshing(false);
+  };
 
   return (
     <View style={s.container}>
@@ -39,8 +44,15 @@ export default function AppointmentsAndMedications() {
         <ActivityIndicator size="large" color={g.white} style={s.loading} />
       ) : (
         <ScrollView
-          style={s.scrollContainer}
           contentContainerStyle={s.contentContainer}
+          refreshControl={(
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={g.white}
+              colors={[g.white]}
+            />
+          )}
         >
           {toggled ? <MedicationList medications={medications} /> : <AppointmentList appointments={appointments} />}
         </ScrollView>

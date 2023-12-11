@@ -1,6 +1,14 @@
-import { ReactNode } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ReactNode, useState } from 'react';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { QueryObserverResult } from '@tanstack/react-query';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Header, Screen } from '@components';
 import { g } from '@styles';
@@ -36,14 +44,23 @@ const s = StyleSheet.create({
 export function StackListView({
   icon,
   title,
-  isFetching,
+  isLoading,
+  refetch,
   children,
 }: {
   icon: ReactNode,
   title: string,
-  isFetching: boolean,
+  isLoading: boolean,
+  refetch: () => Promise<QueryObserverResult<any, Error>>,
   children: ReactNode,
 }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
   return (
     <Screen>
       <Header />
@@ -53,18 +70,29 @@ export function StackListView({
           {title}
         </Text>
       </View>
-      {isFetching ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
+      {isLoading ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
         <MaskedView
           style={s.maskedView}
           maskElement={(
             <LinearGradient
               style={s.gradient}
               colors={[g.transparent, g.white]}
-              locations={[0.02, 0.075]}
+              locations={[0.0175, 0.065]}
             />
           )}
         >
-          <ScrollView contentContainerStyle={s.scrollContentContainer}>
+          <ScrollView
+            contentContainerStyle={s.scrollContentContainer}
+            refreshControl={(
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={g.white}
+                colors={[g.white]}
+                progressViewOffset={g.size(40)}
+              />
+            )}
+          >
             {children}
           </ScrollView>
         </MaskedView>

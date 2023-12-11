@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useObservations, useDiagnostics, useReports } from '@services';
 import { DiagnosticList, LabeledToggle, VitalsGrid, ReportList } from '@components';
 import { g } from '@styles';
@@ -20,10 +20,21 @@ const s = StyleSheet.create({
 });
 
 export default function MetricsAndReports() {
+  const { data: reports, isLoading: loadingReports, refetch: refetchReports } = useReports();
+  const { data: diagnostics, isLoading: loadingDiagnostics, refetch: refetchDiagnostics } = useDiagnostics();
+  const { data: observations, isLoading: loadingObservations, refetch: refetchObservations } = useObservations();
   const [toggled, setToggled] = useState(false);
-  const { data: reports, isLoading: loadingReports } = useReports();
-  const { data: diagnostics, isLoading: loadingDiagnostics } = useDiagnostics();
-  const { data: observations, isLoading: loadingObservations } = useObservations();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    if (toggled) await refetchReports();
+    else {
+      await refetchObservations();
+      await refetchDiagnostics();
+    }
+    setRefreshing(false);
+  };
 
   return (
     <View style={s.container}>
@@ -39,6 +50,14 @@ export default function MetricsAndReports() {
         <ScrollView
           style={s.container}
           contentContainerStyle={s.contentContainer}
+          refreshControl={(
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={g.white}
+              colors={[g.white]}
+            />
+          )}
         >
           {toggled ? <ReportList reports={reports} /> : (
             <>

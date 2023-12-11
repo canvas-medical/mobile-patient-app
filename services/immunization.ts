@@ -12,7 +12,8 @@ async function getImmunizations() {
       accept: 'application/json'
     }
   });
-  return res.json();
+  const json = await res.json();
+  return json.entry?.map((entry) => entry.resource) || [];
 }
 
 export function useImmunizations() {

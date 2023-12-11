@@ -49,9 +49,13 @@ export function useSchedule() {
 
 // =================================================================================================
 
-async function getSlot() {
+async function getSlot(date: string, id: string) {
+  console.log('GET ID: ', id);
   const token = await getToken();
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=Location.2-Staff.3640cd20de8a470aa570a852859ac87e&start=2023-09-21&end=2023-09-23&duration=20'`, {
+  console.log('FETCH URL: ', `${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=${id}&start=${date}&end=${date}`);
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=${id}&start=${date}&end=${date}`, {
+    // eslint-disable-next-line max-len
+    // const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=Location.2-Staff.3640cd20de8a470aa570a852859ac87e&start=2023-09-21&end=2023-09-23&duration=20'`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -59,13 +63,14 @@ async function getSlot() {
     }
   });
   const json = await res.json();
+  console.log('JSON: ', json);
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
-export function useSlot() {
+export function useSlot(date: string, id: string) {
   const slotQuery = useQuery({
-    queryKey: ['slot'],
-    queryFn: () => getSlot(),
+    queryKey: ['slot', date, id],
+    queryFn: () => getSlot(date, id),
   });
   return slotQuery;
 }
