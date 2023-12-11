@@ -7,6 +7,7 @@ export { ClickableCard } from '@components/clickable-card';
 export { DashTabs } from '@components/dashboard-tabs';
 export { DiagnosticCard } from '@components/diagnostic-card';
 export { DiagnosticList } from '@components/diagnostic-list';
+export { GoalCard } from '@components/goal-card';
 export { Header } from '@components/header';
 export { ImmunizationCard } from '@components/immunization-card';
 export { Input } from '@components/input';
