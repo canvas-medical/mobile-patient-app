@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 import { useConsentCreate } from '@services';
 import { Button } from '@components/button';
 import { g } from '@styles';
@@ -28,17 +28,18 @@ const s = StyleSheet.create({
     width: g.width,
     gap: g.size(48),
   },
-  pdf: {
-    height: '100%',
-    width: '100%',
-    paddingBottom: g.size(100),
-    backgroundColor: g.white,
-  }
+  // pdf: {
+  //   height: '100%',
+  //   width: '100%',
+  //   paddingBottom: g.size(100),
+  //   backgroundColor: g.white,
+  // }
 });
 export default function PdfModal() {
   const { mutate: onCreateConsent, isPending, isSuccess } = useConsentCreate();
   const params = useLocalSearchParams();
-  const { uri, consentType, isAccepted, noActionOnClose } = params;
+  const { consentType, isAccepted, noActionOnClose } = params;
+  // const { uri, consentType, isAccepted, noActionOnClose } = params;
   const acceptAndClose = () => {
     if (noActionOnClose) {
       router.back();
@@ -56,10 +57,10 @@ export default function PdfModal() {
 
   return (
     <View style={s.contentContainer}>
-      <Pdf
+      {/* <Pdf
         source={{ uri: uri as string }}
         style={s.pdf}
-      />
+      /> */}
       <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
         <Feather name="x" size={32} color={g.neutral500} />
       </TouchableOpacity>

@@ -3,6 +3,7 @@ export { useAllergies } from '@services/allergies';
 export { useAppointments } from '@services/appointments';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
+export { useConditions } from '@services/conditions';
 export { useCreateCoverage, Insurers } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
 export { useGoals } from '@services/goals';

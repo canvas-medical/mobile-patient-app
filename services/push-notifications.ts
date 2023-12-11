@@ -59,6 +59,6 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,
     });
-  } else alert('Must use physical device for Push Notifications');
+  } else console.log('Must use physical device for Push Notifications');
   await SecureStore.setItemAsync('push_token', token.data);
 }

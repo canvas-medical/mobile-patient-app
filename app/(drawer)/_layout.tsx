@@ -44,7 +44,7 @@ export default function Layout() {
     Medication: '(dashboard)',
     Appointments: '(dashboard)',
     Reports: '(dashboard)',
-    Conditions: '(dashboard)',
+    Conditions: 'conditions',
     Immunizations: 'immunizations',
     Allergies: 'allergies',
     Goals: 'goals',
