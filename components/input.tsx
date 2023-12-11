@@ -110,6 +110,7 @@ interface TextInputProps extends InputProps {
   | 'nickname' | 'organizationName' | 'postalCode' | 'streetAddressLine1' | 'streetAddressLine2'
   | 'sublocality' | 'telephoneNumber' | 'username' | 'password',
   returnKeyType: 'default' | 'go' | 'next' | 'search' | 'send' | 'done',
+  selectionColor?: string,
   style?: object,
 }
 
@@ -138,6 +139,7 @@ function TextComponent(props) {
     returnKeyType,
     forwardedRef,
     error,
+    selectionColor,
     style
   } = props;
   const [hidePassword, setHidePassword] = useState<boolean>(true);
@@ -161,6 +163,7 @@ function TextComponent(props) {
         textContentType={textContentType}
         returnKeyType={returnKeyType}
         ref={forwardedRef}
+        selectionColor={selectionColor}
       />
       {name.toLowerCase().includes('password') && (
         <TouchableOpacity

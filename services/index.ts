@@ -14,4 +14,5 @@ export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-not
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
 export { useRecords } from '@services/records';
 export { useReports } from '@services/reports';
+export { usePaymentIntentCapture, getPaymentIntent } from '@services/stripe';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';

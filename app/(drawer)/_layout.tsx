@@ -41,8 +41,8 @@ export default function Layout() {
   const navigation = useNavigation();
   const routes = {
     Dashboard: '(dashboard)',
-    Medication: '(dashboard)',
-    Appointments: '(dashboard)',
+    Medication: 'appointments-medications',
+    Appointments: 'appointments-medications',
     Reports: '(dashboard)',
     Conditions: '(dashboard)',
     Immunizations: 'immunizations',
@@ -50,7 +50,7 @@ export default function Layout() {
     Goals: '(dashboard)',
     Documents: '(dashboard)',
     Invoices: 'invoices',
-    'Bill Pay': 'billing'
+    Billing: 'billing'
   };
 
   // TODO: leaving unused focused param here until we can figure out how to get it to work
@@ -130,7 +130,7 @@ export default function Layout() {
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
-      case 'bill pay':
+      case 'billing':
         return (
           <View style={s.menuItem}>
             <Feather name="credit-card" size={size} color={g.black} />
