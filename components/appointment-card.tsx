@@ -71,7 +71,6 @@ const s = StyleSheet.create({
 
 export function AppointmentCard({ appt }: { appt: Appointment }) {
   const {
-    id,
     start,
     end,
     reasonCode,
@@ -89,10 +88,7 @@ export function AppointmentCard({ appt }: { appt: Appointment }) {
   // });
 
   return (
-    <View
-      key={id}
-      style={s.card}
-    >
+    <View style={s.card}>
       <BlurView
         intensity={40}
         tint="light"
