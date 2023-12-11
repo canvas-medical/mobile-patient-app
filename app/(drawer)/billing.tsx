@@ -60,6 +60,11 @@ const s = StyleSheet.create({
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
   },
+  paymentHistoryItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   title: {
     ...g.titleLarge,
   },
@@ -170,7 +175,7 @@ export default function Billing() {
                 {paymentNoticesLoading
                   ? <ActivityIndicator size="large" color={g.white} />
                   : paymentNotices?.map((notice) => (
-                    <View key={notice.id} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View key={notice.id} style={s.paymentHistoryItem}>
                       <Text style={{ color: g.white }}>
                         $
                         {notice.resource.amount.value.toFixed(2)}
