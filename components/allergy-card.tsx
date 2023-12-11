@@ -32,15 +32,14 @@ const s = StyleSheet.create({
 
 export function AllergyCard({ allergy }: { allergy: Allergy }) {
   const {
-    resource: {
-      id,
-      code: {
-        coding: [{ display }],
-      },
-      note: [{ text }],
-      reaction: [{ severity }],
-    }
+    id,
+    code: {
+      coding: [{ display }],
+    },
+    note: [{ text }],
+    reaction: [{ severity }],
   } = allergy;
+
   const severityColor = (): string => {
     switch (severity.toLowerCase()) {
       case 'mild':

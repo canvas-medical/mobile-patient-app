@@ -4,53 +4,47 @@ import { Immunization } from '@interfaces';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  blur: {
+    padding: g.size(16),
+  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
   },
-  cardBlur: {
-    padding: g.size(16),
+  dataContainer: {
+    flex: 1,
+    gap: g.size(4),
   },
-  immunization: {
-    ...g.labelSmall,
-    color: g.white,
-  },
-  immunizationDate: {
+  date: {
     ...g.bodySmall,
     color: g.white,
   },
-  immunizationInfoContainer: {
-    flex: 1,
-    gap: g.size(4),
+  label: {
+    ...g.labelSmall,
+    color: g.white,
   },
 });
 
 export function ImmunizationCard({ immunization }: { immunization: Immunization }) {
   const {
-    resource: {
-      id,
-      vaccineCode,
-      occurrenceDateTime,
-    }
+    vaccineCode: { coding: [{ display }] },
+    occurrenceDateTime,
   } = immunization;
 
   return (
-    <View
-      key={id}
-      style={s.card}
-    >
+    <View style={s.card}>
       <BlurView
         intensity={40}
         tint="light"
-        style={s.cardBlur}
+        style={s.blur}
       >
-        <View style={s.immunizationInfoContainer}>
+        <View style={s.dataContainer}>
           <Text
-            style={s.immunization}
+            style={s.label}
           >
-            {vaccineCode.coding[0].display}
+            {display}
           </Text>
-          <Text style={s.immunizationDate}>
+          <Text style={s.date}>
             Last immunized:
             &nbsp;
             {new Date(occurrenceDateTime).toLocaleDateString()}

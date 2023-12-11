@@ -44,10 +44,10 @@ export default function Layout() {
     Medication: 'appointments-medications',
     Appointments: 'appointments-medications',
     Reports: '(dashboard)',
-    Conditions: '(dashboard)',
+    Conditions: 'conditions',
     Immunizations: 'immunizations',
     Allergies: 'allergies',
-    Goals: '(dashboard)',
+    Goals: 'goals',
     Documents: '(dashboard)',
     Invoices: 'invoices',
     Billing: 'billing'

@@ -9,6 +9,7 @@ import {
   TextInputChangeEventData,
   TouchableOpacity,
   TextInputSubmitEditingEventData,
+  Platform,
 } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { FieldError, UseFormClearErrors } from 'react-hook-form';
@@ -187,22 +188,50 @@ function DatePickerComponent(props) {
     minimumDate,
     maximumDate,
     onChange,
+    error,
   } = props;
-
-  const dateLabel = new Date(new Date(value).getTime() + (new Date(value).getTimezoneOffset() * 60000));
+  const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
+  const valueIsToday = value === new Date().toISOString().slice(0, 10);
+  const dateValue = new Date(new Date(value).getTime() + (new Date(value).getTimezoneOffset() * 60000));
+  const dateLabel = dateValue.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
 
   return (
-    <DateTimePicker
-      mode="date"
-      value={dateLabel}
-      minimumDate={minimumDate}
-      maximumDate={maximumDate}
-      onChange={(e: any) => {
-        if (e.type === 'set') {
-          onChange(new Date(e.nativeEvent.timestamp).toISOString().slice(0, 10));
-        }
-      }}
-    />
+    <>
+      {showDatePicker && (
+        <DateTimePicker
+          mode="date"
+          value={dateValue}
+          minimumDate={minimumDate}
+          maximumDate={maximumDate}
+          onChange={(e: any) => {
+            if (e.type === 'set') {
+              onChange(new Date(e.nativeEvent.timestamp).toISOString().slice(0, 10));
+              if (Platform.OS === 'android') setShowDatePicker(false);
+            }
+          }}
+        />
+      )}
+      {Platform.OS === 'android' && (
+        <TouchableOpacity
+          style={[s.selectorButton, !!error && s.inputContainerError]}
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text
+            style={[
+              s.selectorButtonLabel,
+              valueIsToday && !error && s.selectorButtonPlaceholder,
+              valueIsToday && !!error && s.selectorButtonPlaceholderError,
+            ]}
+          >
+            {valueIsToday ? 'Select a date' : dateLabel}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </>
   );
 }
 
