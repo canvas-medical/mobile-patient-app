@@ -38,14 +38,12 @@ const s = StyleSheet.create({
 export default function PdfModal() {
   const { mutate: onCreateConsent, isPending, isSuccess } = useConsentCreate();
   const params = useLocalSearchParams();
-  const { consentType, isAccepted, noActionOnClose } = params;
-  // const { uri, consentType, isAccepted, noActionOnClose } = params;
-  const acceptAndClose = () => {
-    if (noActionOnClose) {
-      router.back();
-    } else {
+  const { consentType, isAccepted } = params;
+  // const { uri, consentType, isAccepted } = params;
+  const onCloseModal = () => {
+    if (consentType) {
       onCreateConsent({ consent: consentType as string });
-    }
+    } else router.back();
   };
 
   useEffect(() => {
@@ -53,7 +51,7 @@ export default function PdfModal() {
     router.replace({ pathname: 'consents', params: { accepted: true } });
   }, [isSuccess]);
 
-  const text = noActionOnClose ? 'Close' : 'Accept and Continue';
+  const text = consentType ? 'Accept and Continue' : 'Close';
 
   return (
     <View style={s.contentContainer}>
@@ -64,16 +62,14 @@ export default function PdfModal() {
       <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
         <Feather name="x" size={32} color={g.neutral500} />
       </TouchableOpacity>
-      {!!consentType && (
-        <View style={s.buttonContainer}>
-          <Button
-            theme="primary"
-            onPress={acceptAndClose}
-            disabled={isPending || isSuccess || !!isAccepted}
-            label={isPending ? 'Accepting...' : text}
-          />
-        </View>
-      )}
+      <View style={s.buttonContainer}>
+        <Button
+          theme="primary"
+          onPress={onCloseModal}
+          disabled={isPending || isSuccess || !!isAccepted}
+          label={isPending ? 'Accepting...' : text}
+        />
+      </View>
     </View>
   );
 }

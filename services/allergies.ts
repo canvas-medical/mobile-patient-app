@@ -12,7 +12,8 @@ async function getAllergies() {
       accept: 'application/json'
     }
   });
-  return res.json();
+  const json = await res.json();
+  return json.entry?.map((entry) => entry.resource) || [];
 }
 
 export function useAllergies() {

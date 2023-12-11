@@ -77,7 +77,7 @@ export function StackListView({
             <LinearGradient
               style={s.gradient}
               colors={[g.transparent, g.white]}
-              locations={[0.02, 0.075]}
+              locations={[0.0175, 0.065]}
             />
           )}
         >

@@ -1,14 +1,24 @@
 import { Fontisto } from '@expo/vector-icons';
-import { Immunization } from '@interfaces';
 import { useImmunizations } from '@services';
-import { ListView } from '@components';
+import { Immunization } from '@interfaces';
+import { ImmunizationCard, StackListView } from '@components';
 import { g } from '@styles';
 
 export default function Immunizations() {
-  const { data: immunizations, isFetching } = useImmunizations();
-  const icon = <Fontisto name="injection-syringe" size={g.size(36)} color={g.white} />;
-
+  const { data, isLoading, refetch } = useImmunizations();
   return (
-    <ListView icon={icon} items={immunizations?.entry as Immunization[] || []} title="Immunizations" isFetching={isFetching} />
+    <StackListView
+      title="Immunizations"
+      icon={<Fontisto name="injection-syringe" size={g.size(36)} color={g.white} />}
+      isLoading={isLoading}
+      refetch={refetch}
+    >
+      {data?.length > 0 && data.map((immunization: Immunization) => (
+        <ImmunizationCard
+          key={immunization.id}
+          immunization={immunization}
+        />
+      ))}
+    </StackListView>
   );
 }
