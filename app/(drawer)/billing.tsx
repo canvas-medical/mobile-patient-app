@@ -6,13 +6,13 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  ScrollView, Text, Alert, TouchableOpacity, ActivityIndicator
+  ScrollView, Text, TouchableOpacity, ActivityIndicator
 } from 'react-native';
-import { Button, Input, Screen, Header } from '@components';
-import { g } from '@styles';
+import { Input, Screen, Header } from '@components';
 import { Feather } from '@expo/vector-icons';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
 import { getPaymentIntent, usePaymentIntentCapture, usePaymentNotices, usePaymentNoticeSubmit } from '@services';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   buttonContainer: {
