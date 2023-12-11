@@ -5,6 +5,7 @@ export { useCommunication, useCommunicationSubmit } from '@services/communicatio
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useCreateCoverage, Insurers } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
+export { useGoals } from '@services/goals';
 export { useInvoices } from '@services/invoices';
 export { useImmunizations } from '@services/immunization';
 export { useMedications } from '@services/medications';
@@ -12,6 +13,5 @@ export { useObservations } from '@services/observations';
 export { useCreatePatient, usePatient } from '@services/patient';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
-export { useRecords } from '@services/records';
 export { useReports } from '@services/reports';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
