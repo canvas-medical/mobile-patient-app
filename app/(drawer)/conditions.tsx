@@ -16,7 +16,7 @@ const s = StyleSheet.create({
 });
 
 export default function Conditions() {
-  const { data, isFetching } = useConditions();
+  const { data, isLoading, refetch } = useConditions();
   const activeConditions = data?.filter((condition) => condition.clinicalStatus.text === 'Active');
   const resolvedConditions = data?.filter((condition) => condition.clinicalStatus.text === 'Resolved');
 
@@ -24,7 +24,8 @@ export default function Conditions() {
     <StackListView
       title="Conditions"
       icon={<FontAwesome5 name="heart-broken" size={g.size(36)} color={g.white} />}
-      isFetching={isFetching}
+      isLoading={isLoading}
+      refetch={refetch}
     >
       {activeConditions?.length > 0 && (
         <View style={s.scrollSection}>
