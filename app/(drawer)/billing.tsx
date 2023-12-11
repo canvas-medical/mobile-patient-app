@@ -75,20 +75,21 @@ export default function Billing() {
   const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [paymentIntentId, setPaymentIntentId] = useState<string>('');
+
   const { mutate: onPaymentIntentCapture, isSuccess: paymentIntentSuccess, isPending: paymentIntentPending } = usePaymentIntentCapture();
   const { mutate: onPaymentNoticeSubmit, isSuccess: paymentNoticeSuccess, isPending: paymentNoticePending } = usePaymentNoticeSubmit();
-  const { data: paymentNotices, isLoading, refetch } = usePaymentNotices();
+  const { data: paymentNotices, isLoading: paymentNoticesLoading, refetch } = usePaymentNotices();
+
   const disabled = Number(amount) < 1 || paymentNoticePending || paymentIntentPending;
 
   const handleSubmit = async () => {
     const cents = Number(amount) * 100;
     if (Number.isNaN(cents)) { setError('Please enter a valid dollar amount'); return; }
+
+    // Clear errors on submit
     if (error) setError('');
     const paymentIntent = await getPaymentIntent(cents);
-    if (!paymentIntent.paymentIntentId) {
-      setError('Something went wrong. Please try again.');
-      return;
-    }
+    if (!paymentIntent.paymentIntentId) { setError('Something went wrong. Please try again.'); return; }
     setPaymentIntentId(paymentIntent.paymentIntentId);
     const { error: initPaymentError } = await initPaymentSheet({
       merchantDisplayName: 'Brewer Digital',
@@ -96,11 +97,7 @@ export default function Billing() {
       allowsDelayedPaymentMethods: false,
     });
     const { error: presentPaymentError } = await presentPaymentSheet();
-    console.log('after payment sheet things');
-    if (initPaymentError || presentPaymentError) {
-      setError('Something went wrong. Please try again.');
-      return;
-    }
+    if (initPaymentError || presentPaymentError) { setError('Something went wrong. Please try again.'); return; }
     onPaymentNoticeSubmit(amount);
   };
 
@@ -169,8 +166,8 @@ export default function Billing() {
                   </View>
                 </View>
                 <Text style={s.error}>{error}</Text>
-                {(paymentNotices?.length || isLoading) && <Text style={s.label}>Payment History</Text>}
-                {isLoading
+                {(paymentNotices?.length || paymentNoticesLoading) && <Text style={s.label}>Payment History</Text>}
+                {paymentNoticesLoading
                   ? <ActivityIndicator size="large" color={g.white} />
                   : paymentNotices?.map((notice) => (
                     <View key={notice.id} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
