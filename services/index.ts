@@ -1,7 +1,6 @@
 export { getToken } from '@services/access-token';
 export { useAllergies } from '@services/allergies';
-// export { useAppointments } from '@services/appointments';
-export { useAppointments, useSchedule, useSlot, useCreateAppointment } from '@services/appointments';
+export { useAppointments, useSlot, useCreateAppointment } from '@services/appointments';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';
@@ -15,5 +14,6 @@ export { useObservations } from '@services/observations';
 export { useCreatePatient, usePatient } from '@services/patient';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
-export { useReports } from '@services/reports';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
+export { useReports } from '@services/reports';
+export { useSchedule } from '@services/schedule';

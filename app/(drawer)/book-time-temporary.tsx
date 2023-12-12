@@ -1,22 +1,15 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useSchedule, useSlot } from '@services';
+import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatTime } from '@utils';
 import { Button, StackListView } from '@components';
 import { g } from '@styles';
 import { BlurView } from 'expo-blur';
 
 const s = StyleSheet.create({
-  // label: {
-  //   ...g.titleXSmall,
-  //   color: g.white,
-  //   marginLeft: g.size(4),
-  // },
-  // scrollSection: {
-  //   gap: g.size(16),
-  // },
   bookButton: {
     position: 'absolute',
     bottom: g.size(32),
@@ -29,6 +22,10 @@ const s = StyleSheet.create({
   labelSelected: {
     color: g.primaryBlue,
     opacity: 1,
+  },
+  loading: {
+    flex: 1,
+    paddingBottom: g.size(120),
   },
   practitionerButtonsContainer: {
     gap: g.size(16),
@@ -90,9 +87,7 @@ export default function BookTimeTemporary() { // TODO: Rename
   const [selectedSlot, setSelectedSlot] = useState<any>({}); // TODO: type - also, maybe change back to individual value instead of object
   const { data: scheduleData, isLoading: isLoadingSchedules, refetch } = useSchedule();
   const { data: slotData, isLoading: isLoadingSlots } = useSlot(bookingDate as string, selectedSchedule.id);
-
-  console.log('SCHEDULE DATA: ', scheduleData);
-  console.log('SLOTS DATA: ', slotData);
+  const { mutate: onCreateAppointment } = useCreateAppointment();
 
   return (
     <>
@@ -140,9 +135,7 @@ export default function BookTimeTemporary() { // TODO: Rename
             })}
           </View>
         </View>
-        {!!selectedSchedule && isLoadingSlots ? <ActivityIndicator size="large" color={g.white} /> : (
-          // TODO: Remove eslint exception 👇🏼
-          // eslint-disable-next-line react/jsx-no-useless-fragment
+        {!!selectedSchedule && isLoadingSlots ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
           <>
             {slotData?.length > 0 && (
               <View style={s.sectionContainer}>
@@ -190,13 +183,11 @@ export default function BookTimeTemporary() { // TODO: Rename
           label="Select Appointment"
           theme="secondary"
           style={s.bookButton}
-          onPress={() => router.push({
-            pathname: 'book-appt-temporary', // TODO: Update
-            params: {
-              schedule: JSON.stringify(selectedSchedule),
-              slot: JSON.stringify(selectedSlot),
-            }
-          })}
+          onPress={() => onCreateAppointment({
+            startTime: selectedSlot?.start,
+            endTime: selectedSlot?.end,
+            practitionerID: selectedSchedule?.actor[0]?.reference,
+          })} // TODO: update
           disabled={!selectedSlot} // TODO: update disabled styling
         />
       )}

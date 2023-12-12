@@ -1,14 +1,14 @@
+import { useRef, useState } from 'react';
+import { Animated, Easing, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { g } from '@styles';
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const s = StyleSheet.create({
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: g.red,
-    borderStyle: 'solid',
+  animatedContainer: {
+    overflow: 'hidden',
+    marginTop: -g.size(8),
+    marginBottom: -g.size(16),
   },
   selectButton: {
     ...g.shadow,
@@ -17,6 +17,8 @@ const s = StyleSheet.create({
     paddingVertical: g.size(2),
     borderRadius: g.size(32),
     alignSelf: 'flex-end',
+    marginBottom: g.size(8),
+    marginRight: g.size(8),
   },
   selectButtonLabel: {
     ...g.titleXSmall,
@@ -48,17 +50,25 @@ const s = StyleSheet.create({
 export function BookAppointment() {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const heightValue = useRef(new Animated.Value(0)).current;
 
-  const setDate = (event: any, date: any) => {
+  const setDate = (_: any, date: any) => {
     setSelectedDate(date);
-    setShowDatePicker(false);
   };
 
   return (
     <>
       <TouchableOpacity
         style={s.showButton}
-        onPress={() => setShowDatePicker(!showDatePicker)}
+        onPress={() => {
+          Animated.timing(heightValue, {
+            toValue: showDatePicker ? 0 : g.size(275),
+            duration: 300,
+            easing: Easing.ease,
+            useNativeDriver: false,
+          }).start();
+          setShowDatePicker(!showDatePicker);
+        }}
       >
         <Text style={s.showButtonLabel}>
           {showDatePicker ? 'Close' : 'Book'}
@@ -68,28 +78,27 @@ export function BookAppointment() {
           +
         </Text>
       </TouchableOpacity>
-      {showDatePicker && (
-        <View style={s.pickerContainer}>
-          <DateTimePicker
-            mode="date"
-            display="spinner"
-            value={selectedDate}
-            minimumDate={new Date()}
-            onChange={setDate}
-          />
-          <TouchableOpacity
-            style={s.selectButton}
-            onPress={() => router.push({
-              pathname: 'book-time-temporary', // TODO: Update
-              params: { bookingDate: selectedDate.toISOString().slice(0, 10) }
-            })}
-          >
-            <Text style={s.selectButtonLabel}>
-              Select
-            </Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <Animated.View style={[s.animatedContainer, { maxHeight: heightValue }]}>
+        <DateTimePicker
+          mode="date"
+          display="spinner"
+          value={selectedDate}
+          minimumDate={new Date()}
+          onChange={setDate}
+          textColor={g.white}
+        />
+        <TouchableOpacity
+          style={s.selectButton}
+          onPress={() => router.push({
+            pathname: 'book-time-temporary', // TODO: Update
+            params: { bookingDate: selectedDate.toISOString().slice(0, 10) }
+          })}
+        >
+          <Text style={s.selectButtonLabel}>
+            Select
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
     </>
   );
 }
