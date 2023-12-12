@@ -1,10 +1,9 @@
-import { g } from '@styles';
-import { Goal } from '@interfaces';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { Goal } from '@interfaces';
 import { useGoals } from '@services';
 import { GoalCard, Header, Screen } from '@components';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {

@@ -32,18 +32,13 @@ const s = StyleSheet.create({
     alignItems: 'flex-end',
   },
 });
-export function Header({ navButton }: { navButton: 'menu' | 'back' }) {
+export function Header() {
   const navigation = useNavigation<DrawerNavigationProp<any>>();
   const { data } = usePatient();
   return (
     <View style={s.container}>
-      <TouchableOpacity
-        onPress={() => {
-          if (navButton === 'back') router.back();
-          else navigation.openDrawer();
-        }}
-      >
-        <Feather name={navButton === 'back' ? 'arrow-left' : 'menu'} size={g.size(48)} color={g.white} />
+      <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <Feather name="menu" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
       <TouchableOpacity
         style={s.nameAndAvatarContainer}

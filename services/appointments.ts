@@ -1,9 +1,9 @@
 import { Alert } from 'react-native';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AppointmentCreationData } from '@interfaces';
 import { getToken } from './access-token';
-import { router } from 'expo-router';
 
 async function getAppointments() {
   const token = await getToken();

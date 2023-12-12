@@ -96,7 +96,7 @@ export default function BookAppointment() {
     day: 'numeric'
   });
 
-  function buttonLabelSwitch() {
+  function buttonLabel() {
     if (isPending) return 'Booking...';
     if (isSuccess) return 'Booked!';
     return 'Book Appointment';
@@ -107,7 +107,6 @@ export default function BookAppointment() {
       <StackListView
         title="Book Time"
         icon={<MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.white} />}
-        navButton="back"
         isLoading={isLoadingSchedules}
         refetch={refetch}
       >
@@ -190,7 +189,7 @@ export default function BookAppointment() {
       </StackListView>
       {!!selectedSchedule && slotData?.length > 0 && (
         <Button
-          label={buttonLabelSwitch()}
+          label={buttonLabel()}
           theme="secondary"
           style={s.bookButton}
           onPress={() => onCreateAppointment({
