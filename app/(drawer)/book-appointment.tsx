@@ -2,13 +2,13 @@
 import { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatTime } from '@utils';
+import { Schedule, Slot } from '@interfaces';
 import { Button, StackListView } from '@components';
 import { g } from '@styles';
-import { BlurView } from 'expo-blur';
-import { Schedule, Slot } from '@interfaces';
 
 const s = StyleSheet.create({
   bookButton: {
