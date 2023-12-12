@@ -1,6 +1,7 @@
 import { Alert } from 'react-native';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
+import { AppointmentCreationData } from '@interfaces';
 import { getToken } from './access-token';
 
 async function getAppointments() {
@@ -46,7 +47,11 @@ export function useSlot(date: string, id: string) {
   return slotQuery;
 }
 
-async function appointmentCreate(data: any) { // TODO: Update type
+async function appointmentCreate({
+  startTime,
+  endTime,
+  practitionerID,
+}: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
   await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
@@ -98,8 +103,8 @@ async function appointmentCreate(data: any) { // TODO: Update type
         //   type: 'Endpoint'
         // }
       ],
-      start: data.startTime,
-      end: data.endTime,
+      start: startTime,
+      end: endTime,
       participant: [
         // Note: I reversed the order of these. I'm not sure if it matters but the api example had them
         // in the order [ patient, practitioner ] but the docs say "This list object requires one entry for
@@ -107,7 +112,7 @@ async function appointmentCreate(data: any) { // TODO: Update type
         // has the actor.reference specify Practitioner/<practitioner_id> for the provider." and "The second
         // entry has the actor.reference specify Patient/<patient_id> for the patient"
         {
-          actor: { reference: data.practitionerID },
+          actor: { reference: practitionerID },
           status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
           // Update: i had to change this to "accepted" due to an error but the docs clearly state "active"
           // It's set to "accepted" in the example though 🤔
@@ -125,7 +130,7 @@ async function appointmentCreate(data: any) { // TODO: Update type
 
 export function useCreateAppointment() {
   return useMutation({
-    mutationFn: (data: any) => appointmentCreate(data), // TODO: type data
+    mutationFn: (data: AppointmentCreationData) => appointmentCreate(data),
     onSuccess: () => console.log('SUCCESS'), // TODO: update
     onError: (e) => {
       console.log('CREATE APPT ERROR: ', e);
