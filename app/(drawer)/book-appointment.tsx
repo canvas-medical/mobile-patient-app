@@ -90,8 +90,6 @@ export default function BookAppointment() {
   const { data: slotData, isLoading: isLoadingSlots } = useSlot(bookingDate as string, selectedSchedule.id);
   const { mutate: onCreateAppointment } = useCreateAppointment();
 
-  console.log('Hello: ', !Object.keys(selectedSlot).length);
-
   return (
     <>
       <StackListView
@@ -191,7 +189,7 @@ export default function BookAppointment() {
             endTime: selectedSlot?.end,
             practitionerID: selectedSchedule?.actor[0]?.reference,
           })}
-          disabled={!Object.keys(selectedSlot).length} // TODO: update disabled styling
+          disabled={!Object.keys(selectedSlot).length}
         />
       )}
     </>
