@@ -54,8 +54,6 @@ export function BookAppointment() {
     setShowDatePicker(false);
   };
 
-  console.log('Hello: ', selectedDate);
-
   return (
     <>
       <TouchableOpacity
@@ -82,7 +80,7 @@ export function BookAppointment() {
           <TouchableOpacity
             style={s.selectButton}
             onPress={() => router.push({
-              pathname: 'book-time-temporary',
+              pathname: 'book-time-temporary', // TODO: Update
               params: { bookingDate: selectedDate.toISOString().slice(0, 10) }
             })}
           >
