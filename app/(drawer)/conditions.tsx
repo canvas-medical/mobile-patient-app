@@ -38,24 +38,6 @@ export default function Conditions() {
               condition={condition}
             />
           ))}
-          {activeConditions.map((condition: Condition) => (
-            <ConditionCard
-              key={condition.id}
-              condition={condition}
-            />
-          ))}
-          {activeConditions.map((condition: Condition) => (
-            <ConditionCard
-              key={condition.id}
-              condition={condition}
-            />
-          ))}
-          {activeConditions.map((condition: Condition) => (
-            <ConditionCard
-              key={condition.id}
-              condition={condition}
-            />
-          ))}
         </View>
       )}
       {resolvedConditions?.length > 0 && (

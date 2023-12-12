@@ -58,7 +58,7 @@ const s = StyleSheet.create({
     gap: g.size(12),
   },
   sectionHeader: {
-    ...g.labelLarge,
+    ...g.labelMedium,
     color: g.white,
     marginLeft: g.size(4),
   },
@@ -88,13 +88,26 @@ export default function BookAppointment() {
   const [selectedSlot, setSelectedSlot] = useState<Slot>({} as Slot);
   const { data: scheduleData, isLoading: isLoadingSchedules, refetch } = useSchedule();
   const { data: slotData, isLoading: isLoadingSlots } = useSlot(bookingDate as string, selectedSchedule.id);
-  const { mutate: onCreateAppointment } = useCreateAppointment();
+  const { mutate: onCreateAppointment, isPending, isSuccess } = useCreateAppointment();
+  const dateValue = new Date(new Date(bookingDate as string).getTime() + (new Date(bookingDate as string).getTimezoneOffset() * 60000));
+  const dateLabel = dateValue.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+
+  function buttonLabelSwitch() {
+    if (isPending) return 'Booking...';
+    if (isSuccess) return 'Booked!';
+    return 'Book Appointment';
+  }
 
   return (
     <>
       <StackListView
         title="Book Time"
         icon={<MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.white} />}
+        navButton="back"
         isLoading={isLoadingSchedules}
         refetch={refetch}
       >
@@ -141,13 +154,9 @@ export default function BookAppointment() {
             {slotData?.length > 0 && (
               <View style={s.sectionContainer}>
                 <Text style={s.sectionHeader}>
-                  Slots available for
+                  Appointments available for
                   {' '}
-                  {new Date(bookingDate as string).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                  })}
+                  {dateLabel}
                 </Text>
                 <View style={s.slotButtonsContainer}>
                   {slotData.map((slot: Slot) => {
@@ -181,7 +190,7 @@ export default function BookAppointment() {
       </StackListView>
       {!!selectedSchedule && slotData?.length > 0 && (
         <Button
-          label="Book Appointment"
+          label={buttonLabelSwitch()}
           theme="secondary"
           style={s.bookButton}
           onPress={() => onCreateAppointment({

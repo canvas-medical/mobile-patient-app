@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { AppointmentCreationData } from '@interfaces';
 import { getToken } from './access-token';
+import { router } from 'expo-router';
 
 async function getAppointments() {
   const token = await getToken();
@@ -54,7 +55,7 @@ async function appointmentCreate({
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -112,28 +113,40 @@ async function appointmentCreate({
         // has the actor.reference specify Practitioner/<practitioner_id> for the provider." and "The second
         // entry has the actor.reference specify Patient/<patient_id> for the patient"
         {
-          actor: { reference: practitionerID },
-          status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
-          // Update: i had to change this to "accepted" due to an error but the docs clearly state "active"
-          // It's set to "accepted" in the example though 🤔
-        },
-        {
           actor: { reference: `Patient/${patientID}` },
           status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
           // Update: i had to change this to "accepted" due to an error but the docs clearly state "active".
           // It's set to "accepted" in the example though 🤔
         },
+        {
+          actor: { reference: practitionerID },
+          status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
+          // Update: i had to change this to "accepted" due to an error but the docs clearly state "active"
+          // It's set to "accepted" in the example though 🤔
+        },
       ]
     })
   });
+  if (!res.ok) throw Error;
 }
 
 export function useCreateAppointment() {
   return useMutation({
     mutationFn: (data: AppointmentCreationData) => appointmentCreate(data),
-    onSuccess: () => console.log('SUCCESS'), // TODO: update
-    onError: (e) => {
-      console.log('CREATE APPT ERROR: ', e);
+    onSuccess: () => {
+      Alert.alert(
+        'Success',
+        'Your appointment has been booked.',
+        [
+          {
+            text: 'OK',
+            onPress: () => router.push('appointments-medications'),
+          }
+        ],
+        { cancelable: false }
+      );
+    },
+    onError: () => {
       Alert.alert(
         'Error',
         'There was an error booking your appointment. Please try again.',

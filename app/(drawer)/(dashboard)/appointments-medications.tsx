@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useMedications, useAppointments } from '@services';
-import { LabeledToggle, AppointmentList, MedicationList } from '@components';
+import { LabeledToggle, AppointmentList, MedicationList, BookAppointment } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -9,13 +9,17 @@ const s = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: g.size(16),
-    paddingBottom: g.size(120),
-    gap: g.size(24),
+    flex: 1,
   },
   loading: {
     flex: 1,
     paddingBottom: g.size(120),
+  },
+  scrollContentContainer: {
+    minHeight: '100%',
+    padding: g.size(16),
+    paddingBottom: g.size(120),
+    gap: g.size(24),
   },
 });
 
@@ -43,19 +47,22 @@ export default function AppointmentsAndMedications() {
       {(toggled && loadingMedications) || (!toggled && loadingAppointments) ? (
         <ActivityIndicator size="large" color={g.white} style={s.loading} />
       ) : (
-        <ScrollView
-          contentContainerStyle={s.contentContainer}
-          refreshControl={(
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={g.white}
-              colors={[g.white]}
-            />
-          )}
-        >
-          {toggled ? <MedicationList medications={medications} /> : <AppointmentList appointments={appointments} />}
-        </ScrollView>
+        <View style={s.contentContainer}>
+          {!toggled && <BookAppointment />}
+          <ScrollView
+            contentContainerStyle={s.scrollContentContainer}
+            refreshControl={(
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={g.white}
+                colors={[g.white]}
+              />
+            )}
+          >
+            {toggled ? <MedicationList medications={medications} /> : <AppointmentList appointments={appointments} />}
+          </ScrollView>
+        </View>
       )}
     </View>
   );

@@ -7,8 +7,9 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   animatedContainer: {
     overflow: 'hidden',
-    marginTop: -g.size(8),
-    marginBottom: -g.size(16),
+    borderBottomColor: g.white,
+    borderBottomWidth: 1,
+    marginHorizontal: g.size(16),
   },
   selectButton: {
     ...g.shadow,
@@ -18,7 +19,6 @@ const s = StyleSheet.create({
     borderRadius: g.size(32),
     alignSelf: 'flex-end',
     marginBottom: g.size(8),
-    marginRight: g.size(8),
   },
   selectButtonLabel: {
     ...g.titleXSmall,
@@ -52,10 +52,6 @@ export function BookAppointment() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const heightValue = useRef(new Animated.Value(0)).current;
 
-  const setDate = (_: any, date: any) => {
-    setSelectedDate(date);
-  };
-
   return (
     <>
       <TouchableOpacity
@@ -84,7 +80,7 @@ export function BookAppointment() {
           display="spinner"
           value={selectedDate}
           minimumDate={new Date()}
-          onChange={setDate}
+          onChange={(_, date: Date) => setSelectedDate(date)}
           textColor={g.white}
         />
         <TouchableOpacity

@@ -43,12 +43,14 @@ const s = StyleSheet.create({
 });
 
 export function StackListView({
+  navButton = 'menu',
   icon,
   title,
   isLoading,
   refetch,
   children,
 }: {
+  navButton?: 'menu' | 'back';
   icon: ReactNode,
   title: string,
   isLoading: boolean,
@@ -64,7 +66,7 @@ export function StackListView({
 
   return (
     <Screen>
-      <Header />
+      <Header navButton={navButton} />
       <View style={s.titleContainer}>
         {icon}
         <Text style={s.title}>
