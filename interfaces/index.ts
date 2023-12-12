@@ -12,4 +12,5 @@ export type { Medication } from '@interfaces/medication';
 export type { Message } from '@interfaces/message';
 export type { Question } from '@interfaces/question';
 export type { Report } from '@interfaces/report';
+export type { Schedule, Slot } from '@interfaces/schedule';
 export type { Vital } from '@interfaces/vital';

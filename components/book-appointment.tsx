@@ -90,7 +90,7 @@ export function BookAppointment() {
         <TouchableOpacity
           style={s.selectButton}
           onPress={() => router.push({
-            pathname: 'book-time-temporary', // TODO: Update
+            pathname: 'book-appointment',
             params: { bookingDate: selectedDate.toISOString().slice(0, 10) }
           })}
         >

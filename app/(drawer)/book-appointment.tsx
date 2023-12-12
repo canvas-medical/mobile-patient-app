@@ -8,6 +8,7 @@ import { formatTime } from '@utils';
 import { Button, StackListView } from '@components';
 import { g } from '@styles';
 import { BlurView } from 'expo-blur';
+import { Schedule, Slot } from '@interfaces';
 
 const s = StyleSheet.create({
   bookButton: {
@@ -80,14 +81,16 @@ const s = StyleSheet.create({
   },
 });
 
-export default function BookTimeTemporary() { // TODO: Rename
+export default function BookAppointment() {
   const params = useLocalSearchParams();
   const { bookingDate } = params;
-  const [selectedSchedule, setSelectedSchedule] = useState<any>({}); // TODO: type - also, maybe change back to individual value instead of object
-  const [selectedSlot, setSelectedSlot] = useState<any>({}); // TODO: type - also, maybe change back to individual value instead of object
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule>({} as Schedule);
+  const [selectedSlot, setSelectedSlot] = useState<Slot>({} as Slot);
   const { data: scheduleData, isLoading: isLoadingSchedules, refetch } = useSchedule();
   const { data: slotData, isLoading: isLoadingSlots } = useSlot(bookingDate as string, selectedSchedule.id);
   const { mutate: onCreateAppointment } = useCreateAppointment();
+
+  console.log('Hello: ', !Object.keys(selectedSlot).length);
 
   return (
     <>
@@ -102,14 +105,14 @@ export default function BookTimeTemporary() { // TODO: Rename
             Select a Practitioner
           </Text>
           <View style={s.practitionerButtonsContainer}>
-            {scheduleData?.map((schedule: any) => { // TODO: type
+            {scheduleData?.map((schedule: Schedule) => {
               const selected = selectedSchedule.id === schedule.id;
               return (
                 <TouchableOpacity
                   key={schedule.id}
                   style={[s.scheduleButton, selected && s.buttonSelected]}
                   onPress={() => {
-                    setSelectedSlot('');
+                    setSelectedSlot({} as Slot);
                     setSelectedSchedule(schedule);
                   }}
                 >
@@ -149,13 +152,13 @@ export default function BookTimeTemporary() { // TODO: Rename
                   })}
                 </Text>
                 <View style={s.slotButtonsContainer}>
-                  {slotData.map((slot: any) => { // TODO: type
+                  {slotData.map((slot: Slot) => {
                     const selected = selectedSlot === slot;
                     return (
                       <TouchableOpacity
                         key={`${slot.start}-${slot.end}`}
                         style={[s.slotButton, selected && s.buttonSelected]}
-                        onPress={() => setSelectedSlot(slot)}
+                        onPress={() => setSelectedSlot(selected ? {} as Slot : slot)}
                       >
                         <BlurView
                           intensity={40}
@@ -180,15 +183,15 @@ export default function BookTimeTemporary() { // TODO: Rename
       </StackListView>
       {!!selectedSchedule && slotData?.length > 0 && (
         <Button
-          label="Select Appointment"
+          label="Book Appointment"
           theme="secondary"
           style={s.bookButton}
           onPress={() => onCreateAppointment({
             startTime: selectedSlot?.start,
             endTime: selectedSlot?.end,
             practitionerID: selectedSchedule?.actor[0]?.reference,
-          })} // TODO: update
-          disabled={!selectedSlot} // TODO: update disabled styling
+          })}
+          disabled={!Object.keys(selectedSlot).length} // TODO: update disabled styling
         />
       )}
     </>
