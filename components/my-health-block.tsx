@@ -50,13 +50,13 @@ export function MyHealthBlock(
           </Text>
         </View>
         {limit < children.length
-          ? (
+          && (
             <TouchableOpacity onPress={() => router.push(viewAllRoute)}>
               <Text style={s.viewAll}>
                 View All
               </Text>
             </TouchableOpacity>
-          ) : null}
+          )}
       </View>
       <View style={s.diagnosticContainer}>
         {children}
