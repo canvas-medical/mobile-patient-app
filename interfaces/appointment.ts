@@ -14,3 +14,9 @@ export interface Appointment {
     address: string;
   }[];
 }
+
+export interface AppointmentCreationData {
+  startTime: string,
+  endTime: string,
+  practitionerID: string,
+}
