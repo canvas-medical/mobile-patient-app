@@ -98,6 +98,9 @@ async function appointmentCreate({
       supportingInformation: [
         {
           reference: 'Location/1' // TODO: This seems that it should always be 1 but I want to check with Canvas
+          // From Canvas docs: You can use a Location reference within the SupportingInformation attribute to specify the Location of the appointment.
+          // To get the location id, use the Schedule Search endpoint. This will give you a resource.id like Location.1-Staff.c2ff4546548e46ab8959jh3.
+          // The Location ID is the value displayed after the period. If your instance only has one practice location, the ID will always be 1.
         },
         // {
         //   reference: '#appointment-meeting-endpoint',
