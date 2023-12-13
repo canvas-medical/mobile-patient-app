@@ -20,6 +20,9 @@ const s = StyleSheet.create({
   firstBlurContainer: {
     width: g.width - g.size(32),
   },
+  skeleton: {
+    height: g.size(68),
+  },
   topRow: {
     flexDirection: 'row',
     gap: g.size(8),
@@ -82,6 +85,23 @@ export function VitalCard({ vital, vitalsOdd, index }: {
           </Text>
         </View>
       </BlurView>
+    </View>
+  );
+}
+
+export function VitalCardSkeleton({ vitalsOdd, index }) {
+  return (
+    <View
+      style={[
+        s.blurContainer,
+        index === 0 && vitalsOdd && s.firstBlurContainer
+      ]}
+    >
+      <BlurView
+        style={[s.vitalBlur, s.skeleton]}
+        tint="light"
+        intensity={50}
+      />
     </View>
   );
 }

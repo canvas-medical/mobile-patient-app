@@ -60,7 +60,7 @@ export function MyHealthBlock(
       </View>
       <View style={s.diagnosticContainer}>
         {children}
-        {!children.length && (
+        {!children.length && title !== 'Vitals' && (
         <Text style={s.zeroState}>
           No
           {' '}

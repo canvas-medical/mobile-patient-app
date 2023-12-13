@@ -3,7 +3,14 @@ import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
 import {
   AllergyCard,
   ConditionCard,
-  DiagnosticCard, GoalCard, Header, ImmunizationCard, MedicationCard, Screen, VitalCard
+  DiagnosticCard,
+  GoalCard,
+  Header,
+  ImmunizationCard,
+  MedicationCard,
+  Screen,
+  VitalCard, VitalCardSkeleton,
+  VitalsSkeleton
 } from '@components';
 import { g } from '@styles';
 import React from 'react';
@@ -18,6 +25,7 @@ import {
 import { MyHealthBlock } from '@components/my-health-block';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import { Allergy, Condition, Goal, Immunization } from '@interfaces';
+import { BlurView } from 'expo-blur';
 
 const s = StyleSheet.create({
   scroll: {
@@ -60,8 +68,10 @@ export default function MyHealth() {
         style={s.scroll}
       >
         <MyHealthBlock title="Vitals" icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}>
-          {loadingVitals && <ActivityIndicator />}
           <View style={s.vitalsContainer}>
+            {loadingVitals && Array.from(Array(6)).map((i) => (
+              <VitalCardSkeleton index={i} vitalsOdd={false} />
+            ))}
             {vitals?.map((vital, i) => (
               <VitalCard
                 index={i}

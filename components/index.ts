@@ -20,5 +20,5 @@ export { ReportCard } from '@components/report-card';
 export { Screen } from '@components/screen';
 export { Search } from '@components/search';
 export { StackListView } from '@components/stack-list-view';
-export { VitalCard } from '@components/vital-card';
+export { VitalCard, VitalCardSkeleton } from '@components/vital-card';
 export { VitalsGrid } from '@components/vitals-grid';
