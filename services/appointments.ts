@@ -107,11 +107,6 @@ async function appointmentCreate({
       start: startTime,
       end: endTime,
       participant: [
-        // Note: I reversed the order of these. I'm not sure if it matters but the api example had them
-        // in the order [ patient, practitioner ] but the docs say "This list object requires one entry for
-        // a practitioner. An optional 2nd entry may be supplied for the patient.". Also, "The first entry
-        // has the actor.reference specify Practitioner/<practitioner_id> for the provider." and "The second
-        // entry has the actor.reference specify Patient/<patient_id> for the patient"
         {
           actor: { reference: `Patient/${patientID}` },
           status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
