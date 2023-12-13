@@ -39,10 +39,11 @@ interface Props {
   theme: 'primary' | 'secondary' | 'tertiary';
   onPress: () => void;
   disabled?: boolean;
+  style?: { [key: string]: number | string };
 }
 
 export function Button(props: Props) {
-  const { label, onPress, theme, disabled } = props;
+  const { label, onPress, theme, disabled, style = {} } = props;
 
   const gradients = {
     primary: [g.primaryBlue, g.secondaryBlue],
@@ -52,7 +53,12 @@ export function Button(props: Props) {
 
   return (
     <TouchableOpacity
-      style={[s.button, theme === 'tertiary' && s.tertiary, disabled && s.disabled]}
+      style={[
+        s.button,
+        theme === 'tertiary' && s.tertiary,
+        disabled && s.disabled,
+        style,
+      ]}
       disabled={disabled}
       onPress={onPress}
     >

@@ -33,8 +33,7 @@ const s = StyleSheet.create({
   },
 });
 export function Header() {
-  const { data: { name } } = usePatient();
-  const patientName = `${name[0].given[0]} ${name[0].family}`;
+  const { data } = usePatient();
   return (
     <View style={s.container}>
       <TouchableOpacity onPress={() => router.back()}>
@@ -66,7 +65,7 @@ export function Header() {
       >
         <View style={s.nameContainer}>
           <Text style={s.greeting}>Hello</Text>
-          <Text style={s.name}>{patientName}</Text>
+          <Text style={s.name}>{`${data?.name[0]?.given[0]} ${data?.name[0]?.family}`}</Text>
         </View>
         <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
