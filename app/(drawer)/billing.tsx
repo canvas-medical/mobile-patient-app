@@ -11,13 +11,14 @@ import {
 import { Input, Screen, Header } from '@components';
 import { Feather } from '@expo/vector-icons';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
+import { PaymentNotice } from '@interfaces';
 import { getPaymentIntent, usePaymentIntentCapture, usePaymentNotices, usePaymentNoticeSubmit } from '@services';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
-    right: g.size(0),
+    right: 0,
     top: g.size(18),
     height: g.size(36),
   },
@@ -94,11 +95,13 @@ export default function Billing() {
       allowsDelayedPaymentMethods: false,
     });
     const { error: presentPaymentError } = await presentPaymentSheet();
-    if (initPaymentError || presentPaymentError) { setError('Something went wrong. Please try again.'); }
+    const canceled = presentPaymentError?.code === 'Canceled';
+    if (initPaymentError || (presentPaymentError && !canceled)) { setError('Something went wrong. Please try again.'); }
     return initPaymentError || presentPaymentError;
   };
 
   const handleSubmit = async () => {
+    setButtonLoading(true);
     const cents = Number(amount) * 100;
     if (Number.isNaN(cents)) { setError('Please enter a valid dollar amount'); return; }
     // Clear errors on submit
@@ -108,6 +111,7 @@ export default function Billing() {
     setPaymentIntentId(paymentIntent.paymentIntentId);
     const paymentErrors = await getPaymentMethod(paymentIntent.clientSecret);
     if (!paymentErrors) onPaymentNoticeSubmit(amount);
+    setButtonLoading(false);
   };
 
   useEffect(() => {
@@ -167,7 +171,7 @@ export default function Billing() {
                   />
                   <View style={s.buttonContainer}>
                     <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
-                      {paymentNoticePending || paymentIntentPending
+                      {paymentNoticePending || paymentIntentPending || buttonLoading
                         ? <ActivityIndicator size="small" style={s.payButton} color={g.primaryBlue} />
                         : <Text style={[s.payButton, disabled && s.disabled]}>Pay</Text>
                       }
@@ -178,13 +182,13 @@ export default function Billing() {
                 {(paymentNotices?.length || paymentNoticesLoading) && <Text style={s.label}>Payment History</Text>}
                 {paymentNoticesLoading
                   ? <ActivityIndicator size="large" color={g.white} />
-                  : paymentNotices?.map((notice) => (
+                  : paymentNotices?.map((notice: PaymentNotice) => (
                     <View key={notice.id} style={s.paymentHistoryItem}>
                       <Text style={{ color: g.white }}>
                         $
-                        {notice.resource.amount.value.toFixed(2)}
+                        {notice.amount.value.toFixed(2)}
                       </Text>
-                      <Text style={{ color: g.white }}>{formattedDate(notice.resource.created)}</Text>
+                      <Text style={{ color: g.white }}>{formattedDate(notice.created)}</Text>
                     </View>
                   ))}
               </View>

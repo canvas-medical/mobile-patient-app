@@ -15,7 +15,7 @@ async function getPaymentNotices() {
     }
   });
   const json = await res.json();
-  return json.entry?.reverse() || [];
+  return json.entry?.map((entry) => entry.resource).reverse() || [];
 }
 
 export function usePaymentNotices() {
