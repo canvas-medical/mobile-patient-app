@@ -26,7 +26,6 @@ import {
 import { MyHealthBlock } from '@components/my-health-block';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import { Allergy, Condition, Goal, Immunization } from '@interfaces';
-import { BlurView } from 'expo-blur';
 
 const s = StyleSheet.create({
   scroll: {
