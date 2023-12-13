@@ -1,5 +1,6 @@
-import 'react-native-gesture-handler';
+import React from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
+import 'react-native-gesture-handler';
 import {
   AllergyCard,
   ConditionCard,
@@ -13,8 +14,6 @@ import {
   VitalCard,
   VitalCardSkeleton,
 } from '@components';
-import { g } from '@styles';
-import React from 'react';
 import {
   useAllergies,
   useConditions,
@@ -26,6 +25,7 @@ import {
 import { MyHealthBlock } from '@components/my-health-block';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import { Allergy, Condition, Goal, Immunization } from '@interfaces';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   scroll: {
@@ -67,6 +67,7 @@ export default function MyHealth() {
         contentContainerStyle={s.scrollContent}
         style={s.scroll}
       >
+        {/* Vitals */}
         <MyHealthBlock title="Vitals" icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}>
           <View style={s.vitalsContainer}>
             {loadingVitals && Array.from(Array(6)).map((i) => (
@@ -82,6 +83,8 @@ export default function MyHealth() {
             ))}
           </View>
         </MyHealthBlock>
+
+        {/* Labs */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="metrics-reports"
@@ -91,6 +94,8 @@ export default function MyHealth() {
           {diagnostics?.slice(0, 1).map((diagnostic) => (<DiagnosticCard data={diagnostic} key={diagnostic.id} />))}
           {loadingDiagnostics && <DiagnosticSkeleton />}
         </MyHealthBlock>
+
+        {/* Medications */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="appointments-medications"
@@ -100,6 +105,8 @@ export default function MyHealth() {
           {activeMedications?.slice(0, 1).map((med) => <MedicationCard key={med.id} med={med} />)}
           {loadingMedications && <MedicationSkeleton />}
         </MyHealthBlock>
+
+        {/* Conditions */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="conditions"
@@ -109,6 +116,8 @@ export default function MyHealth() {
           {activeConditions?.slice(0, 1).map((condition: Condition) => (<ConditionCard key={condition.id} condition={condition} />))}
           {loadingConditions && <ActivityIndicator />}
         </MyHealthBlock>
+
+        {/* Immunizations */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="immunizations"
@@ -118,6 +127,8 @@ export default function MyHealth() {
           {immunizations?.slice(0, 1).map((immunization: Immunization) => (<ImmunizationCard key={immunization.id} immunization={immunization} />))}
           {loadingImmunizations && <ActivityIndicator />}
         </MyHealthBlock>
+
+        {/* Allergies */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="allergies"
@@ -127,6 +138,8 @@ export default function MyHealth() {
           {allergies?.slice(0, 1).map((allergy: Allergy) => (<AllergyCard key={allergy.id} allergy={allergy} />))}
           {loadingAllergies && <ActivityIndicator />}
         </MyHealthBlock>
+
+        {/* Goals */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="goals"
@@ -136,6 +149,8 @@ export default function MyHealth() {
           {activeGoals?.slice(0, 1).map((item) => <GoalCard goal={item} />)}
           {loadingGoals && <ActivityIndicator />}
         </MyHealthBlock>
+
+        {/* Educational Materials */}
         <MyHealthBlock
           limit={1}
           viewAllRoute="education"
