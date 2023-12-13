@@ -78,6 +78,7 @@ const s = StyleSheet.create({
 });
 
 export default function Billing() {
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [paymentIntentId, setPaymentIntentId] = useState<string>('');

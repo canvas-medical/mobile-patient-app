@@ -68,7 +68,7 @@ export default function Layout() {
         return (
           <View style={s.menuItem}>
             <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
-            <MaterialCommunityIcons name="calendar-clock-outline" size={size} color={g.black} />
+            <MaterialCommunityIcons name="pill" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );
@@ -76,7 +76,7 @@ export default function Layout() {
         return (
           <View style={s.menuItem}>
             <MaterialCommunityIcons name="arrow-right-bottom" size={size} color={g.black} />
-            <MaterialCommunityIcons name="pill" size={size} color={g.black} />
+            <MaterialCommunityIcons name="calendar-clock-outline" size={size} color={g.black} />
             <Text style={s.menuItemText}>{text}</Text>
           </View>
         );

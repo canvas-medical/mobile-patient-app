@@ -33,12 +33,11 @@ const s = StyleSheet.create({
   },
 });
 export function Header() {
-  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const { data: { name } } = usePatient();
   const patientName = `${name[0].given[0]} ${name[0].family}`;
   return (
     <View style={s.container}>
-      <TouchableOpacity onPress={() => navigation.openDrawer()}>
+      <TouchableOpacity onPress={() => router.back()}>
         <Feather name="menu" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
       <TouchableOpacity
