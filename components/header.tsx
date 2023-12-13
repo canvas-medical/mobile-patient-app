@@ -38,7 +38,7 @@ export function Header() {
   return (
     <View style={s.container}>
       <TouchableOpacity onPress={() => router.back()}>
-        <Feather name="menu" size={g.size(48)} color={g.white} />
+        <Feather name="arrow-left" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
       <TouchableOpacity
         style={s.nameAndAvatarContainer}
