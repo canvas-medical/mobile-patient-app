@@ -62,6 +62,7 @@ async function appointmentCreate({
       accept: 'application/json',
       'content-type': 'application/json',
     },
+    // TODO: Strip out unused key values
     body: JSON.stringify({
       resourceType: 'Appointment',
       // contained: [{

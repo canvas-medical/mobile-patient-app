@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useRouter, useRootNavigationState } from 'expo-router';
+import { useRootNavigationState, router } from 'expo-router';
 import { usePatient } from '@services';
 import { Screen } from '@components';
 import { Image } from 'expo-image';
@@ -22,13 +22,12 @@ const s = StyleSheet.create({
 
 export default function Index() {
   const navigationState = useRootNavigationState();
-  const router = useRouter();
   const { isFetching, data: patient } = usePatient();
 
   useEffect(() => {
     if (!navigationState?.key || isFetching) return;
     if (patient?.id) {
-      router.replace('appointments-medications');
+      router.replace('(tabs)/my-health');
     } else router.replace('initial');
   }, [navigationState, patient, isFetching]);
 
