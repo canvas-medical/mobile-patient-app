@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import { Tabs } from 'expo-router/tabs';
 import {
   Feather,
@@ -6,8 +5,6 @@ import {
   MaterialCommunityIcons
 } from '@expo/vector-icons';
 import { g } from '@styles';
-import { BlurView } from 'expo-blur';
-import { StyleSheet } from 'react-native';
 
 const tabIconSwitch = (tab: string, color: string) => {
   switch (tab) {
