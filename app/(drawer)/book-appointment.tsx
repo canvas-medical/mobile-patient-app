@@ -96,6 +96,15 @@ export default function BookAppointment() {
     day: 'numeric'
   });
 
+  const futureSlotTimes = bookingDate === new Date().toISOString().slice(0, 10)
+    ? slotData?.filter((slot: Slot) => {
+      const slotTime = new Date(slot.start).toLocaleTimeString('en-US');
+      const currentTime = new Date();
+      currentTime.setHours(currentTime.getHours() + 2);
+      const twoHoursFromNow = currentTime.toLocaleTimeString('en-US');
+      return slotTime > twoHoursFromNow;
+    }) : slotData;
+
   function buttonLabel() {
     if (isPending) return 'Booking...';
     if (isSuccess) return 'Booked!';
@@ -150,7 +159,7 @@ export default function BookAppointment() {
         </View>
         {!!selectedSchedule && isLoadingSlots ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
           <>
-            {slotData?.length > 0 && (
+            {futureSlotTimes?.length > 0 && (
               <View style={s.sectionContainer}>
                 <Text style={s.sectionHeader}>
                   Appointments available for
@@ -158,7 +167,7 @@ export default function BookAppointment() {
                   {dateLabel}
                 </Text>
                 <View style={s.slotButtonsContainer}>
-                  {slotData.map((slot: Slot) => {
+                  {futureSlotTimes.map((slot: Slot) => {
                     const selected = selectedSlot === slot;
                     return (
                       <TouchableOpacity
@@ -187,7 +196,7 @@ export default function BookAppointment() {
           </>
         )}
       </StackListView>
-      {!!selectedSchedule && slotData?.length > 0 && (
+      {!!selectedSchedule && futureSlotTimes?.length > 0 && (
         <Button
           label={buttonLabel()}
           theme="secondary"
