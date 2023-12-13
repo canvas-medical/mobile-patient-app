@@ -4,13 +4,14 @@ import {
   AllergyCard,
   ConditionCard,
   DiagnosticCard,
+  DiagnosticSkeleton,
   GoalCard,
   Header,
   ImmunizationCard,
-  MedicationCard,
+  MedicationCard, MedicationSkeleton,
   Screen,
-  VitalCard, VitalCardSkeleton,
-  VitalsSkeleton
+  VitalCard,
+  VitalCardSkeleton,
 } from '@components';
 import { g } from '@styles';
 import React from 'react';
@@ -89,7 +90,7 @@ export default function MyHealth() {
           icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
         >
           {diagnostics?.slice(0, 1).map((diagnostic) => (<DiagnosticCard data={diagnostic} key={diagnostic.id} />))}
-          {loadingDiagnostics && <ActivityIndicator />}
+          {loadingDiagnostics && <DiagnosticSkeleton />}
         </MyHealthBlock>
         <MyHealthBlock
           limit={1}
@@ -98,7 +99,7 @@ export default function MyHealth() {
           icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
         >
           {activeMedications?.slice(0, 1).map((med) => <MedicationCard key={med.id} med={med} />)}
-          {loadingMedications && <ActivityIndicator />}
+          {loadingMedications && <MedicationSkeleton />}
         </MyHealthBlock>
         <MyHealthBlock
           limit={1}

@@ -48,17 +48,3 @@ export function VitalsGrid({ vitals }: { vitals: Vital[] }) {
     </View>
   );
 }
-
-export function VitalsSkeleton() {
-  return (
-    <View style={s.sectionContainer}>
-      <View style={s.labelContainer}>
-        <FontAwesome5 name="heartbeat" size={20} color={g.white} />
-        <Text style={s.label}>
-          Vitals
-        </Text>
-      </View>
-      <View style={s.vitalsContainer} />
-    </View>
-  );
-}

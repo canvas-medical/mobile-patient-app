@@ -36,6 +36,9 @@ const s = StyleSheet.create({
     ...g.labelSmall,
     color: g.white,
   },
+  skeleton: {
+    height: g.size(100),
+  },
 });
 
 export function DiagnosticCard({ data }: { data: DiagnosticReport, }) {
@@ -84,5 +87,17 @@ export function DiagnosticCard({ data }: { data: DiagnosticReport, }) {
         </Text>
       </BlurView>
     </TouchableOpacity>
+  );
+}
+
+export function DiagnosticSkeleton() {
+  return (
+    <View style={s.blurContainer}>
+      <BlurView
+        style={[s.diagnosticBlur, s.skeleton]}
+        tint="light"
+        intensity={50}
+      />
+    </View>
   );
 }

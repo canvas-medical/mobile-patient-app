@@ -41,6 +41,9 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     gap: g.size(8),
   },
+  skeleton: {
+    height: g.size(80)
+  }
 });
 
 export function MedicationCard({ med }: { med: Medication }) {
@@ -80,6 +83,18 @@ export function MedicationCard({ med }: { med: Medication }) {
           </View>
         </View>
       </BlurView>
+    </View>
+  );
+}
+
+export function MedicationSkeleton() {
+  return (
+    <View style={[s.card, s.skeleton]}>
+      <BlurView
+        intensity={40}
+        tint="light"
+        style={s.cardBlur}
+      />
     </View>
   );
 }

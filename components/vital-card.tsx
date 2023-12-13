@@ -21,7 +21,7 @@ const s = StyleSheet.create({
     width: g.width - g.size(32),
   },
   skeleton: {
-    height: g.size(68),
+    height: g.size(78),
   },
   topRow: {
     flexDirection: 'row',
