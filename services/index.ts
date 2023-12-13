@@ -15,4 +15,5 @@ export { useCreatePatient, usePatient } from '@services/patient';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
 export { useReports } from '@services/reports';
+export { usePaymentIntentCapture, getPaymentIntent } from '@services/stripe';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
