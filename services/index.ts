@@ -17,3 +17,4 @@ export { schedulePushNotification, registerForPushNotificationsAsync } from '@se
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
 export { useReports } from '@services/reports';
 export { useSchedule } from '@services/schedule';
+export { usePaymentIntentCapture, getPaymentIntent } from '@services/stripe';

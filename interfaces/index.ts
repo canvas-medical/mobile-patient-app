@@ -10,6 +10,7 @@ export type { Immunization } from '@interfaces/immunization';
 export type { Invoice } from '@interfaces/invoice';
 export type { Medication } from '@interfaces/medication';
 export type { Message } from '@interfaces/message';
+export type { PaymentNotice } from '@interfaces/payment-notice';
 export type { Question } from '@interfaces/question';
 export type { Report } from '@interfaces/report';
 export type { Schedule, Slot } from '@interfaces/schedule';

@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
-import { router } from 'expo-router';
 import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
 import { getToken } from './access-token';
@@ -8,14 +7,15 @@ import { getToken } from './access-token';
 async function getPaymentNotices() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice?recipient=Patient/${patientId}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/PaymentNotice?request=Patient/${patientId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
       accept: 'application/json'
     }
   });
-  return res.json();
+  const json = await res.json();
+  return json.entry?.map((entry) => entry.resource).reverse() || [];
 }
 
 export function usePaymentNotices() {
@@ -25,7 +25,8 @@ export function usePaymentNotices() {
   });
 }
 
-async function paymentNoticeSubmit(value: number) {
+// Amount is in dollars, formatted as a float
+async function paymentNoticeSubmit(amount: string) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
 
@@ -41,30 +42,31 @@ async function paymentNoticeSubmit(value: number) {
         resourceType: 'PaymentNotice',
         status: 'active',
         request: {
-          reference: patientId,
+          reference: `Patient/${patientId}`
         },
         created: new Date(),
         payment: {},
         recipient: {},
         amount: {
-          value,
+          value: amount,
           currency: 'USD'
         }
       }
     )
   });
   const Json: null | ApiError = await res.json();
+  console.log('payment notice json', Json);
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
 export function usePaymentNoticeSubmit() {
   return useMutation({
-    mutationFn: (value: number) => paymentNoticeSubmit(value),
-    onSuccess: () => router.push('appointments-medications'),
+    mutationFn: (amount: string) => paymentNoticeSubmit(amount),
     onError: (e) => {
+      // TODO: release charge if something goes wrong here
       Alert.alert(
-        'Error',
-        'There was an error submitting the payment. Please try again.',
+        'Payment Refunded',
+        e.message,
         [
           { text: 'OK' }
         ],

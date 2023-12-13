@@ -19,13 +19,13 @@ const s = StyleSheet.create({
   button: {
     position: 'absolute',
     bottom: g.size(-1),
-    right: g.size(0),
+    right: 0,
   },
   buttonDisabled: {
     opacity: 0.5,
     position: 'absolute',
     bottom: g.size(-1),
-    right: g.size(0),
+    right: 0,
   },
   container: {
     height: g.height - g.size(140), // subtract header height
