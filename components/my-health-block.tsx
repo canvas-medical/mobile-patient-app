@@ -49,23 +49,22 @@ export function MyHealthBlock(
             {title}
           </Text>
         </View>
-        {limit < children.length
-          && (
-            <TouchableOpacity onPress={() => router.push(viewAllRoute)}>
-              <Text style={s.viewAll}>
-                View All
-              </Text>
-            </TouchableOpacity>
-          )}
+        {limit < children.length && (
+          <TouchableOpacity onPress={() => router.push(viewAllRoute)}>
+            <Text style={s.viewAll}>
+              View All
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={s.diagnosticContainer}>
         {children}
         {!children.length && title !== 'Vitals' && (
-        <Text style={s.zeroState}>
-          No
-          {' '}
-          {title}
-        </Text>
+          <Text style={s.zeroState}>
+            No
+            {' '}
+            {title}
+          </Text>
         )}
       </View>
     </View>
