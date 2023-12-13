@@ -27,14 +27,6 @@ export default function Layout() {
       initialRouteName="my-health"
       screenOptions={{
         tabBarActiveTintColor: g.primaryBlue,
-        tabBarActiveBackgroundColor: g.black, // TODO: Remove
-        tabBarStyle: {
-          backgroundColor: g.white,
-          borderTopEndRadius: g.size(200),
-          borderTopStartRadius: g.size(200),
-          borderTopLeftRadius: g.size(200),
-          borderTopRightRadius: g.size(200),
-        },
         tabBarLabelStyle: {
           ...g.bodySmall,
         },
