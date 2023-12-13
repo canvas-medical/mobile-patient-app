@@ -1,5 +1,12 @@
 import { useRef, useState } from 'react';
-import { Animated, Easing, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  Animated,
+  Easing,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { router } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { g } from '@styles';
@@ -69,34 +76,52 @@ export function BookAppointmentDate() {
         onPress={() => toggleDatePicker()}
       >
         <Text style={s.showButtonLabel}>
-          {showDatePicker ? 'Close' : 'Book'}
+          {Platform.OS === 'ios' && showDatePicker ? 'Close' : 'Book'}
           &nbsp;
         </Text>
-        <Text style={[s.showButtonLabel, showDatePicker && s.showButtonLabelX]}>
+        <Text
+          style={[
+            s.showButtonLabel,
+            Platform.OS === 'ios' && showDatePicker && s.showButtonLabelX,
+          ]}
+        >
           +
         </Text>
       </TouchableOpacity>
-      <Animated.View style={[s.animatedContainer, { maxHeight: heightValue }]}>
+      {Platform.OS === 'ios' && (
+        <Animated.View style={[s.animatedContainer, { maxHeight: heightValue }]}>
+          <DateTimePicker
+            mode="date"
+            display="spinner"
+            value={selectedDate}
+            minimumDate={new Date()}
+            onChange={(_, date: Date) => setSelectedDate(date)}
+            textColor={g.white}
+          />
+          <TouchableOpacity
+            style={s.selectButton}
+            onPress={() => router.push({
+              pathname: 'book-appointment',
+              params: { bookingDate: selectedDate.toISOString().slice(0, 10) }
+            })}
+          >
+            <Text style={s.selectButtonLabel}>
+              Select
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+      {Platform.OS === 'android' && showDatePicker && (
         <DateTimePicker
           mode="date"
-          display="spinner"
           value={selectedDate}
           minimumDate={new Date()}
-          onChange={(_, date: Date) => setSelectedDate(date)}
-          textColor={g.white}
-        />
-        <TouchableOpacity
-          style={s.selectButton}
-          onPress={() => router.push({
+          onChange={(_, date: Date) => router.push({
             pathname: 'book-appointment',
-            params: { bookingDate: selectedDate.toISOString().slice(0, 10) }
+            params: { bookingDate: date.toISOString().slice(0, 10) }
           })}
-        >
-          <Text style={s.selectButtonLabel}>
-            Select
-          </Text>
-        </TouchableOpacity>
-      </Animated.View>
+        />
+      )}
     </>
   );
 }

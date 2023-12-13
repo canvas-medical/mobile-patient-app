@@ -96,6 +96,8 @@ export default function BookAppointment() {
     day: 'numeric'
   });
 
+  console.log('Hello: ', bookingDate);
+
   const futureSlotTimes = bookingDate === new Date().toISOString().slice(0, 10)
     ? slotData?.filter((slot: Slot) => {
       const slotTime = new Date(slot.start).toLocaleTimeString('en-US');
