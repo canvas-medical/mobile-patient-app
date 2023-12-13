@@ -7,6 +7,9 @@ import { LabImagingReport, DiagnosticReport } from '@interfaces';
 export default function LabResults() {
   const { data, isLoading, refetch } = useLabResults();
 
+  // TODO: update LabImagingReportCard and DiagnosticCard to have a more similar structure so they don't look so different
+  // We could possibly use the same component for both, but we'd need to figure out how to handle the different data structures
+
   return (
     <StackListView
       title="Lab Results"
