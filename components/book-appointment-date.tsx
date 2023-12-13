@@ -47,24 +47,26 @@ const s = StyleSheet.create({
   },
 });
 
-export function BookAppointment() {
+export function BookAppointmentDate() {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const heightValue = useRef(new Animated.Value(0)).current;
+
+  function toggleDatePicker() {
+    Animated.timing(heightValue, {
+      toValue: showDatePicker ? 0 : g.size(275),
+      duration: 300,
+      easing: Easing.ease,
+      useNativeDriver: false,
+    }).start();
+    setShowDatePicker(!showDatePicker);
+  }
 
   return (
     <>
       <TouchableOpacity
         style={s.showButton}
-        onPress={() => {
-          Animated.timing(heightValue, {
-            toValue: showDatePicker ? 0 : g.size(275),
-            duration: 300,
-            easing: Easing.ease,
-            useNativeDriver: false,
-          }).start();
-          setShowDatePicker(!showDatePicker);
-        }}
+        onPress={() => toggleDatePicker()}
       >
         <Text style={s.showButtonLabel}>
           {showDatePicker ? 'Close' : 'Book'}

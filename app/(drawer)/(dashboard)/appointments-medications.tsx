@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useMedications, useAppointments } from '@services';
-import { LabeledToggle, AppointmentList, MedicationList, BookAppointment } from '@components';
+import { LabeledToggle, AppointmentList, MedicationList, BookAppointmentDate } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -48,7 +48,7 @@ export default function AppointmentsAndMedications() {
         <ActivityIndicator size="large" color={g.white} style={s.loading} />
       ) : (
         <View style={s.contentContainer}>
-          {!toggled && <BookAppointment />}
+          {!toggled && <BookAppointmentDate />}
           <ScrollView
             contentContainerStyle={s.scrollContentContainer}
             refreshControl={(
