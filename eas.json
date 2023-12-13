@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 5.9.0",
+    "version": ">= 5.9.0"
   },
   "build": {
     "development-simulator": {
@@ -11,8 +11,10 @@
       }
     },
     "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+      "ios": {
+        "developmentClient": true,
+        "distribution": "internal"
+      }
     },
     "preview": {
       "distribution": "internal"

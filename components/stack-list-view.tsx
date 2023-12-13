@@ -25,6 +25,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   scrollContentContainer: {
+    minHeight: '100%',
     gap: g.size(24),
     paddingHorizontal: g.size(16),
     paddingTop: g.size(40),
