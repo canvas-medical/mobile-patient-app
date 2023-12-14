@@ -43,9 +43,6 @@ const s = StyleSheet.create({
   },
   skeleton: {
     height: g.size(80),
-    borderWidth: 1,
-    borderColor: g.red,
-    borderStyle: 'solid',
   }
 });
 
