@@ -36,6 +36,9 @@ const s = StyleSheet.create({
     ...g.labelSmall,
     color: g.white,
   },
+  skeleton: {
+    height: g.size(100),
+  },
 });
 
 export function DiagnosticCard({ report }: { report: DiagnosticReport, }) {
@@ -54,7 +57,7 @@ export function DiagnosticCard({ report }: { report: DiagnosticReport, }) {
       <BlurView
         style={s.diagnosticBlur}
         tint="light"
-        intensity={50}
+        intensity={40}
       >
         <View style={s.contentRow}>
           <FontAwesome5 name="file-medical-alt" size={g.size(36)} color={g.white} />
@@ -84,5 +87,17 @@ export function DiagnosticCard({ report }: { report: DiagnosticReport, }) {
         </Text>
       </BlurView>
     </TouchableOpacity>
+  );
+}
+
+export function DiagnosticSkeleton() {
+  return (
+    <View style={s.blurContainer}>
+      <BlurView
+        style={[s.diagnosticBlur, s.skeleton]}
+        tint="light"
+        intensity={40}
+      />
+    </View>
   );
 }

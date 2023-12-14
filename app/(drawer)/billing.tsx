@@ -78,6 +78,7 @@ const s = StyleSheet.create({
 });
 
 export default function Billing() {
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [paymentIntentId, setPaymentIntentId] = useState<string>('');
@@ -135,9 +136,7 @@ export default function Billing() {
 
   const formattedDate = (date) => new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'utc' });
   return (
-    <StripeProvider
-      publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}
-    >
+    <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
       <Screen>
         <Header />
         <KeyboardAvoidingView style={{ height: g.height }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -160,9 +159,9 @@ export default function Billing() {
                     error={null}
                     label=""
                     name="amount"
-                    onFocus={() => {}}
+                    onFocus={() => { }}
                     type="text"
-                    onSubmitEditing={() => {}}
+                    onSubmitEditing={() => { }}
                     autoCapitalize="none"
                     textContentType="none"
                     returnKeyType="default"

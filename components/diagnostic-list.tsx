@@ -21,7 +21,7 @@ export function DiagnosticList({ diagnostics }: { diagnostics: DiagnosticReport[
   return (
     <View style={s.sectionContainer}>
       <Text style={s.label}>
-        Diagnostics
+        Labs
       </Text>
       <View style={s.diagnosticContainer}>
         {diagnostics.map((data) => <DiagnosticCard key={data.id} data={data} />)}

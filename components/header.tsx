@@ -1,6 +1,5 @@
 import { Alert, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { router, useNavigation } from 'expo-router';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { usePatient } from '@services';
@@ -33,12 +32,11 @@ const s = StyleSheet.create({
   },
 });
 export function Header() {
-  const navigation = useNavigation<DrawerNavigationProp<any>>();
   const { data } = usePatient();
   return (
     <View style={s.container}>
-      <TouchableOpacity onPress={() => navigation.openDrawer()}>
-        <Feather name="menu" size={g.size(48)} color={g.white} />
+      <TouchableOpacity onPress={() => router.back()}>
+        <Feather name="arrow-left" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
       <TouchableOpacity
         style={s.nameAndAvatarContainer}
