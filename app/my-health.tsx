@@ -62,8 +62,6 @@ export default function MyHealth() {
   const activeConditions = conditions?.filter((condition) => condition.clinicalStatus.text === 'Active');
   const activeGoals = goals?.filter((item) => activeGoalStates.includes(item.achievementStatus.coding[0].display));
 
-  console.log('Hello: ', goals);
-
   return (
     <Screen>
       <Header />
@@ -106,7 +104,10 @@ export default function MyHealth() {
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
           >
             {loadingDiagnostics ? <DiagnosticSkeleton /> : diagnostics?.slice(0, 1).map((diagnostic) => (
-              <DiagnosticCard data={diagnostic} key={diagnostic.id} />
+              <DiagnosticCard
+                key={diagnostic.id}
+                data={diagnostic}
+              />
             ))}
           </MyHealthBlock>
 
@@ -118,7 +119,10 @@ export default function MyHealth() {
             icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
           >
             {loadingMedications ? <MedicationSkeleton /> : activeMedications?.slice(0, 1).map((med) => (
-              <MedicationCard key={med.id} med={med} />
+              <MedicationCard
+                key={med.id}
+                med={med}
+              />
             ))}
           </MyHealthBlock>
 
@@ -130,7 +134,10 @@ export default function MyHealth() {
             icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
           >
             {loadingConditions ? <ActivityIndicator color={g.white} /> : activeConditions?.slice(0, 1).map((condition: Condition) => (
-              <ConditionCard key={condition.id} condition={condition} />
+              <ConditionCard
+                key={condition.id}
+                condition={condition}
+              />
             ))}
           </MyHealthBlock>
 
@@ -142,7 +149,10 @@ export default function MyHealth() {
             icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
           >
             {loadingImmunizations ? <ActivityIndicator color={g.white} /> : immunizations?.slice(0, 1).map((immunization: Immunization) => (
-              <ImmunizationCard key={immunization.id} immunization={immunization} />
+              <ImmunizationCard
+                key={immunization.id}
+                immunization={immunization}
+              />
             ))}
           </MyHealthBlock>
 
@@ -154,7 +164,10 @@ export default function MyHealth() {
             icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
           >
             {loadingAllergies ? <ActivityIndicator color={g.white} /> : allergies?.slice(0, 1).map((allergy: Allergy) => (
-              <AllergyCard key={allergy.id} allergy={allergy} />
+              <AllergyCard
+                key={allergy.id}
+                allergy={allergy}
+              />
             ))}
           </MyHealthBlock>
 
@@ -165,8 +178,11 @@ export default function MyHealth() {
             viewAll={goals?.length > 1}
             icon={<Feather name="target" size={g.size(20)} color={g.white} />}
           >
-            {loadingGoals ? <ActivityIndicator color={g.white} /> : activeGoals?.slice(0, 1).map((item) => (
-              <GoalCard goal={item} />
+            {loadingGoals ? <ActivityIndicator color={g.white} /> : activeGoals?.slice(0, 1).map((goal) => (
+              <GoalCard
+                key={goal.id}
+                goal={goal}
+              />
             ))}
           </MyHealthBlock>
 
