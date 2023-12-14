@@ -58,10 +58,8 @@ export function ConditionCard({ condition }: { condition: Condition }) {
           <LightbulbOnSVG
             lightbulbOn={isPressed}
             color={g.white}
-            radius={radius}
             width={g.size(25)}
             height={g.size(25)}
-            percentageComplete={85}
           />
           <Text style={s.conditionDate}>
             {new Date(recordedDate).toLocaleDateString()}

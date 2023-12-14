@@ -16,7 +16,7 @@ const s = StyleSheet.create({
 });
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
-export function LightbulbOnSVG({ color, width, height, fill, lightbulbOn }:{color: string, width: number, height: number, fill: string, lightbulbOn: boolean }) {
+export function LightbulbOnSVG({ color, width, height, fill, lightbulbOn }:{color: string, width: number, height: number, fill?: string, lightbulbOn: boolean }) {
   const fillProgress = useSharedValue(lightbulbOn ? 1 : 0);
   const animatedProps = useAnimatedProps(() => {
     const fillValue = interpolateColor(fillProgress.value, [0, 1], ['transparent', 'yellow']);
