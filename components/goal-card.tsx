@@ -44,15 +44,12 @@ export function GoalCard({ goal }: { goal: Goal }) {
     target: [{ dueDate: targetDate }],
     startDate
   } = goal;
-  const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString(
-    'en-US',
-    {
-      timeZone: 'UTC',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }
-  );
+  const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 
   return (
     <View

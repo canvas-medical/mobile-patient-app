@@ -45,6 +45,11 @@ const s = StyleSheet.create({
     rowGap: g.size(16),
     justifyContent: 'space-between',
   },
+  hello: {
+    borderWidth: 1,
+    borderColor: g.red,
+    borderStyle: 'solid',
+  }
 });
 
 export default function MyHealth() {
@@ -75,7 +80,10 @@ export default function MyHealth() {
           />
         )}
       >
-        <ScrollView contentContainerStyle={s.scrollContent}>
+        <ScrollView
+          style={s.hello}
+          contentContainerStyle={s.scrollContent}
+        >
           {/* Vitals */}
           <MyHealthBlock
             title="Vitals"
