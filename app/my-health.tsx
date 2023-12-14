@@ -26,15 +26,18 @@ import { MyHealthBlock } from '@components/my-health-block';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import { Allergy, Condition, Goal, Immunization } from '@interfaces';
 import { g } from '@styles';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
 
 const s = StyleSheet.create({
-  scroll: {
-    width: '100%',
-    paddingHorizontal: g.size(20),
-    marginBottom: g.size(80),
+  maskedView: {
+    flex: 1,
   },
   scrollContent: {
+    minHeight: '100%',
     gap: g.size(16),
+    paddingHorizontal: g.size(16),
+    paddingTop: g.size(32),
     paddingBottom: g.size(32),
   },
   vitalsContainer: {
@@ -52,114 +55,133 @@ export default function MyHealth() {
   const { data: conditions, isLoading: loadingConditions } = useConditions();
   const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
   const { data: allergies, isLoading: loadingAllergies } = useAllergies();
-  const { data: goals, isFetching: loadingGoals }: { data: { entry: Goal[] }, isFetching: boolean } = useGoals();
+  const { data: goals, isFetching: loadingGoals }: { data: Goal[], isFetching: boolean } = useGoals();
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
   const activeMedications = medications?.filter((med) => med.status === 'active');
   const activeConditions = conditions?.filter((condition) => condition.clinicalStatus.text === 'Active');
-  const activeGoals = goals?.entry.filter((item) => activeGoalStates.includes(item.resource.achievementStatus.coding[0].display));
+  const activeGoals = goals?.filter((item) => activeGoalStates.includes(item.achievementStatus.coding[0].display));
+
+  console.log('Hello: ', goals);
 
   return (
     <Screen>
       <Header />
-      <ScrollView
-        contentContainerStyle={s.scrollContent}
-        style={s.scroll}
+      <MaskedView
+        style={s.maskedView}
+        maskElement={(
+          <LinearGradient
+            style={s.maskedView}
+            colors={[g.transparent, g.white]}
+            locations={[0, 0.065]}
+          />
+        )}
       >
-        {/* Vitals */}
-        <MyHealthBlock title="Vitals" icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}>
-          <View style={s.vitalsContainer}>
-            {loadingVitals && Array.from(Array(6)).map((i) => (
-              <VitalCardSkeleton index={i} vitalsOdd={false} />
+        <ScrollView contentContainerStyle={s.scrollContent}>
+          {/* Vitals */}
+          <MyHealthBlock
+            title="Vitals"
+            viewAll={false}
+            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+          >
+            <View style={s.vitalsContainer}>
+              {loadingVitals ? Array.from(Array(6)).map((i) => (
+                <VitalCardSkeleton index={i} vitalsOdd={false} />
+              )) : vitals?.map((vital, i) => (
+                <VitalCard
+                  index={i}
+                  key={vital.id}
+                  vital={vital}
+                  vitalsOdd={vitals.length % 2 !== 0}
+                />
+              ))}
+            </View>
+          </MyHealthBlock>
+
+          {/* Labs */}
+          <MyHealthBlock
+            viewAllRoute="metrics-reports"
+            title="Labs"
+            viewAll={diagnostics?.length > 1}
+            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
+          >
+            {loadingDiagnostics ? <DiagnosticSkeleton /> : diagnostics?.slice(0, 1).map((diagnostic) => (
+              <DiagnosticCard data={diagnostic} key={diagnostic.id} />
             ))}
-            {vitals?.map((vital, i) => (
-              <VitalCard
-                index={i}
-                key={vital.id}
-                vital={vital}
-                vitalsOdd={vitals.length % 2 !== 0}
-              />
+          </MyHealthBlock>
+
+          {/* Medications */}
+          <MyHealthBlock
+            viewAllRoute="appointments-medications"
+            title="Medications"
+            viewAll={medications?.length > 1}
+            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
+          >
+            {loadingMedications ? <MedicationSkeleton /> : activeMedications?.slice(0, 1).map((med) => (
+              <MedicationCard key={med.id} med={med} />
             ))}
-          </View>
-        </MyHealthBlock>
+          </MyHealthBlock>
 
-        {/* Labs */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="metrics-reports"
-          title="Labs"
-          icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
-        >
-          {diagnostics?.slice(0, 1).map((diagnostic) => (<DiagnosticCard data={diagnostic} key={diagnostic.id} />))}
-          {loadingDiagnostics && <DiagnosticSkeleton />}
-        </MyHealthBlock>
+          {/* Conditions */}
+          <MyHealthBlock
+            viewAllRoute="conditions"
+            title="Conditions"
+            viewAll={conditions?.length > 1}
+            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+          >
+            {loadingConditions ? <ActivityIndicator color={g.white} /> : activeConditions?.slice(0, 1).map((condition: Condition) => (
+              <ConditionCard key={condition.id} condition={condition} />
+            ))}
+          </MyHealthBlock>
 
-        {/* Medications */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="appointments-medications"
-          title="Medications"
-          icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
-        >
-          {activeMedications?.slice(0, 1).map((med) => <MedicationCard key={med.id} med={med} />)}
-          {loadingMedications && <MedicationSkeleton />}
-        </MyHealthBlock>
+          {/* Immunizations */}
+          <MyHealthBlock
+            viewAllRoute="immunizations"
+            title="Immunizations"
+            viewAll={immunizations?.length > 1}
+            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
+          >
+            {loadingImmunizations ? <ActivityIndicator color={g.white} /> : immunizations?.slice(0, 1).map((immunization: Immunization) => (
+              <ImmunizationCard key={immunization.id} immunization={immunization} />
+            ))}
+          </MyHealthBlock>
 
-        {/* Conditions */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="conditions"
-          title="Conditions"
-          icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
-        >
-          {activeConditions?.slice(0, 1).map((condition: Condition) => (<ConditionCard key={condition.id} condition={condition} />))}
-          {loadingConditions && <ActivityIndicator />}
-        </MyHealthBlock>
+          {/* Allergies */}
+          <MyHealthBlock
+            viewAllRoute="allergies"
+            title="Allergies"
+            viewAll={allergies?.length > 1}
+            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
+          >
+            {loadingAllergies ? <ActivityIndicator color={g.white} /> : allergies?.slice(0, 1).map((allergy: Allergy) => (
+              <AllergyCard key={allergy.id} allergy={allergy} />
+            ))}
+          </MyHealthBlock>
 
-        {/* Immunizations */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="immunizations"
-          title="Immunizations"
-          icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
-        >
-          {immunizations?.slice(0, 1).map((immunization: Immunization) => (<ImmunizationCard key={immunization.id} immunization={immunization} />))}
-          {loadingImmunizations && <ActivityIndicator />}
-        </MyHealthBlock>
+          {/* Goals */}
+          <MyHealthBlock
+            viewAllRoute="goals"
+            title="Goals"
+            viewAll={goals?.length > 1}
+            icon={<Feather name="target" size={g.size(20)} color={g.white} />}
+          >
+            {loadingGoals ? <ActivityIndicator color={g.white} /> : activeGoals?.slice(0, 1).map((item) => (
+              <GoalCard goal={item} />
+            ))}
+          </MyHealthBlock>
 
-        {/* Allergies */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="allergies"
-          title="Allergies"
-          icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
-        >
-          {allergies?.slice(0, 1).map((allergy: Allergy) => (<AllergyCard key={allergy.id} allergy={allergy} />))}
-          {loadingAllergies && <ActivityIndicator />}
-        </MyHealthBlock>
-
-        {/* Goals */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="goals"
-          title="Goals"
-          icon={<Feather name="target" size={g.size(20)} color={g.white} />}
-        >
-          {activeGoals?.slice(0, 1).map((item) => <GoalCard goal={item} />)}
-          {loadingGoals && <ActivityIndicator />}
-        </MyHealthBlock>
-
-        {/* Educational Materials */}
-        <MyHealthBlock
-          limit={1}
-          viewAllRoute="education"
-          title="Educational Materials"
-          icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.white} />}
-        >
-          {[]}
-        </MyHealthBlock>
-      </ScrollView>
+          {/* Educational Materials */}
+          <MyHealthBlock
+            viewAllRoute="education"
+            title="Educational Materials"
+            viewAll={false} // TODO: Update
+            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.white} />}
+          >
+            {[]}
+          </MyHealthBlock>
+        </ScrollView>
+      </MaskedView>
     </Screen>
   );
 }
