@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { Report } from '@interfaces';
+import { LabImagingReport } from '@interfaces';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -32,12 +32,14 @@ const s = StyleSheet.create({
   },
 });
 
-export function ReportCard({ report }: { report: Report }) {
+export function LabImagingReportCard({ report }: { report: LabImagingReport }) {
   const {
     date,
     type: { coding: [{ display: type }] },
     content: [{ attachment: { url: uri } }]
   } = report;
+
+  // TODO: Add "Superseded"/"Current" status to each card
 
   return (
     <TouchableOpacity

@@ -26,7 +26,6 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
-    height: g.height,
   },
   contentContainer: {
     flex: 1,

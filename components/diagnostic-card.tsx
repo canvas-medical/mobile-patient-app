@@ -38,8 +38,8 @@ const s = StyleSheet.create({
   },
 });
 
-export function DiagnosticCard({ data }: { data: DiagnosticReport, }) {
-  const { id, issued, code: { text }, category: [{ coding: [{ display }] }] } = data;
+export function DiagnosticCard({ report }: { report: DiagnosticReport, }) {
+  const { id, issued, code: { text }, category: [{ coding: [{ display }] }] } = report;
   const { data: uri } = useDiagnosticURI(id);
 
   return (

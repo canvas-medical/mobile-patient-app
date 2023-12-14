@@ -9,4 +9,5 @@ export interface DiagnosticReport {
       display: string;
     }[];
   }[];
+  resourceType: string;
 }
