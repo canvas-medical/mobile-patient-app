@@ -10,7 +10,6 @@ const s = StyleSheet.create({
     paddingTop: g.size(72),
     paddingLeft: g.size(32),
     paddingRight: g.size(24),
-    marginBottom: g.size(36),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

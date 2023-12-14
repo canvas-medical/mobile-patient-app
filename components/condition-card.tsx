@@ -5,6 +5,7 @@ import {
 import { BlurView } from 'expo-blur';
 import { LightbulbOnSVG } from '@components';
 import { Condition } from '@interfaces';
+import * as Haptics from 'expo-haptics';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -43,7 +44,10 @@ export function ConditionCard({ condition }: { condition: Condition }) {
     <Pressable
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
-      onLongPress={() => Alert.alert('AI stuff will appear here')}
+      onLongPress={() => {
+        Alert.alert('AI stuff will appear here');
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
+      }}
       style={s.card}
     >
       <BlurView
@@ -64,6 +68,7 @@ export function ConditionCard({ condition }: { condition: Condition }) {
           <Text style={s.conditionDate}>
             {new Date(recordedDate).toLocaleDateString()}
           </Text>
+
         </View>
       </BlurView>
     </Pressable>
