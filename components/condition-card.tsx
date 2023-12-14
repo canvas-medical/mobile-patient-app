@@ -39,7 +39,6 @@ export function ConditionCard({ condition }: { condition: Condition }) {
     recordedDate,
   } = condition;
 
-  console.log(isPressed);
   return (
     <Pressable
       onTouchStart={() => setIsPressed(true)}
