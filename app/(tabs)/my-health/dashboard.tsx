@@ -49,7 +49,7 @@ const s = StyleSheet.create({
   },
 });
 
-export default function MyHealth() {
+export default function Dashboard() {
   const { data: vitals, isLoading: loadingVitals } = useObservations();
   const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: medications, isLoading: loadingMedications } = useMedications();
