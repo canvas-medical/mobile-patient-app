@@ -42,7 +42,7 @@ const s = StyleSheet.create({
     gap: g.size(8),
   },
   skeleton: {
-    height: g.size(80)
+    height: g.size(80),
   }
 });
 
@@ -93,7 +93,7 @@ export function MedicationSkeleton() {
       <BlurView
         intensity={40}
         tint="light"
-        style={s.cardBlur}
+        style={StyleSheet.absoluteFill}
       />
     </View>
   );

@@ -37,8 +37,8 @@ const s = StyleSheet.create({
   },
 });
 export function MyHealthBlock(
-  { children, limit = children.length, viewAllRoute, title, icon }:
-  { children: any, title: string, icon: any, limit?: number, viewAllRoute?: string }
+  { children, viewAllRoute, title, icon, viewAll }:
+    { children: any, title: string, icon: any, viewAllRoute?: string, viewAll: boolean }
 ) {
   return (
     <View style={s.sectionContainer}>
@@ -49,7 +49,7 @@ export function MyHealthBlock(
             {title}
           </Text>
         </View>
-        {limit < children.length && (
+        {viewAll && title !== 'Vitals' && (
           <TouchableOpacity onPress={() => router.push(viewAllRoute)}>
             <Text style={s.viewAll}>
               View All
@@ -59,7 +59,7 @@ export function MyHealthBlock(
       </View>
       <View style={s.diagnosticContainer}>
         {children}
-        {!children.length && title !== 'Vitals' && (
+        {!children?.length && title !== 'Vitals' && (
           <Text style={s.zeroState}>
             No
             {' '}

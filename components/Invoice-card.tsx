@@ -46,7 +46,7 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
       <BlurView
         style={s.blur}
         tint="light"
-        intensity={50}
+        intensity={40}
       >
         <View style={s.row}>
           <Text style={s.label}>

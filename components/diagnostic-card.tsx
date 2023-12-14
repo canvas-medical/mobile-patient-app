@@ -57,7 +57,7 @@ export function DiagnosticCard({ data }: { data: DiagnosticReport, }) {
       <BlurView
         style={s.diagnosticBlur}
         tint="light"
-        intensity={50}
+        intensity={40}
       >
         <View style={s.contentRow}>
           <FontAwesome5 name="file-medical-alt" size={g.size(36)} color={g.white} />
@@ -96,7 +96,7 @@ export function DiagnosticSkeleton() {
       <BlurView
         style={[s.diagnosticBlur, s.skeleton]}
         tint="light"
-        intensity={50}
+        intensity={40}
       />
     </View>
   );

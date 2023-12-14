@@ -14,9 +14,6 @@ import { Header, Screen } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  gradient: {
-    flex: 1,
-  },
   loading: {
     flex: 1,
     paddingBottom: g.size(120),
@@ -76,7 +73,7 @@ export function StackListView({
           style={s.maskedView}
           maskElement={(
             <LinearGradient
-              style={s.gradient}
+              style={s.maskedView}
               colors={[g.transparent, g.white]}
               locations={[0.0175, 0.065]}
             />

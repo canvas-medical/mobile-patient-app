@@ -64,7 +64,7 @@ export function VitalCard({ vital, vitalsOdd, index }: {
       <BlurView
         style={s.vitalBlur}
         tint="light"
-        intensity={50}
+        intensity={40}
       >
         <View style={s.topRow}>
           <Text style={s.vitalLabel}>
@@ -100,7 +100,7 @@ export function VitalCardSkeleton({ vitalsOdd, index }) {
       <BlurView
         style={[s.vitalBlur, s.skeleton]}
         tint="light"
-        intensity={50}
+        intensity={40}
       />
     </View>
   );

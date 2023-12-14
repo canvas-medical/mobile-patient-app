@@ -1,6 +1,5 @@
 import { Alert, TouchableOpacity, View, StyleSheet, Text } from 'react-native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { router, useNavigation } from 'expo-router';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { usePatient } from '@services';

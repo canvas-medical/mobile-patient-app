@@ -36,17 +36,20 @@ const s = StyleSheet.create({
 
 export function GoalCard({ goal }: { goal: Goal }) {
   const {
-    resource: {
-      id,
-      achievementStatus: { coding: [{ display: achievementStatus }] },
-      priority: { coding: [{ display: priority }] },
-      note: [{ text: note }],
-      description: { text: description },
-      target: [{ dueDate: targetDate }],
-      startDate
-    }
+    id,
+    achievementStatus: { coding: [{ display: achievementStatus }] },
+    priority: { coding: [{ display: priority }] },
+    note: [{ text: note }],
+    description: { text: description },
+    target: [{ dueDate: targetDate }],
+    startDate
   } = goal;
-  const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric', year: 'numeric' });
+  const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 
   return (
     <View
