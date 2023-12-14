@@ -16,6 +16,7 @@ export { LabeledToggle } from '@components/labeled-toggle';
 export { MedicationCard, MedicationSkeleton } from '@components/medication-card';
 export { MedicationList } from '@components/medication-list';
 export { MessageBlock } from '@components/message-block';
+export { MyHealthBlock } from '@components/my-health-block';
 export { ReportList } from '@components/report-list';
 export { ReportCard } from '@components/report-card';
 export { Screen } from '@components/screen';

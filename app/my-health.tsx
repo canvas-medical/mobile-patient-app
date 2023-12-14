@@ -1,6 +1,7 @@
-import React from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
-import 'react-native-gesture-handler';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
   AllergyCard,
   ConditionCard,
@@ -9,7 +10,9 @@ import {
   GoalCard,
   Header,
   ImmunizationCard,
-  MedicationCard, MedicationSkeleton,
+  MedicationCard,
+  MedicationSkeleton,
+  MyHealthBlock,
   Screen,
   VitalCard,
   VitalCardSkeleton,
@@ -22,12 +25,8 @@ import {
   useMedications,
   useObservations
 } from '@services';
-import { MyHealthBlock } from '@components/my-health-block';
-import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import { Allergy, Condition, Goal, Immunization } from '@interfaces';
 import { g } from '@styles';
-import { LinearGradient } from 'expo-linear-gradient';
-import MaskedView from '@react-native-masked-view/masked-view';
 
 const s = StyleSheet.create({
   maskedView: {
