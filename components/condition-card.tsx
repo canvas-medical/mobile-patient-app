@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  StyleSheet, View, Text, Pressable, PixelRatio, Alert
+  StyleSheet, View, Text, Pressable, Alert
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LightbulbOnSVG } from '@components';
@@ -30,13 +30,9 @@ const s = StyleSheet.create({
   },
 });
 
-const radius = PixelRatio.roundToNearestPixel(130);
-const STROKE_WIDTH = 1;
-
 export function ConditionCard({ condition }: { condition: Condition }) {
   const [isPressed, setIsPressed] = useState(false);
 
-  // long press time = 500ms
   const {
     code: { text },
     recordedDate,
@@ -62,7 +58,6 @@ export function ConditionCard({ condition }: { condition: Condition }) {
           <LightbulbOnSVG
             lightbulbOn={isPressed}
             color={g.white}
-            strokeWidth={STROKE_WIDTH}
             radius={radius}
             width={g.size(25)}
             height={g.size(25)}
