@@ -69,14 +69,14 @@ const s = StyleSheet.create({
   // }
 });
 
-export function AppointmentCard({ appt }: { appt: Appointment }) {
+export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const {
     start,
     end,
     reasonCode,
     // appointmentType: { coding },
     // contained: [{ address }],
-  } = appt;
+  } = appointment;
 
   const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   // TODO: review displays to see if there are any other ways that telemedicine is displayed

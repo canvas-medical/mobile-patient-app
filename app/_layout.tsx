@@ -40,9 +40,12 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-        <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        <Stack.Screen name="my-health" options={{ headerShown: false }} />
+        <Stack.Screen name="initial" options={{ headerShown: false }} />
+        <Stack.Screen name="personal-details" options={{ headerShown: false }} />
+        <Stack.Screen name="consents" options={{ headerShown: false }} />
+        <Stack.Screen name="questionnaire" options={{ headerShown: false }} />
+        <Stack.Screen name="coverage" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
       </Stack>
     </QueryClientProvider>

@@ -1,4 +1,4 @@
-export interface Report {
+export interface LabImagingReport {
   id: string;
   date: string;
   type: {
@@ -12,4 +12,5 @@ export interface Report {
     };
   }[];
   status: 'current' | 'superseded';
+  resourceType: string;
 }
