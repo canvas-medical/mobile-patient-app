@@ -43,7 +43,7 @@ export default function Layout() {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate('my-health-dashboard');
+            navigation.navigate('dashboard');
           },
         })}
       />
