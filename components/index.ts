@@ -14,6 +14,7 @@ export { Input } from '@components/input';
 export { InvoiceCard } from '@components/invoice-card';
 export { LabImagingReportCard } from '@components/lab-imaging-report-card';
 export { LabeledToggle } from '@components/labeled-toggle';
+export { LightbulbOnSVG } from '@components/lightbulb-on-svg';
 export { MedicationCard, MedicationSkeleton } from '@components/medication-card';
 export { MedicationList } from '@components/medication-list';
 export { MessageBlock } from '@components/message-block';

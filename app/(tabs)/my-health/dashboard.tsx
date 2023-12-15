@@ -10,6 +10,7 @@ import {
   GoalCard,
   Header,
   ImmunizationCard,
+  LabImagingReportCard,
   MedicationCard,
   MedicationSkeleton,
   MyHealthBlock,
@@ -20,12 +21,12 @@ import {
 import {
   useAllergies,
   useConditions,
-  useDiagnostics,
-  useEducationalMaterials,
   useGoals,
   useImmunizations,
+  useLabResults,
   useMedications,
-  useObservations
+  useObservations,
+  useEducationalMaterials,
 } from '@services';
 import {
   Allergy,
@@ -34,7 +35,8 @@ import {
   Immunization,
   Medication,
   DiagnosticReport,
-  Vital
+  Vital,
+  LabImagingReport,
 } from '@interfaces';
 import { g } from '@styles';
 
@@ -46,7 +48,7 @@ const s = StyleSheet.create({
     minHeight: '100%',
     gap: g.size(16),
     paddingHorizontal: g.size(16),
-    paddingTop: g.size(24),
+    paddingTop: g.size(32),
     paddingBottom: g.size(32),
   },
   vitalsContainer: {
@@ -57,14 +59,14 @@ const s = StyleSheet.create({
   },
 });
 
-export default function MyHealth() {
+export default function Dashboard() {
   const { data: vitals, isLoading: loadingVitals } = useObservations();
-  const { data: diagnostics, isLoading: loadingDiagnostics } = useDiagnostics();
+  const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: medications, isLoading: loadingMedications } = useMedications();
   const { data: conditions, isLoading: loadingConditions } = useConditions();
   const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
   const { data: allergies, isLoading: loadingAllergies } = useAllergies();
-  const { data: goals, isLoading: loadingGoals } = useGoals();
+  const { data: goals, isFetching: loadingGoals } = useGoals();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials } = useEducationalMaterials();
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
@@ -111,17 +113,25 @@ export default function MyHealth() {
           <MyHealthBlock
             viewAllRoute="my-health/lab-results"
             title="Labs"
-            viewAll={diagnostics?.length > 1}
+            viewAll={labs?.length > 1}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
           >
-            {loadingDiagnostics
-              ? <DiagnosticSkeleton />
-              : diagnostics?.slice(0, 1).map((diagnostic: DiagnosticReport) => (
+            {loadingLabs ? <DiagnosticSkeleton /> : labs.slice(0, 1).map((report: LabImagingReport | DiagnosticReport) => {
+              if (report.resourceType === 'DocumentReference') {
+                return (
+                  <LabImagingReportCard
+                    key={report.id}
+                    report={report as LabImagingReport}
+                  />
+                );
+              }
+              return (
                 <DiagnosticCard
-                  key={diagnostic.id}
-                  report={diagnostic}
+                  key={report.id}
+                  report={report as DiagnosticReport}
                 />
-              ))}
+              );
+            })}
           </MyHealthBlock>
 
           {/* Medications */}

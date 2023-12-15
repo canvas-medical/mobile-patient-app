@@ -1,6 +1,11 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { useState } from 'react';
+import {
+  StyleSheet, View, Text, Pressable, Alert
+} from 'react-native';
 import { BlurView } from 'expo-blur';
+import { LightbulbOnSVG } from '@components';
 import { Condition } from '@interfaces';
+import * as Haptics from 'expo-haptics';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -27,13 +32,23 @@ const s = StyleSheet.create({
 });
 
 export function ConditionCard({ condition }: { condition: Condition }) {
+  const [isPressed, setIsPressed] = useState(false);
+
   const {
     code: { text },
     recordedDate,
   } = condition;
 
   return (
-    <View style={s.card}>
+    <Pressable
+      onTouchStart={() => setIsPressed(true)}
+      onTouchEnd={() => setIsPressed(false)}
+      onLongPress={() => {
+        Alert.alert('AI stuff will appear here');
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
+      }}
+      style={s.card}
+    >
       <BlurView
         intensity={40}
         tint="light"
@@ -43,11 +58,18 @@ export function ConditionCard({ condition }: { condition: Condition }) {
           <Text style={s.condition}>
             {text}
           </Text>
+          <LightbulbOnSVG
+            lightbulbOn={isPressed}
+            color={g.white}
+            width={g.size(25)}
+            height={g.size(25)}
+          />
           <Text style={s.conditionDate}>
             {new Date(recordedDate).toLocaleDateString()}
           </Text>
+
         </View>
       </BlurView>
-    </View>
+    </Pressable>
   );
 }

@@ -2,8 +2,8 @@ import { Stack } from 'expo-router';
 
 export default function MyHealthStack() {
   return (
-    <Stack initialRouteName="my-health-dashboard">
-      <Stack.Screen name="my-health-dashboard" options={{ headerShown: false }} />
+    <Stack initialRouteName="dashboard">
+      <Stack.Screen name="dashboard" options={{ headerShown: false }} />
       <Stack.Screen name="lab-results" options={{ headerShown: false }} />
       <Stack.Screen name="medications" options={{ headerShown: false }} />
       <Stack.Screen name="conditions" options={{ headerShown: false }} />
