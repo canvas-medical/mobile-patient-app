@@ -47,6 +47,7 @@ export default function RootLayout() {
         <Stack.Screen name="coverage" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
+        <Stack.Screen name="profile" options={{ presentation: 'modal', headerShown: false }} />
       </Stack>
     </QueryClientProvider>
   );

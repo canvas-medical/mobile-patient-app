@@ -41,25 +41,7 @@ export function Header() {
       <TouchableOpacity
         style={s.nameAndAvatarContainer}
         onPress={() => {
-          Alert.alert(
-            'Are you sure?',
-            'This will delete all of your data and log you out.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {
-                text: 'Log Out',
-                style: 'destructive',
-                onPress: () => {
-                  SecureStore.deleteItemAsync('patient_id');
-                  SecureStore.deleteItemAsync('push_token');
-                  router.replace('initial');
-                },
-              },
-            ]
-          );
+          router.push('profile');
         }}
       >
         <View style={s.nameContainer}>
