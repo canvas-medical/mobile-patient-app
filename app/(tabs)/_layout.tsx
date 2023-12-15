@@ -1,6 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/jsx-props-no-spreading */
+import { StyleSheet, View } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import {
   Feather,
@@ -8,19 +6,63 @@ import {
   MaterialCommunityIcons
 } from '@expo/vector-icons';
 import { g } from '@styles';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
 
-const tabIconSwitch = (tab: string, color: string) => {
+const s = StyleSheet.create({
+  iconContainer: {
+    borderRadius: g.size(28),
+    width: g.size(56),
+    height: g.size(56),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+const tabIconSwitch = (tab: string, color: string, focused: boolean) => {
   switch (tab) {
     case 'my-health':
-      return <MaterialCommunityIcons name="view-dashboard-outline" size={g.size(32)} color={color} />;
+      return (
+        <View
+          style={{
+            ...s.iconContainer,
+            backgroundColor: focused ? g.primaryBlue : g.transparent,
+          }}
+        >
+          <MaterialCommunityIcons name="view-dashboard-outline" size={g.size(32)} color={color} />
+        </View>
+      );
     case 'appointments':
-      return <MaterialCommunityIcons name="calendar-heart" size={g.size(32)} color={color} />;
+      return (
+        <View
+          style={{
+            ...s.iconContainer,
+            backgroundColor: focused ? g.primaryBlue : g.transparent,
+          }}
+        >
+          <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={color} />
+        </View>
+      );
     case 'messages':
-      return <Feather name="message-circle" size={g.size(32)} color={color} />;
+      return (
+        <View
+          style={{
+            ...s.iconContainer,
+            backgroundColor: focused ? g.primaryBlue : g.transparent,
+          }}
+        >
+          <Feather name="message-circle" size={g.size(36)} color={color} />
+        </View>
+      );
     case 'billing':
-      return <FontAwesome5 name="file-invoice-dollar" size={g.size(28)} color={color} />;
+      return (
+        <View
+          style={{
+            ...s.iconContainer,
+            backgroundColor: focused ? g.primaryBlue : g.transparent,
+          }}
+        >
+          <FontAwesome5 name="file-invoice-dollar" size={g.size(28)} color={color} />
+        </View>
+      );
     default:
       return null;
   }
@@ -31,29 +73,26 @@ export default function Layout() {
     <Tabs
       initialRouteName="my-health"
       screenOptions={{
-        tabBarActiveTintColor: g.primaryBlue,
-        tabBarLabelStyle: {
-          ...g.bodySmall,
-        },
+        tabBarActiveTintColor: g.white,
+        tabBarInactiveTintColor: g.primaryBlue,
+        tabBarShowLabel: false,
         tabBarStyle: {
-          ...g.bodySmall,
+          height: g.size(100),
+          paddingTop: g.size(12),
           backgroundColor: g.white,
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: 25,
-          overflow: 'hidden',
-          marginTop: -25,
-          paddingBottom: 25,
-          // paddingTop: 25,
+          borderTopLeftRadius: g.size(28),
+          borderTopRightRadius: g.size(28),
+          position: 'absolute',
+          bottom: 0,
         },
       }}
     >
       <Tabs.Screen
         name="my-health"
         options={{
-          title: 'My Health',
           tabBarAccessibilityLabel: 'My Health',
           headerShown: false,
-          tabBarIcon: ({ color }) => tabIconSwitch('my-health', color),
+          tabBarIcon: ({ color, focused }) => tabIconSwitch('my-health', color, focused),
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -68,7 +107,7 @@ export default function Layout() {
           title: 'Appointments',
           tabBarAccessibilityLabel: 'Appointments',
           headerShown: false,
-          tabBarIcon: ({ color }) => tabIconSwitch('appointments', color),
+          tabBarIcon: ({ color, focused }) => tabIconSwitch('appointments', color, focused),
         }}
       />
       <Tabs.Screen
@@ -77,7 +116,7 @@ export default function Layout() {
           title: 'Messages',
           tabBarAccessibilityLabel: 'Messages',
           headerShown: false,
-          tabBarIcon: ({ color }) => tabIconSwitch('messages', color),
+          tabBarIcon: ({ color, focused }) => tabIconSwitch('messages', color, focused),
         }}
       />
       <Tabs.Screen
@@ -86,7 +125,7 @@ export default function Layout() {
           title: 'Billing',
           tabBarAccessibilityLabel: 'Billing',
           headerShown: false,
-          tabBarIcon: ({ color }) => tabIconSwitch('billing', color),
+          tabBarIcon: ({ color, focused }) => tabIconSwitch('billing', color, focused),
         }}
       />
     </Tabs>
