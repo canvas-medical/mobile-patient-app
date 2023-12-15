@@ -38,9 +38,14 @@ export default function Layout() {
           title: 'My Health',
           tabBarAccessibilityLabel: 'My Health',
           headerShown: false,
-          unmountOnBlur: true, // TODO: May not need on all tabs
           tabBarIcon: ({ color }) => tabIconSwitch('my-health', color),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate('dashboard');
+          },
+        })}
       />
       <Tabs.Screen
         name="appointments"
@@ -48,7 +53,6 @@ export default function Layout() {
           title: 'Appointments',
           tabBarAccessibilityLabel: 'Appointments',
           headerShown: false,
-          unmountOnBlur: true, // TODO: May not need on all tabs
           tabBarIcon: ({ color }) => tabIconSwitch('appointments', color),
         }}
       />
@@ -58,7 +62,6 @@ export default function Layout() {
           title: 'Messages',
           tabBarAccessibilityLabel: 'Messages',
           headerShown: false,
-          unmountOnBlur: true, // TODO: May not need on all tabs
           tabBarIcon: ({ color }) => tabIconSwitch('messages', color),
         }}
       />
@@ -68,7 +71,6 @@ export default function Layout() {
           title: 'Billing',
           tabBarAccessibilityLabel: 'Billing',
           headerShown: false,
-          unmountOnBlur: true, // TODO: May not need on all tabs
           tabBarIcon: ({ color }) => tabIconSwitch('billing', color),
         }}
       />
