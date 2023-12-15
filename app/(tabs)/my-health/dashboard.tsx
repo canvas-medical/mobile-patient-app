@@ -9,7 +9,7 @@ import {
   DiagnosticSkeleton,
   GoalCard,
   Header,
-  ImmunizationCard,
+  ImmunizationCard, LabImagingReportCard,
   MedicationCard,
   MedicationSkeleton,
   MyHealthBlock,
@@ -20,12 +20,14 @@ import {
 import {
   useAllergies,
   useConditions,
-  useDiagnostics, useGoals,
-  useImmunizations,
+  useGoals,
+  useImmunizations, useLabResults,
   useMedications,
   useObservations
 } from '@services';
-import { Allergy, Condition, Goal, Immunization } from '@interfaces';
+import {
+  Allergy, Condition, DiagnosticReport, Goal, Immunization, LabImagingReport
+} from '@interfaces';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -47,9 +49,9 @@ const s = StyleSheet.create({
   },
 });
 
-export default function MyHealth() {
+export default function Dashboard() {
   const { data: vitals, isLoading: loadingVitals } = useObservations();
-  const { data: diagnostics, isLoading: loadingDiagnostics } = useDiagnostics();
+  const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: medications, isLoading: loadingMedications } = useMedications();
   const { data: conditions, isLoading: loadingConditions } = useConditions();
   const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
@@ -100,15 +102,25 @@ export default function MyHealth() {
           <MyHealthBlock
             viewAllRoute="metrics-reports"
             title="Labs"
-            viewAll={diagnostics?.length > 1}
+            viewAll={labs?.length > 1}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
           >
-            {loadingDiagnostics ? <DiagnosticSkeleton /> : diagnostics?.slice(0, 1).map((diagnostic) => (
-              <DiagnosticCard
-                key={diagnostic.id}
-                data={diagnostic}
-              />
-            ))}
+            {loadingLabs ? <DiagnosticSkeleton /> : labs.slice(0, 1).map((report: LabImagingReport | DiagnosticReport) => {
+              if (report.resourceType === 'DocumentReference') {
+                return (
+                  <LabImagingReportCard
+                    key={report.id}
+                    report={report as LabImagingReport}
+                  />
+                );
+              }
+              return (
+                <DiagnosticCard
+                  key={report.id}
+                  report={report as DiagnosticReport}
+                />
+              );
+            })}
           </MyHealthBlock>
 
           {/* Medications */}
