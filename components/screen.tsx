@@ -30,7 +30,7 @@ export function Screen({ children, style }: Props) {
       style={[s.container, style]}
       colors={[g.primaryBlue, g.secondaryBlue]}
     >
-      <StatusBar style="light" />
+      <StatusBar style="light" translucent={false} />
       <Image
         style={s.blurCircles}
         source={blurs}
