@@ -1,3 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-props-no-spreading */
 import { Tabs } from 'expo-router/tabs';
 import {
   Feather,
@@ -5,6 +8,8 @@ import {
   MaterialCommunityIcons
 } from '@expo/vector-icons';
 import { g } from '@styles';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
 
 const tabIconSwitch = (tab: string, color: string) => {
   switch (tab) {
@@ -30,6 +35,16 @@ export default function Layout() {
         tabBarLabelStyle: {
           ...g.bodySmall,
         },
+        tabBarStyle: {
+          ...g.bodySmall,
+          backgroundColor: g.white,
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+          overflow: 'hidden',
+          marginTop: -25,
+          paddingBottom: 25,
+          // paddingTop: 25,
+        },
       }}
     >
       <Tabs.Screen
@@ -43,7 +58,7 @@ export default function Layout() {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate('my-health-dashboard');
+            navigation.navigate('dashboard');
           },
         })}
       />
