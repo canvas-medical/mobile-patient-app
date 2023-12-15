@@ -49,7 +49,7 @@ export function MyHealthBlock(
             {title}
           </Text>
         </View>
-        {viewAll && title !== 'Vitals' && (
+        {!viewAll && title !== 'Vitals' && (
           <TouchableOpacity onPress={() => router.push(viewAllRoute)}>
             <Text style={s.viewAll}>
               View All

@@ -6,6 +6,7 @@ export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';
 export { useCreateCoverage, Insurers } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
+export { useEducationalMaterials } from '@services/educational-materials';
 export { useGoals } from '@services/goals';
 export { useInvoices } from '@services/invoices';
 export { useImmunizations } from '@services/immunization';
