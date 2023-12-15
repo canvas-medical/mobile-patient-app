@@ -4,17 +4,17 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
-  Text, ActivityIndicator
+  Text, ActivityIndicator, Alert
 } from 'react-native';
-import {
-  usePatient,
-} from '@services';
-import { g } from '@styles';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { Patient } from '@interfaces/patient';
+import { usePatient } from '@services';
+import { Patient } from '@interfaces';
 import { Button } from '@components';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   body: {
@@ -28,6 +28,12 @@ const s = StyleSheet.create({
     padding: g.size(16),
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: g.size(16),
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: g.size(32),
+    alignSelf: 'center',
+    width: g.width * 0.5,
   },
   container: {
     flex: 1,
@@ -126,13 +132,34 @@ export default function Billing() {
               </View>
             </View>
           </View>
+          <View style={s.buttonContainer}>
+            <Button
+              label="Logout"
+              theme="secondary"
+              onPress={() =>
+                Alert.alert(
+                  'Are you sure?',
+                  'This will delete all of your data and log you out.',
+                  [
+                    {
+                      text: 'Cancel',
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Log Out',
+                      style: 'destructive',
+                      onPress: () => {
+                        SecureStore.deleteItemAsync('patient_id');
+                        SecureStore.deleteItemAsync('push_token');
+                        router.replace('initial');
+                      },
+                    },
+                  ]
+                )
+            }
+            />
+          </View>
         </View>
-        <Button
-          label="Logout"
-          onPress={
-
-        }
-        />
       </TouchableWithoutFeedback>
     </LinearGradient>
   );

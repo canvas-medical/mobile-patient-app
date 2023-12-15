@@ -12,6 +12,7 @@ export type { LabImagingReport } from '@interfaces/lab-imaging-report';
 export type { Medication } from '@interfaces/medication';
 export type { Message } from '@interfaces/message';
 export type { PaymentNotice } from '@interfaces/payment-notice';
+export type { Patient } from '@interfaces/patient';
 export type { Question } from '@interfaces/question';
 export type { Schedule, Slot } from '@interfaces/schedule';
 export type { Vital } from '@interfaces/vital';
