@@ -210,6 +210,7 @@ export default function MyHealth() {
           </MyHealthBlock>
 
           {/* Educational Materials */}
+          {/* TODO: update with education components and data */}
           <MyHealthBlock
             viewAllRoute="my-health/education"
             title="Educational Materials"

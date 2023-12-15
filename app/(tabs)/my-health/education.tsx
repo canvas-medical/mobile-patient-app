@@ -9,7 +9,7 @@ import { g } from '@styles';
 export default function Education() {
   const { data, isLoading, refetch } = useEducationalMaterials();
 
-  console.log('Hello: ', data);
+  // TODO: update with education components and data
 
   return (
     <StackListView
