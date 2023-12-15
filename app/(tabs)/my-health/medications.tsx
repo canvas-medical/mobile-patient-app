@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMedications } from '@services';
 import { Medication } from '@interfaces';
 import { MedicationCard, StackListView } from '@components';
@@ -15,7 +15,7 @@ const s = StyleSheet.create({
   },
 });
 
-export default function LabResults() {
+export default function Medications() {
   const { data, isLoading, refetch } = useMedications();
   const activeMedications = data.filter((med) => med.status === 'active');
   const expiredMedications = data.filter((med) => med.status === 'stopped');
@@ -23,7 +23,7 @@ export default function LabResults() {
   return (
     <StackListView
       title="Medications"
-      icon={<Entypo name="lab-flask" size={g.size(36)} color={g.white} />}
+      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.white} />}
       isLoading={isLoading}
       refetch={refetch}
     >
