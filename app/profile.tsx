@@ -14,6 +14,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Patient } from '@interfaces/patient';
+import { Button } from '@components';
 
 const s = StyleSheet.create({
   body: {
@@ -43,7 +44,7 @@ const s = StyleSheet.create({
   },
   name: {
     ...g.titleMedium,
-    color: g.secondaryBlue,
+    color: g.white,
   },
   row: {
     flexDirection: 'row',
@@ -53,12 +54,10 @@ const s = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: g.size(20),
     paddingLeft: g.size(4),
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: g.size(16),
     padding: g.size(8),
   },
 });
@@ -128,6 +127,12 @@ export default function Billing() {
             </View>
           </View>
         </View>
+        <Button
+          label="Logout"
+          onPress={
+
+        }
+        />
       </TouchableWithoutFeedback>
     </LinearGradient>
   );
