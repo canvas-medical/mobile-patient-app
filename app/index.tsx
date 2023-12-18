@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import { useEffect } from 'react';
 import { useRootNavigationState, router } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { usePatient } from '@services';
 import { Screen } from '@components';
 
@@ -11,7 +10,6 @@ export default function Index() {
 
   useEffect(() => {
     if (!navigationState?.key || isFetching) return;
-    SplashScreen.hideAsync();
     if (patient?.id) {
       router.replace('(tabs)/my-health');
     } else router.replace('initial');

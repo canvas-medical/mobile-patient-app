@@ -2,11 +2,14 @@ import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import * as Notifications from 'expo-notifications';
+import * as SplashScreen from 'expo-splash-screen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import { registerForPushNotificationsAsync } from '@services';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
+
+SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
