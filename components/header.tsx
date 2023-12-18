@@ -11,8 +11,8 @@ import { useFocusEffect, useNavigation } from 'expo-router';
 import { Image } from 'expo-image';
 import { Feather, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { usePatient } from '@services';
-import { g } from '@styles';
 import { ProfileCard } from '@components';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   animatedContainer: {
