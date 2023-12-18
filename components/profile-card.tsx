@@ -19,7 +19,6 @@ const s = StyleSheet.create({
   addressRow: {
     alignItems: 'flex-start',
   },
-  // ...g.shadow, // TODO: I'm leaving this here for now. It was causing a performance warning but I'd like to revisit it if we end up using it.
   dataColumn: {
     flex: 1,
     gap: g.size(8),
@@ -49,21 +48,21 @@ const s = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
     gap: g.size(6),
-    marginTop: g.size(16),
+    marginTop: g.size(12),
+    marginRight: g.size(8),
+    borderRadius: g.size(8),
+    paddingVertical: g.size(4),
+    paddingHorizontal: g.size(8),
+    overflow: 'hidden',
   },
   logoutLabel: {
     ...g.labelSmall,
     color: g.white,
-    textDecorationLine: 'underline',
   },
   profileCard: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  profileCardBlur: {
-    width: '100%',
     padding: g.size(16),
-    alignItems: 'flex-start',
     gap: g.size(12),
   },
   userContainer: {
@@ -96,105 +95,104 @@ export function ProfileCard({ data }: { data: Patient }) {
     <>
       <View style={s.profileCard}>
         <BlurView
-          style={s.profileCardBlur}
+          style={StyleSheet.absoluteFill}
           tint="light"
           intensity={40}
-        >
-          <View style={s.userContainer}>
-            {data?.photo[0]?.url ? (
-              <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
-            ) : (
-              <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
+        />
+        <View style={s.userContainer}>
+          {data?.photo[0]?.url ? (
+            <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
+          ) : (
+            <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
+          )}
+          <View style={s.userNameAddressContainer}>
+            <Text
+              style={s.userName}
+              numberOfLines={1}
+            >
+              {`${data.name[0].given[0]} ${data.name[0].family}`}
+            </Text>
+          </View>
+        </View>
+        <View style={s.dataContainer}>
+          <View style={s.dataColumn}>
+            {!!data?.birthDate && (
+              <View style={s.dataRow}>
+                <View style={s.iconContainer}>
+                  <FontAwesome name="birthday-cake" size={g.size(14)} color={g.white} />
+                </View>
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {formattedDate(data.birthDate)}
+                </Text>
+              </View>
             )}
-            <View style={s.userNameAddressContainer}>
-              <Text
-                style={s.userName}
-                numberOfLines={1}
-              >
-                {`${data.name[0].given[0]} ${data.name[0].family}`}
-              </Text>
-            </View>
+            {!!phoneNumber && (
+              <View style={s.dataRow}>
+                <View style={s.iconContainer}>
+                  <FontAwesome5 name="phone-alt" size={g.size(14)} color={g.white} />
+                </View>
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {phoneNumber}
+                </Text>
+              </View>
+            )}
+            {!!email && (
+              <View style={s.dataRow}>
+                <View style={s.iconContainer}>
+                  <FontAwesome name="envelope" size={g.size(14)} color={g.white} />
+                </View>
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {email}
+                </Text>
+              </View>
+            )}
           </View>
-          <View style={s.dataContainer}>
-            <View style={s.dataColumn}>
-              {!!data?.birthDate && (
-                <View style={s.dataRow}>
-                  <View style={s.iconContainer}>
-                    <FontAwesome name="birthday-cake" size={g.size(14)} color={g.white} />
-                  </View>
+          <View style={s.dataColumn}>
+            {!!data.gender && (
+              <View style={s.dataRow}>
+                <View style={s.iconContainer}>
+                  <FontAwesome name="user" size={g.size(14)} color={g.white} />
+                </View>
+                <Text
+                  style={s.dataPoint}
+                  numberOfLines={1}
+                >
+                  {`${data.gender !== ('male' || 'female') && 'Gender: '}${capitalizeFirstLetter(data.gender)}`}
+                </Text>
+              </View>
+            )}
+            {!!data?.address && (
+              <View style={[s.dataRow, s.addressRow]}>
+                <View style={s.iconContainer}>
+                  <Ionicons name="home" size={g.size(14)} color={g.white} />
+                </View>
+                <View style={s.addressContainer}>
                   <Text
-                    style={s.dataPoint}
+                    style={s.addressLine}
                     numberOfLines={1}
                   >
-                    {formattedDate(data.birthDate)}
+                    {data.address[0]?.line[0]}
                   </Text>
-                </View>
-              )}
-              {!!phoneNumber && (
-                <View style={s.dataRow}>
-                  <View style={s.iconContainer}>
-                    <FontAwesome5 name="phone-alt" size={g.size(14)} color={g.white} />
-                  </View>
                   <Text
-                    style={s.dataPoint}
+                    style={s.addressLine}
                     numberOfLines={1}
                   >
-                    {phoneNumber}
+                    {`${data.address[0]?.city}, ${data.address[0]?.state} ${data.address[0]?.postalCode}`}
                   </Text>
                 </View>
-              )}
-              {!!email && (
-                <View style={s.dataRow}>
-                  <View style={s.iconContainer}>
-                    <FontAwesome name="envelope" size={g.size(14)} color={g.white} />
-                  </View>
-                  <Text
-                    style={s.dataPoint}
-                    numberOfLines={1}
-                  >
-                    {email}
-                  </Text>
-                </View>
-              )}
-            </View>
-            <View style={s.dataColumn}>
-              {!!data.gender && (
-                <View style={s.dataRow}>
-                  <View style={s.iconContainer}>
-                    <FontAwesome name="user" size={g.size(14)} color={g.white} />
-                  </View>
-                  <Text
-                    style={s.dataPoint}
-                    numberOfLines={1}
-                  >
-                    {`${data.gender !== ('male' || 'female') && 'Gender: '}${capitalizeFirstLetter(data.gender)}`}
-                  </Text>
-                </View>
-              )}
-              {!!data?.address && (
-                <View style={[s.dataRow, s.addressRow]}>
-                  <View style={s.iconContainer}>
-                    <Ionicons name="home" size={g.size(14)} color={g.white} />
-                  </View>
-                  <View style={s.addressContainer}>
-                    <Text
-                      style={s.addressLine}
-                      numberOfLines={1}
-                    >
-                      {data.address[0]?.line[0]}
-                    </Text>
-                    <Text
-                      style={s.addressLine}
-                      numberOfLines={1}
-                    >
-                      {`${data.address[0]?.city}, ${data.address[0]?.state} ${data.address[0]?.postalCode}`}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </View>
+              </View>
+            )}
           </View>
-        </BlurView>
+        </View>
       </View>
       <TouchableOpacity
         style={s.logoutButton}
@@ -220,6 +218,7 @@ export function ProfileCard({ data }: { data: Patient }) {
           )
         }
       >
+        <BlurView style={StyleSheet.absoluteFill} tint="light" intensity={40} />
         <Text style={s.logoutLabel}>Log Out</Text>
         <AntDesign name="logout" size={g.size(16)} color={g.white} />
       </TouchableOpacity>

@@ -31,6 +31,9 @@ const s = StyleSheet.create({
     paddingTop: g.size(72),
     paddingHorizontal: g.size(16),
     paddingBottom: g.size(4),
+    // borderWidth: 1,
+    // borderColor: g.red,
+    // borderStyle: 'solid',
   },
   controlsContainer: {
     flexDirection: 'row',
@@ -85,7 +88,7 @@ export function Header() {
       useNativeDriver: false,
     }).start();
     Animated.timing(paddingValue, {
-      toValue: openProfile ? 0 : g.size(16),
+      toValue: openProfile ? 0 : g.size(12),
       duration: 300,
       easing: Easing.ease,
       useNativeDriver: false,
@@ -142,7 +145,7 @@ export function Header() {
           s.animatedContainer,
           {
             maxHeight: heightValue,
-            paddingVertical: paddingValue,
+            paddingTop: paddingValue,
             opacity: opacityValue,
           },
         ]}
