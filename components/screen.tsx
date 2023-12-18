@@ -20,7 +20,7 @@ const s = StyleSheet.create({
 });
 
 interface Props {
-  children: ReactNode,
+  children?: ReactNode,
   style?: StyleProp<any>,
 }
 

@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { QueryObserverResult } from '@tanstack/react-query';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -26,7 +27,6 @@ const s = StyleSheet.create({
     gap: g.size(24),
     paddingHorizontal: g.size(16),
     paddingTop: g.size(40),
-    paddingBottom: g.size(36),
   },
   title: {
     ...g.titleLarge,
@@ -36,6 +36,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(16),
     paddingLeft: g.size(20),
+    paddingTop: g.size(20),
   },
 });
 
@@ -52,6 +53,7 @@ export function StackListView({
   refetch: () => Promise<QueryObserverResult<any, Error>>,
   children: ReactNode,
 }) {
+  const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -80,7 +82,10 @@ export function StackListView({
           )}
         >
           <ScrollView
-            contentContainerStyle={s.scrollContentContainer}
+            contentContainerStyle={[
+              s.scrollContentContainer,
+              { paddingBottom: tabBarHeight + g.size(32) },
+            ]}
             refreshControl={(
               <RefreshControl
                 refreshing={refreshing}

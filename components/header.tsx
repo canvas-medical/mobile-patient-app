@@ -31,9 +31,6 @@ const s = StyleSheet.create({
     paddingTop: g.size(72),
     paddingHorizontal: g.size(16),
     paddingBottom: g.size(4),
-    // borderWidth: 1,
-    // borderColor: g.red,
-    // borderStyle: 'solid',
   },
   controlsContainer: {
     flexDirection: 'row',

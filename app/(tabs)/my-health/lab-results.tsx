@@ -1,8 +1,8 @@
 import { Entypo } from '@expo/vector-icons';
 import { useLabResults } from '@services';
+import { LabImagingReport, DiagnosticReport } from '@interfaces';
 import { DiagnosticCard, LabImagingReportCard, StackListView } from '@components';
 import { g } from '@styles';
-import { LabImagingReport, DiagnosticReport } from '@interfaces';
 
 export default function LabResults() {
   const { data, isLoading, refetch } = useLabResults();

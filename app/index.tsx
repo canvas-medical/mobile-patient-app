@@ -1,24 +1,8 @@
 import 'react-native-gesture-handler';
 import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
 import { useRootNavigationState, router } from 'expo-router';
 import { usePatient } from '@services';
 import { Screen } from '@components';
-import { Image } from 'expo-image';
-import logo from '@assets/logos/bd-logo-white.png';
-import { g } from '@styles';
-
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logo: {
-    width: g.width * 0.75,
-    height: g.width * 0.375,
-  },
-});
 
 export default function Index() {
   const navigationState = useRootNavigationState();
@@ -31,14 +15,5 @@ export default function Index() {
     } else router.replace('initial');
   }, [navigationState, patient, isFetching]);
 
-  return (
-    <Screen>
-      <View style={s.container}>
-        <Image
-          source={logo}
-          style={s.logo}
-        />
-      </View>
-    </Screen>
-  );
+  return <Screen />;
 }
