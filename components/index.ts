@@ -1,4 +1,5 @@
 export { AiModal } from '@components/ai-modal';
+export { ExplainButton } from '@components/explain-button';
 export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { AppointmentList } from '@components/appointment-list';

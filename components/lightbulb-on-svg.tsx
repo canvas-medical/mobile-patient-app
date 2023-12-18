@@ -7,15 +7,19 @@ import Animated, {
   useAnimatedProps,
   useSharedValue, withTiming
 } from 'react-native-reanimated';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
     position: 'absolute',
-    right: 0,
+    right: g.size(8),
+    top: g.size(8),
+    zIndex: 1,
   }
 });
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
+
 export function LightbulbOnSVG({ color, width, height, fill, lightbulbOn }:{color: string, width: number, height: number, fill?: string, lightbulbOn: boolean }) {
   const fillProgress = useSharedValue(lightbulbOn ? 1 : 0);
   const animatedProps = useAnimatedProps(() => {

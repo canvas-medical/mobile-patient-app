@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import {
-  StyleSheet, View, Text, Pressable, Alert
+  StyleSheet, View, Text
 } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { LightbulbOnSVG, AiModal } from '@components';
+import { ExplainButton } from '@components';
 import { Condition } from '@interfaces';
-import * as Haptics from 'expo-haptics';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -32,25 +30,16 @@ const s = StyleSheet.create({
 });
 
 export function ConditionCard({ condition }: { condition: Condition }) {
-  const [isPressed, setIsPressed] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
   const {
     code: { text },
     recordedDate,
   } = condition;
 
   return (
-    <Pressable
-      onTouchStart={() => setIsPressed(true)}
-      onTouchEnd={() => setIsPressed(false)}
-      onLongPress={() => {
-        setModalVisible(true);
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
-      }}
+    <ExplainButton
       style={s.card}
+      json={condition}
     >
-      <AiModal modalVisible={modalVisible} setModalVisible={setModalVisible} json={condition} />
       <BlurView
         intensity={40}
         tint="light"
@@ -60,18 +49,11 @@ export function ConditionCard({ condition }: { condition: Condition }) {
           <Text style={s.condition}>
             {text}
           </Text>
-          <LightbulbOnSVG
-            lightbulbOn={isPressed}
-            color={g.white}
-            width={g.size(25)}
-            height={g.size(25)}
-          />
           <Text style={s.conditionDate}>
             {new Date(recordedDate).toLocaleDateString()}
           </Text>
-
         </View>
       </BlurView>
-    </Pressable>
+    </ExplainButton>
   );
 }

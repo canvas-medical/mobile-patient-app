@@ -15,6 +15,7 @@ const global = {
   blurBlue: '#5288EB',
   error: '#DF3C3C30',
   red: '#ED4337',
+  goldenYellow: '#FFD700',
   neutral50: '#CECECE36',
   neutral100: '#D9D9D9',
   neutral200: '#C3C3C3',
