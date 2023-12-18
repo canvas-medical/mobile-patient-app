@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { View, Text, StyleSheet } from 'react-native';
 import { g } from '@styles';
 
@@ -48,7 +49,7 @@ const s = StyleSheet.create({
     right: 0
   },
 });
-export function MessageBlock({ received, message }:{received: boolean, message: string}) {
+export function MessageBlock({ received, message }: { received: boolean, message: string }) {
   return (
     <>
       {received ? (

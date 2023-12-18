@@ -1,5 +1,6 @@
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
@@ -49,7 +50,6 @@ const s = StyleSheet.create({
     gap: g.size(16),
     paddingHorizontal: g.size(16),
     paddingTop: g.size(32),
-    paddingBottom: g.size(32),
   },
   vitalsContainer: {
     flexDirection: 'row',
@@ -60,6 +60,7 @@ const s = StyleSheet.create({
 });
 
 export default function Dashboard() {
+  const tabBarHeight = useBottomTabBarHeight();
   const { data: vitals, isLoading: loadingVitals } = useObservations();
   const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: medications, isLoading: loadingMedications } = useMedications();
@@ -88,7 +89,12 @@ export default function Dashboard() {
           />
         )}
       >
-        <ScrollView contentContainerStyle={s.scrollContent}>
+        <ScrollView
+          contentContainerStyle={[
+            s.scrollContent,
+            { paddingBottom: tabBarHeight + g.size(32) },
+          ]}
+        >
           {/* Vitals */}
           <MyHealthBlock
             title="Vitals"
