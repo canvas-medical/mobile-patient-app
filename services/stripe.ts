@@ -1,8 +1,5 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import * as SecureStore from 'expo-secure-store';
+import { useMutation } from '@tanstack/react-query';
 import { Alert } from 'react-native';
-import { ApiError } from '@interfaces';
-import { getToken } from './access-token';
 
 export async function getPaymentIntent(cents: number) {
   const res = await fetch(`${process.env.EXPO_PUBLIC_STRIPE_API_URL}/payment_intent`, {

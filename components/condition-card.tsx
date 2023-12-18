@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Text, Pressable, Alert
 } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { LightbulbOnSVG } from '@components';
+import { LightbulbOnSVG, AiModal } from '@components';
 import { Condition } from '@interfaces';
 import * as Haptics from 'expo-haptics';
 import { g } from '@styles';
@@ -33,6 +33,7 @@ const s = StyleSheet.create({
 
 export function ConditionCard({ condition }: { condition: Condition }) {
   const [isPressed, setIsPressed] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const {
     code: { text },
@@ -44,11 +45,12 @@ export function ConditionCard({ condition }: { condition: Condition }) {
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
       onLongPress={() => {
-        Alert.alert('AI stuff will appear here');
+        setModalVisible(true);
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
       }}
       style={s.card}
     >
+      <AiModal modalVisible={modalVisible} setModalVisible={setModalVisible} json={condition} />
       <BlurView
         intensity={40}
         tint="light"
