@@ -4,47 +4,56 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
-  Text, ActivityIndicator, Alert
+  Text, ActivityIndicator, Alert, TouchableOpacity
 } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
+import Modal from 'react-native-modal';
 import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { usePatient } from '@services';
 import { Patient } from '@interfaces';
-import { Button, Screen } from '@components';
+import { Button } from '@components/index';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   body: {
     ...g.labelMedium,
-    color: g.secondaryBlue,
+    color: g.white,
     paddingLeft: g.size(8),
   },
   bodyContainer: {
     alignItems: 'flex-start',
     gap: g.size(20),
     padding: g.size(16),
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: g.secondaryBlue,
     borderRadius: g.size(16),
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: g.size(32),
     alignSelf: 'center',
     width: g.width * 0.5,
   },
+  closeButton: {
+    position: 'absolute',
+    top: g.size(40),
+    right: g.size(20)
+  },
   container: {
-    flex: 1,
     gap: g.size(16),
     padding: g.size(32),
+    backgroundColor: g.white,
+    borderRadius: g.size(16),
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  gridItem: {
-    width: '50%',
+  gridItemLarge: {
+    width: '66%',
+    marginVertical: g.size(4),
+  },
+  gridItemSmall: {
+    width: '34%',
     marginVertical: g.size(4),
   },
   image: {
@@ -55,14 +64,11 @@ const s = StyleSheet.create({
   },
   name: {
     ...g.titleMedium,
-    color: g.white,
+    color: g.secondaryBlue,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  screen: {
-    flex: 1,
   },
   titleContainer: {
     alignItems: 'center',
@@ -73,53 +79,53 @@ const s = StyleSheet.create({
   },
 });
 
-function ProfileDetail({ icon: Icon, iconName, text }) {
-  return (
-    <View style={[s.row, s.gridItem]}>
-      <Icon name={iconName} size={g.size(24)} color={g.secondaryBlue} />
-      <Text style={s.body}>{text}</Text>
-    </View>
-  );
-}
-
 const formattedDate = (date) => new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'utc' });
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-export default function Billing() {
+
+export function Profile({ modalVisible, setModalVisible }: {modalVisible: boolean, setModalVisible: (boolean) => void}) {
   const { data: profile, isLoading: profileLoading }: {data: Patient, isLoading: boolean} = usePatient();
   if (profileLoading) return <ActivityIndicator size="large" color={g.white} />;
   return (
-    <Screen>
+    <Modal
+      animationIn="slideInRight"
+      animationOut="slideOutRight"
+      isVisible={modalVisible}
+      customBackdrop={(
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View style={{ flex: 1, backgroundColor: g.primaryBlue, opacity: 0.8 }} />
+        </TouchableWithoutFeedback>
+      )}
+    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={s.container}>
+          <TouchableOpacity style={s.closeButton} onPress={() => setModalVisible(false)}>
+            <Feather name="x" size={32} color={g.neutral500} />
+          </TouchableOpacity>
           <View style={s.titleContainer}>
             <Image source={{ uri: profile.photo[0].url }} style={s.image} />
             <Text style={s.name}>{`${profile.name[0].given[0]} ${profile.name[0].family}`}</Text>
           </View>
           <View style={s.bodyContainer}>
             <View style={s.grid}>
-              <ProfileDetail
-                icon={Feather}
-                iconName="phone"
-                text={profile.telecom[0].value}
-              />
-              <ProfileDetail
-                icon={MaterialIcons}
-                iconName="person"
-                text={capitalizeFirstLetter(profile.gender)}
-              />
-              <ProfileDetail
-                icon={FontAwesome}
-                iconName="birthday-cake"
-                text={formattedDate(profile.birthDate)}
-              />
-              <ProfileDetail
-                icon={MaterialIcons}
-                iconName="language"
-                text={profile.communication[0].language.text}
-              />
+              <View style={[s.row, s.gridItemLarge]}>
+                <Feather name="phone" size={g.size(24)} color={g.white} />
+                <Text style={s.body}>{profile.telecom[0].value}</Text>
+              </View>
+              <View style={[s.row, s.gridItemSmall]}>
+                <MaterialIcons name="person" size={g.size(24)} color={g.white} />
+                <Text style={s.body}>{capitalizeFirstLetter(profile.gender)}</Text>
+              </View>
+              <View style={[s.row, s.gridItemLarge]}>
+                <FontAwesome name="birthday-cake" size={g.size(24)} color={g.white} />
+                <Text style={s.body}>{formattedDate(profile.birthDate)}</Text>
+              </View>
+              <View style={[s.row, s.gridItemSmall]}>
+                <MaterialIcons name="language" size={g.size(24)} color={g.white} />
+                <Text style={s.body}>{profile.communication[0].language.text}</Text>
+              </View>
             </View>
             <View style={s.row}>
-              <Ionicons name="home" size={24} color={g.secondaryBlue} />
+              <Ionicons name="home" size={24} color={g.white} />
               <View>
                 <Text style={s.body}>
                   {profile.address[0].line[0]}
@@ -136,7 +142,7 @@ export default function Billing() {
           <View style={s.buttonContainer}>
             <Button
               label="Logout"
-              theme="secondary"
+              theme="primary"
               onPress={() =>
                 Alert.alert(
                   'Are you sure?',
@@ -162,6 +168,6 @@ export default function Billing() {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </Screen>
+    </Modal>
   );
 }

@@ -4,6 +4,8 @@ import * as SecureStore from 'expo-secure-store';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { usePatient } from '@services';
 import { g } from '@styles';
+import { useState } from 'react';
+import { Profile } from '@components/profile';
 
 const s = StyleSheet.create({
   container: {
@@ -32,6 +34,7 @@ const s = StyleSheet.create({
   },
 });
 export function Header() {
+  const [openProfile, setOpenProfile] = useState(false);
   const { data } = usePatient();
   return (
     <View style={s.container}>
@@ -41,7 +44,7 @@ export function Header() {
       <TouchableOpacity
         style={s.nameAndAvatarContainer}
         onPress={() => {
-          router.push('profile');
+          setOpenProfile(true);
         }}
       >
         <View style={s.nameContainer}>
@@ -50,6 +53,7 @@ export function Header() {
         </View>
         <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
       </TouchableOpacity>
+      <Profile modalVisible={openProfile} setModalVisible={setOpenProfile} />
     </View>
   );
 }
