@@ -87,7 +87,6 @@ const formattedDate = (date) => new Date(date).toLocaleDateString('en-US', { mon
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 export default function Billing() {
   const { data: profile, isLoading: profileLoading }: {data: Patient, isLoading: boolean} = usePatient();
-  console.log(profile);
   if (profileLoading) return <ActivityIndicator size="large" color={g.white} />;
   return (
     <LinearGradient
