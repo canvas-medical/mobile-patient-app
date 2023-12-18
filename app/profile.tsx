@@ -9,11 +9,10 @@ import {
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { usePatient } from '@services';
 import { Patient } from '@interfaces';
-import { Button } from '@components';
+import { Button, Screen } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -89,10 +88,7 @@ export default function Billing() {
   const { data: profile, isLoading: profileLoading }: {data: Patient, isLoading: boolean} = usePatient();
   if (profileLoading) return <ActivityIndicator size="large" color={g.white} />;
   return (
-    <LinearGradient
-      style={s.screen}
-      colors={[g.primaryBlue, g.secondaryBlue]}
-    >
+    <Screen>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={s.container}>
           <View style={s.titleContainer}>
@@ -166,6 +162,6 @@ export default function Billing() {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </LinearGradient>
+    </Screen>
   );
 }
