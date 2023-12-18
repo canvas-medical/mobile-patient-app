@@ -20,6 +20,7 @@ export { MedicationList } from '@components/medication-list';
 export { MessageBlock } from '@components/message-block';
 export { MyHealthBlock } from '@components/my-health-block';
 export { Profile } from '@components/profile';
+export { ProfileCard } from '@components/profile-card';
 export { ReportList } from '@components/report-list';
 export { Screen } from '@components/screen';
 export { Search } from '@components/search';

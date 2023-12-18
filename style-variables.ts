@@ -20,6 +20,8 @@ const global = {
   neutral200: '#C3C3C3',
   neutral300: '#989898',
   neutral500: '#6C6C6C',
+  neutral800: '#27272a',
+  neutral900: '#171717',
   transparent: 'transparent',
   severityRed: '#B22222',
   severityYellow: '#FFFF00',

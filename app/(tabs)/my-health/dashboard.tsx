@@ -26,7 +26,12 @@ import {
   useObservations
 } from '@services';
 import {
-  Allergy, Condition, DiagnosticReport, Goal, Immunization, LabImagingReport
+  Allergy,
+  Condition,
+  DiagnosticReport,
+  Goal,
+  Immunization,
+  LabImagingReport
 } from '@interfaces';
 import { g } from '@styles';
 
@@ -100,7 +105,7 @@ export default function Dashboard() {
 
           {/* Labs */}
           <MyHealthBlock
-            viewAllRoute="metrics-reports"
+            viewAllRoute="my-health/lab-results"
             title="Labs"
             viewAll={labs?.length > 1}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
