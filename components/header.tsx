@@ -48,6 +48,7 @@ const s = StyleSheet.create({
     alignItems: 'flex-end',
   },
   nameAndAvatarContainer: {
+    minHeight: g.size(48),
     flexDirection: 'row',
     alignItems: 'center',
     gap: g.size(8),
