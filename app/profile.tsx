@@ -48,6 +48,12 @@ const s = StyleSheet.create({
     width: '50%',
     marginVertical: g.size(4),
   },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: g.size(16),
+    marginLeft: g.size(4)
+  },
   name: {
     ...g.titleMedium,
     color: g.white,
@@ -91,7 +97,7 @@ export default function Billing() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={s.container}>
           <View style={s.titleContainer}>
-            <Image source={{ uri: profile.photo[0].url }} style={{ width: 100, height: 100, borderRadius: g.size(16), marginLeft: g.size(4) }} />
+            <Image source={{ uri: profile.photo[0].url }} style={s.image} />
             <Text style={s.name}>{`${profile.name[0].given[0]} ${profile.name[0].family}`}</Text>
           </View>
           <View style={s.bodyContainer}>
