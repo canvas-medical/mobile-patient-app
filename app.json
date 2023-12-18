@@ -9,8 +9,8 @@
     "scheme": "fhir-dashboard",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#006CE9"
     },
     "assetBundlePatterns": [
       "**/*"
