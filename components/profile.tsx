@@ -35,8 +35,10 @@ const s = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: g.size(40),
-    right: g.size(20)
+    padding: g.size(8),
+    zIndex: 1,
+    top: g.size(20),
+    right: g.size(20),
   },
   container: {
     gap: g.size(16),
@@ -90,6 +92,8 @@ export function Profile({ modalVisible, setModalVisible }: {modalVisible: boolea
       animationIn="slideInRight"
       animationOut="slideOutRight"
       isVisible={modalVisible}
+      swipeDirection="right"
+      onSwipeComplete={() => setModalVisible(false)}
       customBackdrop={(
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={{ flex: 1, backgroundColor: g.primaryBlue, opacity: 0.8 }} />
