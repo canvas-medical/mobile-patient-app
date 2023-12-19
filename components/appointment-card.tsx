@@ -2,10 +2,13 @@ import {
   StyleSheet,
   View,
   Text,
+  TouchableOpacity,
+  Platform,
+  Linking,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-// import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
+// import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Appointment } from '@interfaces';
 import { formatTime } from '@utils';
 import { g } from '@styles';
@@ -57,30 +60,31 @@ const s = StyleSheet.create({
   practitionerData: {
     flex: 1,
   },
-  // practitionerLocation: {
-  //   ...g.bodyMedium,
-  //   color: g.white,
-  //   textDecorationLine: 'underline',
-  // },
-  // pressable: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   gap: g.size(4),
-  // }
+  practitionerLocation: {
+    ...g.bodyMedium,
+    color: g.white,
+    textDecorationLine: 'underline',
+  },
+  pressable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: g.size(4),
+  }
 });
 
 export function AppointmentCard({ appointment }: { appointment: Appointment }) {
-  const {
-    start,
-    end,
-    reasonCode,
-    // appointmentType: { coding },
-    // contained: [{ address }],
-  } = appointment;
+  // const {
+  //   start,
+  //   end,
+  //   reasonCode,
+  //   appointmentType: [{ display }],
+  //   contained: [{ address }],
+  // } = appointment;
+  console.log('Hello: ', appointment);
 
-  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  // const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   // TODO: review displays to see if there are any other ways that telemedicine is displayed
-  // const needsMapLink = coding[0].display !== 'Telemedicine' && coding[0].display !== 'Telehealth';
+  // const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth';
 
   // const url = needsMapLink && Platform.select({
   //   ios: `https://maps.apple.com?address=${address}`,
@@ -89,7 +93,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
 
   return (
     <View style={s.card}>
-      <BlurView
+      {/* <BlurView
         intensity={40}
         tint="light"
         style={s.cardBlur}
@@ -123,9 +127,6 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               >
                 {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
               </Text>
-              {/* <TouchableOpacity
-                {reasonDisplay}
-              </Text>
               <TouchableOpacity
                 onPress={() => Linking.openURL(url || address)}
                 style={s.pressable}
@@ -140,11 +141,11 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 >
                   {url ? address : 'Join video call'}
                 </Text>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
           </View>
         </View>
-      </BlurView>
+      </BlurView> */}
     </View>
   );
 }
