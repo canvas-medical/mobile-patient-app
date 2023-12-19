@@ -22,7 +22,7 @@ async function getOpenAiSummary(record: string) {
 
 export function useOpenAiSummary(record: string) {
   return useQuery({
-    queryKey: ['openai-summary-2'],
+    queryKey: ['openai-summary'],
     queryFn: () => getOpenAiSummary(record),
   });
 }
