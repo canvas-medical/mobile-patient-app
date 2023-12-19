@@ -75,8 +75,7 @@ export default function Dashboard() {
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials } = useEducationalMaterials();
   useEffect(() => {
     const welcomeWizard = async () => {
-      // const isReturningUser = await SecureStore.getItemAsync('is_returning_user');
-      const isReturningUser = false;
+      const isReturningUser = await SecureStore.getItemAsync('is_returning_user');
       if (!isReturningUser) {
         setOpenWizard(true);
         await SecureStore.setItemAsync('is_returning_user', 'true');

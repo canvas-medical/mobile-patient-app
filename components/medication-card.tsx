@@ -2,6 +2,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Medication } from '@interfaces';
+import { ExplainButton } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -56,7 +57,14 @@ export function MedicationCard({ med }: { med: Medication }) {
   } = med;
 
   return (
-    <View style={s.card}>
+    <ExplainButton
+      style={s.card}
+      id={med.id}
+      resourceType={med.resourceType}
+      hl7code={med.medicationCodeableConcept.coding.find((obj) => obj.system.includes('hl7'))?.code}
+      snomed={med.medicationCodeableConcept.coding.find((obj) => obj.system.includes('snomed'))?.code}
+      description={med.medicationCodeableConcept.coding[0].display}
+    >
       <BlurView
         intensity={40}
         tint="light"
@@ -83,7 +91,7 @@ export function MedicationCard({ med }: { med: Medication }) {
           </View>
         </View>
       </BlurView>
-    </View>
+    </ExplainButton>
   );
 }
 

@@ -38,7 +38,11 @@ export function ConditionCard({ condition }: { condition: Condition }) {
   return (
     <ExplainButton
       style={s.card}
-      json={condition}
+      id={condition.id}
+      resourceType={condition.resourceType}
+      hl7code={condition.code.coding.find((obj) => obj.system.includes('hl7'))?.code}
+      snomed={condition.code.coding.find((obj) => obj.system.includes('snomed'))?.code}
+      description={condition.code.coding[0].display}
     >
       <BlurView
         intensity={40}

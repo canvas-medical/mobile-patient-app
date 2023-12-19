@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Immunization } from '@interfaces';
+import { ExplainButton } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -32,7 +33,14 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
   } = immunization;
 
   return (
-    <View style={s.card}>
+    <ExplainButton
+      style={s.card}
+      id={immunization.id}
+      resourceType={immunization.resourceType}
+      hl7code={immunization.vaccineCode.coding.find((obj) => obj.system.includes('hl7'))?.code}
+      snomed={immunization.vaccineCode.coding.find((obj) => obj.system.includes('snomed'))?.code}
+      description={immunization.vaccineCode.coding[0].display}
+    >
       <BlurView
         intensity={40}
         tint="light"
@@ -51,6 +59,6 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
           </Text>
         </View>
       </BlurView>
-    </View>
+    </ExplainButton>
   );
 }
