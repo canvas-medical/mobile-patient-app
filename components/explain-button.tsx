@@ -5,12 +5,12 @@ import { LightbulbOnSVG, AiModal } from '@components';
 import { g } from '@styles';
 
 export function ExplainButton({
-  id, resourceType, hl7code, snomed, description, children, style,
-}: { id: string, resourceType: string, hl7code: string, snomed: string, description: string, children: ReactNode, style?: StyleProp<any>}) {
+  id, resourceType, codes, description, children, style,
+}: { id: string, resourceType: string, codes: [{code: string, system: string, display: string}], description: string, children: ReactNode, style?: StyleProp<any>}) {
   const [isPressed, setIsPressed] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  console.log(hl7code, snomed, description);
+  console.log(codes, description);
   return (
     <Pressable
       onTouchStart={() => setIsPressed(true)}
@@ -34,8 +34,7 @@ export function ExplainButton({
         setModalVisible={setModalVisible}
         id={id}
         resourceType={resourceType}
-        hl7code={hl7code}
-        snomed={snomed}
+        codes={codes}
         description={description}
       />
       )}

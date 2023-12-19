@@ -49,16 +49,10 @@ const s = StyleSheet.create({
 });
 
 export function AiModal({
-  id, resourceType, hl7code, snomed, description, modalVisible, setModalVisible
-}: { id: string, resourceType: string, hl7code: string, snomed: string, description: string, modalVisible: boolean, setModalVisible: (boolean) => void}) {
+  id, resourceType, codes, description, modalVisible, setModalVisible
+}: { id: string, resourceType: string, codes: {code: string, system: string}[], description: string, modalVisible: boolean, setModalVisible: (boolean) => void}) {
   const disclaimer = 'This is a computer-generated description. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read here. Reliance on any information provided by this Site, its employees, or other visitors to the Site is solely at your own risk.';
-  // const disclaimer = 'The AI-generated medical summaries provided by this application are intended for informational purposes only.'
-  //   + ' They are not a substitute for professional medical advice, '
-  //   + 'diagnosis, or treatment.';
-  // eslint-disable-next-line max-len
-  const dummyResponse = 'This is a dummy response for this prompt: "Please tell me what this health condition means, how it might affect my life, and what options I might have to address it: Mixed hyperlipidemia. The HL7 code for this condiion is "E782", and the equivalent SNOMED code is "267434003", but do not include these codes in your response.".';
-  console.log(hl7code, snomed, description);
-  const { data: summary, isPending, isSuccess } = useOpenAiSummary(id, resourceType, description, hl7code, snomed);
+  const { data: summary, isPending, isSuccess } = useOpenAiSummary(id, resourceType, description, codes);
   console.log(summary);
 
   return (

@@ -1,25 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 
-async function getOpenAiSummary(resourceType: string, description: string, hl7code: string, snomed: string) {
-  // ICD10, CPT, SNOMED, LOINC, INTERNAL
-  const body = await JSON.stringify({ resourceType, properties: { description, hl7_code: hl7code, snomed_code: snomed } });
-  console.log('BODY', body);
+async function getOpenAiSummary(resourceType: string, description: string, codes: {code: string, system: string}[]) {
+  const codesObject = codes.reduce((acc, obj) => ({ ...acc, [obj.system]: obj.code }), {});
   const res = await fetch(`${process.env.EXPO_PUBLIC_OPENAI_API_URL}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'x-api-key': process.env.EXPO_PUBLIC_OPENAI_API_KEY,
     },
-    body: JSON.stringify({ resourceType, properties: { description, hl7_code: hl7code, snomed_code: snomed } })
+    body: JSON.stringify({ resourceType, properties: { description, codes: codesObject } })
   });
-  const text = await res.text();
   if (!res.ok) throw new Error('Something went wrong with the OpenAI request. Please try again.');
-  return text;
+  return res.text();
 }
 
-export function useOpenAiSummary(id: string, resourceType: string, description: string, hl7code: string, snomed: string) {
+export function useOpenAiSummary(id: string, resourceType: string, description: string, codes: { code: string, system: string}[]) {
   return useQuery({
     queryKey: [`openai-summary-${id}`],
-    queryFn: () => getOpenAiSummary(resourceType, description, hl7code, snomed)
+    queryFn: () => getOpenAiSummary(resourceType, description, codes)
   });
 }

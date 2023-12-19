@@ -40,8 +40,7 @@ export function ConditionCard({ condition }: { condition: Condition }) {
       style={s.card}
       id={condition.id}
       resourceType={condition.resourceType}
-      hl7code={condition.code.coding.find((obj) => obj.system.includes('hl7'))?.code}
-      snomed={condition.code.coding.find((obj) => obj.system.includes('snomed'))?.code}
+      codes={condition.code.coding}
       description={condition.code.coding[0].display}
     >
       <BlurView

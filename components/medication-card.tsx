@@ -55,14 +55,14 @@ export function MedicationCard({ med }: { med: Medication }) {
     dosage,
     dateAsserted,
   } = med;
+  console.log(med);
 
   return (
     <ExplainButton
       style={s.card}
       id={med.id}
       resourceType={med.resourceType}
-      hl7code={med.medicationCodeableConcept.coding.find((obj) => obj.system.includes('hl7'))?.code}
-      snomed={med.medicationCodeableConcept.coding.find((obj) => obj.system.includes('snomed'))?.code}
+      codes={med.medicationCodeableConcept.coding}
       description={med.medicationCodeableConcept.coding[0].display}
     >
       <BlurView

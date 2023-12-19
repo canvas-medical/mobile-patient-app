@@ -3,11 +3,11 @@ export interface Condition {
   resourceType: string;
   code: {
     text: string;
-    coding: {
+    coding: [{
       code: string;
       display: string;
       system: string;
-    }[];
+    }];
   };
   recordedDate: string;
 }

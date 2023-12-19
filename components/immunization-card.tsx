@@ -37,8 +37,7 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
       style={s.card}
       id={immunization.id}
       resourceType={immunization.resourceType}
-      hl7code={immunization.vaccineCode.coding.find((obj) => obj.system.includes('hl7'))?.code}
-      snomed={immunization.vaccineCode.coding.find((obj) => obj.system.includes('snomed'))?.code}
+      codes={immunization.vaccineCode.coding}
       description={immunization.vaccineCode.coding[0].display}
     >
       <BlurView
