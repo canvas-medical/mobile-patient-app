@@ -40,6 +40,9 @@ const s = StyleSheet.create({
     borderTopRightRadius: g.size(16),
     borderTopLeftRadius: g.size(16),
   },
+  loading: {
+    paddingVertical: g.size(32),
+  },
   text: {
     ...g.bodyMedium,
     color: g.secondaryBlue,
@@ -73,7 +76,7 @@ export function AiModal({
         <Text style={s.header}>Explain</Text>
       </View>
       <View style={s.container}>
-        {isPending && <ActivityIndicator color={g.secondaryBlue} />}
+        {isPending && <ActivityIndicator style={s.loading} color={g.secondaryBlue} />}
         {isSuccess && <Text style={s.text}>{summary}</Text>}
         <Text style={s.disclaimer}>{disclaimer}</Text>
       </View>
