@@ -2,26 +2,29 @@ import { useQuery } from '@tanstack/react-query';
 
 async function getOpenAiSummary(resourceType: string, description: string, codes: {code: string, system: string}[]) {
   const codesObject = codes.reduce((acc, obj) => ({ ...acc, [obj.system]: obj.code }), {});
-  const res = await fetch(`${process.env.EXPO_PUBLIC_OPENAI_API_URL}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': process.env.EXPO_PUBLIC_OPENAI_API_KEY,
-    },
-    body: JSON.stringify({ resourceType, properties: { description, codes: codesObject } })
-  });
-  if (!res.ok) {
+  try {
+    const res = await fetch(`${process.env.EXPO_PUBLIC_OPENAI_API_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.EXPO_PUBLIC_OPENAI_API_KEY,
+      },
+      body: JSON.stringify({ resourceType, properties: { description, codes: codesObject } })
+    });
+    console.log('res status', res.status);
+    if (!res.ok) {
+      return { content: 'Something went wrong, please try again later.' };
+    }
+    const text = await res.text();
+    return JSON.parse(text);
+  } catch {
     return { content: 'Something went wrong, please try again later.' };
   }
-  const text = await res.text();
-  return JSON.parse(text);
 }
 
 export function useOpenAiSummary(id: string, resourceType: string, description: string, codes: { code: string, system: string}[]) {
-  // Enabled is false for this query because we don't want to refetch a new AI response anytime the user re-selects the same card
   return useQuery({
     queryKey: [`openai-summary-${id}`],
     queryFn: () => getOpenAiSummary(resourceType, description, codes),
-    enabled: false
   });
 }
