@@ -1,8 +1,8 @@
 import { Text, StyleSheet, TouchableWithoutFeedback, View, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
+import { FontAwesome } from '@expo/vector-icons';
 import { useOpenAiSummary } from '@services';
 import { g } from '@styles';
-import { FontAwesome } from '@expo/vector-icons';
 
 const s = StyleSheet.create({
   backdrop: {
@@ -43,6 +43,9 @@ const s = StyleSheet.create({
   loading: {
     paddingVertical: g.size(32),
   },
+  modal: {
+    marginHorizontal: g.size(12),
+  },
   text: {
     ...g.bodyMedium,
     color: g.secondaryBlue,
@@ -65,6 +68,7 @@ export function AiModal({
       isVisible={modalVisible}
       swipeDirection="right"
       onSwipeComplete={() => setModalVisible(false)}
+      style={s.modal}
       customBackdrop={(
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={s.backdrop} />

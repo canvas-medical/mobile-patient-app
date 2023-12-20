@@ -55,7 +55,6 @@ export function MedicationCard({ med }: { med: Medication }) {
     dosage,
     dateAsserted,
   } = med;
-  console.log(med);
 
   return (
     <ExplainButton

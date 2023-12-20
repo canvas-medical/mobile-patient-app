@@ -20,7 +20,7 @@
       "bundleIdentifier": "com.brewerdigital.fhirdashboard",
       "buildNumber": "5",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to scan insurance cards."
+        "NSCameraUsageDescription": "This app does not use the camera."
       }
     },
     "android": {

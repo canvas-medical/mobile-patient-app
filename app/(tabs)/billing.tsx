@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,9 +8,10 @@ import {
   TouchableWithoutFeedback,
   ScrollView, Text, TouchableOpacity, ActivityIndicator
 } from 'react-native';
-import { Input, Screen, Header, InvoiceCard } from '@components';
 import { Feather, FontAwesome5 } from '@expo/vector-icons';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
+import { Input, Screen, Header, InvoiceCard } from '@components';
 import { Invoice, PaymentNotice } from '@interfaces';
 import {
   getPaymentIntent,
@@ -34,7 +35,6 @@ const s = StyleSheet.create({
     gap: g.size(20),
     padding: g.size(32),
     paddingTop: 0,
-    marginBottom: g.size(200)
   },
   disabled: {
     opacity: 0.7,
@@ -95,6 +95,8 @@ export default function Billing() {
   const [error, setError] = useState<string>('');
   const [paymentIntentId, setPaymentIntentId] = useState<string>('');
 
+  const tabBarHeight = useBottomTabBarHeight();
+
   const { mutate: onPaymentIntentCapture, isSuccess: paymentIntentSuccess, isPending: paymentIntentPending } = usePaymentIntentCapture();
   const { mutate: onPaymentNoticeSubmit, isSuccess: paymentNoticeSuccess, isPending: paymentNoticePending } = usePaymentNoticeSubmit();
   const { data: paymentNotices, isLoading: paymentNoticesLoading, refetch } = usePaymentNotices();
@@ -146,14 +148,16 @@ export default function Billing() {
     clearForm();
   }, [paymentIntentSuccess]);
 
-  const formattedDate = (date) => new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'utc' });
+  const formattedDate = (date: string | number | Date) =>
+    new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'utc' });
+
   return (
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
       <Screen>
         <Header />
         <KeyboardAvoidingView style={{ height: g.height }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{ paddingBottom: tabBarHeight + g.size(32) }}>
               <View style={s.container}>
                 <View style={s.titleContainer}>
                   <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />

@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as SecureStore from 'expo-secure-store';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
+  AiWelcomeWizard,
   AllergyCard,
   ConditionCard,
   DiagnosticCard,
@@ -40,9 +43,6 @@ import {
   LabImagingReport,
 } from '@interfaces';
 import { g } from '@styles';
-import { AiWelcomeWizard } from '@components/ai-welcome-wizard';
-import { useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
 
 const s = StyleSheet.create({
   maskedView: {
