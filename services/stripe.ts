@@ -23,7 +23,6 @@ async function paymentIntentCapture(id: string) {
     body: JSON.stringify({ id })
   });
   const json = await res.json();
-  console.log(json);
   if (!res.ok) throw new Error('Something went wrong with the payment. Please try again.');
   return json;
 }

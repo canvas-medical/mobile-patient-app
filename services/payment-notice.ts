@@ -55,7 +55,6 @@ async function paymentNoticeSubmit(amount: string) {
     )
   });
   const Json: null | ApiError = await res.json();
-  console.log('payment notice json', Json);
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 

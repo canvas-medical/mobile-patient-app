@@ -10,7 +10,6 @@ export function ExplainButton({
   const [isPressed, setIsPressed] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  console.log(codes, description);
   return (
     <Pressable
       onTouchStart={() => setIsPressed(true)}
