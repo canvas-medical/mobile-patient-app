@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView, Text, TouchableOpacity, ActivityIndicator
 } from 'react-native';
-import { Input, Screen, Header, StackListView, InvoiceCard } from '@components';
+import { Input, Screen, Header, InvoiceCard } from '@components';
 import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
 import { Invoice, PaymentNotice } from '@interfaces';
@@ -34,6 +34,7 @@ const s = StyleSheet.create({
     gap: g.size(20),
     padding: g.size(32),
     paddingTop: 0,
+    marginBottom: g.size(200)
   },
   disabled: {
     opacity: 0.7,
@@ -74,7 +75,7 @@ const s = StyleSheet.create({
     alignItems: 'center'
   },
   subContainer: {
-    gap: g.size(12)
+    gap: g.size(12),
   },
   title: {
     ...g.titleLarge,
@@ -88,7 +89,7 @@ const s = StyleSheet.create({
 });
 
 export default function Billing() {
-  const { data: invoices, isLoading: loadingInvoices, refetch: refetchInvoices } = useInvoices();
+  const { data: invoices, isLoading: loadingInvoices } = useInvoices();
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -151,11 +152,11 @@ export default function Billing() {
       <Screen>
         <Header />
         <KeyboardAvoidingView style={{ height: g.height }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <ScrollView>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <ScrollView>
               <View style={s.container}>
                 <View style={s.titleContainer}>
-                  <Feather name="credit-card" size={g.size(36)} color={g.white} />
+                  <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />
                   <Text style={s.title}>
                     Billing
                   </Text>
@@ -215,8 +216,8 @@ export default function Billing() {
                     ))}
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-          </ScrollView>
+            </ScrollView>
+          </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       </Screen>
     </StripeProvider>
