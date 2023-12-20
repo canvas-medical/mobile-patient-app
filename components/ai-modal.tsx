@@ -66,7 +66,7 @@ interface AiModalProps {
 export function AiModal({
   id, resourceType, codes, description, modalVisible, setModalVisible
 }: AiModalProps) {
-  const { data, isPending, isSuccess } = useOpenAiSummary(id, resourceType, description, codes);
+  const { data, isPending, isSuccess, isError, error } = useOpenAiSummary(id, resourceType, description, codes);
   const summary = data?.content;
   const disclaimer = data?.disclaimer;
 
@@ -91,6 +91,7 @@ export function AiModal({
       <View style={s.container}>
         {isPending && <ActivityIndicator style={s.loading} color={g.secondaryBlue} />}
         {isSuccess && <Text style={s.text}>{summary}</Text>}
+        {isError && <Text style={s.text}>{error.message}</Text>}
         <Text style={s.disclaimer}>{disclaimer}</Text>
       </View>
     </Modal>

@@ -12,12 +12,12 @@ async function getOpenAiSummary(resourceType: string, description: string, codes
       body: JSON.stringify({ resourceType, properties: { description, codes: codesObject } })
     });
     if (!res.ok) {
-      return { content: 'Something went wrong, please try again later.' };
+      throw new Error();
     }
     const text = await res.text();
     return JSON.parse(text);
   } catch (e) {
-    return { content: 'Something went wrong, please try again later.' };
+    throw new Error('Something went wrong, please try again later.');
   }
 }
 
