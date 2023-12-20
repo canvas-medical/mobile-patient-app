@@ -16,7 +16,7 @@ async function getAppointments() {
     }
   });
   const json = await res.json();
-  return json.entry?.map((entry) => entry.resource) || [];
+  return json.entry?.map((entry) => entry.resource)?.sort((a: any, b: any) => (new Date(b.start).getTime() - new Date(a.start).getTime())) || [];
 }
 
 export function useAppointments() {
