@@ -10,13 +10,11 @@ async function getOpenAiSummary(resourceType: string, description: string, codes
     },
     body: JSON.stringify({ resourceType, properties: { description, codes: codesObject } })
   });
-  const text = await res.text();
-  const json = await JSON.parse(text);
   if (!res.ok) {
-    console.error(json);
     return { content: 'Something went wrong, please try again later.' };
   }
-  return json;
+  const text = await res.text();
+  return JSON.parse(text);
 }
 
 export function useOpenAiSummary(id: string, resourceType: string, description: string, codes: { code: string, system: string}[]) {

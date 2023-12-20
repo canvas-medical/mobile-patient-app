@@ -8,11 +8,17 @@ import {
   TouchableWithoutFeedback,
   ScrollView, Text, TouchableOpacity, ActivityIndicator
 } from 'react-native';
-import { Input, Screen, Header } from '@components';
-import { Feather } from '@expo/vector-icons';
+import { Input, Screen, Header, StackListView, InvoiceCard } from '@components';
+import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
-import { PaymentNotice } from '@interfaces';
-import { getPaymentIntent, usePaymentIntentCapture, usePaymentNotices, usePaymentNoticeSubmit } from '@services';
+import { Invoice, PaymentNotice } from '@interfaces';
+import {
+  getPaymentIntent,
+  useInvoices,
+  usePaymentIntentCapture,
+  usePaymentNotices,
+  usePaymentNoticeSubmit
+} from '@services';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -78,6 +84,7 @@ const s = StyleSheet.create({
 });
 
 export default function Billing() {
+  const { data: invoices, isLoading: loadingInvoices, refetch: refetchInvoices } = useInvoices();
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -191,6 +198,19 @@ export default function Billing() {
                     </View>
                   ))}
               </View>
+              <StackListView
+                title="Invoices"
+                icon={<FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />}
+                isLoading={isLoading}
+                refetch={refetch}
+              >
+                {data?.length > 0 && data.map((invoice: Invoice) => (
+                  <InvoiceCard
+                    key={invoice.id}
+                    invoice={invoice}
+                  />
+                ))}
+              </StackListView>
             </TouchableWithoutFeedback>
           </ScrollView>
         </KeyboardAvoidingView>
