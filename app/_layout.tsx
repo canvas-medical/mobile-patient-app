@@ -11,13 +11,7 @@ import { g } from '@styles';
 
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false, // Disables automatic refetching when browser window is focused.
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const s = StyleSheet.create({
   loading: {
