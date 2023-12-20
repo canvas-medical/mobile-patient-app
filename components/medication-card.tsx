@@ -36,6 +36,7 @@ const s = StyleSheet.create({
   medication: {
     ...g.bodyLarge,
     color: g.white,
+    maxWidth: '95%',
   },
   medicationInfoContainer: {
     flex: 1,

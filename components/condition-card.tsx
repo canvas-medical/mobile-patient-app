@@ -18,6 +18,7 @@ const s = StyleSheet.create({
   condition: {
     ...g.labelMedium,
     color: g.white,
+    maxWidth: '95%',
   },
   conditionDate: {
     ...g.labelSmall,

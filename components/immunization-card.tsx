@@ -23,6 +23,7 @@ const s = StyleSheet.create({
   label: {
     ...g.labelSmall,
     color: g.white,
+    maxWidth: '95%',
   },
 });
 

@@ -4,9 +4,18 @@ import { LightbulbOnSVG, AiModal } from '@components';
 import * as Haptics from 'expo-haptics';
 import { g } from '@styles';
 
+interface ExplainButtonProps {
+    id: string,
+    resourceType: string,
+    codes: [{code: string, system: string, display: string}],
+    description: string,
+    children: ReactNode,
+    style?: StyleProp<any>
+}
+
 export function ExplainButton({
-  id, resourceType, codes, description, children, style,
-}: { id: string, resourceType: string, codes: [{code: string, system: string, display: string}], description: string, children: ReactNode, style?: StyleProp<any>}) {
+  id, resourceType, codes, description, children, style
+}: ExplainButtonProps) {
   const [isPressed, setIsPressed] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
