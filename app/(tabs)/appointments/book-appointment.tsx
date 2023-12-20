@@ -112,7 +112,7 @@ const s = StyleSheet.create({
 });
 
 export default function BookAppointment() {
-  const bookingDate = new Date().toISOString().slice(0, 10); // TEMPORARY
+  const bookingDate = new Date().toISOString().slice(0, 10); // TODO: Replace with date from date picker
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule>({} as Schedule);
   const [selectedSlot, setSelectedSlot] = useState<Slot>({} as Slot);
   const { data: scheduleData, isLoading: isLoadingSchedules } = useSchedule();
