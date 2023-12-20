@@ -44,11 +44,10 @@ const s = StyleSheet.create({
     top: g.size(26),
     left: g.size(12),
   },
-  error: {
+  greyedOut: {
     ...g.bodySmall,
     color: g.white,
     opacity: 0.8,
-    marginTop: g.size(12),
     marginLeft: g.size(12),
   },
   inputContainer: {
@@ -192,10 +191,10 @@ export default function Billing() {
                         }
                     </TouchableOpacity>
                   </View>
-                  <Text style={s.error}>{error}</Text>
+                  <Text style={s.greyedOut}>{error}</Text>
                 </View>
                 <View style={s.subContainer}>
-                  {(paymentNotices?.length || paymentNoticesLoading) && <Text style={s.label}>Payment History</Text>}
+                  <Text style={s.label}>Payment History</Text>
                   {paymentNoticesLoading
                     ? <ActivityIndicator size="large" color={g.white} />
                     : paymentNotices?.map((notice: PaymentNotice) => (
@@ -207,9 +206,10 @@ export default function Billing() {
                         <Text style={{ color: g.white }}>{formattedDate(notice.created)}</Text>
                       </View>
                     ))}
+                  {!paymentNoticesLoading && !paymentNotices?.length && <Text style={s.greyedOut}>No payment history</Text>}
                 </View>
                 <View style={s.subContainer}>
-                  {(invoices?.length || loadingInvoices) && <Text style={s.label}>Invoices</Text>}
+                  <Text style={s.label}>Invoices</Text>
                   {loadingInvoices
                     ? <ActivityIndicator size="large" color={g.white} />
                     : invoices.map((invoice: Invoice) => (
@@ -218,6 +218,7 @@ export default function Billing() {
                         invoice={invoice}
                       />
                     ))}
+                  {!loadingInvoices && !invoices?.length && <Text style={s.greyedOut}>No invoices</Text>}
                 </View>
               </View>
             </ScrollView>

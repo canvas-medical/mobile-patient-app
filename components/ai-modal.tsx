@@ -54,9 +54,18 @@ const s = StyleSheet.create({
   },
 });
 
+interface AiModalProps {
+ id: string,
+  resourceType: string,
+  codes: {code: string, system: string}[],
+  description: string,
+  modalVisible: boolean,
+  setModalVisible: (boolean) => void
+}
+
 export function AiModal({
   id, resourceType, codes, description, modalVisible, setModalVisible
-}: { id: string, resourceType: string, codes: {code: string, system: string}[], description: string, modalVisible: boolean, setModalVisible: (boolean) => void}) {
+}: AiModalProps) {
   const { data, isPending, isSuccess } = useOpenAiSummary(id, resourceType, description, codes);
   const summary = data?.content;
   const disclaimer = data?.disclaimer;

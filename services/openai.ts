@@ -18,8 +18,10 @@ async function getOpenAiSummary(resourceType: string, description: string, codes
 }
 
 export function useOpenAiSummary(id: string, resourceType: string, description: string, codes: { code: string, system: string}[]) {
+  // Enabled is false for this query because we don't want to refetch a new AI response anytime the user re-selects the same card
   return useQuery({
     queryKey: [`openai-summary-${id}`],
-    queryFn: () => getOpenAiSummary(resourceType, description, codes)
+    queryFn: () => getOpenAiSummary(resourceType, description, codes),
+    enabled: false
   });
 }
