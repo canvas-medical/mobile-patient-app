@@ -5,21 +5,19 @@ import {
   TouchableOpacity,
   Platform,
   Linking,
+  Alert,
 } from 'react-native';
 import { BlurView } from 'expo-blur';
-// import { Feather, FontAwesome } from '@expo/vector-icons';
-import { Feather, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Appointment } from '@interfaces';
 import { formatTime } from '@utils';
+import { useClinicLocation } from '@services';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  cardBlur: {
-    position: 'relative',
   },
   cardContent: {
     padding: g.size(20),
@@ -53,6 +51,12 @@ const s = StyleSheet.create({
     opacity: 0.75,
     backgroundColor: g.white,
   },
+  navLink: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: g.size(4),
+  },
   practitioner: {
     ...g.bodyXLarge,
     color: g.white,
@@ -65,73 +69,84 @@ const s = StyleSheet.create({
     color: g.white,
     textDecorationLine: 'underline',
   },
-  pressable: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: g.size(4),
-  }
 });
 
 export function AppointmentCard({ appointment }: { appointment: Appointment }) {
-  // const {
-  //   start,
-  //   end,
-  //   reasonCode,
-  //   appointmentType: [{ display }],
-  //   contained: [{ address }],
-  // } = appointment;
-  console.log('Hello: ', appointment);
+  const {
+    start,
+    end,
+    appointmentType,
+    reasonCode,
+    contained,
+  } = appointment;
+  const { data: clinicAddress } = useClinicLocation();
+  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: '2-digit' });
+  const isOfficeVisit = appointmentType.coding[0].display === 'Office Visit';
 
-  // const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-  // TODO: review displays to see if there are any other ways that telemedicine is displayed
-  // const needsMapLink = display !== 'Telemedicine' && display !== 'Telehealth';
+  const startTime = new Date(start).getTime();
+  const currentTime = new Date().getTime();
+  const isWithin30MinBeforeOr15MinAfterApptTime = currentTime >= startTime - 30 * 60 * 1000 && currentTime <= startTime + 15 * 60 * 1000;
+  const displayNavLink = ((!isOfficeVisit && !!contained[0]?.address)
+    || (isOfficeVisit && !!clinicAddress))
+    && (currentTime <= startTime + 15 * 60 * 1000);
 
-  // const url = needsMapLink && Platform.select({
-  //   ios: `https://maps.apple.com?address=${address}`,
-  //   android: `https://www.google.com/maps/search/?api=1&query=${address}`,
-  // });
+  const url = isOfficeVisit ? Platform.select({
+    ios: `https://maps.apple.com?address=${clinicAddress}`,
+    android: `https://www.google.com/maps/search/?api=1&query=${clinicAddress}`,
+  }) : contained[0]?.address;
 
   return (
     <View style={s.card}>
-      {/* <BlurView
+      <BlurView
         intensity={40}
         tint="light"
-        style={s.cardBlur}
-      >
-        <View style={s.leftBorder} />
-        <View style={s.cardContent}>
-          <View style={s.cardRow}>
-            <Feather name="clock" size={24} color={g.white} />
+        style={StyleSheet.absoluteFill}
+      />
+      <View style={s.leftBorder} />
+      <View style={s.cardContent}>
+        <View style={s.cardRow}>
+          <Feather name="clock" size={24} color={g.white} />
+          <Text
+            style={s.dateTime}
+            numberOfLines={1}
+          >
+            {formattedDate}
+            &nbsp;
+            •
+            &nbsp;
+            {formatTime(start, false)}
+            {' '}
+            -
+            {' '}
+            {formatTime(end, true)}
+          </Text>
+        </View>
+        <View style={s.dataDivider} />
+        <View style={s.cardRow}>
+          <FontAwesome5 name="user-md" size={g.size(36)} color={g.white} />
+          <View style={s.practitionerData}>
             <Text
-              style={s.dateTime}
+              style={s.practitioner}
               numberOfLines={1}
             >
-              {formattedDate}
-              &nbsp;
-              •
-              &nbsp;
-              {formatTime(start, false)}
-              {' '}
-              -
-              {' '}
-              {formatTime(end, true)}
+              {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
             </Text>
-          </View>
-          <View style={s.dataDivider} />
-          <View style={s.cardRow}>
-            <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
-            <View style={s.practitionerData}>
-              <Text
-                style={s.practitioner}
-                numberOfLines={1}
-              >
-                {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
-              </Text>
+            {displayNavLink && (
               <TouchableOpacity
-                onPress={() => Linking.openURL(url || address)}
-                style={s.pressable}
+                style={s.navLink}
+                onPress={() => {
+                  if (isWithin30MinBeforeOr15MinAfterApptTime || isOfficeVisit) Linking.openURL(url);
+                  else {
+                    Alert.alert(
+                      "You're early!",
+                      "You'll be able to join your telehealth call within 30 minutes of your appointment time.",
+                      [{ text: 'OK' }],
+                      { cancelable: false }
+                    );
+                  }
+                }}
               >
-                {needsMapLink
+                {isOfficeVisit
                   ? <Ionicons name="navigate" size={g.size(18)} color={g.white} />
                   : <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />
                 }
@@ -139,13 +154,13 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   style={s.practitionerLocation}
                   numberOfLines={1}
                 >
-                  {url ? address : 'Join video call'}
+                  {isOfficeVisit ? 'Open in maps' : 'Join video call'}
                 </Text>
               </TouchableOpacity>
-            </View>
+            )}
           </View>
         </View>
-      </BlurView> */}
+      </View>
     </View>
   );
 }

@@ -71,10 +71,9 @@ const tabIconSwitch = (tab: string, color: string, focused: boolean) => {
 export default function Layout() {
   return (
     <Tabs
-      initialRouteName="my-health"
       screenOptions={{
         tabBarActiveTintColor: g.white,
-        tabBarInactiveTintColor: g.primaryBlue,
+        tabBarInactiveTintColor: g.neutral500,
         tabBarShowLabel: false,
         tabBarStyle: {
           height: g.size(96),
@@ -93,18 +92,13 @@ export default function Layout() {
           tabBarAccessibilityLabel: 'My Health',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => tabIconSwitch('my-health', color, focused),
+          href: '/my-health/dashboard',
         }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.navigate('dashboard');
-          },
-        })}
       />
       <Tabs.Screen
         name="appointments"
         options={{
-          title: 'Appointments',
+          title: 'appointments',
           tabBarAccessibilityLabel: 'Appointments',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => tabIconSwitch('appointments', color, focused),
