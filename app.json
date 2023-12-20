@@ -17,11 +17,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.brewerdigital.fhirdashboard"
+      "bundleIdentifier": "com.brewerdigital.fhirdashboard",
+      "buildNumber": "5",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan insurance cards."
+      }
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
-      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"

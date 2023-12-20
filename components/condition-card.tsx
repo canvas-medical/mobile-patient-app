@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  StyleSheet, View, Text, Pressable, Alert
+  StyleSheet, View, Text, Pressable, Alert, Platform
 } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LightbulbOnSVG } from '@components';
