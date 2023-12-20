@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
+  Text,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { router } from 'expo-router';
@@ -37,12 +38,21 @@ const s = StyleSheet.create({
     paddingHorizontal: g.size(16),
     paddingTop: g.size(40),
   },
+  scrollSection: {
+    gap: g.size(16),
+  },
+  sectionLabel: {
+    ...g.titleXSmall,
+    color: g.white,
+  },
 });
 
 export default function Appointments() {
   const tabBarHeight = useBottomTabBarHeight();
   const { data, isLoading, refetch } = useAppointments();
   const [refreshing, setRefreshing] = useState(false);
+  const upcomingAppointments = data.filter((appointment: Appointment) => new Date(appointment.start) > new Date());
+  const pastAppointments = data.filter((appointment: Appointment) => new Date(appointment.start) <= new Date());
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
@@ -74,12 +84,32 @@ export default function Appointments() {
               />
             )}
           >
-            {data?.length > 0 && data.map((appointment: Appointment) => (
-              <AppointmentCard
-                key={appointment.id}
-                appointment={appointment}
-              />
-            ))}
+            {upcomingAppointments.length > 0 && (
+              <View style={s.scrollSection}>
+                <Text style={s.sectionLabel}>
+                  Upcoming
+                </Text>
+                {upcomingAppointments.map((appt) => (
+                  <AppointmentCard
+                    key={appt.id}
+                    appointment={appt}
+                  />
+                ))}
+              </View>
+            )}
+            {pastAppointments.length > 0 && (
+              <View style={s.scrollSection}>
+                <Text style={s.sectionLabel}>
+                  Past
+                </Text>
+                {pastAppointments.map((appt) => (
+                  <AppointmentCard
+                    key={appt.id}
+                    appointment={appt}
+                  />
+                ))}
+              </View>
+            )}
           </ScrollView>
         )}
         <TouchableOpacity
