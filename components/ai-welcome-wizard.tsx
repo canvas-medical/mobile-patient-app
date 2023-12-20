@@ -1,17 +1,17 @@
+import { useState } from 'react';
 import {
-  Text, StyleSheet, TouchableWithoutFeedback, View, Pressable, Easing,
+  Text, StyleSheet, TouchableWithoutFeedback, View, Pressable,
 } from 'react-native';
-import Modal from 'react-native-modal';
-import { g } from '@styles';
-import { FontAwesome } from '@expo/vector-icons';
 import Animated, {
   FadeInUp, FadeOut, FadeOutDown
 } from 'react-native-reanimated';
+import Modal from 'react-native-modal';
+import { FontAwesome } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-// import * as Haptics from 'expo-haptics';
+import * as Haptics from 'expo-haptics';
 import { LightbulbOnSVG } from '@components/lightbulb-on-svg';
-import { useState } from 'react';
 import { LightbulbSVG } from '@components/lightbulb-svg';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   backdrop: {
@@ -96,7 +96,7 @@ export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisibl
               onTouchEnd={() => setIsPressed(false)}
               onLongPress={() => {
                 setSwapModals(true);
-                // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
               }}
               style={s.card}
             >

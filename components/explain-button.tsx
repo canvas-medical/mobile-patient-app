@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { Pressable, StyleProp } from 'react-native';
 import { LightbulbOnSVG, AiModal } from '@components';
-// import * as Haptics from 'expo-haptics';
+import * as Haptics from 'expo-haptics';
 import { g } from '@styles';
 
 export function ExplainButton({
@@ -17,7 +17,7 @@ export function ExplainButton({
       onTouchEnd={() => setIsPressed(false)}
       onLongPress={() => {
         setModalVisible(true);
-        // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
       }}
       style={style}
     >
