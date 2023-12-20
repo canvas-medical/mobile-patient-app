@@ -98,7 +98,6 @@ export default function Layout() {
       <Tabs.Screen
         name="appointments"
         options={{
-          title: 'appointments',
           tabBarAccessibilityLabel: 'Appointments',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => tabIconSwitch('appointments', color, focused),
@@ -107,7 +106,6 @@ export default function Layout() {
       <Tabs.Screen
         name="messages"
         options={{
-          title: 'Messages',
           tabBarAccessibilityLabel: 'Messages',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => tabIconSwitch('messages', color, focused),
@@ -116,7 +114,6 @@ export default function Layout() {
       <Tabs.Screen
         name="billing"
         options={{
-          title: 'Billing',
           tabBarAccessibilityLabel: 'Billing',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => tabIconSwitch('billing', color, focused),
