@@ -22,9 +22,9 @@ const s = StyleSheet.create({
   maskedView: {
     flex: 1,
   },
-  scrollContentContainer: {
-    minHeight: '100%',
-    gap: g.size(24),
+  scrollContent: {
+    flexGrow: 1,
+    gap: g.size(16),
     paddingHorizontal: g.size(16),
     paddingTop: g.size(40),
   },
@@ -45,12 +45,14 @@ export function StackListView({
   title,
   isLoading,
   refetch,
+  scrollEnabled = true,
   children,
 }: {
   icon: ReactNode,
   title: string,
   isLoading: boolean,
   refetch: () => Promise<QueryObserverResult<any, Error>>,
+  scrollEnabled?: boolean,
   children: ReactNode,
 }) {
   const tabBarHeight = useBottomTabBarHeight();
@@ -82,8 +84,9 @@ export function StackListView({
           )}
         >
           <ScrollView
+            scrollEnabled={scrollEnabled}
             contentContainerStyle={[
-              s.scrollContentContainer,
+              s.scrollContent,
               { paddingBottom: tabBarHeight + g.size(32) },
             ]}
             refreshControl={(

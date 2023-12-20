@@ -22,6 +22,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
   const pastAppointments = appointments.filter((appointment) => new Date(appointment.start) <= new Date());
 
   // TODO: improve placement of this loop once we are requesting data from the API
+  // TODO: Move to new navigation structure.
   useEffect(() => {
     const scheduleNotifications = async () => {
       const scheduled = await Notifications.getAllScheduledNotificationsAsync();
