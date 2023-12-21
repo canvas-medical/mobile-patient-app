@@ -126,7 +126,7 @@ export default function Messages() {
                 key={mess.resource.id}
                 message={mess.resource.payload[0].contentString}
               />
-            )) : <ActivityIndicator />}
+            )) : <ActivityIndicator size="large" />}
           </ScrollView>
           <View style={s.inputContainer}>
             <TextInput
