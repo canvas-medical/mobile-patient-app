@@ -24,7 +24,7 @@ export default function Procedures() {
   return (
     <StackListView
       title="Procedures"
-      icon={<FontAwesome5 name="heart-broken" size={g.size(36)} color={g.white} />}
+      icon={<FontAwesome5 name="procedures" size={g.size(36)} color={g.white} />}
       isLoading={isLoading}
       refetch={refetch}
     >
