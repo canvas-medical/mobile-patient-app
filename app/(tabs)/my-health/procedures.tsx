@@ -18,8 +18,6 @@ const s = StyleSheet.create({
 
 export default function Procedures() {
   const { data, isLoading, refetch } = useProcedures();
-  const activeProcedures = data?.filter((procedure) => procedure.clinicalStatus.text === 'Active');
-  const resolvedProcedures = data?.filter((procedure) => procedure.clinicalStatus.text === 'Resolved');
 
   return (
     <StackListView
@@ -28,32 +26,12 @@ export default function Procedures() {
       isLoading={isLoading}
       refetch={refetch}
     >
-      {activeProcedures?.length > 0 && (
-        <View style={s.scrollSection}>
-          <Text style={s.label}>
-            Active
-          </Text>
-          {activeProcedures.map((procedure: Procedure) => (
-            <ProcedureCard
-              key={procedure.id}
-              procedure={procedure}
-            />
-          ))}
-        </View>
-      )}
-      {resolvedProcedures?.length > 0 && (
-        <View style={s.scrollSection}>
-          <Text style={s.label}>
-            Resolved
-          </Text>
-          {resolvedProcedures.map((procedure: Procedure) => (
-            <ProcedureCard
-              key={procedure.id}
-              procedure={procedure}
-            />
-          ))}
-        </View>
-      )}
+      {data.map((procedure: Procedure) => (
+        <ProcedureCard
+          key={procedure.id}
+          procedure={procedure}
+        />
+      ))}
     </StackListView>
   );
 }
