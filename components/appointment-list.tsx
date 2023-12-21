@@ -47,7 +47,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
           <Text style={s.label}>
             Upcoming
           </Text>
-          {upcomingAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
+          {upcomingAppointments.map((appt) => <AppointmentCard key={appt.id} appointment={appt} />)}
         </View>
       )}
       {pastAppointments.length > 0 && (
@@ -55,7 +55,7 @@ export function AppointmentList({ appointments }: { appointments: Appointment[] 
           <Text style={s.label}>
             Past
           </Text>
-          {pastAppointments.map((appt) => <AppointmentCard key={appt.id} appt={appt} />)}
+          {pastAppointments.map((appt) => <AppointmentCard key={appt.id} appointment={appt} />)}
         </View>
       )}
     </>
