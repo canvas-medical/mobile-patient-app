@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as SecureStore from 'expo-secure-store';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
+  AiWelcomeWizard,
   AllergyCard,
   ConditionCard,
   DiagnosticCard,
@@ -60,6 +63,7 @@ const s = StyleSheet.create({
 });
 
 export default function Dashboard() {
+  const [openWizard, setOpenWizard] = useState(false);
   const tabBarHeight = useBottomTabBarHeight();
   const { data: vitals, isLoading: loadingVitals } = useObservations();
   const { data: labs, isLoading: loadingLabs } = useLabResults();
@@ -69,6 +73,16 @@ export default function Dashboard() {
   const { data: allergies, isLoading: loadingAllergies } = useAllergies();
   const { data: goals, isFetching: loadingGoals } = useGoals();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials } = useEducationalMaterials();
+  useEffect(() => {
+    const welcomeWizard = async () => {
+      const isReturningUser = await SecureStore.getItemAsync('is_returning_user');
+      if (!isReturningUser) {
+        setOpenWizard(true);
+        await SecureStore.setItemAsync('is_returning_user', 'true');
+      }
+    };
+    welcomeWizard();
+  }, []);
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
@@ -79,6 +93,7 @@ export default function Dashboard() {
   return (
     <Screen>
       <Header />
+      <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />
       <MaskedView
         style={s.maskedView}
         maskElement={(

@@ -55,7 +55,7 @@ export default function Initial() {
     const signInDemoPatient = async () => {
       if (value && !show) {
         await SecureStore.setItemAsync('patient_id', value);
-        router.push('appointments-medications');
+        router.push('(tabs)/my-health');
       }
     };
     signInDemoPatient();

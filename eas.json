@@ -19,7 +19,17 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_AUTH_GRANT_TYPE":"client_credentials",
+        "EXPO_PUBLIC_API_URL":"https://fumage-brewerdigital-apiprize.canvasmedical.com",
+        "EXPO_PUBLIC_STRIPE_API_URL":"https://gozj2why30.execute-api.us-east-2.amazonaws.com/Prod",
+        "EXPO_PUBLIC_OPENAI_API_URL":"https://t2zfdmyyx6.execute-api.us-east-2.amazonaws.com/Prod/explain_fhir_bject",
+      },
+      "ios": {
+        "image": "latest"
+      }
+    }
   },
   "submit": {
     "production": {}
