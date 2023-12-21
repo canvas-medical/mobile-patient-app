@@ -1,18 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
-import { BlurView } from 'expo-blur';
 import { Feather } from '@expo/vector-icons';
+import { BlurFill } from '@components';
 import { Invoice } from '@interfaces';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  blur: {
-    padding: g.size(12),
-    paddingRight: g.size(8),
-  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
+    padding: g.size(12),
+    paddingRight: g.size(8),
   },
   date: {
     ...g.labelSmall,
@@ -39,29 +37,25 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
     <TouchableOpacity
       style={s.card}
       onPress={() => router.push({
-        pathname: 'pdf-modal',
+        pathname: '../pdf-modal',
         params: { uri: url }
       })}
     >
-      <BlurView
-        style={s.blur}
-        tint="light"
-        intensity={40}
-      >
-        <View style={s.row}>
-          <Text style={s.label}>
-            {display}
-          </Text>
-          <Feather name="chevron-right" size={g.size(28)} color={g.white} />
-        </View>
-        <Text style={s.date}>
-          {new Date(date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+      <BlurFill />
+      <View style={s.row}>
+        <Text style={s.label}>
+          {display}
         </Text>
-      </BlurView>
+        <Feather name="chevron-right" size={g.size(28)} color={g.white} />
+      </View>
+      <Text style={s.date}>
+        {new Date(date).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })}
+      </Text>
+
     </TouchableOpacity>
   );
 }

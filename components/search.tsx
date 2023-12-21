@@ -19,13 +19,7 @@ export function Search() {
       onPress={() => null}
       style={s.searchButton}
     >
-      <BlurView
-        style={s.searchButtonBlur}
-        tint="light"
-        intensity={40}
-      >
-        <Feather name="search" size={g.size(24)} color={g.white} />
-      </BlurView>
+      <Feather name="search" size={g.size(24)} color={g.white} />
     </TouchableOpacity>
   );
 }

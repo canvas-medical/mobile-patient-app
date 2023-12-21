@@ -75,6 +75,7 @@ export default function Layout() {
         tabBarActiveTintColor: g.white,
         tabBarInactiveTintColor: g.neutral500,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: true,
         tabBarStyle: {
           height: g.size(96),
           paddingTop: g.size(16),

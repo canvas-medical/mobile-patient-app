@@ -7,8 +7,8 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
 import { Feather, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { BlurFill } from '@components';
 import { Appointment } from '@interfaces';
 import { formatTime } from '@utils';
 import { useClinicLocation } from '@services';
@@ -97,11 +97,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
 
   return (
     <View style={s.card}>
-      <BlurView
-        intensity={40}
-        tint="light"
-        style={StyleSheet.absoluteFill}
-      />
+      <BlurFill />
       <View style={s.leftBorder} />
       <View style={s.cardContent}>
         <View style={s.cardRow}>

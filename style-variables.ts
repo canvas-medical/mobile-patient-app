@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 
 const global = {
   // Screen Dimensions
@@ -6,9 +6,11 @@ const global = {
   height: Dimensions.get('window').height,
 
   size: (s: number) => Dimensions.get('window').width * (s / 393),
+  android: Platform.OS === 'android',
 
   // Color Palette
   white: '#FAFAFA',
+  opaqueWhite: '#FAFAFA30',
   black: '#1A1A1A',
   primaryBlue: '#006CE9', // Lighter
   secondaryBlue: '#0039AA', // Darker

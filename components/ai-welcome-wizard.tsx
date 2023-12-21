@@ -12,6 +12,7 @@ import * as Haptics from 'expo-haptics';
 import { LightbulbOnSVG } from '@components/lightbulb-on-svg';
 import { LightbulbSVG } from '@components/lightbulb-svg';
 import { g } from '@styles';
+import { BlurFill } from '@components/blur-fill';
 
 const s = StyleSheet.create({
   backdrop: {
@@ -28,8 +29,6 @@ const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  cardBlur: {
     padding: g.size(16),
   },
   container: {
@@ -100,23 +99,18 @@ export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisibl
               }}
               style={s.card}
             >
-              <BlurView
-                intensity={40}
-                tint="light"
-                style={s.cardBlur}
-              >
-                <Text style={s.header}>Welcome to Your Health App</Text>
-                <View style={s.textContainer}>
-                  <Text style={s.text}>Look for this icon</Text>
-                  <LightbulbSVG fill={g.transparent} width={g.size(25)} height={g.size(25)} />
-                  <Text style={s.text}>Press on the card until it changes to this</Text>
-                  <LightbulbSVG fill={g.goldenYellow} width={g.size(25)} height={g.size(25)} />
-                  <Text style={s.text}>
-                    Doing so will reveal detailed AI-generated insights about your health information.
-                    Give it a try now by pressing on this popup until the lightbulb in the upper right turns on!
-                  </Text>
-                </View>
-              </BlurView>
+              <BlurFill />
+              <Text style={s.header}>Welcome to Your Health App</Text>
+              <View style={s.textContainer}>
+                <Text style={s.text}>Look for this icon</Text>
+                <LightbulbSVG fill={g.transparent} width={g.size(25)} height={g.size(25)} />
+                <Text style={s.text}>Press on the card until it changes to this</Text>
+                <LightbulbSVG fill={g.goldenYellow} width={g.size(25)} height={g.size(25)} />
+                <Text style={s.text}>
+                  Doing so will reveal detailed AI-generated insights about your health information.
+                  Give it a try now by pressing on this popup until the lightbulb in the upper right turns on!
+                </Text>
+              </View>
               <LightbulbOnSVG
                 lightbulbOn={isPressed}
                 color={g.white}

@@ -25,9 +25,9 @@ const s = StyleSheet.create({
     gap: g.size(16),
   },
   viewAll: {
-    ...g.bodySmall,
+    ...g.bodyMedium,
     color: g.white,
-    opacity: 0.8,
+    opacity: 0.9,
   },
   zeroState: {
     ...g.bodyMedium,

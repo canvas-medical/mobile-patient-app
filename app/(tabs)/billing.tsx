@@ -23,6 +23,18 @@ import {
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  androidButtonContainer: {
+    top: g.size(26),
+    height: g.size(44),
+  },
+  androidDollarSign: {
+    top: g.size(40),
+  },
+  androidPayButton: {
+    borderRadius: g.size(22),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+  },
   buttonContainer: {
     position: 'absolute',
     right: 0,
@@ -165,7 +177,7 @@ export default function Billing() {
                   </Text>
                 </View>
                 <View style={s.inputContainer}>
-                  <Feather style={s.dollarSign} name="dollar-sign" size={g.size(20)} color={g.neutral200} />
+                  <Feather style={[s.dollarSign, g.android && s.androidDollarSign]} name="dollar-sign" size={g.size(20)} color={g.neutral200} />
                   <Input
                     onChange={setAmount}
                     value={amount}
@@ -183,11 +195,11 @@ export default function Billing() {
                     style={{ paddingLeft: g.size(36), color: g.white }}
                     selectionColor={g.white}
                   />
-                  <View style={s.buttonContainer}>
+                  <View style={[s.buttonContainer, g.android && s.androidButtonContainer]}>
                     <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
                       {paymentNoticePending || paymentIntentPending || buttonLoading
-                        ? <ActivityIndicator size="small" style={s.payButton} color={g.primaryBlue} />
-                        : <Text style={[s.payButton, disabled && s.disabled]}>Pay</Text>
+                        ? <ActivityIndicator size="small" style={[s.payButton, g.android && s.androidPayButton]} color={g.primaryBlue} />
+                        : <Text style={[s.payButton, disabled && s.disabled, g.android && s.androidPayButton]}>Pay</Text>
                         }
                     </TouchableOpacity>
                   </View>

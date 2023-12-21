@@ -1,8 +1,9 @@
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
 import { router, usePathname } from 'expo-router';
 import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { g } from '@styles';
+import { BlurFill } from '@components/blur-fill';
 
 const s = StyleSheet.create({
   activeTab: {
@@ -50,49 +51,40 @@ export function DashTabs() {
   return (
     <View style={s.container}>
       <View style={s.tabs}>
-        <BlurView
-          style={s.tabBlur}
-          tint="light"
-          intensity={90}
+        <TouchableOpacity
+          style={s.tabButton}
+          onPress={() => router.push('appointments-medications')}
+          disabled={pathname === '/appointments-medications'}
         >
-          <TouchableOpacity
-            style={s.tabButton}
-            onPress={() => router.push('appointments-medications')}
-            disabled={pathname === '/appointments-medications'}
-          >
-            <BlurView
-              tint="light"
-              intensity={pathname === '/appointments-medications' ? 60 : 0}
-              style={s.buttonBlur}
-            >
-              <MaterialCommunityIcons
-                name="calendar-heart"
-                size={40}
-                color={g.primaryBlue}
-                style={pathname === '/appointments-medications' ? s.activeTab : s.inactiveTab}
-              />
-            </BlurView>
-          </TouchableOpacity>
-          <View style={s.tabDivider} />
-          <TouchableOpacity
-            style={s.tabButton}
-            onPress={() => router.push('metrics-reports')}
-            disabled={pathname === '/metrics-reports'}
-          >
-            <BlurView
-              tint="light"
-              intensity={pathname === '/metrics-reports' ? 60 : 0}
-              style={s.buttonBlur}
-            >
-              <MaterialCommunityIcons
-                name="inbox"
-                size={40}
-                color={g.primaryBlue}
-                style={pathname === '/metrics-reports' ? s.activeTab : s.inactiveTab}
-              />
-            </BlurView>
-          </TouchableOpacity>
-        </BlurView>
+          <MaterialCommunityIcons
+            name="calendar-heart"
+            size={40}
+            color={g.primaryBlue}
+            style={pathname === '/appointments-medications' ? s.activeTab : s.inactiveTab}
+          />
+          <BlurFill
+            intensity={pathname === '/appointments-medications' ? 60 : 0}
+          />
+        </TouchableOpacity>
+        <View style={s.tabDivider} />
+        <TouchableOpacity
+          style={s.tabButton}
+          onPress={() => router.push('metrics-reports')}
+          disabled={pathname === '/metrics-reports'}
+        >
+          <MaterialCommunityIcons
+            name="inbox"
+            size={40}
+            color={g.primaryBlue}
+            style={pathname === '/metrics-reports' ? s.activeTab : s.inactiveTab}
+          />
+          <BlurFill
+            intensity={pathname === '/metrics-reports' ? 60 : 0}
+          />
+        </TouchableOpacity>
+        <BlurFill
+          intensity={90}
+        />
       </View>
     </View>
   );

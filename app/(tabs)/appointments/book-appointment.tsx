@@ -9,13 +9,12 @@ import {
   View
 } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
-import { Button, Screen } from '@components';
+import { Button, Screen, BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -180,11 +179,7 @@ export default function BookAppointment() {
                         setSelectedSchedule(schedule);
                       }}
                     >
-                      <BlurView
-                        intensity={40}
-                        tint="light"
-                        style={StyleSheet.absoluteFill}
-                      />
+                      <BlurFill />
                       <FontAwesome5
                         name="user-md"
                         size={g.size(28)}
@@ -220,11 +215,7 @@ export default function BookAppointment() {
                             style={[s.slotButton, selected && s.buttonSelected]}
                             onPress={() => setSelectedSlot(selected ? {} as Slot : slot)}
                           >
-                            <BlurView
-                              intensity={40}
-                              tint="light"
-                              style={StyleSheet.absoluteFill}
-                            />
+                            <BlurFill />
                             <Text style={[s.slotButtonLabel, selected && s.labelSelected]}>
                               {formatTime(slot.start, false)}
                               {' '}

@@ -11,6 +11,7 @@ const s = StyleSheet.create({
   sectionContainer: {
     flex: 1,
     gap: g.size(16),
+    paddingBottom: g.size(16),
   },
   vitalsContainer: {
     flexDirection: 'row',

@@ -1,16 +1,14 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Medication } from '@interfaces';
-import { ExplainButton } from '@components';
+import { BlurFill, ExplainButton } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  cardBlur: {
     padding: g.size(16),
   },
   cardContent: {
@@ -65,44 +63,37 @@ export function MedicationCard({ med }: { med: Medication }) {
       codes={med.medicationCodeableConcept.coding}
       description={med.medicationCodeableConcept.coding[0].display}
     >
-      <BlurView
-        intensity={40}
-        tint="light"
-        style={s.cardBlur}
-      >
-        <View style={s.cardContent}>
-          <MaterialCommunityIcons name="pill" size={g.size(48)} color={g.white} />
-          <View style={s.medicationInfoContainer}>
-            <Text style={s.medication}>
-              {medication.charAt(0).toUpperCase() + medication.slice(1)}
+      <BlurFill />
+      <View style={s.cardContent}>
+        <MaterialCommunityIcons name="pill" size={g.size(48)} color={g.white} />
+        <View style={s.medicationInfoContainer}>
+          <Text style={s.medication}>
+            {medication.charAt(0).toUpperCase() + medication.slice(1)}
+          </Text>
+          <View style={s.dosageAndDateContainer}>
+            <Text style={s.dosage}>
+              {dosage[0].text.charAt(0).toUpperCase() + dosage[0].text.slice(1)}
             </Text>
-            <View style={s.dosageAndDateContainer}>
-              <Text style={s.dosage}>
-                {dosage[0].text.charAt(0).toUpperCase() + dosage[0].text.slice(1)}
-              </Text>
-              <Text style={s.date}>
-                {new Date(dateAsserted).toLocaleDateString('en-US', {
-                  year: '2-digit',
-                  month: 'short',
-                  day: 'numeric'
-                })}
-              </Text>
-            </View>
+            <Text style={s.date}>
+              {new Date(dateAsserted).toLocaleDateString('en-US', {
+                year: '2-digit',
+                month: 'short',
+                day: 'numeric'
+              })}
+            </Text>
           </View>
         </View>
-      </BlurView>
+      </View>
     </ExplainButton>
   );
 }
 
 export function MedicationSkeleton() {
   return (
-    <View style={[s.card, s.skeleton]}>
-      <BlurView
-        intensity={40}
-        tint="light"
-        style={StyleSheet.absoluteFill}
-      />
+    <View
+      style={s.card}
+    >
+      <BlurFill />
     </View>
   );
 }

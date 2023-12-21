@@ -4,6 +4,7 @@ export { ExplainButton } from '@components/explain-button';
 export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { AppointmentList } from '@components/appointment-list';
+export { BlurFill } from '@components/blur-fill';
 export { BookAppointmentDate } from '@components/book-appointment-date';
 export { Button } from '@components/button';
 export { ConditionCard } from '@components/condition-card';

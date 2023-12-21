@@ -7,6 +7,7 @@ import { Patient } from '@interfaces';
 import { g } from '@styles';
 import { Image } from 'expo-image';
 import { formatPhoneNumber } from '@utils';
+import { BlurFill } from '@components/blur-fill';
 
 const s = StyleSheet.create({
   addressContainer: {
@@ -94,11 +95,7 @@ export function ProfileCard({ data }: { data: Patient }) {
   return (
     <>
       <View style={s.profileCard}>
-        <BlurView
-          style={StyleSheet.absoluteFill}
-          tint="light"
-          intensity={40}
-        />
+        <BlurFill />
         <View style={s.userContainer}>
           {data?.photo[0]?.url ? (
             <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
@@ -218,7 +215,7 @@ export function ProfileCard({ data }: { data: Patient }) {
           )
         }
       >
-        <BlurView style={StyleSheet.absoluteFill} tint="light" intensity={40} />
+        <BlurFill />
         <Text style={s.logoutLabel}>Log Out</Text>
         <AntDesign name="logout" size={g.size(16)} color={g.white} />
       </TouchableOpacity>

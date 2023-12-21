@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Animated, {
-  interpolateColor,
+  createAnimatedPropAdapter,
+  interpolateColor, processColor,
   useAnimatedProps,
   useSharedValue, withTiming
 } from 'react-native-reanimated';
@@ -22,12 +23,22 @@ const AnimatedPath = Animated.createAnimatedComponent(Path);
 
 export function LightbulbOnSVG({ color, width, height, fill, lightbulbOn }:{color: string, width: number, height: number, fill?: string, lightbulbOn: boolean }) {
   const fillProgress = useSharedValue(lightbulbOn ? 1 : 0);
-  const animatedProps = useAnimatedProps(() => {
-    const fillValue = interpolateColor(fillProgress.value, [0, 1], ['transparent', 'yellow']);
-    return {
-      fill: fillValue
-    };
-  });
+  const animatedProps = useAnimatedProps(
+    () => {
+      const fillValue = interpolateColor(fillProgress.value, [0, 1], ['transparent', 'yellow']);
+      return {
+        fill: fillValue
+      };
+    },
+    [],
+    createAnimatedPropAdapter((props) => {
+      if (Object.keys(props).includes('fill')) {
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        props.fill = { type: 0, payload: processColor(props.fill) };
+      }
+    })
+  );
   useEffect(() => {
     fillProgress.value = withTiming(lightbulbOn ? 1 : 0, { duration: 500 });
   }, [lightbulbOn]);

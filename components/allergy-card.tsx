@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { BlurFill } from '@components';
 import { Allergy } from '@interfaces';
 import { g } from '@styles';
 
@@ -19,8 +19,6 @@ const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  cardBlur: {
     padding: g.size(16),
   },
   extraInfo: {
@@ -59,27 +57,22 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
       key={id}
       style={s.card}
     >
-      <BlurView
-        intensity={40}
-        tint="light"
-        style={s.cardBlur}
-      >
-        <View style={s.allergyInfoContainer}>
-          <Text
-            style={s.allergy}
-          >
-            {capitalizeFirstCharacter(display)}
+      <BlurFill />
+      <View style={s.allergyInfoContainer}>
+        <Text
+          style={s.allergy}
+        >
+          {capitalizeFirstCharacter(display)}
+        </Text>
+        <View style={s.extraInfo}>
+          <Text style={s.allergyInfo}>
+            {capitalizeFirstCharacter(text)}
           </Text>
-          <View style={s.extraInfo}>
-            <Text style={s.allergyInfo}>
-              {capitalizeFirstCharacter(text)}
-            </Text>
-            <Text style={{ ...s.allergyInfo, color: severityColor() }}>
-              {capitalizeFirstCharacter(severity)}
-            </Text>
-          </View>
+          <Text style={{ ...s.allergyInfo, color: severityColor() }}>
+            {capitalizeFirstCharacter(severity)}
+          </Text>
         </View>
-      </BlurView>
+      </View>
     </View>
   );
 }
