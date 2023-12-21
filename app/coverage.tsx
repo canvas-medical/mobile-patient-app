@@ -17,6 +17,9 @@ import { useCreateCoverage, Insurers } from '@services';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  buttons: {
+    gap: g.size(16),
+  },
   container: {
     flex: 1,
   },
@@ -179,11 +182,18 @@ export default function Coverage() {
                       )}
                     />
                   </View>
-                  <Button
-                    onPress={handleSubmit((data) => onCreateCoverage(data))}
-                    label={isPending ? 'Submitting...' : 'Submit'}
-                    theme="primary"
-                  />
+                  <View style={s.buttons}>
+                    <Button
+                      onPress={handleSubmit((data) => onCreateCoverage(data))}
+                      label={isPending ? 'Submitting...' : 'Submit'}
+                      theme="primary"
+                    />
+                    <Button
+                      onPress={() => router.push('consents')}
+                      label="Self-Pay"
+                      theme="secondary"
+                    />
+                  </View>
                 </View>
               </View>
             </View>

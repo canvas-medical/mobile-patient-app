@@ -18,6 +18,7 @@ import {
   MedicationCard,
   MedicationSkeleton,
   MyHealthBlock,
+  ProcedureCard,
   Screen,
   VitalCard,
   VitalCardSkeleton,
@@ -31,6 +32,7 @@ import {
   useMedications,
   useObservations,
   useEducationalMaterials,
+  useProcedures,
 } from '@services';
 import {
   Allergy,
@@ -40,7 +42,7 @@ import {
   Medication,
   DiagnosticReport,
   Vital,
-  LabImagingReport,
+  LabImagingReport, Procedure,
 } from '@interfaces';
 import { g } from '@styles';
 
@@ -66,12 +68,13 @@ export default function Dashboard() {
   const [openWizard, setOpenWizard] = useState(false);
   const tabBarHeight = useBottomTabBarHeight();
   const { data: vitals, isLoading: loadingVitals } = useObservations();
-  const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: medications, isLoading: loadingMedications } = useMedications();
-  const { data: conditions, isLoading: loadingConditions } = useConditions();
-  const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
   const { data: allergies, isLoading: loadingAllergies } = useAllergies();
+  const { data: procedures, isLoading: loadingProcedures } = useProcedures();
+  const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
+  const { data: conditions, isLoading: loadingConditions } = useConditions();
   const { data: goals, isFetching: loadingGoals } = useGoals();
+  const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials } = useEducationalMaterials();
   useEffect(() => {
     const welcomeWizard = async () => {
@@ -83,6 +86,26 @@ export default function Dashboard() {
     };
     welcomeWizard();
   }, []);
+  // const loadingProcedures = false;
+  // const procedures = [{
+  //   resourceType: 'Procedure',
+  //   id: '2dd9a3bc-a3bb-472b-aaef-c57be394de39',
+  //   status: 'unknown',
+  //   code: {
+  //     coding: [
+  //       {
+  //         system: 'http://www.ama-assn.org/go/cpt',
+  //         code: '23066',
+  //         display: 'Biopsy soft tissue shoulder deep'
+  //       }
+  //     ]
+  //   },
+  //   subject: {
+  //     reference: 'Patient/b8dfa97bdcdf4754bcd8197ca78ef0f0',
+  //     type: 'Patient'
+  //   },
+  //   performedDateTime: '2023-09-20T21:18:54.263690+00:00'
+  // }];
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
@@ -160,6 +183,23 @@ export default function Dashboard() {
                 <AllergyCard
                   key={allergy.id}
                   allergy={allergy}
+                />
+              ))}
+          </MyHealthBlock>
+
+          {/* Procedures */}
+          <MyHealthBlock
+            viewAllRoute="my-health/procedures"
+            title="Procedures"
+            viewAll={procedures?.length > 1}
+            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.white} />}
+          >
+            {loadingProcedures
+              ? <ActivityIndicator color={g.white} />
+              : procedures?.slice(0, 1).map((procedure: Procedure) => (
+                <ProcedureCard
+                  key={procedure.id}
+                  procedure={procedure}
                 />
               ))}
           </MyHealthBlock>
