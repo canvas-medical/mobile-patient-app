@@ -37,7 +37,7 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
     <TouchableOpacity
       style={s.card}
       onPress={() => router.push({
-        pathname: '../pdf-modal',
+        pathname: 'pdf-modal',
         params: { uri: url }
       })}
     >
