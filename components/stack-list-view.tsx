@@ -71,37 +71,39 @@ export function StackListView({
           {title}
         </Text>
       </View>
-      {isLoading ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
-        <MaskedView
-          style={s.maskedView}
-          maskElement={(
-            <LinearGradient
-              style={s.maskedView}
-              colors={[g.transparent, g.white]}
-              locations={[0.0175, 0.065]}
-            />
-          )}
-        >
-          <ScrollView
-            scrollEnabled={scrollEnabled}
-            contentContainerStyle={[
-              s.scrollContent,
-              { paddingBottom: tabBarHeight + g.size(32) },
-            ]}
-            refreshControl={(
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                tintColor={g.white}
-                colors={[g.white]}
-                progressViewOffset={g.size(40)}
+      {isLoading
+        ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+        : (
+          <MaskedView
+            style={s.maskedView}
+            maskElement={(
+              <LinearGradient
+                style={s.maskedView}
+                colors={[g.transparent, g.white]}
+                locations={[0.0175, 0.065]}
               />
             )}
           >
-            {children}
-          </ScrollView>
-        </MaskedView>
-      )}
+            <ScrollView
+              scrollEnabled={scrollEnabled}
+              contentContainerStyle={[
+                s.scrollContent,
+                { paddingBottom: tabBarHeight + g.size(32) },
+              ]}
+              refreshControl={(
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={g.white}
+                  colors={[g.white]}
+                  progressViewOffset={g.size(40)}
+                />
+              )}
+            >
+              {children}
+            </ScrollView>
+          </MaskedView>
+        )}
     </Screen>
   );
 }

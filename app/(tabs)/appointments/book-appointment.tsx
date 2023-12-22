@@ -151,102 +151,106 @@ export default function BookAppointment() {
           Book Appointment
         </Text>
       </View>
-      {isLoadingSchedules ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
-        <MaskedView
-          style={s.maskedView}
-          maskElement={(
-            <LinearGradient
-              style={s.maskedView}
-              colors={[g.transparent, g.white]}
-              locations={[0.0175, 0.065]}
-            />
-          )}
-        >
-          <ScrollView contentContainerStyle={s.scrollContent}>
-            <View style={s.sectionContainer}>
-              <Text style={s.sectionHeader}>
-                Select a Practitioner
-              </Text>
-              <View style={s.practitionerButtonsContainer}>
-                {scheduleData?.map((schedule: Schedule) => {
-                  const selected = selectedSchedule.id === schedule.id;
-                  return (
-                    <TouchableOpacity
-                      key={schedule.id}
-                      style={[s.scheduleButton, selected && s.buttonSelected]}
-                      onPress={() => {
-                        setSelectedSlot({} as Slot);
-                        setSelectedSchedule(schedule);
-                      }}
-                    >
-                      <BlurFill />
-                      <FontAwesome5
-                        name="user-md"
-                        size={g.size(28)}
-                        color={selected ? g.primaryBlue : g.white}
-                        style={selected ? s.practitionerIconSelected : s.practitionerIcon}
-                      />
-                      <Text
-                        style={[s.scheduleButtonLabel, selected && s.labelSelected]}
-                        numberOfLines={1}
-                      >
-                        {schedule.comment.replace('Schedule for ', '')}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            </View>
-            {!!selectedSchedule && isLoadingSlots ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
-              <>
-                {futureSlotTimes?.length > 0 && (
-                  <View style={s.sectionContainer}>
-                    <Text style={s.sectionHeader}>
-                      Appointments available for
-                      {' '}
-                      {dateLabel}
-                    </Text>
-                    <View style={s.slotButtonsContainer}>
-                      {futureSlotTimes.map((slot: Slot) => {
-                        const selected = selectedSlot === slot;
-                        return (
-                          <TouchableOpacity
-                            key={`${slot.start}-${slot.end}`}
-                            style={[s.slotButton, selected && s.buttonSelected]}
-                            onPress={() => setSelectedSlot(selected ? {} as Slot : slot)}
-                          >
-                            <BlurFill />
-                            <Text style={[s.slotButtonLabel, selected && s.labelSelected]}>
-                              {formatTime(slot.start, false)}
-                              {' '}
-                              -
-                              {' '}
-                              {formatTime(slot.end, true)}
-                            </Text>
-                          </TouchableOpacity>
-                        );
-                      })}
-                    </View>
-                  </View>
-                )}
-              </>
-            )}
-            {!!selectedSchedule && futureSlotTimes?.length > 0 && (
-              <Button
-                label={buttonLabel()}
-                theme="secondary"
-                style={s.bookButton}
-                onPress={() => onCreateAppointment({
-                  startTime: selectedSlot?.start,
-                  endTime: selectedSlot?.end,
-                  practitionerID: selectedSchedule?.actor[0]?.reference,
-                })}
-                disabled={!Object.keys(selectedSlot).length}
+      {isLoadingSchedules
+        ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+        : (
+          <MaskedView
+            style={s.maskedView}
+            maskElement={(
+              <LinearGradient
+                style={s.maskedView}
+                colors={[g.transparent, g.white]}
+                locations={[0.0175, 0.065]}
               />
             )}
-          </ScrollView>
-        </MaskedView>
-      )}
+          >
+            <ScrollView contentContainerStyle={s.scrollContent}>
+              <View style={s.sectionContainer}>
+                <Text style={s.sectionHeader}>
+                  Select a Practitioner
+                </Text>
+                <View style={s.practitionerButtonsContainer}>
+                  {scheduleData?.map((schedule: Schedule) => {
+                    const selected = selectedSchedule.id === schedule.id;
+                    return (
+                      <TouchableOpacity
+                        key={schedule.id}
+                        style={[s.scheduleButton, selected && s.buttonSelected]}
+                        onPress={() => {
+                          setSelectedSlot({} as Slot);
+                          setSelectedSchedule(schedule);
+                        }}
+                      >
+                        <BlurFill />
+                        <FontAwesome5
+                          name="user-md"
+                          size={g.size(28)}
+                          color={selected ? g.primaryBlue : g.white}
+                          style={selected ? s.practitionerIconSelected : s.practitionerIcon}
+                        />
+                        <Text
+                          style={[s.scheduleButtonLabel, selected && s.labelSelected]}
+                          numberOfLines={1}
+                        >
+                          {schedule.comment.replace('Schedule for ', '')}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </View>
+              {!!selectedSchedule && isLoadingSlots
+                ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+                : (
+                  <>
+                    {futureSlotTimes?.length > 0 && (
+                      <View style={s.sectionContainer}>
+                        <Text style={s.sectionHeader}>
+                          Appointments available for
+                          {' '}
+                          {dateLabel}
+                        </Text>
+                        <View style={s.slotButtonsContainer}>
+                          {futureSlotTimes.map((slot: Slot) => {
+                            const selected = selectedSlot === slot;
+                            return (
+                              <TouchableOpacity
+                                key={`${slot.start}-${slot.end}`}
+                                style={[s.slotButton, selected && s.buttonSelected]}
+                                onPress={() => setSelectedSlot(selected ? {} as Slot : slot)}
+                              >
+                                <BlurFill />
+                                <Text style={[s.slotButtonLabel, selected && s.labelSelected]}>
+                                  {formatTime(slot.start, false)}
+                                  {' '}
+                                  -
+                                  {' '}
+                                  {formatTime(slot.end, true)}
+                                </Text>
+                              </TouchableOpacity>
+                            );
+                          })}
+                        </View>
+                      </View>
+                    )}
+                  </>
+                )}
+              {!!selectedSchedule && futureSlotTimes?.length > 0 && (
+                <Button
+                  label={buttonLabel()}
+                  theme="secondary"
+                  style={s.bookButton}
+                  onPress={() => onCreateAppointment({
+                    startTime: selectedSlot?.start,
+                    endTime: selectedSlot?.end,
+                    practitionerID: selectedSchedule?.actor[0]?.reference,
+                  })}
+                  disabled={!Object.keys(selectedSlot).length}
+                />
+              )}
+            </ScrollView>
+          </MaskedView>
+        )}
     </Screen>
   );
 }
