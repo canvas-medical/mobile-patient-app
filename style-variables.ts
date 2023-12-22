@@ -9,6 +9,7 @@ const global = {
 
   // Color Palette
   white: '#FAFAFA',
+  opaqueWhite: '#FAFAFA30',
   black: '#1A1A1A',
   primaryBlue: '#006CE9', // Lighter
   secondaryBlue: '#0039AA', // Darker

@@ -18,6 +18,7 @@ export { useOpenAiSummary } from '@services/openai';
 export { useCreatePatient, usePatient } from '@services/patient';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
+export { useProcedures } from '@services/procedures';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
 export { useSchedule } from '@services/schedule';
 export { usePaymentIntentCapture, getPaymentIntent } from '@services/stripe';

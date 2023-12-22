@@ -18,6 +18,7 @@ import {
   MedicationCard,
   MedicationSkeleton,
   MyHealthBlock,
+  ProcedureCard,
   Screen,
   VitalCard,
   VitalCardSkeleton,
@@ -31,6 +32,7 @@ import {
   useMedications,
   useObservations,
   useEducationalMaterials,
+  useProcedures,
 } from '@services';
 import {
   Allergy,
@@ -41,6 +43,7 @@ import {
   DiagnosticReport,
   Vital,
   LabImagingReport,
+  Procedure,
 } from '@interfaces';
 import { g } from '@styles';
 
@@ -66,12 +69,13 @@ export default function Dashboard() {
   const [openWizard, setOpenWizard] = useState(false);
   const tabBarHeight = useBottomTabBarHeight();
   const { data: vitals, isLoading: loadingVitals } = useObservations();
-  const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: medications, isLoading: loadingMedications } = useMedications();
-  const { data: conditions, isLoading: loadingConditions } = useConditions();
-  const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
   const { data: allergies, isLoading: loadingAllergies } = useAllergies();
+  const { data: procedures, isLoading: loadingProcedures } = useProcedures();
+  const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
+  const { data: conditions, isLoading: loadingConditions } = useConditions();
   const { data: goals, isFetching: loadingGoals } = useGoals();
+  const { data: labs, isLoading: loadingLabs } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials } = useEducationalMaterials();
   useEffect(() => {
     const welcomeWizard = async () => {
@@ -83,12 +87,32 @@ export default function Dashboard() {
     };
     welcomeWizard();
   }, []);
+  // const loadingProcedures = false;
+  // const procedures = [{
+  //   resourceType: 'Procedure',
+  //   id: '2dd9a3bc-a3bb-472b-aaef-c57be394de39',
+  //   status: 'unknown',
+  //   code: {
+  //     coding: [
+  //       {
+  //         system: 'http://www.ama-assn.org/go/cpt',
+  //         code: '23066',
+  //         display: 'Biopsy soft tissue shoulder deep'
+  //       }
+  //     ]
+  //   },
+  //   subject: {
+  //     reference: 'Patient/b8dfa97bdcdf4754bcd8197ca78ef0f0',
+  //     type: 'Patient'
+  //   },
+  //   performedDateTime: '2023-09-20T21:18:54.263690+00:00'
+  // }];
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
-  const activeMedications = medications?.filter((med) => med.status === 'active');
-  const activeConditions = conditions?.filter((condition) => condition.clinicalStatus.text === 'Active');
-  const activeGoals = goals?.filter((item) => activeGoalStates.includes(item.achievementStatus.coding[0].display));
+  const activeMedications = medications?.filter((med: Medication) => med.status === 'active');
+  const activeConditions = conditions?.filter((condition: Condition) => condition.clinicalStatus.text === 'Active');
+  const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
 
   return (
     <Screen>
@@ -130,6 +154,91 @@ export default function Dashboard() {
             </View>
           </MyHealthBlock>
 
+          {/* Medications */}
+          <MyHealthBlock
+            viewAllRoute="my-health/medications"
+            title="Medications"
+            viewAll={medications?.length > 1}
+            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
+          >
+            {loadingMedications
+              ? <MedicationSkeleton />
+              : activeMedications?.slice(0, 1).map((med: Medication) => (
+                <MedicationCard
+                  key={med.id}
+                  med={med}
+                />
+              ))}
+          </MyHealthBlock>
+
+          {/* Allergies */}
+          <MyHealthBlock
+            viewAllRoute="my-health/allergies"
+            title="Allergies"
+            viewAll={allergies?.length > 1}
+            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
+          >
+            {loadingAllergies
+              ? <ActivityIndicator color={g.white} />
+              : allergies?.slice(0, 1).map((allergy: Allergy) => (
+                <AllergyCard
+                  key={allergy.id}
+                  allergy={allergy}
+                />
+              ))}
+          </MyHealthBlock>
+
+          {/* Procedures */}
+          <MyHealthBlock
+            viewAllRoute="my-health/procedures"
+            title="Procedures"
+            viewAll={procedures?.length > 1}
+            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.white} />}
+          >
+            {loadingProcedures
+              ? <ActivityIndicator color={g.white} />
+              : procedures?.slice(0, 1).map((procedure: Procedure) => (
+                <ProcedureCard
+                  key={procedure.id}
+                  procedure={procedure}
+                />
+              ))}
+          </MyHealthBlock>
+
+          {/* Immunizations */}
+          <MyHealthBlock
+            viewAllRoute="my-health/immunizations"
+            title="Immunizations"
+            viewAll={immunizations?.length > 1}
+            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
+          >
+            {loadingImmunizations
+              ? <ActivityIndicator color={g.white} />
+              : immunizations?.slice(0, 1).map((immunization: Immunization) => (
+                <ImmunizationCard
+                  key={immunization.id}
+                  immunization={immunization}
+                />
+              ))}
+          </MyHealthBlock>
+
+          {/* Conditions */}
+          <MyHealthBlock
+            viewAllRoute="my-health/conditions"
+            title="Conditions"
+            viewAll={conditions?.length > 1}
+            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+          >
+            {loadingConditions
+              ? <ActivityIndicator color={g.white} />
+              : activeConditions?.slice(0, 1).map((condition: Condition) => (
+                <ConditionCard
+                  key={condition.id}
+                  condition={condition}
+                />
+              ))}
+          </MyHealthBlock>
+
           {/* Labs */}
           <MyHealthBlock
             viewAllRoute="my-health/lab-results"
@@ -153,74 +262,6 @@ export default function Dashboard() {
                 />
               );
             })}
-          </MyHealthBlock>
-
-          {/* Medications */}
-          <MyHealthBlock
-            viewAllRoute="my-health/medications"
-            title="Medications"
-            viewAll={medications?.length > 1}
-            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
-          >
-            {loadingMedications
-              ? <MedicationSkeleton />
-              : activeMedications?.slice(0, 1).map((med: Medication) => (
-                <MedicationCard
-                  key={med.id}
-                  med={med}
-                />
-              ))}
-          </MyHealthBlock>
-
-          {/* Conditions */}
-          <MyHealthBlock
-            viewAllRoute="my-health/conditions"
-            title="Conditions"
-            viewAll={conditions?.length > 1}
-            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
-          >
-            {loadingConditions
-              ? <ActivityIndicator color={g.white} />
-              : activeConditions?.slice(0, 1).map((condition: Condition) => (
-                <ConditionCard
-                  key={condition.id}
-                  condition={condition}
-                />
-              ))}
-          </MyHealthBlock>
-
-          {/* Immunizations */}
-          <MyHealthBlock
-            viewAllRoute="my-health/immunizations"
-            title="Immunizations"
-            viewAll={immunizations?.length > 1}
-            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
-          >
-            {loadingImmunizations
-              ? <ActivityIndicator color={g.white} />
-              : immunizations?.slice(0, 1).map((immunization: Immunization) => (
-                <ImmunizationCard
-                  key={immunization.id}
-                  immunization={immunization}
-                />
-              ))}
-          </MyHealthBlock>
-
-          {/* Allergies */}
-          <MyHealthBlock
-            viewAllRoute="my-health/allergies"
-            title="Allergies"
-            viewAll={allergies?.length > 1}
-            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
-          >
-            {loadingAllergies
-              ? <ActivityIndicator color={g.white} />
-              : allergies?.slice(0, 1).map((allergy: Allergy) => (
-                <AllergyCard
-                  key={allergy.id}
-                  allergy={allergy}
-                />
-              ))}
           </MyHealthBlock>
 
           {/* Goals */}

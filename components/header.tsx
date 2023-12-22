@@ -130,9 +130,7 @@ export function Header() {
               </View>
               {data?.photo[0]?.url ? (
                 <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
-              ) : (
-                <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
-              )}
+              ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
             </>
           )}
         </TouchableOpacity>

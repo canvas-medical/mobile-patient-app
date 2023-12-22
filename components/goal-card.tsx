@@ -1,14 +1,12 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { BlurView } from 'expo-blur';
-import { g } from '@styles';
+import { BlurFill } from '@components';
 import { Goal } from '@interfaces';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  cardBlur: {
     padding: g.size(16),
   },
   goal: {
@@ -56,41 +54,36 @@ export function GoalCard({ goal }: { goal: Goal }) {
       key={id}
       style={s.card}
     >
-      <BlurView
-        intensity={40}
-        tint="light"
-        style={s.cardBlur}
-      >
-        <View style={s.goalInfoContainer}>
-          <Text
-            style={s.goal}
-          >
-            {description}
-          </Text>
+      <BlurFill />
+      <View style={s.goalInfoContainer}>
+        <Text
+          style={s.goal}
+        >
+          {description}
+        </Text>
+        <Text
+          style={s.goalText}
+        >
+          {note}
+        </Text>
+        <View style={s.row}>
           <Text
             style={s.goalText}
           >
-            {note}
+            {achievementStatus}
           </Text>
-          <View style={s.row}>
-            <Text
-              style={s.goalText}
-            >
-              {achievementStatus}
+          <View style={s.goalInfo}>
+            <Text style={s.goalText}>
+              {priority}
             </Text>
-            <View style={s.goalInfo}>
-              <Text style={s.goalText}>
-                {priority}
-              </Text>
-              <Text style={s.goalText}>
-                {formattedDate(startDate)}
-                {' to '}
-                {formattedDate(targetDate)}
-              </Text>
-            </View>
+            <Text style={s.goalText}>
+              {formattedDate(startDate)}
+              {' to '}
+              {formattedDate(targetDate)}
+            </Text>
           </View>
         </View>
-      </BlurView>
+      </View>
     </View>
   );
 }

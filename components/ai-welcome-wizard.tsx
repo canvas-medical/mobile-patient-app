@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import {
-  Text, StyleSheet, TouchableWithoutFeedback, View, Pressable,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  Pressable,
+  Platform,
 } from 'react-native';
-import Animated, {
-  FadeInUp, FadeOut, FadeOutDown
-} from 'react-native-reanimated';
+import Animated, { FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated';
 import Modal from 'react-native-modal';
 import { FontAwesome } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import { LightbulbOnSVG } from '@components/lightbulb-on-svg';
 import { LightbulbSVG } from '@components/lightbulb-svg';
+import { BlurFill } from '@components/blur-fill';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -28,22 +31,20 @@ const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  cardBlur: {
     padding: g.size(16),
   },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: g.white,
     padding: g.size(16),
+    backgroundColor: g.white,
     paddingBottom: g.size(32),
     borderBottomRightRadius: g.size(16),
     borderBottomLeftRadius: g.size(16),
   },
   header: {
     ...g.titleSmall,
-    color: g.white,
+    color: Platform.OS === 'ios' ? g.white : g.black,
     textAlign: 'left',
   },
   headerContainer: {
@@ -56,9 +57,14 @@ const s = StyleSheet.create({
     borderTopRightRadius: g.size(16),
     borderTopLeftRadius: g.size(16),
   },
+  secondModalHeader: {
+    ...g.titleSmall,
+    color: g.white,
+    textAlign: 'left',
+  },
   text: {
     ...g.bodyMedium,
-    color: g.white,
+    color: Platform.OS === 'ios' ? g.white : g.black,
     textAlign: 'left',
     paddingTop: g.size(8),
   },
@@ -71,7 +77,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (boolean) => void}) {
+export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (boolean) => void }) {
   const [isPressed, setIsPressed] = useState(false);
   const [swapModals, setSwapModals] = useState(false);
 
@@ -88,58 +94,57 @@ export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisibl
         </TouchableWithoutFeedback>
       )}
     >
-      {!swapModals
-        && (
-          <Animated.View exiting={FadeOutDown}>
-            <Pressable
-              onTouchStart={() => setIsPressed(true)}
-              onTouchEnd={() => setIsPressed(false)}
-              onLongPress={() => {
-                setSwapModals(true);
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
-              }}
-              style={s.card}
-            >
-              <BlurView
-                intensity={40}
-                tint="light"
-                style={s.cardBlur}
-              >
-                <Text style={s.header}>Welcome to Your Health App</Text>
-                <View style={s.textContainer}>
-                  <Text style={s.text}>Look for this icon</Text>
-                  <LightbulbSVG fill={g.transparent} width={g.size(25)} height={g.size(25)} />
-                  <Text style={s.text}>Press on the card until it changes to this</Text>
-                  <LightbulbSVG fill={g.goldenYellow} width={g.size(25)} height={g.size(25)} />
-                  <Text style={s.text}>
-                    Doing so will reveal detailed AI-generated insights about your health information.
-                    Give it a try now by pressing on this popup until the lightbulb in the upper right turns on!
-                  </Text>
-                </View>
-              </BlurView>
-              <LightbulbOnSVG
-                lightbulbOn={isPressed}
-                color={g.white}
+      {!swapModals ? (
+        <Animated.View exiting={FadeOutDown}>
+          <Pressable
+            onTouchStart={() => setIsPressed(true)}
+            onTouchEnd={() => setIsPressed(false)}
+            onLongPress={() => {
+              setSwapModals(true);
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
+            }}
+            style={s.card}
+          >
+            <BlurFill opacity={1} />
+            <Text style={s.header}>Welcome to Your Health App</Text>
+            <View style={s.textContainer}>
+              <Text style={s.text}>Look for this icon</Text>
+              <LightbulbSVG
+                initialFill={Platform.OS === 'ios' ? g.white : g.neutral500}
+                fill={g.transparent}
                 width={g.size(25)}
                 height={g.size(25)}
               />
-            </Pressable>
-          </Animated.View>
-
-        )}
-      {swapModals
-        && (
-          <Animated.View entering={FadeInUp} exiting={FadeOut}>
-            <View style={s.headerContainer}>
-              <FontAwesome name="lightbulb-o" size={24} color={g.goldenYellow} />
-              <Text style={s.header}>Explain</Text>
+              <Text style={s.text}>Press on the card until it changes to this</Text>
+              <LightbulbSVG
+                fill={g.goldenYellow}
+                width={g.size(25)}
+                height={g.size(25)}
+              />
+              <Text style={s.text}>
+                Doing so will reveal detailed AI-generated insights about your health information.
+                Give it a try now by pressing on this popup until the lightbulb in the upper right turns on!
+              </Text>
             </View>
-            <View style={s.container}>
-              <Text style={s.blueText}>Great job! You've unlocked AI insights. Tap anywhere outside of this popup to close.</Text>
-            </View>
-          </Animated.View>
-        )
-       }
+            <LightbulbOnSVG
+              lightbulbOn={isPressed}
+              color={(Platform.OS === 'ios' || isPressed) ? g.white : g.neutral500}
+              width={g.size(25)}
+              height={g.size(25)}
+            />
+          </Pressable>
+        </Animated.View>
+      ) : (
+        <Animated.View entering={FadeInUp} exiting={FadeOut}>
+          <View style={s.headerContainer}>
+            <FontAwesome name="lightbulb-o" size={24} color={g.goldenYellow} />
+            <Text style={s.secondModalHeader}>Explain</Text>
+          </View>
+          <View style={s.container}>
+            <Text style={s.blueText}>Great job! You&apos;ve unlocked AI insights. Tap anywhere outside of this popup to close.</Text>
+          </View>
+        </Animated.View>
+      )}
     </Modal>
   );
 }

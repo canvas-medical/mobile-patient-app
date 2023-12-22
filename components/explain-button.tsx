@@ -23,8 +23,10 @@ export function ExplainButton({
     <Pressable
       onTouchStart={() => setIsPressed(true)}
       onTouchEnd={() => setIsPressed(false)}
+      onTouchCancel={() => setIsPressed(false)}
       onLongPress={() => {
         setModalVisible(true);
+        setIsPressed(false);
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
       }}
       style={style}

@@ -68,50 +68,52 @@ export default function Appointments() {
       scrollEnabled={false}
     >
       <View style={StyleSheet.absoluteFill}>
-        {isLoading ? <ActivityIndicator size="large" color={g.white} style={s.loading} /> : (
-          <ScrollView
-            contentContainerStyle={[
-              s.scrollContent,
-              { paddingBottom: tabBarHeight + g.size(104) },
-            ]}
-            refreshControl={(
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                tintColor={g.white}
-                colors={[g.white]}
-                progressViewOffset={g.size(40)}
-              />
-            )}
-          >
-            {upcomingAppointments.length > 0 && (
-              <View style={s.scrollSection}>
-                <Text style={s.sectionLabel}>
-                  Upcoming
-                </Text>
-                {upcomingAppointments.map((appt) => (
-                  <AppointmentCard
-                    key={appt.id}
-                    appointment={appt}
-                  />
-                ))}
-              </View>
-            )}
-            {pastAppointments.length > 0 && (
-              <View style={s.scrollSection}>
-                <Text style={s.sectionLabel}>
-                  Past
-                </Text>
-                {pastAppointments.map((appt) => (
-                  <AppointmentCard
-                    key={appt.id}
-                    appointment={appt}
-                  />
-                ))}
-              </View>
-            )}
-          </ScrollView>
-        )}
+        {isLoading
+          ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+          : (
+            <ScrollView
+              contentContainerStyle={[
+                s.scrollContent,
+                { paddingBottom: tabBarHeight + g.size(104) },
+              ]}
+              refreshControl={(
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={g.white}
+                  colors={[g.white]}
+                  progressViewOffset={g.size(40)}
+                />
+              )}
+            >
+              {upcomingAppointments.length > 0 && (
+                <View style={s.scrollSection}>
+                  <Text style={s.sectionLabel}>
+                    Upcoming
+                  </Text>
+                  {upcomingAppointments.map((appt) => (
+                    <AppointmentCard
+                      key={appt.id}
+                      appointment={appt}
+                    />
+                  ))}
+                </View>
+              )}
+              {pastAppointments.length > 0 && (
+                <View style={s.scrollSection}>
+                  <Text style={s.sectionLabel}>
+                    Past
+                  </Text>
+                  {pastAppointments.map((appt) => (
+                    <AppointmentCard
+                      key={appt.id}
+                      appointment={appt}
+                    />
+                  ))}
+                </View>
+              )}
+            </ScrollView>
+          )}
         <TouchableOpacity
           style={[
             s.bookButton,

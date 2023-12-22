@@ -1,21 +1,19 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import { LabImagingReport } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  blur: {
+  card: {
+    borderRadius: g.size(8),
+    overflow: 'hidden',
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: g.size(12),
     paddingLeft: g.size(16),
     paddingRight: g.size(8),
-  },
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
   },
   dataContainer: {
     gap: g.size(4),
@@ -51,25 +49,20 @@ export function LabImagingReportCard({ report }: { report: LabImagingReport }) {
         })}
       disabled={!uri}
     >
-      <BlurView
-        intensity={40}
-        tint="light"
-        style={s.blur}
-      >
-        <View style={s.dataContainer}>
-          <Text style={s.label}>
-            {type}
-          </Text>
-          <Text style={s.date}>
-            {new Date(date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })}
-          </Text>
-        </View>
-        {!!uri && <Feather name="chevron-right" size={g.size(32)} color={g.white} />}
-      </BlurView>
+      <BlurFill />
+      <View style={s.dataContainer}>
+        <Text style={s.label}>
+          {type}
+        </Text>
+        <Text style={s.date}>
+          {new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          })}
+        </Text>
+      </View>
+      {!!uri && <Feather name="chevron-right" size={g.size(32)} color={g.white} />}
     </TouchableOpacity>
   );
 }

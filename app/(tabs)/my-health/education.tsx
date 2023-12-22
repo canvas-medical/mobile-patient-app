@@ -7,7 +7,8 @@ import { StackListView } from '@components';
 import { g } from '@styles';
 
 export default function Education() {
-  const { data, isLoading, refetch } = useEducationalMaterials();
+  const { isLoading, refetch } = useEducationalMaterials();
+  // const { data, isLoading, refetch } = useEducationalMaterials();
 
   // TODO: update with education components and data
 

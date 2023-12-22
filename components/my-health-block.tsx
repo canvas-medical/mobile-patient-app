@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { g } from '@styles';
 import { router } from 'expo-router';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   diagnosticContainer: {
@@ -25,9 +25,9 @@ const s = StyleSheet.create({
     gap: g.size(16),
   },
   viewAll: {
-    ...g.bodySmall,
+    ...g.bodyMedium,
     color: g.white,
-    opacity: 0.8,
+    opacity: 0.9,
   },
   zeroState: {
     ...g.bodyMedium,

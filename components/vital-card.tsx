@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { BlurFill } from '@components';
 import { Vital } from '@interfaces';
 import { vitalsValueSwitch, vitalsIconSwitch } from '@utils';
 import { g } from '@styles';
@@ -9,28 +9,25 @@ const s = StyleSheet.create({
     width: (g.width - g.size(48)) / 2,
     borderRadius: g.size(8),
     overflow: 'hidden',
+    padding: g.size(8),
+    paddingBottom: g.size(32),
   },
   bottomRow: {
+    position: 'absolute',
+    bottom: g.size(8),
+    left: g.size(8),
     flexDirection: 'row',
     gap: g.size(8),
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: g.size(8),
+    width: '100%',
+    justifyContent: 'space-between',
   },
   firstBlurContainer: {
     width: g.width - g.size(32),
   },
-  skeleton: {
-    height: g.size(78),
-  },
   topRow: {
     flexDirection: 'row',
     gap: g.size(8),
-    justifyContent: 'space-between',
-  },
-  vitalBlur: {
-    flex: 1,
-    padding: g.size(12),
     justifyContent: 'space-between',
   },
   vitalData: {
@@ -58,33 +55,29 @@ export function VitalCard({ vital, vitalsOdd, index }: {
     <View
       style={[
         s.blurContainer,
-        index === 0 && vitalsOdd && s.firstBlurContainer
+        index === 0 && vitalsOdd && s.firstBlurContainer,
       ]}
     >
-      <BlurView
-        style={s.vitalBlur}
-        tint="light"
-        intensity={40}
-      >
-        <View style={s.topRow}>
-          <Text style={s.vitalLabel}>
-            {coding[0].display}
-          </Text>
-          {vitalsIconSwitch(coding[0].display)}
-        </View>
-        <View style={s.bottomRow}>
-          <Text style={s.vitalDate}>
-            {new Date(issued).toLocaleDateString('en-US', {
-              year: '2-digit',
-              month: 'short',
-              day: 'numeric'
-            })}
-          </Text>
-          <Text style={s.vitalData}>
-            {vitalsValueSwitch(coding[0].display, vital)}
-          </Text>
-        </View>
-      </BlurView>
+      <BlurFill />
+      <View style={s.topRow}>
+        <Text style={s.vitalLabel}>
+          {coding[0].display}
+        </Text>
+        {vitalsIconSwitch(coding[0].display)}
+      </View>
+      <View style={s.bottomRow}>
+        <Text style={s.vitalDate}>
+          {new Date(issued).toLocaleDateString('en-US', {
+            year: '2-digit',
+            month: 'short',
+            day: 'numeric'
+          })}
+        </Text>
+        <Text style={s.vitalData}>
+          {vitalsValueSwitch(coding[0].display, vital)}
+        </Text>
+      </View>
+
     </View>
   );
 }
@@ -94,14 +87,10 @@ export function VitalCardSkeleton({ vitalsOdd, index }) {
     <View
       style={[
         s.blurContainer,
-        index === 0 && vitalsOdd && s.firstBlurContainer
+        index === 0 && vitalsOdd && s.firstBlurContainer,
       ]}
     >
-      <BlurView
-        style={[s.vitalBlur, s.skeleton]}
-        tint="light"
-        intensity={40}
-      />
+      <BlurFill />
     </View>
   );
 }

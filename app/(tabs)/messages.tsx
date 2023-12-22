@@ -57,6 +57,9 @@ const s = StyleSheet.create({
     borderRadius: g.size(20),
     minHeight: g.size(36),
   },
+  loading: {
+    flex: 1,
+  },
   scrollContent: {
     flexGrow: 1,
     paddingTop: g.size(36),
@@ -71,7 +74,7 @@ export default function Messages() {
   const [containerLayout, setContainerLayout] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
   const [size, setSize] = useState<number>(g.size(32));
-  const { data: messages, refetch } = useCommunication();
+  const { data: messages, isLoading, refetch } = useCommunication();
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
   const scrollViewRef = useRef<ScrollView>();
@@ -120,13 +123,15 @@ export default function Messages() {
             }}
             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
           >
-            {messages ? messages.map((mess: Message) => (
-              <MessageBlock
-                received={mess.resource.sender.type === 'Practitioner'}
-                key={mess.resource.id}
-                message={mess.resource.payload[0].contentString}
-              />
-            )) : <ActivityIndicator />}
+            {isLoading
+              ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+              : messages.map((mess: Message) => (
+                <MessageBlock
+                  received={mess.resource.sender.type === 'Practitioner'}
+                  key={mess.resource.id}
+                  message={mess.resource.payload[0].contentString}
+                />
+              ))}
           </ScrollView>
           <View style={s.inputContainer}>
             <TextInput
@@ -143,9 +148,8 @@ export default function Messages() {
               placeholderTextColor={g.neutral200}
               onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
             />
-            {isPending ? (
-              <ActivityIndicator size={g.size(39)} style={s.button} />
-            )
+            {isPending
+              ? <ActivityIndicator size={g.size(39)} style={s.button} color={g.primaryBlue} />
               : (
                 <TouchableOpacity
                   onPress={() => onMessageSubmit(message)}

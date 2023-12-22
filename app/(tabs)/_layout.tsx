@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import {
   Feather,
@@ -75,6 +75,7 @@ export default function Layout() {
         tabBarActiveTintColor: g.white,
         tabBarInactiveTintColor: g.neutral500,
         tabBarShowLabel: false,
+        tabBarHideOnKeyboard: Platform.OS === 'android',
         tabBarStyle: {
           height: g.size(96),
           paddingTop: g.size(16),

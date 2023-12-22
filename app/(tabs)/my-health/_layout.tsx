@@ -11,6 +11,7 @@ export default function MyHealthStack() {
       <Stack.Screen name="allergies" options={{ headerShown: false }} />
       <Stack.Screen name="goals" options={{ headerShown: false }} />
       <Stack.Screen name="education" options={{ headerShown: false }} />
+      <Stack.Screen name="procedures" options={{ headerShown: false }} />
     </Stack>
   );
 }
