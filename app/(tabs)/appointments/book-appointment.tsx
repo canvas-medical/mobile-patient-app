@@ -68,7 +68,7 @@ const s = StyleSheet.create({
     color: g.neutral200
   },
   pickerOverlay: {
-    width: '85%',
+    width: g.width * 0.85,
     borderRadius: g.size(16),
     backgroundColor: g.white,
     paddingVertical: 0
