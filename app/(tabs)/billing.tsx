@@ -177,7 +177,15 @@ export default function Billing() {
                   </Text>
                 </View>
                 <View style={s.inputContainer}>
-                  <Feather style={[s.dollarSign, g.android && s.androidDollarSign]} name="dollar-sign" size={g.size(20)} color={g.neutral200} />
+                  <Feather
+                    style={[
+                      s.dollarSign,
+                      Platform.OS === 'android' && s.androidDollarSign,
+                    ]}
+                    name="dollar-sign"
+                    size={g.size(20)}
+                    color={g.neutral200}
+                  />
                   <Input
                     onChange={setAmount}
                     value={amount}
@@ -195,11 +203,11 @@ export default function Billing() {
                     style={{ paddingLeft: g.size(36), color: g.white }}
                     selectionColor={g.white}
                   />
-                  <View style={[s.buttonContainer, g.android && s.androidButtonContainer]}>
+                  <View style={[s.buttonContainer, Platform.OS === 'android' && s.androidButtonContainer]}>
                     <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
                       {paymentNoticePending || paymentIntentPending || buttonLoading
-                        ? <ActivityIndicator style={[s.payButton, g.android && s.androidPayButton]} color={g.primaryBlue} />
-                        : <Text style={[s.payButton, disabled && s.disabled, g.android && s.androidPayButton]}>Pay</Text>
+                        ? <ActivityIndicator style={[s.payButton, Platform.OS === 'android' && s.androidPayButton]} color={g.primaryBlue} />
+                        : <Text style={[s.payButton, disabled && s.disabled, Platform.OS === 'android' && s.androidPayButton]}>Pay</Text>
                       }
                     </TouchableOpacity>
                   </View>

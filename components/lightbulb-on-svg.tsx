@@ -4,9 +4,11 @@ import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Animated, {
   createAnimatedPropAdapter,
-  interpolateColor, processColor,
+  interpolateColor,
+  processColor,
   useAnimatedProps,
-  useSharedValue, withTiming
+  useSharedValue,
+  withTiming
 } from 'react-native-reanimated';
 import { g } from '@styles';
 
