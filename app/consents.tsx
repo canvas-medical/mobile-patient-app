@@ -102,15 +102,15 @@ export default function Consents() {
                 </View>
                 <View style={s.consentItem}>
                   <TouchableOpacity disabled={!!isAccepted} onPress={() => onCreateConsent({ consent: 'Consent Document' })}>
-                    {isPending ? (
-                      <ActivityIndicator size="small" color={g.neutral500} />
-                    ) : (
-                      <Feather
-                        name={isAccepted ? 'check-square' : 'square'}
-                        size={g.size(26)}
-                        color={isAccepted ? 'green' : g.neutral200}
-                      />
-                    )}
+                    {isPending
+                      ? <ActivityIndicator color={g.primaryBlue} />
+                      : (
+                        <Feather
+                          name={isAccepted ? 'check-square' : 'square'}
+                          size={g.size(26)}
+                          color={isAccepted ? 'green' : g.neutral200}
+                        />
+                      )}
                   </TouchableOpacity>
                   <TouchableOpacity
                     disabled={isPending}

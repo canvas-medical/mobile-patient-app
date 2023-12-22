@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -198,9 +198,9 @@ export default function Billing() {
                   <View style={[s.buttonContainer, g.android && s.androidButtonContainer]}>
                     <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
                       {paymentNoticePending || paymentIntentPending || buttonLoading
-                        ? <ActivityIndicator size="small" style={[s.payButton, g.android && s.androidPayButton]} color={g.primaryBlue} />
+                        ? <ActivityIndicator style={[s.payButton, g.android && s.androidPayButton]} color={g.primaryBlue} />
                         : <Text style={[s.payButton, disabled && s.disabled, g.android && s.androidPayButton]}>Pay</Text>
-                        }
+                      }
                     </TouchableOpacity>
                   </View>
                   <Text style={s.greyedOut}>{error}</Text>

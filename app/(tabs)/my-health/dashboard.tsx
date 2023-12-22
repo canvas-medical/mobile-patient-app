@@ -42,7 +42,8 @@ import {
   Medication,
   DiagnosticReport,
   Vital,
-  LabImagingReport, Procedure,
+  LabImagingReport,
+  Procedure,
 } from '@interfaces';
 import { g } from '@styles';
 
@@ -65,7 +66,7 @@ const s = StyleSheet.create({
 });
 
 export default function Dashboard() {
-  const [openWizard, setOpenWizard] = useState(false);
+  const [openWizard, setOpenWizard] = useState(true);
   const tabBarHeight = useBottomTabBarHeight();
   const { data: vitals, isLoading: loadingVitals } = useObservations();
   const { data: medications, isLoading: loadingMedications } = useMedications();
@@ -109,9 +110,9 @@ export default function Dashboard() {
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
-  const activeMedications = medications?.filter((med) => med.status === 'active');
-  const activeConditions = conditions?.filter((condition) => condition.clinicalStatus.text === 'Active');
-  const activeGoals = goals?.filter((item) => activeGoalStates.includes(item.achievementStatus.coding[0].display));
+  const activeMedications = medications?.filter((med: Medication) => med.status === 'active');
+  const activeConditions = conditions?.filter((condition: Condition) => condition.clinicalStatus.text === 'Active');
+  const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
 
   return (
     <Screen>

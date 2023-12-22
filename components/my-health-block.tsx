@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { g } from '@styles';
 import { router } from 'expo-router';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   diagnosticContainer: {

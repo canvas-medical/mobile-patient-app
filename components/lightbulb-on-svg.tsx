@@ -1,5 +1,5 @@
 /*  eslint-disable max-len */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import Animated, {
@@ -21,7 +21,19 @@ const s = StyleSheet.create({
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-export function LightbulbOnSVG({ color, width, height, fill, lightbulbOn }:{color: string, width: number, height: number, fill?: string, lightbulbOn: boolean }) {
+export function LightbulbOnSVG({
+  color,
+  width,
+  height,
+  fill,
+  lightbulbOn
+}: {
+  color: string,
+  width: number,
+  height: number,
+  fill?: string,
+  lightbulbOn: boolean
+}) {
   const fillProgress = useSharedValue(lightbulbOn ? 1 : 0);
   const animatedProps = useAnimatedProps(
     () => {

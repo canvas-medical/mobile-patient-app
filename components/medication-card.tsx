@@ -1,5 +1,4 @@
-import { StyleSheet, View, Text, Platform } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { StyleSheet, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Medication } from '@interfaces';
 import { BlurFill, ExplainButton } from '@components';
@@ -41,9 +40,6 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     gap: g.size(8),
   },
-  skeleton: {
-    height: g.size(80),
-  }
 });
 
 export function MedicationCard({ med }: { med: Medication }) {

@@ -110,38 +110,40 @@ export default function Questionnaire() {
                 </View>
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
-                    {isFetching ? <ActivityIndicator size="large" /> : (
-                      <>
-                        {questionnaire.item.map((question: Question) => (
-                          <Controller
-                            name={question.linkId}
-                            control={control}
-                            rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
-                            key={question.linkId}
-                            render={({ field: { onChange, value } }) => (
-                              <Input
-                                placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
-                                type={dataTypeMap[question.type]}
-                                name={question.text}
-                                label={question.text}
-                                options={question.answerOption.map((answer) => (
-                                  { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
-                                onFocus={() => clearErrors()}
-                                onChange={(e) => onChange(e)}
-                                value={value}
-                                error={errors[question.linkId] as FieldError}
-                              />
-                            )}
+                    {isFetching
+                      ? <ActivityIndicator size="large" color={g.primaryBlue} />
+                      : (
+                        <>
+                          {questionnaire.item.map((question: Question) => (
+                            <Controller
+                              name={question.linkId}
+                              control={control}
+                              rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
+                              key={question.linkId}
+                              render={({ field: { onChange, value } }) => (
+                                <Input
+                                  placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
+                                  type={dataTypeMap[question.type]}
+                                  name={question.text}
+                                  label={question.text}
+                                  options={question.answerOption.map((answer) => (
+                                    { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
+                                  onFocus={() => clearErrors()}
+                                  onChange={(e) => onChange(e)}
+                                  value={value}
+                                  error={errors[question.linkId] as FieldError}
+                                />
+                              )}
+                            />
+                          ))}
+                          <Button
+                            onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
+                            disabled={isPending}
+                            label={isPending ? 'Submitting...' : 'Submit'}
+                            theme="primary"
                           />
-                        ))}
-                        <Button
-                          onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
-                          disabled={isPending}
-                          label={isPending ? 'Submitting...' : 'Submit'}
-                          theme="primary"
-                        />
-                      </>
-                    )
+                        </>
+                      )
                     }
                   </View>
                 </View>

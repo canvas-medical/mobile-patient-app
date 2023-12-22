@@ -1,12 +1,11 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
 import { Overlay } from '@rneui/themed';
 import { Button, Screen } from '@components';
 import { g } from '@styles';
-
-import { useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
 
 const s = StyleSheet.create({
   buttonContainer: {

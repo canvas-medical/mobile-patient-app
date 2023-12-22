@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useConditions } from '@services';
 import { ConditionCard, StackListView } from '@components';
-import { g } from '@styles';
 import { Condition } from '@interfaces';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   label: {

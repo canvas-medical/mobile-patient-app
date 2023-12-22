@@ -1,13 +1,12 @@
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
-import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 import { Patient } from '@interfaces';
-import { g } from '@styles';
-import { Image } from 'expo-image';
 import { formatPhoneNumber } from '@utils';
 import { BlurFill } from '@components/blur-fill';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   addressContainer: {
