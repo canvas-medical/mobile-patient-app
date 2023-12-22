@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
 import { Overlay } from '@rneui/themed';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,7 +20,6 @@ import { formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import { Button, Screen, BlurFill } from '@components';
 import { g } from '@styles';
-import { Picker } from '@react-native-picker/picker';
 
 const s = StyleSheet.create({
   bookButton: {
@@ -212,7 +212,10 @@ export default function BookAppointment() {
           />
         )}
       >
-        <ScrollView contentContainerStyle={s.scrollContent}>
+        <ScrollView
+          contentContainerStyle={s.scrollContent}
+          scrollEnabled={!!appointmentReason}
+        >
           <View style={s.dateSection}>
             <Text style={s.sectionHeader}>
               Select a Date
