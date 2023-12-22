@@ -66,7 +66,7 @@ const s = StyleSheet.create({
 });
 
 export default function Dashboard() {
-  const [openWizard, setOpenWizard] = useState(true);
+  const [openWizard, setOpenWizard] = useState(false);
   const tabBarHeight = useBottomTabBarHeight();
   const { data: vitals, isLoading: loadingVitals } = useObservations();
   const { data: medications, isLoading: loadingMedications } = useMedications();
