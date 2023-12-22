@@ -162,7 +162,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {`${data.gender !== ('male' || 'female') ? 'Sex: ' : ''}${capitalizeFirstLetter(data.gender)}`}
+                  {`${data.gender !== ('male' || 'female') ? 'Gender: ' : ''}${capitalizeFirstLetter(data.gender)}`}
                 </Text>
               </View>
             )}

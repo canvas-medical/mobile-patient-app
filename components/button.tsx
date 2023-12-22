@@ -39,7 +39,7 @@ interface Props {
   theme: 'primary' | 'secondary' | 'tertiary';
   onPress: () => void;
   disabled?: boolean;
-  style?: { [key: string]: number | string };
+  style?: { [key: string]: number | string } | { [key: string]: number | string }[];
 }
 
 export function Button(props: Props) {
