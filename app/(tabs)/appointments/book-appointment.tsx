@@ -9,12 +9,14 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { Overlay } from '@rneui/themed';
+import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
@@ -22,9 +24,14 @@ import { Button, Screen, BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  backButton: {
+    alignSelf: 'flex-start',
+    marginTop: g.size(48),
+    marginLeft: g.size(16),
+    marginBottom: -g.size(16),
+  },
   bookButton: {
     position: 'absolute',
-    bottom: g.size(32),
     left: g.size(16),
     right: g.size(16),
     opacity: 1,
@@ -54,24 +61,25 @@ const s = StyleSheet.create({
   maskedView: {
     flex: 1,
   },
-  pickerButton: {
+  pickerAndDateButton: {
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
     borderRadius: g.size(50),
     overflow: 'hidden',
   },
-  pickerButtonLabel: {
+  pickerAndDateButtonLabel: {
     ...g.bodyLarge,
     color: g.white,
   },
-  pickerButtonPlaceholder: {
+  pickerAndDateButtonPlaceholder: {
     color: g.neutral200
   },
   pickerOverlay: {
     width: g.width * 0.85,
     borderRadius: g.size(16),
     backgroundColor: g.white,
-    paddingVertical: 0
+    paddingVertical: 0,
+    marginVertical: 0,
   },
   practitionerButtonsContainer: {
     gap: g.size(16),
@@ -103,7 +111,7 @@ const s = StyleSheet.create({
     flexGrow: 1,
     gap: g.size(24),
     paddingHorizontal: g.size(16),
-    paddingTop: g.size(28),
+    paddingTop: Platform.OS === 'ios' ? g.size(28) : g.size(36),
   },
   sectionContainer: {
     gap: g.size(12),
@@ -139,7 +147,7 @@ const s = StyleSheet.create({
     gap: g.size(16),
     paddingLeft: g.size(20),
     paddingTop: g.size(36),
-    marginBottom: g.size(8),
+    marginBottom: Platform.OS === 'ios' ? g.size(8) : 0,
   },
 });
 
@@ -159,6 +167,7 @@ const reasonsForDoctorVisit = [
 ];
 
 export default function BookAppointment() {
+  const tabBarHeight = useBottomTabBarHeight();
   const [showDatePicker, setShowDatePicker] = useState<boolean>(Platform.OS === 'ios');
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [showReasonPicker, setShowReasonPicker] = useState<boolean>(false);
@@ -196,6 +205,14 @@ export default function BookAppointment() {
 
   return (
     <Screen>
+      {Platform.OS === 'android' && (
+        <TouchableOpacity
+          style={s.backButton}
+          onPress={() => router.back()}
+        >
+          <Feather name="arrow-left" size={g.size(48)} color={g.white} />
+        </TouchableOpacity>
+      )}
       <View style={s.titleContainer}>
         <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.white} />
         <Text style={s.title}>
@@ -216,9 +233,9 @@ export default function BookAppointment() {
           contentContainerStyle={s.scrollContent}
           scrollEnabled={!!appointmentReason}
         >
-          <View style={s.dateSection}>
+          <View style={[s.sectionContainer, Platform.OS === 'ios' && s.dateSection]}>
             <Text style={s.sectionHeader}>
-              Select a Date
+              Date
             </Text>
             {showDatePicker && (
               <DateTimePicker
@@ -227,8 +244,27 @@ export default function BookAppointment() {
                 minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
                 themeVariant="dark"
                 maximumDate={null}
-                onChange={(e: DateTimePickerEvent) => onChangeDate(e)}
+                onChange={(e: DateTimePickerEvent) => {
+                  onChangeDate(e);
+                  setShowDatePicker(false);
+                }}
               />
+            )}
+            {Platform.OS === 'android' && (
+              <TouchableOpacity
+                style={s.pickerAndDateButton}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <BlurFill />
+                <Text
+                  style={[
+                    s.pickerAndDateButtonLabel,
+                    !futureDateSelected && s.pickerAndDateButtonPlaceholder,
+                  ]}
+                >
+                  {futureDateSelected ? dateLabel : 'Select a date'}
+                </Text>
+              </TouchableOpacity>
             )}
           </View>
           {futureDateSelected && (
@@ -238,14 +274,14 @@ export default function BookAppointment() {
               </Text>
               <>
                 <TouchableOpacity
-                  style={s.pickerButton}
+                  style={s.pickerAndDateButton}
                   onPress={() => setShowReasonPicker(true)}
                 >
                   <BlurFill />
                   <Text
                     style={[
-                      s.pickerButtonLabel,
-                      !appointmentReason && s.pickerButtonPlaceholder,
+                      s.pickerAndDateButtonLabel,
+                      !appointmentReason && s.pickerAndDateButtonPlaceholder,
                     ]}
                   >
                     {appointmentReason || 'Select'}
@@ -365,6 +401,7 @@ export default function BookAppointment() {
             style={[
               s.bookButton,
               bookDisabled && s.bookButtonDisabled,
+              { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(12) }
             ]}
             onPress={() => onCreateAppointment({
               startTime: selectedSlot?.start,
