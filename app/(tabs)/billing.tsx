@@ -10,14 +10,12 @@ import {
   ActivityIndicator,
   RefreshControl
 } from 'react-native';
-import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
-import { Header, Input, InvoiceCard, Screen } from '@components';
-import { Invoice, PaymentNotice } from '@interfaces';
 import {
   getPaymentIntent,
   useInvoices,
@@ -25,6 +23,8 @@ import {
   usePaymentNotices,
   usePaymentNoticeSubmit
 } from '@services';
+import { Invoice, PaymentNotice } from '@interfaces';
+import { Header, Input, InvoiceCard, Screen } from '@components';
 import receipt from '@assets/images/cc-payment.svg';
 import { g } from '@styles';
 
