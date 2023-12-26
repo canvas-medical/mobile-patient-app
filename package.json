@@ -48,6 +48,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-pdf": "^6.7.1",
     "react-native-reanimated": "~3.3.0",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-svg": "13.9.0"
@@ -75,11 +76,11 @@
     "@rneui/themed": {
       "@rneui/base": "4.0.0-rc.8"
     },
-    "@expo/config-plugins":"~7.2.2",
+    "@expo/config-plugins": "~7.2.2",
     "@expo/prebuild-config": "~6.2.4"
   },
   "resolutions": {
-    "@expo/config-plugins":"~7.2.2",
+    "@expo/config-plugins": "~7.2.2",
     "@expo/prebuild-config": "~6.2.4"
   }
 }

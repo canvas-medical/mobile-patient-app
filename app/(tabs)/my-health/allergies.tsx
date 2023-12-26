@@ -1,11 +1,24 @@
+import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Allergy } from '@interfaces';
 import { useAllergies } from '@services';
 import { AllergyCard, StackListView } from '@components';
 import { g } from '@styles';
 
+const s = StyleSheet.create({
+  label: {
+    ...g.titleXSmall,
+    color: g.white,
+  },
+  scrollSection: {
+    gap: g.size(16),
+  },
+});
+
 export default function Allergies() {
   const { data, isLoading, refetch } = useAllergies();
+  const activeAllergies = data.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
+  const inactiveAllergies = data.filter((allergy: Allergy) => allergy.clinicalStatus.text !== 'Active');
 
   return (
     <StackListView
@@ -14,12 +27,32 @@ export default function Allergies() {
       isLoading={isLoading}
       refetch={refetch}
     >
-      {data?.length > 0 && data.map((allergy: Allergy) => (
-        <AllergyCard
-          key={allergy.id}
-          allergy={allergy}
-        />
-      ))}
+      {activeAllergies.length > 0 && (
+      <View style={s.scrollSection}>
+        <Text style={s.label}>
+          Active
+        </Text>
+        {activeAllergies.map((allergy: Allergy) => (
+          <AllergyCard
+            key={allergy.id}
+            allergy={allergy}
+          />
+        ))}
+      </View>
+      )}
+      {inactiveAllergies.length > 0 && (
+      <View style={s.scrollSection}>
+        <Text style={s.label}>
+          Inactive
+        </Text>
+        {inactiveAllergies.map((allergy: Allergy) => (
+          <AllergyCard
+            key={allergy.id}
+            allergy={allergy}
+          />
+        ))}
+      </View>
+      )}
     </StackListView>
   );
 }
