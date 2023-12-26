@@ -32,6 +32,7 @@ export default function Layout() {
         tabBarStyle: {
           height: g.size(96),
           paddingTop: g.size(8),
+          paddingBottom: g.size(24),
           backgroundColor: g.white,
           borderTopLeftRadius: g.size(48),
           borderTopRightRadius: g.size(48),
