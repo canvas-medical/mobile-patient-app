@@ -92,7 +92,7 @@ const formattedDate = (date: string | number | Date) =>
 export function ProfileCard({ data }: { data: Patient }) {
   const navigation = useNavigation();
   const phoneNumber = formatPhoneNumber(data?.telecom?.find((t) => t.system === 'phone')?.value);
-  const email = data.telecom.find((t) => t.system === 'email')?.value;
+  const email = data?.telecom.find((t) => t.system === 'email')?.value;
 
   const logout = () => {
     const state = navigation.getState();
@@ -111,7 +111,7 @@ export function ProfileCard({ data }: { data: Patient }) {
         <BlurFill />
         <View style={s.userContainer}>
           {data?.photo[0]?.url ? (
-            <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
+            <Image source={{ uri: data?.photo[0].url }} style={s.userImage} />
           ) : (
             <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />
           )}
@@ -120,7 +120,7 @@ export function ProfileCard({ data }: { data: Patient }) {
               style={s.userName}
               numberOfLines={1}
             >
-              {`${data.name[0].given[0]} ${data.name[0].family}`}
+              {`${data?.name[0].given[0]} ${data?.name[0].family}`}
             </Text>
           </View>
         </View>
@@ -135,7 +135,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {formattedDate(data.birthDate)}
+                  {formattedDate(data?.birthDate)}
                 </Text>
               </View>
             )}
@@ -167,7 +167,7 @@ export function ProfileCard({ data }: { data: Patient }) {
             )}
           </View>
           <View style={s.dataColumn}>
-            {!!data.gender && (
+            {!!data?.gender && (
               <View style={s.dataRow}>
                 <View style={s.iconContainer}>
                   <FontAwesome name="user" size={g.size(14)} color={g.white} />
@@ -176,7 +176,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {`${data.gender !== ('male' || 'female') ? 'Gender: ' : ''}${capitalizeFirstLetter(data.gender)}`}
+                  {`${data?.gender !== ('male' || 'female') ? 'Gender: ' : ''}${capitalizeFirstLetter(data?.gender)}`}
                 </Text>
               </View>
             )}
@@ -190,13 +190,13 @@ export function ProfileCard({ data }: { data: Patient }) {
                     style={s.addressLine}
                     numberOfLines={1}
                   >
-                    {data.address[0]?.line[0]}
+                    {data?.address[0]?.line[0]}
                   </Text>
                   <Text
                     style={s.addressLine}
                     numberOfLines={1}
                   >
-                    {`${data.address[0]?.city}, ${data.address[0]?.state} ${data.address[0]?.postalCode}`}
+                    {`${data?.address[0]?.city}, ${data?.address[0]?.state} ${data?.address[0]?.postalCode}`}
                   </Text>
                 </View>
               </View>
