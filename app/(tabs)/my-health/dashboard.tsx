@@ -113,6 +113,7 @@ export default function Dashboard() {
   const activeMedications = medications?.filter((med: Medication) => med.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition.clinicalStatus.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
+  const activeAllergies = allergies?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
 
   return (
     <Screen>
@@ -175,12 +176,12 @@ export default function Dashboard() {
           <MyHealthBlock
             viewAllRoute="my-health/allergies"
             title="Allergies"
-            viewAll={allergies?.length > 1}
+            viewAll={!!allergies?.length}
             icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
           >
             {loadingAllergies
               ? <ActivityIndicator color={g.white} />
-              : allergies?.slice(0, 1).map((allergy: Allergy) => (
+              : activeAllergies?.map((allergy: Allergy) => (
                 <AllergyCard
                   key={allergy.id}
                   allergy={allergy}

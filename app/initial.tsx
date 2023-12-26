@@ -46,7 +46,7 @@ export default function Initial() {
   const demoPatients = [
     { label: 'Select a patient', value: '' },
     { label: 'Kristen - Senior Female', value: 'a2d481743b774bbbb7084254cf384bac' },
-    { label: 'Owen- Onc Single', value: '458b394369f34c50b63e46535b4f7722' },
+    { label: 'Owen - Onc Single', value: '458b394369f34c50b63e46535b4f7722' },
     { label: 'Donna - 52 Female', value: 'ae16fa0710894e999390abdec2859906' },
   ];
 

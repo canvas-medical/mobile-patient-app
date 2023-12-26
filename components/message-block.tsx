@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import { View, Text, StyleSheet } from 'react-native';
+import RenderHtml from 'react-native-render-html';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -7,8 +8,8 @@ const s = StyleSheet.create({
     position: 'absolute',
     borderWidth: g.size(10),
     borderColor: g.transparent,
-    borderTopColor: g.primaryBlue,
-    borderLeftColor: g.primaryBlue,
+    borderTopColor: g.secondaryBlue,
+    borderLeftColor: g.secondaryBlue,
     bottom: g.size(-15),
     left: 0
   },
@@ -24,7 +25,7 @@ const s = StyleSheet.create({
   messageReceived: {
     color: g.white,
     maxWidth: '90%',
-    backgroundColor: g.primaryBlue,
+    backgroundColor: g.secondaryBlue,
     borderBottomLeftRadius: 0,
     padding: g.size(15),
     borderRadius: g.size(10),
@@ -54,7 +55,10 @@ export function MessageBlock({ received, message }: { received: boolean, message
     <>
       {received ? (
         <View style={s.messageReceived}>
-          <Text style={s.messageReceivedText}>{message.replaceAll('<br>', '\n')}</Text>
+          <RenderHtml
+            baseStyle={s.messageReceivedText}
+            source={{ html: message }}
+          />
           <View style={s.leftArrow} />
         </View>
       ) : (

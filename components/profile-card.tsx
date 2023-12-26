@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 import { Patient } from '@interfaces';
@@ -89,8 +89,21 @@ const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + strin
 const formattedDate = (date) => new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'utc' });
 
 export function ProfileCard({ data }: { data: Patient }) {
+  const navigation = useNavigation();
   const phoneNumber = formatPhoneNumber(data.telecom.find((t) => t.system === 'phone')?.value);
   const email = data.telecom.find((t) => t.system === 'email')?.value;
+
+  const logout = () => {
+    const state = navigation.getState();
+    navigation.reset({
+      ...state,
+      routes: state.routes.map((route) => ({ ...route, state: undefined }))
+    });
+    SecureStore.deleteItemAsync('patient_id');
+    SecureStore.deleteItemAsync('push_token');
+    router.replace('initial');
+  };
+
   return (
     <>
       <View style={s.profileCard}>
@@ -205,9 +218,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                 text: 'Log Out',
                 style: 'destructive',
                 onPress: () => {
-                  SecureStore.deleteItemAsync('patient_id');
-                  SecureStore.deleteItemAsync('push_token');
-                  router.replace('initial');
+                  logout();
                 },
               },
             ]
