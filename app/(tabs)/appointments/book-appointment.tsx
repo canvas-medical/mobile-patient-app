@@ -50,6 +50,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  error: {
+    ...g.bodyMedium,
+    color: g.white,
+  },
   labelSelected: {
     color: g.primaryBlue,
     opacity: 1,
@@ -180,7 +184,7 @@ export default function BookAppointment() {
   const { mutate: onCreateAppointment, isPending, isSuccess } = useCreateAppointment();
   const bookDisabled = !Object.keys(selectedSlot).length;
   const dateValue = new Date(new Date(selectedDate).getTime() + (new Date(selectedDate).getTimezoneOffset() * 60000));
-  const futureDateSelected = dateValue.getDate() > new Date().getDate();
+  const futureDateSelected = dateValue > new Date();
   const dateLabel = dateValue.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -300,6 +304,7 @@ export default function BookAppointment() {
                           setAppointmentReason(itemValue);
                           setAppointmentDuration(reasonsForDoctorVisit.find((item) => item.reasonLabel === itemValue)?.appointmentDuration);
                         }
+                        if (Platform.OS === 'android') setShowReasonPicker(false);
                       }}
                     >
                       {reasonsForDoctorVisit.map((item: { reasonLabel: string }) => (
@@ -357,7 +362,7 @@ export default function BookAppointment() {
                 )}
             </>
           )}
-          {!!selectedSchedule && isLoadingSlots
+          {!!Object.keys(selectedSchedule).length && isLoadingSlots
             ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
             : (
               <>
@@ -391,6 +396,8 @@ export default function BookAppointment() {
                     </View>
                   </View>
                 )}
+                {!!Object.keys(selectedSchedule).length && slotData.length === 0 && (
+                <Text style={s.error}>There are no available appointments for the selected date. Please choose a different day.</Text>)}
               </>
             )}
         </ScrollView>
