@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -16,7 +17,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
-import { MessageBlock, Screen, Header } from '@components';
+import { MessageBlock, Screen, Header, ZeroState } from '@components';
+import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -85,7 +87,7 @@ export default function Messages() {
 
   useFocusEffect(
     useCallback(() => {
-      scrollViewRef.current.scrollToEnd();
+      scrollViewRef?.current?.scrollToEnd();
     }, [])
   );
 
@@ -114,25 +116,40 @@ export default function Messages() {
             />
           )}
         >
-          <ScrollView
-            ref={scrollViewRef}
-            contentContainerStyle={s.scrollContent}
-            onLayout={({ nativeEvent: { layout } }) => {
-              if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
-              setContainerLayout(layout.height);
-            }}
-            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-          >
-            {isLoading
-              ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
-              : messages.map((mess: Message) => (
-                <MessageBlock
-                  received={mess.resource.sender.type === 'Practitioner'}
-                  key={mess.resource.id}
-                  message={mess.resource.payload[0].contentString}
-                />
-              ))}
-          </ScrollView>
+          {isLoading
+            ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+            : (
+              <>
+                {
+                  messages.length ? (
+                    <ScrollView
+                      ref={scrollViewRef}
+                      contentContainerStyle={s.scrollContent}
+                      onLayout={({ nativeEvent: { layout } }) => {
+                        if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
+                        setContainerLayout(layout.height);
+                      }}
+                      onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+                    >
+                      {messages.map((mess: Message) => (
+                        <MessageBlock
+                          received={mess.resource.sender.type === 'Practitioner'}
+                          key={mess.resource.id}
+                          message={mess.resource.payload[0].contentString}
+                        />
+                      ))}
+                    </ScrollView>
+                  ) : (
+                    <ZeroState
+                      image={chat}
+                      imageAspectRatio={1}
+                      marginBottom={g.size(60)}
+                      text="Send a message below to get started!"
+                    />
+                  )
+                }
+              </>
+            )}
           <View style={s.inputContainer}>
             <TextInput
               style={{ ...s.input, height: size }}

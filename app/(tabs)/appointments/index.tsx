@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useState } from 'react';
 import {
   StyleSheet,
@@ -13,7 +14,8 @@ import { router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppointments } from '@services';
 import { Appointment } from '@interfaces';
-import { AppointmentCard, StackListView } from '@components';
+import { AppointmentCard, StackListView, ZeroState } from '@components';
+import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -71,48 +73,58 @@ export default function Appointments() {
         {isLoading
           ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
           : (
-            <ScrollView
-              contentContainerStyle={[
-                s.scrollContent,
-                { paddingBottom: tabBarHeight + g.size(104) },
-              ]}
-              refreshControl={(
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={g.white}
-                  colors={[g.white]}
-                  progressViewOffset={g.size(40)}
+            <>
+              {data.length ? (
+                <ScrollView
+                  contentContainerStyle={[
+                    s.scrollContent,
+                    { paddingBottom: tabBarHeight + g.size(104) },
+                  ]}
+                  refreshControl={(
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                      tintColor={g.white}
+                      colors={[g.white]}
+                      progressViewOffset={g.size(40)}
+                    />
+                  )}
+                >
+                  {upcomingAppointments.length > 0 && (
+                    <View style={s.scrollSection}>
+                      <Text style={s.sectionLabel}>
+                        Upcoming
+                      </Text>
+                      {upcomingAppointments.map((appt) => (
+                        <AppointmentCard
+                          key={appt.id}
+                          appointment={appt}
+                        />
+                      ))}
+                    </View>
+                  )}
+                  {pastAppointments.length > 0 && (
+                    <View style={s.scrollSection}>
+                      <Text style={s.sectionLabel}>
+                        Past
+                      </Text>
+                      {pastAppointments.map((appt) => (
+                        <AppointmentCard
+                          key={appt.id}
+                          appointment={appt}
+                        />
+                      ))}
+                    </View>
+                  )}
+                </ScrollView>
+              ) : (
+                <ZeroState
+                  image={doctor}
+                  imageAspectRatio={1.4}
+                  text="You have no upcoming appointments. Press the plus icon below to book one!"
                 />
               )}
-            >
-              {upcomingAppointments.length > 0 && (
-                <View style={s.scrollSection}>
-                  <Text style={s.sectionLabel}>
-                    Upcoming
-                  </Text>
-                  {upcomingAppointments.map((appt) => (
-                    <AppointmentCard
-                      key={appt.id}
-                      appointment={appt}
-                    />
-                  ))}
-                </View>
-              )}
-              {pastAppointments.length > 0 && (
-                <View style={s.scrollSection}>
-                  <Text style={s.sectionLabel}>
-                    Past
-                  </Text>
-                  {pastAppointments.map((appt) => (
-                    <AppointmentCard
-                      key={appt.id}
-                      appointment={appt}
-                    />
-                  ))}
-                </View>
-              )}
-            </ScrollView>
+            </>
           )}
         <TouchableOpacity
           style={[

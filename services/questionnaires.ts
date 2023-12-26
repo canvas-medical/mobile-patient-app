@@ -18,7 +18,9 @@ async function getQuestionnaire(id: string) {
       accept: 'application/json'
     }
   });
-  return res.json();
+  if (!res.ok) throw new Error();
+  const json = await res.json();
+  return json;
 }
 
 export function useQuestionnaire(id: string) {

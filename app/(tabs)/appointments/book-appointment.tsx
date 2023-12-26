@@ -246,7 +246,7 @@ export default function BookAppointment() {
                 maximumDate={null}
                 onChange={(e: DateTimePickerEvent) => {
                   onChangeDate(e);
-                  setShowDatePicker(false);
+                  if (Platform.OS === 'android') setShowDatePicker(false);
                 }}
               />
             )}

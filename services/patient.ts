@@ -4,6 +4,20 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+function birthSexCodeSwitch(birthSex) {
+  switch (birthSex) {
+    case 'Female':
+    case 'Male':
+      return birthSex[0];
+    case 'Other':
+      return 'OTH';
+    case 'Unknown':
+      return 'UNK';
+    default:
+      return 'UNK';
+  }
+}
+
 async function patientCreate(data) {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
@@ -18,7 +32,7 @@ async function patientCreate(data) {
       extension: [
         {
           url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
-          valueCode: data.birthSex[0],
+          valueCode: birthSexCodeSwitch(data.birthSex),
         },
       ],
       name: [
@@ -46,6 +60,7 @@ async function patientCreate(data) {
       birthDate: data.birthDate,
     })
   });
+  if (!res.ok) throw new Error();
   const urlParts = res.headers.get('Location').split('/');
   await SecureStore.setItemAsync('patient_id', urlParts[urlParts.length - 3]);
 }
