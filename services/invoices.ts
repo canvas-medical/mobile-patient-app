@@ -5,7 +5,7 @@ import { getToken } from './access-token';
 async function getInvoices() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/DocumentReference?category=invoicefull&patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/DocumentReference?subject=Patient/${patientID}&category=invoicefull`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,

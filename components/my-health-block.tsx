@@ -61,7 +61,7 @@ export function MyHealthBlock(
         {children}
         {!children?.length && title !== 'Vitals' && (
           <Text style={s.zeroState}>
-            No
+            No Active
             {' '}
             {title}
           </Text>
