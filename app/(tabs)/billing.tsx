@@ -194,7 +194,7 @@ export default function Billing() {
           ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
           : (
             <>
-              {!invoices?.length ? (
+              {invoices?.length ? (
                 <>
                   <View style={s.inputContainer}>
                     <Feather
