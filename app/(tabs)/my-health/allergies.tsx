@@ -1,9 +1,9 @@
+import { StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Allergy } from '@interfaces';
 import { useAllergies } from '@services';
 import { AllergyCard, StackListView } from '@components';
 import { g } from '@styles';
-import { StyleSheet, Text, View } from 'react-native';
 
 const s = StyleSheet.create({
   label: {
