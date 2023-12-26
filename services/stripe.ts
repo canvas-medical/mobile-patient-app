@@ -10,7 +10,9 @@ export async function getPaymentIntent(cents: number) {
     },
     body: JSON.stringify({ amount: cents })
   });
-  return res.json();
+  if (!res.ok) throw new Error('Something went wrong with the payment. Please try again.');
+  const json = await res.json();
+  return json;
 }
 
 async function paymentIntentCapture(id: string) {

@@ -1,18 +1,20 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
   Platform,
-  Keyboard,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  ScrollView, Text, TouchableOpacity, ActivityIndicator
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native';
-import { Feather, FontAwesome5 } from '@expo/vector-icons';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { Feather, FontAwesome5 } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
-import { Input, Screen, Header, InvoiceCard } from '@components';
-import { Invoice, PaymentNotice } from '@interfaces';
 import {
   getPaymentIntent,
   useInvoices,
@@ -20,6 +22,9 @@ import {
   usePaymentNotices,
   usePaymentNoticeSubmit
 } from '@services';
+import { Invoice, PaymentNotice } from '@interfaces';
+import { Header, Input, InvoiceCard, Screen, ZeroState } from '@components';
+import receipt from '@assets/images/cc-payment.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -41,13 +46,6 @@ const s = StyleSheet.create({
     top: g.size(18),
     height: g.size(36),
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: g.size(20),
-    padding: g.size(32),
-    paddingTop: 0,
-  },
   disabled: {
     opacity: 0.7,
   },
@@ -63,13 +61,18 @@ const s = StyleSheet.create({
     marginLeft: g.size(12),
   },
   inputContainer: {
-    flex: 1,
-    alignSelf: 'center',
-    width: g.width * 0.85,
+    marginHorizontal: g.size(16),
   },
   label: {
     ...g.labelMedium,
     color: g.white,
+  },
+  loading: {
+    flex: 1,
+    paddingBottom: g.size(120),
+  },
+  maskedView: {
+    flex: 1,
   },
   payButton: {
     ...g.bodyLarge,
@@ -85,7 +88,13 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  subContainer: {
+  scrollContent: {
+    flexGrow: 1,
+    gap: g.size(20),
+    paddingHorizontal: g.size(16),
+    paddingTop: g.size(24),
+  },
+  sectionContainer: {
     gap: g.size(12),
   },
   title: {
@@ -94,13 +103,15 @@ const s = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(20),
-    paddingLeft: g.size(4)
-  }
+    gap: g.size(16),
+    paddingLeft: g.size(20),
+    marginTop: g.size(16),
+  },
 });
 
 export default function Billing() {
-  const { data: invoices, isLoading: loadingInvoices } = useInvoices();
+  const { data: invoices, isLoading: loadingInvoices, refetch: refetchInvoices } = useInvoices();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -110,9 +121,16 @@ export default function Billing() {
 
   const { mutate: onPaymentIntentCapture, isSuccess: paymentIntentSuccess, isPending: paymentIntentPending } = usePaymentIntentCapture();
   const { mutate: onPaymentNoticeSubmit, isSuccess: paymentNoticeSuccess, isPending: paymentNoticePending } = usePaymentNoticeSubmit();
-  const { data: paymentNotices, isLoading: paymentNoticesLoading, refetch } = usePaymentNotices();
+  const { data: paymentNotices, isLoading: loadingPaymentNotices, refetch: refetchPaymentNotices } = usePaymentNotices();
 
   const disabled = Number(amount) < 1 || paymentNoticePending || paymentIntentPending;
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetchPaymentNotices();
+    await refetchInvoices();
+    setRefreshing(false);
+  };
 
   const getPaymentMethod = async (clientSecret: string) => {
     const { error: initPaymentError } = await initPaymentSheet({
@@ -153,7 +171,7 @@ export default function Billing() {
     const clearForm = async () => {
       if (paymentIntentSuccess) {
         setAmount('');
-        refetch();
+        refetchPaymentNotices();
       }
     };
     clearForm();
@@ -166,84 +184,118 @@ export default function Billing() {
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
       <Screen>
         <Header />
-        <KeyboardAvoidingView style={{ height: g.height }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView contentContainerStyle={{ paddingBottom: tabBarHeight + g.size(32) }}>
-              <View style={s.container}>
-                <View style={s.titleContainer}>
-                  <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />
-                  <Text style={s.title}>
-                    Billing
-                  </Text>
-                </View>
-                <View style={s.inputContainer}>
-                  <Feather
-                    style={[
-                      s.dollarSign,
-                      Platform.OS === 'android' && s.androidDollarSign,
-                    ]}
-                    name="dollar-sign"
-                    size={g.size(20)}
-                    color={g.neutral200}
-                  />
-                  <Input
-                    onChange={setAmount}
-                    value={amount}
-                    placeholder="Enter dollar amount to pay"
-                    keyboardType="numeric"
-                    error={null}
-                    label=""
-                    name="amount"
-                    onFocus={() => { }}
-                    type="text"
-                    onSubmitEditing={() => { }}
-                    autoCapitalize="none"
-                    textContentType="none"
-                    returnKeyType="default"
-                    style={{ paddingLeft: g.size(36), color: g.white }}
-                    selectionColor={g.white}
-                  />
-                  <View style={[s.buttonContainer, Platform.OS === 'android' && s.androidButtonContainer]}>
-                    <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
-                      {paymentNoticePending || paymentIntentPending || buttonLoading
-                        ? <ActivityIndicator style={[s.payButton, Platform.OS === 'android' && s.androidPayButton]} color={g.primaryBlue} />
-                        : <Text style={[s.payButton, disabled && s.disabled, Platform.OS === 'android' && s.androidPayButton]}>Pay</Text>
-                      }
-                    </TouchableOpacity>
+        <View style={s.titleContainer}>
+          <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />
+          <Text style={s.title}>
+            Billing
+          </Text>
+        </View>
+        {loadingPaymentNotices || loadingInvoices
+          ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+          : (
+            <>
+              {invoices?.length ? (
+                <>
+                  <View style={s.inputContainer}>
+                    <Feather
+                      style={[
+                        s.dollarSign,
+                        Platform.OS === 'android' && s.androidDollarSign,
+                      ]}
+                      name="dollar-sign"
+                      size={g.size(20)}
+                      color={g.neutral200}
+                    />
+                    <Input
+                      onChange={setAmount}
+                      value={amount}
+                      placeholder="Enter dollar amount to pay"
+                      keyboardType="numeric"
+                      error={null}
+                      label=""
+                      name="amount"
+                      onFocus={() => { }}
+                      type="text"
+                      onSubmitEditing={() => { }}
+                      autoCapitalize="none"
+                      textContentType="none"
+                      returnKeyType="default"
+                      style={{ paddingLeft: g.size(36), color: g.white }}
+                      selectionColor={g.white}
+                    />
+                    <View style={[s.buttonContainer, Platform.OS === 'android' && s.androidButtonContainer]}>
+                      <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
+                        {paymentNoticePending || paymentIntentPending || buttonLoading
+                          ? <ActivityIndicator style={[s.payButton, Platform.OS === 'android' && s.androidPayButton]} color={g.primaryBlue} />
+                          : <Text style={[s.payButton, disabled && s.disabled, Platform.OS === 'android' && s.androidPayButton]}>Pay</Text>
+                        }
+                      </TouchableOpacity>
+                    </View>
+                    {!!error && <Text style={s.greyedOut}>{error}</Text>}
                   </View>
-                  <Text style={s.greyedOut}>{error}</Text>
-                </View>
-                <View style={s.subContainer}>
-                  <Text style={s.label}>Payment History</Text>
-                  {paymentNoticesLoading
-                    ? <ActivityIndicator size="large" color={g.white} />
-                    : paymentNotices?.map((notice: PaymentNotice) => (
-                      <View key={notice.id} style={s.paymentHistoryItem}>
-                        <Text style={{ color: g.white }}>
-                          $
-                          {notice.amount.value.toFixed(2)}
-                        </Text>
-                        <Text style={{ color: g.white }}>{formattedDate(notice.created)}</Text>
-                      </View>
-                    ))}
-                  {!paymentNoticesLoading && !paymentNotices?.length && <Text style={s.greyedOut}>No payment history</Text>}
-                </View>
-                <View style={s.subContainer}>
-                  <Text style={s.label}>Invoices</Text>
-                  {loadingInvoices
-                    ? <ActivityIndicator size="large" color={g.white} />
-                    : invoices.map((invoice: Invoice) => (
-                      <InvoiceCard
-                        key={invoice.id}
-                        invoice={invoice}
+                  <MaskedView
+                    style={s.maskedView}
+                    maskElement={(
+                      <LinearGradient
+                        style={s.maskedView}
+                        colors={[g.transparent, g.white]}
+                        locations={[0, 0.06]}
                       />
-                    ))}
-                  {!loadingInvoices && !invoices?.length && <Text style={s.greyedOut}>No invoices</Text>}
-                </View>
-              </View>
-            </ScrollView>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+                    )}
+                  >
+                    <ScrollView
+                      contentContainerStyle={[
+                        s.scrollContent,
+                        { paddingBottom: tabBarHeight + g.size(32) },
+                      ]}
+                      scrollEnabled={!!paymentNotices?.length || !!invoices?.length}
+                      refreshControl={(
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          tintColor={g.white}
+                          colors={[g.white]}
+                          progressViewOffset={g.size(40)}
+                        />
+                      )}
+                    >
+                      {!!paymentNotices?.length && (
+                        <View style={s.sectionContainer}>
+                          <Text style={s.label}>Payment History</Text>
+                          {paymentNotices?.map((notice: PaymentNotice) => (
+                            <View key={notice.id} style={s.paymentHistoryItem}>
+                              <Text style={{ color: g.white }}>
+                                $
+                                {notice.amount.value.toFixed(2)}
+                              </Text>
+                              <Text style={{ color: g.white }}>{formattedDate(notice.created)}</Text>
+                            </View>
+                          ))}
+                        </View>
+                      )}
+                      {!!invoices.length && (
+                        <View style={s.sectionContainer}>
+                          <Text style={s.label}>Invoices</Text>
+                          {invoices.map((invoice: Invoice) => (
+                            <InvoiceCard
+                              key={invoice.id}
+                              invoice={invoice}
+                            />
+                          ))}
+                        </View>
+                      )}
+                    </ScrollView>
+                  </MaskedView>
+                </>
+              ) : (
+                <ZeroState
+                  image={receipt}
+                  imageAspectRatio={1.56}
+                  text="You have no available invoices"
+                />
+              )}
+            </>
+          )}
       </Screen>
     </StripeProvider>
   );

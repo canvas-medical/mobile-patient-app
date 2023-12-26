@@ -27,9 +27,9 @@ export function useAppointments() {
   return appointmentsQuery;
 }
 
-async function getSlot(date: string, id: string) {
+async function getSlot(date: string, id: string, duration) {
   const token = await getToken();
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=${id}&start=${date}&end=${date}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=${id}&start=${date}&end=${date}&duration=${duration}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -40,10 +40,10 @@ async function getSlot(date: string, id: string) {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
-export function useSlot(date: string, id: string) {
+export function useSlot(date: string, id: string, duration: number) {
   const slotQuery = useQuery({
     queryKey: ['slot', date, id],
-    queryFn: () => getSlot(date, id),
+    queryFn: () => getSlot(date, id, duration),
   });
   return slotQuery;
 }
@@ -139,7 +139,7 @@ export function useCreateAppointment() {
         [
           {
             text: 'OK',
-            onPress: () => router.push('appointments-medications'),
+            onPress: () => router.replace('appointments'),
           }
         ],
         { cancelable: false }

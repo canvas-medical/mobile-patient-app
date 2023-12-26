@@ -85,12 +85,13 @@ const s = StyleSheet.create({
   },
 });
 
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-const formattedDate = (date) => new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'utc' });
+const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
+const formattedDate = (date: string | number | Date) =>
+  new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'utc' });
 
 export function ProfileCard({ data }: { data: Patient }) {
   const navigation = useNavigation();
-  const phoneNumber = formatPhoneNumber(data.telecom.find((t) => t.system === 'phone')?.value);
+  const phoneNumber = formatPhoneNumber(data?.telecom?.find((t) => t.system === 'phone')?.value);
   const email = data.telecom.find((t) => t.system === 'email')?.value;
 
   const logout = () => {
@@ -175,7 +176,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {`${data.gender !== ('male' || 'female') ? 'Sex: ' : ''}${capitalizeFirstLetter(data.gender)}`}
+                  {`${data.gender !== ('male' || 'female') ? 'Gender: ' : ''}${capitalizeFirstLetter(data.gender)}`}
                 </Text>
               </View>
             )}

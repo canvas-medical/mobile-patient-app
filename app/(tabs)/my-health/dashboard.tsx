@@ -87,26 +87,6 @@ export default function Dashboard() {
     };
     welcomeWizard();
   }, []);
-  // const loadingProcedures = false;
-  // const procedures = [{
-  //   resourceType: 'Procedure',
-  //   id: '2dd9a3bc-a3bb-472b-aaef-c57be394de39',
-  //   status: 'unknown',
-  //   code: {
-  //     coding: [
-  //       {
-  //         system: 'http://www.ama-assn.org/go/cpt',
-  //         code: '23066',
-  //         display: 'Biopsy soft tissue shoulder deep'
-  //       }
-  //     ]
-  //   },
-  //   subject: {
-  //     reference: 'Patient/b8dfa97bdcdf4754bcd8197ca78ef0f0',
-  //     type: 'Patient'
-  //   },
-  //   performedDateTime: '2023-09-20T21:18:54.263690+00:00'
-  // }];
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
@@ -114,6 +94,16 @@ export default function Dashboard() {
   const activeConditions = conditions?.filter((condition: Condition) => condition.clinicalStatus.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
   const activeAllergies = allergies?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
+  const recentLabDate = labs?.[0]?.effectiveDateTime;
+  const recentLabs = labs?.filter((lab: LabImagingReport | DiagnosticReport) => {
+    if ('effectiveDateTime' in lab) {
+      return lab.effectiveDateTime === recentLabDate;
+    }
+    if ('date' in lab) {
+      return lab.date === recentLabDate;
+    }
+    return false;
+  });
 
   return (
     <Screen>
@@ -159,12 +149,12 @@ export default function Dashboard() {
           <MyHealthBlock
             viewAllRoute="my-health/medications"
             title="Medications"
-            viewAll={medications?.length > 1}
+            viewAll={!!medications?.length}
             icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
           >
             {loadingMedications
               ? <MedicationSkeleton />
-              : activeMedications?.slice(0, 1).map((med: Medication) => (
+              : activeMedications?.map((med: Medication) => (
                 <MedicationCard
                   key={med.id}
                   med={med}
@@ -227,12 +217,12 @@ export default function Dashboard() {
           <MyHealthBlock
             viewAllRoute="my-health/conditions"
             title="Conditions"
-            viewAll={conditions?.length > 1}
+            viewAll={!!conditions?.length}
             icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
           >
             {loadingConditions
               ? <ActivityIndicator color={g.white} />
-              : activeConditions?.slice(0, 1).map((condition: Condition) => (
+              : activeConditions?.map((condition: Condition) => (
                 <ConditionCard
                   key={condition.id}
                   condition={condition}
@@ -244,10 +234,10 @@ export default function Dashboard() {
           <MyHealthBlock
             viewAllRoute="my-health/lab-results"
             title="Labs"
-            viewAll={labs?.length > 1}
+            viewAll={!!labs?.length}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
           >
-            {loadingLabs ? <DiagnosticSkeleton /> : labs.slice(0, 1).map((report: LabImagingReport | DiagnosticReport) => {
+            {loadingLabs ? <DiagnosticSkeleton /> : recentLabs.map((report: LabImagingReport | DiagnosticReport) => {
               if (report.resourceType === 'DocumentReference') {
                 return (
                   <LabImagingReportCard
@@ -269,12 +259,12 @@ export default function Dashboard() {
           <MyHealthBlock
             viewAllRoute="my-health/goals"
             title="Goals"
-            viewAll={goals?.length > 1}
+            viewAll={!!goals?.length}
             icon={<Feather name="target" size={g.size(20)} color={g.white} />}
           >
             {loadingGoals
               ? <ActivityIndicator color={g.white} />
-              : activeGoals?.slice(0, 1).map((goal: Goal) => (
+              : activeGoals?.map((goal: Goal) => (
                 <GoalCard
                   key={goal.id}
                   goal={goal}

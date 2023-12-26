@@ -42,6 +42,7 @@ const s = StyleSheet.create({
 export default function Initial() {
   const [show, setShow] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
+  const [currentPatientName, setCurrentPatientName] = useState<string>('');
 
   const demoPatients = [
     { label: 'Select a patient', value: '' },
@@ -50,15 +51,19 @@ export default function Initial() {
     { label: 'Donna - 52 Female', value: 'ae16fa0710894e999390abdec2859906' },
   ];
 
+  const signInDemoPatient = async () => {
+    setShow(false);
+    await SecureStore.setItemAsync('patient_id', value);
+    router.push('(tabs)/my-health');
+  };
+
   useEffect(() => {
-    const signInDemoPatient = async () => {
-      if (value && !show) {
-        await SecureStore.setItemAsync('patient_id', value);
-        router.push('(tabs)/my-health');
-      }
-    };
-    signInDemoPatient();
-  }, [show]);
+    if (value) {
+      setCurrentPatientName(demoPatients.find((demo) => value === demo.value)?.label.split(' ')[0]);
+    } else {
+      setCurrentPatientName('');
+    }
+  }, [value]);
 
   return (
     <Screen style={s.container}>
@@ -73,24 +78,25 @@ export default function Initial() {
         />
         <Text style={s.or}>or</Text>
         <Button
-          label="Login as a demo user"
+          label="Login as a demo patient"
           theme="tertiary"
           onPress={() => setShow(true)}
         />
       </View>
       {show && (
-        <Overlay
-          isVisible={show}
-          onBackdropPress={() => setShow(false)}
-          overlayStyle={s.pickerOverlay}
+      <Overlay
+        isVisible={show}
+        onBackdropPress={() => setShow(false)}
+        overlayStyle={s.pickerOverlay}
+      >
+        <Picker
+          selectedValue={value}
+          onValueChange={(patientId: string) => setValue(patientId)}
         >
-          <Picker
-            selectedValue={value}
-            onValueChange={(patientId: string) => setValue(patientId)}
-          >
-            {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
-          </Picker>
-        </Overlay>
+          {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
+        </Picker>
+        <Button label={value ? `Login as ${currentPatientName}` : 'Login as demo patient'} disabled={!value} theme="primary" onPress={() => signInDemoPatient()} />
+      </Overlay>
       )}
     </Screen>
   );

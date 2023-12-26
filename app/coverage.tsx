@@ -1,9 +1,7 @@
 import {
-  Keyboard,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   ScrollView,
   KeyboardAvoidingView,
@@ -93,29 +91,28 @@ export default function Coverage() {
       <View style={s.scrollCover} />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={s.container}>
-              <View style={s.header}>
-                <TouchableOpacity onPress={() => router.back()}>
-                  <Feather
-                    name="arrow-left"
-                    size={g.size(36)}
-                    color={g.white}
-                  />
-                </TouchableOpacity>
-                <Text style={s.title}>
-                  Coverage
+          <View style={s.container}>
+            <View style={s.header}>
+              <TouchableOpacity onPress={() => router.back()}>
+                <Feather
+                  name="arrow-left"
+                  size={g.size(36)}
+                  color={g.white}
+                />
+              </TouchableOpacity>
+              <Text style={s.title}>
+                Coverage
+              </Text>
+            </View>
+            <View style={s.contentContainer}>
+              <View>
+                <Text style={s.greeting}>
+                  Welcome
+                </Text>
+                <Text style={s.subGreeting}>
+                  Fill out a few personal details to get started
                 </Text>
               </View>
-              <View style={s.contentContainer}>
-                <View>
-                  <Text style={s.greeting}>
-                    Welcome
-                  </Text>
-                  <Text style={s.subGreeting}>
-                    Fill out a few personal details to get started
-                  </Text>
-                </View>
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
                     <Controller
@@ -178,6 +175,7 @@ export default function Coverage() {
                           returnKeyType="next"
                           forwardedRef={ref}
                           error={errors.groupNumber}
+                          onSubmitEditing={() => Keyboard.dismiss()}
                         />
                       )}
                     />
@@ -197,7 +195,7 @@ export default function Coverage() {
                 </View>
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>
