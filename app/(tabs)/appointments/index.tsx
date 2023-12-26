@@ -11,11 +11,10 @@ import {
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { router } from 'expo-router';
-import { Image } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppointments } from '@services';
 import { Appointment } from '@interfaces';
-import { AppointmentCard, StackListView } from '@components';
+import { AppointmentCard, StackListView, ZeroState } from '@components';
 import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
 
@@ -48,24 +47,6 @@ const s = StyleSheet.create({
     ...g.titleXSmall,
     color: g.white,
   },
-  zeroStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: g.size(120),
-  },
-  zeroStateImage: {
-    width: g.width * 0.8,
-    aspectRatio: 1.4,
-  },
-  zeroStateText: {
-    ...g.bodyLarge,
-    color: g.white,
-    textAlign: 'center',
-    maxWidth: g.width * 0.8,
-    marginTop: g.size(16),
-    lineHeight: g.size(24),
-  }
 });
 
 export default function Appointments() {
@@ -137,17 +118,11 @@ export default function Appointments() {
                   )}
                 </ScrollView>
               ) : (
-                <View style={s.zeroStateContainer}>
-                  <Image
-                    source={doctor}
-                    contentFit="contain"
-                    style={s.zeroStateImage}
-                    priority="high"
-                  />
-                  <Text style={s.zeroStateText}>
-                    You have no upcoming appointments. Press the plus icon below to book one!
-                  </Text>
-                </View>
+                <ZeroState
+                  image={doctor}
+                  imageAspectRatio={1.4}
+                  text="You have no upcoming appointments. Press the plus icon below to book one!"
+                />
               )}
             </>
           )}

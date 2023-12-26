@@ -13,7 +13,6 @@ import {
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Feather, FontAwesome5 } from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
 import {
@@ -24,7 +23,7 @@ import {
   usePaymentNoticeSubmit
 } from '@services';
 import { Invoice, PaymentNotice } from '@interfaces';
-import { Header, Input, InvoiceCard, Screen } from '@components';
+import { Header, Input, InvoiceCard, Screen, ZeroState } from '@components';
 import receipt from '@assets/images/cc-payment.svg';
 import { g } from '@styles';
 
@@ -108,23 +107,6 @@ const s = StyleSheet.create({
     paddingLeft: g.size(20),
     marginTop: g.size(16),
   },
-  zeroStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: g.size(120),
-  },
-  zeroStateImage: {
-    width: g.width * 0.8,
-    aspectRatio: 1.56,
-  },
-  zeroStateText: {
-    ...g.bodyLarge,
-    color: g.white,
-    textAlign: 'center',
-    maxWidth: g.width * 0.8,
-    marginTop: g.size(16),
-  }
 });
 
 export default function Billing() {
@@ -306,17 +288,11 @@ export default function Billing() {
                   </MaskedView>
                 </>
               ) : (
-                <View style={s.zeroStateContainer}>
-                  <Image
-                    source={receipt}
-                    contentFit="contain"
-                    style={s.zeroStateImage}
-                    priority="high"
-                  />
-                  <Text style={s.zeroStateText}>
-                    You have no available invoices
-                  </Text>
-                </View>
+                <ZeroState
+                  image={receipt}
+                  imageAspectRatio={1.56}
+                  text="You have no available invoices"
+                />
               )}
             </>
           )}

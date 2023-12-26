@@ -25,3 +25,4 @@ export { Search } from '@components/search';
 export { StackListView } from '@components/stack-list-view';
 export { VitalCard, VitalCardSkeleton } from '@components/vital-card';
 export { VitalsGrid } from '@components/vitals-grid';
+export { ZeroState } from '@components/zero-state';
