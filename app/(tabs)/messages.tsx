@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -8,15 +9,18 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Keyboard,
+  Text,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useFocusEffect } from 'expo-router';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { MessageBlock, Screen, Header } from '@components';
+import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -67,6 +71,23 @@ const s = StyleSheet.create({
     paddingBottom: g.size(96),
     gap: g.size(16),
   },
+  zeroStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: g.size(60),
+  },
+  zeroStateImage: {
+    width: g.width * 0.8,
+    aspectRatio: 1,
+  },
+  zeroStateText: {
+    ...g.bodyLarge,
+    color: g.white,
+    textAlign: 'center',
+    maxWidth: g.width * 0.8,
+    marginTop: g.size(16),
+  }
 });
 
 export default function Messages() {
@@ -85,7 +106,7 @@ export default function Messages() {
 
   useFocusEffect(
     useCallback(() => {
-      scrollViewRef.current.scrollToEnd();
+      scrollViewRef?.current?.scrollToEnd();
     }, [])
   );
 
@@ -114,25 +135,45 @@ export default function Messages() {
             />
           )}
         >
-          <ScrollView
-            ref={scrollViewRef}
-            contentContainerStyle={s.scrollContent}
-            onLayout={({ nativeEvent: { layout } }) => {
-              if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
-              setContainerLayout(layout.height);
-            }}
-            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-          >
-            {isLoading
-              ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
-              : messages.map((mess: Message) => (
-                <MessageBlock
-                  received={mess.resource.sender.type === 'Practitioner'}
-                  key={mess.resource.id}
-                  message={mess.resource.payload[0].contentString}
-                />
-              ))}
-          </ScrollView>
+          {isLoading
+            ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+            : (
+              <>
+                {
+                  messages.length ? (
+                    <ScrollView
+                      ref={scrollViewRef}
+                      contentContainerStyle={s.scrollContent}
+                      onLayout={({ nativeEvent: { layout } }) => {
+                        if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
+                        setContainerLayout(layout.height);
+                      }}
+                      onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+                    >
+                      {messages.map((mess: Message) => (
+                        <MessageBlock
+                          received={mess.resource.sender.type === 'Practitioner'}
+                          key={mess.resource.id}
+                          message={mess.resource.payload[0].contentString}
+                        />
+                      ))}
+                    </ScrollView>
+                  ) : (
+                    <View style={s.zeroStateContainer}>
+                      <Image
+                        source={chat}
+                        contentFit="contain"
+                        style={s.zeroStateImage}
+                        priority="high"
+                      />
+                      <Text style={s.zeroStateText}>
+                        Send a message below to get started!
+                      </Text>
+                    </View>
+                  )
+                }
+              </>
+            )}
           <View style={s.inputContainer}>
             <TextInput
               style={{ ...s.input, height: size }}

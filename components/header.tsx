@@ -128,7 +128,7 @@ export function Header() {
                 <Text style={s.greeting}>Hello</Text>
                 <Text style={s.label}>{`${data?.name[0]?.given[0]} ${data?.name[0]?.family}`}</Text>
               </View>
-              {data?.photo[0]?.url ? (
+              {!!data && data?.photo[0]?.url ? (
                 <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
               ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
             </>

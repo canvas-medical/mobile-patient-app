@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useState } from 'react';
 import {
   StyleSheet,
@@ -10,10 +11,12 @@ import {
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppointments } from '@services';
 import { Appointment } from '@interfaces';
 import { AppointmentCard, StackListView } from '@components';
+import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -45,6 +48,24 @@ const s = StyleSheet.create({
     ...g.titleXSmall,
     color: g.white,
   },
+  zeroStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: g.size(120),
+  },
+  zeroStateImage: {
+    width: g.width * 0.8,
+    aspectRatio: 1.4,
+  },
+  zeroStateText: {
+    ...g.bodyLarge,
+    color: g.white,
+    textAlign: 'center',
+    maxWidth: g.width * 0.8,
+    marginTop: g.size(16),
+    lineHeight: g.size(24),
+  }
 });
 
 export default function Appointments() {
@@ -71,48 +92,64 @@ export default function Appointments() {
         {isLoading
           ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
           : (
-            <ScrollView
-              contentContainerStyle={[
-                s.scrollContent,
-                { paddingBottom: tabBarHeight + g.size(104) },
-              ]}
-              refreshControl={(
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  tintColor={g.white}
-                  colors={[g.white]}
-                  progressViewOffset={g.size(40)}
-                />
-              )}
-            >
-              {upcomingAppointments.length > 0 && (
-                <View style={s.scrollSection}>
-                  <Text style={s.sectionLabel}>
-                    Upcoming
-                  </Text>
-                  {upcomingAppointments.map((appt) => (
-                    <AppointmentCard
-                      key={appt.id}
-                      appointment={appt}
+            <>
+              {data.length ? (
+                <ScrollView
+                  contentContainerStyle={[
+                    s.scrollContent,
+                    { paddingBottom: tabBarHeight + g.size(104) },
+                  ]}
+                  refreshControl={(
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                      tintColor={g.white}
+                      colors={[g.white]}
+                      progressViewOffset={g.size(40)}
                     />
-                  ))}
+                  )}
+                >
+                  {upcomingAppointments.length > 0 && (
+                    <View style={s.scrollSection}>
+                      <Text style={s.sectionLabel}>
+                        Upcoming
+                      </Text>
+                      {upcomingAppointments.map((appt) => (
+                        <AppointmentCard
+                          key={appt.id}
+                          appointment={appt}
+                        />
+                      ))}
+                    </View>
+                  )}
+                  {pastAppointments.length > 0 && (
+                    <View style={s.scrollSection}>
+                      <Text style={s.sectionLabel}>
+                        Past
+                      </Text>
+                      {pastAppointments.map((appt) => (
+                        <AppointmentCard
+                          key={appt.id}
+                          appointment={appt}
+                        />
+                      ))}
+                    </View>
+                  )}
+                </ScrollView>
+              ) : (
+                <View style={s.zeroStateContainer}>
+                  <Image
+                    source={doctor}
+                    contentFit="contain"
+                    style={s.zeroStateImage}
+                    priority="high"
+                  />
+                  <Text style={s.zeroStateText}>
+                    You have no upcoming appointments. Press the plus icon below to book one!
+                  </Text>
                 </View>
               )}
-              {pastAppointments.length > 0 && (
-                <View style={s.scrollSection}>
-                  <Text style={s.sectionLabel}>
-                    Past
-                  </Text>
-                  {pastAppointments.map((appt) => (
-                    <AppointmentCard
-                      key={appt.id}
-                      appointment={appt}
-                    />
-                  ))}
-                </View>
-              )}
-            </ScrollView>
+            </>
           )}
         <TouchableOpacity
           style={[
