@@ -60,12 +60,7 @@ async function patientCreate(data) {
       birthDate: data.birthDate,
     })
   });
-  console.log('RES: ', res);
-  // const json = await res.json();
-  // console.log('JSON: ', json);
-  // console.log('Headers: ', res.headers);
-  const text = await res.text();
-  console.log('TEXT: ', text);
+  if (!res.ok) throw new Error();
   const urlParts = res.headers.get('Location').split('/');
   await SecureStore.setItemAsync('patient_id', urlParts[urlParts.length - 3]);
 }
