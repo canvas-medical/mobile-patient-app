@@ -17,7 +17,7 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
   },
   contentContainer: {
     flexGrow: 1,
@@ -82,10 +82,7 @@ export default function Questionnaire() {
   return (
     <Screen>
       <View style={s.scrollCover} />
-      <KeyboardAvoidingView
-        style={s.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={s.container}>
           <View style={s.container}>
             <View style={s.header}>
