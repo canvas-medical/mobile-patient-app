@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 async function getOpenAiSummary(resourceType: string, description: string, codes: {code: string, system: string}[]) {
   const codesObject = codes.reduce((acc, obj) => ({ ...acc, [obj.system]: obj.code }), {});
   try {
-    console.log(`${process.env.EXPO_PUBLIC_OPENAI_API_URL}`);
     const res = await fetch(`${process.env.EXPO_PUBLIC_OPENAI_API_URL}`, {
       method: 'POST',
       headers: {
@@ -13,7 +12,6 @@ async function getOpenAiSummary(resourceType: string, description: string, codes
       body: JSON.stringify({ resourceType, properties: { description, codes: codesObject } })
     });
     if (!res.ok) {
-      console.log(res);
       throw new Error();
     }
     const text = await res.text();
