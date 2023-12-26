@@ -10,4 +10,5 @@ export interface DiagnosticReport {
     }[];
   }[];
   resourceType: string;
+  effectiveDateTime: string;
 }

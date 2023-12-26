@@ -178,6 +178,7 @@ export default function Coverage() {
                           returnKeyType="next"
                           forwardedRef={ref}
                           error={errors.groupNumber}
+                          onSubmitEditing={() => Keyboard.dismiss()}
                         />
                       )}
                     />
