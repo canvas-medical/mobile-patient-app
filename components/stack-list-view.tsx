@@ -36,6 +36,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(16),
     paddingLeft: g.size(20),
+    marginTop: g.size(16),
   },
 });
 
