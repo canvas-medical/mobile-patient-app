@@ -19,10 +19,9 @@ async function getLabResults() {
   const patientID = await SecureStore.getItemAsync('patient_id');
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  const imagingReports = await fetchReport(`${apiUrl}/DocumentReference?patient/${patientID}&category=imagingreport`, token);
-  const labReports = await fetchReport(`${apiUrl}/DocumentReference?patient/${patientID}&category=labreport`, token);
+  const imagingReports = await fetchReport(`${apiUrl}/DocumentReference?patient=patient/${patientID}&category=imagingreport`, token);
+  const labReports = await fetchReport(`${apiUrl}/DocumentReference?patient=patient/${patientID}&category=labreport`, token);
   const diagnosticsReports = await fetchReport(`${apiUrl}/DiagnosticReport?patient=Patient/${patientID}`, token);
-
   return [
     ...imagingReports,
     ...labReports,
