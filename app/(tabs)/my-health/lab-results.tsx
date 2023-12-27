@@ -1,14 +1,11 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useLabResults } from '@services';
 import { LabImagingReport, DiagnosticReport } from '@interfaces';
-import { DiagnosticCard, LabImagingReportCard, StackListView } from '@components';
+import { LabReportCard, StackListView } from '@components';
 import { g } from '@styles';
 
 export default function LabResults() {
   const { data, isLoading, refetch } = useLabResults();
-
-  // TODO: update LabImagingReportCard and DiagnosticCard to have a more similar structure so they don't look so different
-  // We could possibly use the same component for both, but we'd need to figure out how to handle the different data structures
 
   return (
     <StackListView
@@ -17,22 +14,12 @@ export default function LabResults() {
       isLoading={isLoading}
       refetch={refetch}
     >
-      {data?.length > 0 && data.map((report: LabImagingReport | DiagnosticReport) => {
-        if (report.resourceType === 'DocumentReference') {
-          return (
-            <LabImagingReportCard
-              key={report.id}
-              report={report as LabImagingReport}
-            />
-          );
-        }
-        return (
-          <DiagnosticCard
-            key={report.id}
-            report={report as DiagnosticReport}
-          />
-        );
-      })}
+      {data?.length > 0 && data.map((report: LabImagingReport | DiagnosticReport) => (
+        <LabReportCard
+          key={report.id}
+          report={report}
+        />
+      ))}
     </StackListView>
   );
 }

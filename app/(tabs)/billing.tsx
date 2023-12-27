@@ -24,6 +24,7 @@ import {
   usePaymentNotices,
   usePaymentNoticeSubmit
 } from '@services';
+import { formatDate } from '@utils';
 import { Invoice, PaymentNotice } from '@interfaces';
 import { Header, Input, InvoiceCard, Screen, ZeroState } from '@components';
 import receipt from '@assets/images/cc-payment.svg';
@@ -179,9 +180,6 @@ export default function Billing() {
     clearForm();
   }, [paymentIntentSuccess]);
 
-  const formattedDate = (date: string | number | Date) =>
-    new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'utc' });
-
   return (
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -271,7 +269,7 @@ export default function Billing() {
                                   $
                                   {notice.amount.value.toFixed(2)}
                                 </Text>
-                                <Text style={{ color: g.white }}>{formattedDate(notice.created)}</Text>
+                                <Text style={{ color: g.white }}>{formatDate(notice.created)}</Text>
                               </View>
                             ))}
                           </View>

@@ -6,24 +6,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as SecureStore from 'expo-secure-store';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
-  AiWelcomeWizard,
-  AllergyCard,
-  ConditionCard,
-  DiagnosticCard,
-  DiagnosticSkeleton,
-  GoalCard,
-  Header,
-  ImmunizationCard,
-  LabImagingReportCard,
-  MedicationCard,
-  MedicationSkeleton,
-  MyHealthBlock,
-  ProcedureCard,
-  Screen,
-  VitalCard,
-  VitalCardSkeleton,
-} from '@components';
-import {
   useAllergies,
   useConditions,
   useGoals,
@@ -45,6 +27,23 @@ import {
   LabImagingReport,
   Procedure,
 } from '@interfaces';
+import {
+  AiWelcomeWizard,
+  AllergyCard,
+  ConditionCard,
+  LabReportCard,
+  LabReportSkeleton,
+  GoalCard,
+  Header,
+  ImmunizationCard,
+  MedicationCard,
+  MedicationSkeleton,
+  MyHealthBlock,
+  ProcedureCard,
+  Screen,
+  VitalCard,
+  VitalCardSkeleton,
+} from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -62,6 +61,9 @@ const s = StyleSheet.create({
     flexWrap: 'wrap',
     rowGap: g.size(16),
     justifyContent: 'space-between',
+    // borderWidth: 4,
+    // borderColor: g.severityYellow,
+    // borderStyle: 'solid',
   },
 });
 
@@ -128,16 +130,16 @@ export default function Dashboard() {
             icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
           >
             <View style={s.vitalsContainer}>
-              {loadingVitals ? Array.from(Array(6)).map((i: number) => (
-                <VitalCardSkeleton index={i} vitalsOdd={false} />
-              )) : vitals?.map((vital: Vital, i: number) => (
-                <VitalCard
-                  index={i}
-                  key={vital.id}
-                  vital={vital}
-                  vitalsOdd={vitals.length % 2 !== 0}
-                />
-              ))}
+              {loadingVitals
+                ? Array.from(Array(6)).map(() => <VitalCardSkeleton />)
+                : vitals?.map((vital: Vital, i: number) => (
+                  <VitalCard
+                    index={i}
+                    key={vital.id}
+                    vital={vital}
+                    vitalsOdd={vitals.length % 2 !== 0}
+                  />
+                ))}
             </View>
           </MyHealthBlock>
 
@@ -233,22 +235,12 @@ export default function Dashboard() {
             viewAll={!!labs?.length}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
           >
-            {loadingLabs ? <DiagnosticSkeleton /> : recentLabs.map((report: LabImagingReport | DiagnosticReport) => {
-              if (report.resourceType === 'DocumentReference') {
-                return (
-                  <LabImagingReportCard
-                    key={report.id}
-                    report={report as LabImagingReport}
-                  />
-                );
-              }
-              return (
-                <DiagnosticCard
-                  key={report.id}
-                  report={report as DiagnosticReport}
-                />
-              );
-            })}
+            {loadingLabs ? <LabReportSkeleton /> : recentLabs.map((report: LabImagingReport | DiagnosticReport) => (
+              <LabReportCard
+                key={report.id}
+                report={report as LabImagingReport}
+              />
+            ))}
           </MyHealthBlock>
 
           {/* Goals */}

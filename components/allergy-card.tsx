@@ -1,27 +1,26 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { BlurFill } from '@components';
+import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Allergy } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   allergy: {
-    ...g.labelSmall,
+    ...g.labelMedium,
     color: g.white,
   },
   allergyInfo: {
     ...g.bodySmall,
     color: g.white,
   },
-  allergyInfoContainer: {
-    flex: 1,
-    gap: g.size(4),
-  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-    padding: g.size(16),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+    gap: g.size(4),
   },
-  extraInfo: {
+  row: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -35,6 +34,7 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
     },
     note: [{ text }],
     reaction: [{ severity }],
+    recordedDate,
   } = allergy;
 
   const severityColor = (): string => {
@@ -50,24 +50,24 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
     }
   };
 
-  const capitalizeFirstCharacter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
   return (
     <View style={s.card}>
       <BlurFill />
-      <View style={s.allergyInfoContainer}>
-        <Text
-          style={s.allergy}
-        >
+      <View style={s.row}>
+        <Text style={s.allergy}>
           {capitalizeFirstCharacter(display)}
         </Text>
-        <View style={s.extraInfo}>
-          <Text style={s.allergyInfo}>
-            {capitalizeFirstCharacter(text)}
-          </Text>
-          <Text style={{ ...s.allergyInfo, color: severityColor() }}>
-            {capitalizeFirstCharacter(severity)}
-          </Text>
-        </View>
+        <Text style={{ ...s.allergyInfo, color: severityColor() }}>
+          {capitalizeFirstCharacter(severity)}
+        </Text>
+      </View>
+      <View style={s.row}>
+        <Text style={s.allergyInfo}>
+          {capitalizeFirstCharacter(text)}
+        </Text>
+        <Text style={s.allergyInfo}>
+          {formatDate(recordedDate)}
+        </Text>
       </View>
     </View>
   );

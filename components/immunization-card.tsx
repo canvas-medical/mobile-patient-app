@@ -1,26 +1,26 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { formatDate } from '@utils';
 import { Immunization } from '@interfaces';
 import { ExplainButton, BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
-    padding: g.size(16),
     borderRadius: g.size(8),
     overflow: 'hidden',
-  },
-  dataContainer: {
-    flex: 1,
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
     gap: g.size(4),
   },
   date: {
     ...g.bodySmall,
     color: g.white,
+    alignSelf: 'flex-end',
   },
   label: {
-    ...g.labelSmall,
+    ...g.labelMedium,
     color: g.white,
-    maxWidth: '95%',
+    maxWidth: '92%',
   },
 });
 
@@ -39,18 +39,14 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
       description={immunization.vaccineCode.coding[0].display}
     >
       <BlurFill />
-      <View style={s.dataContainer}>
-        <Text
-          style={s.label}
-        >
-          {display}
-        </Text>
-        <Text style={s.date}>
-          Last immunized:
-          &nbsp;
-          {new Date(occurrenceDateTime).toLocaleDateString()}
-        </Text>
-      </View>
+      <Text
+        style={s.label}
+      >
+        {display.charAt(0) + display.slice(1).toLowerCase()}
+      </Text>
+      <Text style={s.date}>
+        {formatDate(occurrenceDateTime)}
+      </Text>
     </ExplainButton>
   );
 }

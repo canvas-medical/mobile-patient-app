@@ -8,10 +8,10 @@ import {
   Alert,
 } from 'react-native';
 import { Feather, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { BlurFill } from '@components';
-import { Appointment } from '@interfaces';
-import { formatTime } from '@utils';
 import { useClinicLocation } from '@services';
+import { capitalizeFirstCharacter, formatDate, formatTime } from '@utils';
+import { Appointment } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -20,8 +20,8 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   cardContent: {
-    padding: g.size(20),
-    paddingTop: g.size(16),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
   },
   cardRow: {
     flexDirection: 'row',
@@ -80,7 +80,6 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
     contained,
   } = appointment;
   const { data: clinicAddress } = useClinicLocation();
-  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: '2-digit' });
   const isOfficeVisit = appointmentType.coding[0].display === 'Office Visit';
 
   const startTime = new Date(start).getTime();
@@ -106,7 +105,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             style={s.dateTime}
             numberOfLines={1}
           >
-            {formattedDate}
+            {formatDate(start)}
             &nbsp;
             •
             &nbsp;
@@ -125,7 +124,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               style={s.practitioner}
               numberOfLines={1}
             >
-              {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
+              {capitalizeFirstCharacter(reasonCode[0].text)}
             </Text>
             {displayNavLink && (
               <TouchableOpacity

@@ -3,8 +3,8 @@ import * as SecureStore from 'expo-secure-store';
 import { router, useNavigation } from 'expo-router';
 import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
+import { capitalizeFirstCharacter, formatDate, formatPhoneNumber } from '@utils';
 import { Patient } from '@interfaces';
-import { formatPhoneNumber } from '@utils';
 import { BlurFill } from '@components/blur-fill';
 import { g } from '@styles';
 
@@ -62,7 +62,8 @@ const s = StyleSheet.create({
   profileCard: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-    padding: g.size(16),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
     gap: g.size(12),
   },
   userContainer: {
@@ -84,10 +85,6 @@ const s = StyleSheet.create({
     gap: g.size(4),
   },
 });
-
-const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
-const formattedDate = (date: string | number | Date) =>
-  new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'utc' });
 
 export function ProfileCard({ data }: { data: Patient }) {
   const navigation = useNavigation();
@@ -135,7 +132,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {formattedDate(data?.birthDate)}
+                  {formatDate(data?.birthDate)}
                 </Text>
               </View>
             )}
@@ -176,7 +173,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {`${data?.gender !== ('male' || 'female') ? 'Gender: ' : ''}${capitalizeFirstLetter(data?.gender)}`}
+                  {`${data?.gender !== ('male' || 'female') ? 'Gender: ' : ''}${capitalizeFirstCharacter(data?.gender)}`}
                 </Text>
               </View>
             )}
