@@ -61,9 +61,6 @@ const s = StyleSheet.create({
     flexWrap: 'wrap',
     rowGap: g.size(16),
     justifyContent: 'space-between',
-    // borderWidth: 4,
-    // borderColor: g.severityYellow,
-    // borderStyle: 'solid',
   },
 });
 
@@ -235,12 +232,14 @@ export default function Dashboard() {
             viewAll={!!labs?.length}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
           >
-            {loadingLabs ? <LabReportSkeleton /> : recentLabs.map((report: LabImagingReport | DiagnosticReport) => (
-              <LabReportCard
-                key={report.id}
-                report={report as LabImagingReport}
-              />
-            ))}
+            {loadingLabs
+              ? <LabReportSkeleton />
+              : recentLabs.map((report: LabImagingReport | DiagnosticReport) => (
+                <LabReportCard
+                  key={report.id}
+                  report={report as LabImagingReport}
+                />
+              ))}
           </MyHealthBlock>
 
           {/* Goals */}
