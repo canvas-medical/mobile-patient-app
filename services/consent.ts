@@ -1,8 +1,8 @@
 import { Alert } from 'react-native';
-import { router } from 'expo-router';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { ApiError } from '@interfaces';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 export const ConsentCodes = {
@@ -70,7 +70,8 @@ async function consentCreate(data: { consent: string }) {
 export function useConsentCreate() {
   return useMutation({
     mutationFn: (data: { consent: string }) => consentCreate(data),
-    onError: () => {
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error creating your consent. Please try again.',

@@ -1,15 +1,13 @@
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { router, useNavigation } from 'expo-router';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 import { Patient } from '@interfaces';
 import { formatPhoneNumber } from '@utils';
 import { BlurFill } from '@components/blur-fill';
 import { g } from '@styles';
-
-console.log('QueryClient', QueryClient);
 
 const s = StyleSheet.create({
   addressContainer: {

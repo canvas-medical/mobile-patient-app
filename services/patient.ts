@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 function birthSexCodeSwitch(birthSex) {
@@ -69,7 +70,8 @@ export function useCreatePatient() {
   return useMutation({
     mutationFn: (data) => patientCreate(data),
     onSuccess: () => router.push('coverage'),
-    onError: () => {
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error creating your account. Please try again.',

@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
 import { ApiError, Question } from '@interfaces';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 export enum QuestionnaireIds {
@@ -85,6 +86,7 @@ export function useQuestionnaireSubmit() {
     mutationFn: (data: { formData: { key: string }; questionnaireData: { id: string, item: Question[] } }) => questionnaireSubmit(data),
     onSuccess: () => router.push('(tabs)/my-health'),
     onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       console.log(e);
       Alert.alert(
         'Error',
