@@ -58,11 +58,8 @@ export default function Initial() {
   };
 
   useEffect(() => {
-    if (value) {
-      setCurrentPatientName(demoPatients.find((demo) => value === demo.value)?.label.split(' ')[0]);
-    } else {
-      setCurrentPatientName('');
-    }
+    if (value) setCurrentPatientName(demoPatients.find((demo) => value === demo.value)?.label.split(' ')[0]);
+    else setCurrentPatientName('');
   }, [value]);
 
   return (
@@ -84,19 +81,24 @@ export default function Initial() {
         />
       </View>
       {show && (
-      <Overlay
-        isVisible={show}
-        onBackdropPress={() => setShow(false)}
-        overlayStyle={s.pickerOverlay}
-      >
-        <Picker
-          selectedValue={value}
-          onValueChange={(patientId: string) => setValue(patientId)}
+        <Overlay
+          isVisible={show}
+          onBackdropPress={() => setShow(false)}
+          overlayStyle={s.pickerOverlay}
         >
-          {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
-        </Picker>
-        <Button label={value ? `Login as ${currentPatientName}` : 'Login as demo patient'} disabled={!value} theme="primary" onPress={() => signInDemoPatient()} />
-      </Overlay>
+          <Picker
+            selectedValue={value}
+            onValueChange={(patientId: string) => setValue(patientId)}
+          >
+            {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
+          </Picker>
+          <Button
+            label={value ? `Login as ${currentPatientName}` : 'Login as demo patient'}
+            disabled={!value}
+            theme="primary"
+            onPress={() => signInDemoPatient()}
+          />
+        </Overlay>
       )}
     </Screen>
   );

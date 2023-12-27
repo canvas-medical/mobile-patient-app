@@ -30,7 +30,6 @@ const s = StyleSheet.create({
 
 export function AllergyCard({ allergy }: { allergy: Allergy }) {
   const {
-    id,
     code: {
       coding: [{ display }],
     },
@@ -53,10 +52,7 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
 
   const capitalizeFirstCharacter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
   return (
-    <View
-      key={id}
-      style={s.card}
-    >
+    <View style={s.card}>
       <BlurFill />
       <View style={s.allergyInfoContainer}>
         <Text

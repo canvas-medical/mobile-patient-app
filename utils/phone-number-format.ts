@@ -1,4 +1,5 @@
 export function formatPhoneNumber(value: string): string {
+  if (!value) return '';
   const phoneNumber = value.replace(/\D/g, '');
   const phoneNumberLength = phoneNumber.length;
   if (phoneNumberLength < 4) return phoneNumber;

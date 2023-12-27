@@ -6,7 +6,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Keyboard
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
@@ -22,25 +23,12 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
   },
-  contentContainer: {
-    flex: 1,
-    backgroundColor: g.white,
-    borderTopLeftRadius: g.size(36),
-    borderTopRightRadius: g.size(36),
-    padding: g.size(36),
-    justifyContent: 'space-between',
-    gap: g.size(48),
-  },
   formContainer: {
     flex: 1,
     gap: g.size(56),
   },
   formInputs: {
     gap: g.size(24),
-  },
-  greeting: {
-    ...g.labelXLarge,
-    color: g.black,
   },
   header: {
     padding: g.size(36),
@@ -52,11 +40,6 @@ const s = StyleSheet.create({
     backgroundColor: g.white,
     position: 'absolute',
     bottom: 0,
-  },
-  subGreeting: {
-    ...g.bodyMedium,
-    color: g.neutral300,
-    marginTop: g.size(2),
   },
   title: {
     ...g.titleLarge,
@@ -92,26 +75,18 @@ export default function Coverage() {
       <View style={s.scrollCover} />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
-          <View style={s.container}>
-            <View style={s.header}>
-              <TouchableOpacity onPress={() => router.back()}>
-                <Feather
-                  name="arrow-left"
-                  size={g.size(36)}
-                  color={g.white}
-                />
-              </TouchableOpacity>
-              <Text style={s.title}>
-                Coverage
-              </Text>
-            </View>
-            <View style={s.contentContainer}>
-              <View>
-                <Text style={s.greeting}>
-                  Welcome
-                </Text>
-                <Text style={s.subGreeting}>
-                  Fill out a few personal details to get started
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={s.container}>
+              <View style={s.header}>
+                <TouchableOpacity onPress={() => router.back()}>
+                  <Feather
+                    name="arrow-left"
+                    size={g.size(36)}
+                    color={g.white}
+                  />
+                </TouchableOpacity>
+                <Text style={s.title}>
+                  Coverage
                 </Text>
               </View>
               <View style={s.formContainer}>
@@ -195,7 +170,7 @@ export default function Coverage() {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>

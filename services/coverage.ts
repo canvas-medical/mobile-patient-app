@@ -33,7 +33,7 @@ export const Insurers = {
   },
 };
 
-async function coverageCreate(data) {
+async function coverageCreate(data: {insurer: string, memberId: string, groupNumber?: string}) {
   const token = await getToken();
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -98,7 +98,7 @@ async function coverageCreate(data) {
 
 export function useCreateCoverage() {
   return useMutation({
-    mutationFn: (data) => coverageCreate(data),
+    mutationFn: (data: {insurer: string, memberId: string, groupNumber?: string}) => coverageCreate(data),
     onSuccess: () => router.push('consents'),
     onError: () => {
       Alert.alert(
