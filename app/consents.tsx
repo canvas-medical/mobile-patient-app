@@ -5,7 +5,10 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
-  Platform, ActivityIndicator,
+  Platform,
+  ActivityIndicator,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Feather, } from '@expo/vector-icons';
@@ -75,61 +78,63 @@ export default function Consents() {
       <View style={s.scrollCover} />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView>
-          <View style={s.container}>
-            <View style={s.header}>
-              <TouchableOpacity onPress={() => router.back()}>
-                <Feather
-                  name="arrow-left"
-                  size={g.size(36)}
-                  color={g.white}
-                />
-              </TouchableOpacity>
-              <Text style={s.title}>
-                Consents
-              </Text>
-            </View>
-            <View style={s.contentContainer}>
-              <View>
-                <Text style={s.greeting}>
-                  Welcome
-                </Text>
-                <Text style={s.subGreeting}>
-                  Fill out a few personal details to get started
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={s.container}>
+              <View style={s.header}>
+                <TouchableOpacity onPress={() => router.back()}>
+                  <Feather
+                    name="arrow-left"
+                    size={g.size(36)}
+                    color={g.white}
+                  />
+                </TouchableOpacity>
+                <Text style={s.title}>
+                  Consents
                 </Text>
               </View>
-              <View style={s.consentItem}>
-                <TouchableOpacity disabled={!!isAccepted} onPress={() => onCreateConsent({ consent: 'Consent Document' })}>
-                  {isPending
-                    ? <ActivityIndicator color={g.primaryBlue} />
-                    : (
-                      <Feather
-                        name={isAccepted ? 'check-square' : 'square'}
-                        size={g.size(26)}
-                        color={isAccepted ? 'green' : g.neutral200}
-                      />
-                    )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  disabled={isPending}
-                  onPress={() =>
-                    router.push({
-                      pathname: 'pdf-modal',
-                      params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess }
-                    })}
-                >
-                  <Text style={s.link}>General Consent Document</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={s.buttonContainer}>
-                <Button
-                  disabled={!isAccepted}
-                  theme="primary"
-                  onPress={() => router.push('questionnaire')}
-                  label="Next"
-                />
+              <View style={s.contentContainer}>
+                <View>
+                  <Text style={s.greeting}>
+                    Welcome
+                  </Text>
+                  <Text style={s.subGreeting}>
+                    Fill out a few personal details to get started
+                  </Text>
+                </View>
+                <View style={s.consentItem}>
+                  <TouchableOpacity disabled={!!isAccepted} onPress={() => onCreateConsent({ consent: 'Consent Document' })}>
+                    {isPending
+                      ? <ActivityIndicator color={g.primaryBlue} />
+                      : (
+                        <Feather
+                          name={isAccepted ? 'check-square' : 'square'}
+                          size={g.size(26)}
+                          color={isAccepted ? 'green' : g.neutral200}
+                        />
+                      )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    disabled={isPending}
+                    onPress={() =>
+                      router.push({
+                        pathname: 'pdf-modal',
+                        params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess }
+                      })}
+                  >
+                    <Text style={s.link}>General Consent Document</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={s.buttonContainer}>
+                  <Button
+                    disabled={!isAccepted}
+                    theme="primary"
+                    onPress={() => router.push('questionnaire')}
+                    label="Next"
+                  />
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>

@@ -5,7 +5,10 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
-  Platform, ActivityIndicator,
+  Platform,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
@@ -84,67 +87,69 @@ export default function Questionnaire() {
       <View style={s.scrollCover} />
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView contentContainerStyle={s.container}>
-          <View style={s.container}>
-            <View style={s.header}>
-              <TouchableOpacity onPress={() => router.back()}>
-                <Feather
-                  name="arrow-left"
-                  size={g.size(36)}
-                  color={g.white}
-                />
-              </TouchableOpacity>
-              <Text style={s.title}>
-                Questionnaires
-              </Text>
-            </View>
-            <View style={s.contentContainer}>
-              <View>
-                <Text style={s.greeting}>
-                  Welcome
-                </Text>
-                <Text style={s.subGreeting}>
-                  Fill out a few personal details to get started
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={s.container}>
+              <View style={s.header}>
+                <TouchableOpacity onPress={() => router.back()}>
+                  <Feather
+                    name="arrow-left"
+                    size={g.size(36)}
+                    color={g.white}
+                  />
+                </TouchableOpacity>
+                <Text style={s.title}>
+                  Questionnaires
                 </Text>
               </View>
-              <View style={s.formContainer}>
-                {isFetching
-                  ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
-                  : (
-                    <>
-                      {questionnaire?.item.map((question: Question) => (
-                        <Controller
-                          name={question.linkId}
-                          control={control}
-                          rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
-                          key={question.linkId}
-                          render={({ field: { onChange, value } }) => (
-                            <Input
-                              placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
-                              type={dataTypeMap[question.type]}
-                              name={question.text}
-                              label={question.text}
-                              options={question.answerOption.map((answer) => (
-                                { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
-                              onFocus={() => clearErrors()}
-                              onChange={(e) => onChange(e)}
-                              value={value}
-                              error={errors[question.linkId] as FieldError}
-                            />
-                          )}
+              <View style={s.contentContainer}>
+                <View>
+                  <Text style={s.greeting}>
+                    Welcome
+                  </Text>
+                  <Text style={s.subGreeting}>
+                    Fill out a few personal details to get started
+                  </Text>
+                </View>
+                <View style={s.formContainer}>
+                  {isFetching
+                    ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
+                    : (
+                      <>
+                        {questionnaire?.item.map((question: Question) => (
+                          <Controller
+                            name={question.linkId}
+                            control={control}
+                            rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
+                            key={question.linkId}
+                            render={({ field: { onChange, value } }) => (
+                              <Input
+                                placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
+                                type={dataTypeMap[question.type]}
+                                name={question.text}
+                                label={question.text}
+                                options={question.answerOption.map((answer) => (
+                                  { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
+                                onFocus={() => clearErrors()}
+                                onChange={(e) => onChange(e)}
+                                value={value}
+                                error={errors[question.linkId] as FieldError}
+                              />
+                            )}
+                          />
+                        ))}
+                        <Button
+                          onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
+                          disabled={isPending}
+                          label={isPending ? 'Submitting...' : 'Submit'}
+                          theme="primary"
                         />
-                      ))}
-                      <Button
-                        onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
-                        disabled={isPending}
-                        label={isPending ? 'Submitting...' : 'Submit'}
-                        theme="primary"
-                      />
-                    </>
-                  )
-                }
+                      </>
+                    )
+                  }
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>

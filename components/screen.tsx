@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleSheet, StyleProp, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, StyleProp } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,18 +26,16 @@ interface Props {
 
 export function Screen({ children, style }: Props) {
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <LinearGradient
-        style={[s.container, style]}
-        colors={[g.primaryBlue, g.secondaryBlue]}
-      >
-        <StatusBar style="light" />
-        <Image
-          style={s.blurCircles}
-          source={blurs}
-        />
-        {children}
-      </LinearGradient>
-    </TouchableWithoutFeedback>
+    <LinearGradient
+      style={[s.container, style]}
+      colors={[g.primaryBlue, g.secondaryBlue]}
+    >
+      <StatusBar style="light" />
+      <Image
+        style={s.blurCircles}
+        source={blurs}
+      />
+      {children}
+    </LinearGradient>
   );
 }
