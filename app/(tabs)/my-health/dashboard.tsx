@@ -237,7 +237,7 @@ export default function Dashboard() {
               : recentLabs.map((report: LabImagingReport | DiagnosticReport) => (
                 <LabReportCard
                   key={report.id}
-                  report={report as LabImagingReport}
+                  report={report}
                 />
               ))}
           </MyHealthBlock>
