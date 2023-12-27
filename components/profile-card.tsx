@@ -1,12 +1,15 @@
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { router, useNavigation } from 'expo-router';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 import { Patient } from '@interfaces';
 import { formatPhoneNumber } from '@utils';
 import { BlurFill } from '@components/blur-fill';
 import { g } from '@styles';
+
+console.log('QueryClient', QueryClient);
 
 const s = StyleSheet.create({
   addressContainer: {
@@ -93,6 +96,7 @@ export function ProfileCard({ data }: { data: Patient }) {
   const navigation = useNavigation();
   const phoneNumber = formatPhoneNumber(data?.telecom?.find((t) => t.system === 'phone')?.value);
   const email = data?.telecom?.find((t) => t.system === 'email')?.value;
+  const queryClient = useQueryClient();
 
   const logout = () => {
     const state = navigation.getState();
@@ -102,6 +106,7 @@ export function ProfileCard({ data }: { data: Patient }) {
     });
     SecureStore.deleteItemAsync('patient_id');
     SecureStore.deleteItemAsync('push_token');
+    queryClient.clear();
     router.replace('initial');
   };
 

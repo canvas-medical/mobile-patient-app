@@ -15,7 +15,6 @@ const s = StyleSheet.create({
   container: {
     justifyContent: 'flex-end',
     paddingHorizontal: g.size(36),
-    paddingBottom: g.size(192),
   },
   or: {
     ...g.titleLarge,
@@ -37,6 +36,13 @@ const s = StyleSheet.create({
     ...g.titleLarge,
     marginBottom: g.size(20),
   },
+  version: {
+    ...g.bodySmall,
+    color: g.neutral100,
+    textAlign: 'left',
+    marginTop: g.size(192),
+    bottom: g.size(22)
+  }
 });
 
 export default function Initial() {
@@ -100,6 +106,10 @@ export default function Initial() {
           />
         </Overlay>
       )}
+      <Text style={s.version}>
+        Version: 1.0.0 (8) | API:
+        {process.env.EXPO_PUBLIC_API_URL}
+      </Text>
     </Screen>
   );
 }

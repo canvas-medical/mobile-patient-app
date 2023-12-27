@@ -20,11 +20,11 @@
       "bundleIdentifier": "com.brewerdigital.fhirdashboard",
       "buildNumber": "6",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app does not use the camera."
+        "NSCameraUsageDescription": "This app uses the camera to securely capture credit card information."
       }
     },
     "android": {
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"
@@ -44,7 +44,7 @@
       "expo-router",
       "@config-plugins/react-native-blob-util",
       "@config-plugins/react-native-pdf",
-      "expo-datadog"
+      "@bugsnag/plugin-expo-eas-sourcemaps"
     ],
     "extra": {
       "router": {

@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
-import { Stack, usePathname, useSegments } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
-import { DdRum } from '@datadog/mobile-react-native';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { registerForPushNotificationsAsync } from '@services';
@@ -31,9 +30,6 @@ Notifications.setNotificationHandler({
 });
 
 export default function RootLayout() {
-  const pathname = usePathname();
-  const segments = useSegments();
-  const viewKey = segments.join('/');
   const [fontsLoaded] = useFonts({
     Alata,
     Poetsen,
@@ -41,10 +37,6 @@ export default function RootLayout() {
   useEffect(() => {
     registerForPushNotificationsAsync();
   }, []);
-
-  useEffect(() => {
-    DdRum.startView(viewKey, pathname);
-  }, [viewKey, pathname]);
 
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
