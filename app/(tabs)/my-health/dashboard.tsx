@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, View, Text } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -63,6 +63,12 @@ const s = StyleSheet.create({
     rowGap: g.size(16),
     justifyContent: 'space-between',
   },
+  zeroState: {
+    ...g.bodyMedium,
+    color: g.white,
+    opacity: 0.8,
+    paddingLeft: g.size(16),
+  }
 });
 
 export default function Dashboard() {
@@ -123,6 +129,7 @@ export default function Dashboard() {
             title="Vitals"
             viewAll={false}
             icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+            loading={loadingVitals}
           >
             <View style={s.vitalsContainer}>
               {loadingVitals ? Array.from(Array(6)).map((i: number) => (
@@ -135,6 +142,13 @@ export default function Dashboard() {
                   vitalsOdd={vitals.length % 2 !== 0}
                 />
               ))}
+              {!loadingVitals && !vitals?.length && (
+                <Text style={s.zeroState}>
+                  No Active
+                  {' '}
+                  Vitals
+                </Text>
+              )}
             </View>
           </MyHealthBlock>
 
@@ -144,6 +158,7 @@ export default function Dashboard() {
             title="Medications"
             viewAll={!!medications?.length}
             icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
+            loading={loadingMedications}
           >
             {loadingMedications
               ? <MedicationSkeleton />
@@ -161,6 +176,7 @@ export default function Dashboard() {
             title="Allergies"
             viewAll={!!allergies?.length}
             icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
+            loading={loadingAllergies}
           >
             {loadingAllergies
               ? <ActivityIndicator color={g.white} />
@@ -178,6 +194,7 @@ export default function Dashboard() {
             title="Procedures"
             viewAll={procedures?.length > 1}
             icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.white} />}
+            loading={loadingProcedures}
           >
             {loadingProcedures
               ? <ActivityIndicator color={g.white} />
@@ -195,6 +212,7 @@ export default function Dashboard() {
             title="Immunizations"
             viewAll={immunizations?.length > 1}
             icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
+            loading={loadingImmunizations}
           >
             {loadingImmunizations
               ? <ActivityIndicator color={g.white} />
@@ -212,6 +230,7 @@ export default function Dashboard() {
             title="Conditions"
             viewAll={!!conditions?.length}
             icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+            loading={loadingConditions}
           >
             {loadingConditions
               ? <ActivityIndicator color={g.white} />
@@ -229,6 +248,7 @@ export default function Dashboard() {
             title="Labs"
             viewAll={!!labs?.length}
             icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
+            loading={loadingLabs}
           >
             {loadingLabs ? <DiagnosticSkeleton /> : recentLabs.map((report: LabImagingReport | DiagnosticReport) => {
               if (report.resourceType === 'DocumentReference') {
@@ -254,6 +274,7 @@ export default function Dashboard() {
             title="Goals"
             viewAll={!!goals?.length}
             icon={<Feather name="target" size={g.size(20)} color={g.white} />}
+            loading={loadingGoals}
           >
             {loadingGoals
               ? <ActivityIndicator color={g.white} />
@@ -272,6 +293,7 @@ export default function Dashboard() {
             title="Educational Materials"
             viewAll={educationalMaterials?.length > 1}
             icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.white} />}
+            loading={false}
           >
             {loadingEducationalMaterials
               ? <ActivityIndicator color={g.white} />

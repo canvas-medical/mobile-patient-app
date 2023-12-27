@@ -88,6 +88,7 @@ export function VitalCardSkeleton({ vitalsOdd, index }) {
       style={[
         s.blurContainer,
         index === 0 && vitalsOdd && s.firstBlurContainer,
+        { height: g.size(48) }
       ]}
     >
       <BlurFill />

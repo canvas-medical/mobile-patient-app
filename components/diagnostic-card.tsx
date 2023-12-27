@@ -82,7 +82,7 @@ export function DiagnosticCard({ report }: { report: DiagnosticReport, }) {
 export function DiagnosticSkeleton() {
   return (
     <View
-      style={s.blurContainer}
+      style={[s.blurContainer, { height: g.size(24) }]}
     >
       <BlurFill />
     </View>

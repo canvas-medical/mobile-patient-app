@@ -10,6 +10,7 @@ Bugsnag.start();
 const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
 function ErrorView() {
+  // TODO: test this error view.
   return (
     <View>
       <Text>Error</Text>

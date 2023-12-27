@@ -43,12 +43,14 @@ export function MyHealthBlock(
     title,
     icon,
     viewAll,
+    loading,
   }: {
     children: any,
     title: string,
     icon: any,
     viewAllRoute?: string,
     viewAll: boolean,
+    loading: boolean,
   }
 ) {
   return (
@@ -70,7 +72,7 @@ export function MyHealthBlock(
       </View>
       <View style={s.diagnosticContainer}>
         {children}
-        {!children?.length && title !== 'Vitals' && (
+        {!children?.length && title !== 'Vitals' && !loading && (
           <Text style={s.zeroState}>
             No Active
             {' '}

@@ -25,7 +25,7 @@ const s = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    gap: g.size(56),
+    gap: g.size(56)
   },
   formInputs: {
     gap: g.size(24),

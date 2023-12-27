@@ -107,9 +107,7 @@ export default function Initial() {
         </Overlay>
       )}
       <Text style={s.version}>
-        {/* TODO: remove API here */}
-        Version: 1.0.0 (9) | API:
-        {process.env.EXPO_PUBLIC_API_URL}
+        Version: 1.0.0 (9)
       </Text>
     </Screen>
   );
