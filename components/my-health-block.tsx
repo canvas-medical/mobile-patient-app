@@ -3,6 +3,13 @@ import { router } from 'expo-router';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  container: {
+    flex: 1,
+    gap: g.size(16),
+    borderWidth: 1,
+    borderColor: g.red,
+    borderStyle: 'solid',
+  },
   diagnosticContainer: {
     rowGap: g.size(16),
   },
@@ -20,10 +27,6 @@ const s = StyleSheet.create({
     gap: g.size(8),
     alignItems: 'center',
   },
-  sectionContainer: {
-    flex: 1,
-    gap: g.size(16),
-  },
   viewAll: {
     ...g.bodyMedium,
     color: g.white,
@@ -37,11 +40,22 @@ const s = StyleSheet.create({
   },
 });
 export function MyHealthBlock(
-  { children, viewAllRoute, title, icon, viewAll }:
-    { children: any, title: string, icon: any, viewAllRoute?: string, viewAll: boolean }
+  {
+    children,
+    viewAllRoute,
+    title,
+    icon,
+    viewAll,
+  }: {
+    children: any,
+    title: string,
+    icon: any,
+    viewAllRoute?: string,
+    viewAll: boolean,
+  }
 ) {
   return (
-    <View style={s.sectionContainer}>
+    <View style={s.container}>
       <View style={s.headerContainer}>
         <View style={s.labelContainer}>
           {icon}

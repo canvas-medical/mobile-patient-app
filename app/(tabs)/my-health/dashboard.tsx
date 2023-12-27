@@ -52,7 +52,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    minHeight: '100%',
+    flexGrow: 1,
     gap: g.size(16),
     paddingHorizontal: g.size(16),
     paddingTop: g.size(32),
@@ -96,12 +96,8 @@ export default function Dashboard() {
   const activeAllergies = allergies?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
   const recentLabDate = labs?.[0]?.effectiveDateTime;
   const recentLabs = labs?.filter((lab: LabImagingReport | DiagnosticReport) => {
-    if ('effectiveDateTime' in lab) {
-      return lab.effectiveDateTime === recentLabDate;
-    }
-    if ('date' in lab) {
-      return lab.date === recentLabDate;
-    }
+    if ('effectiveDateTime' in lab) return lab.effectiveDateTime === recentLabDate;
+    if ('date' in lab) return lab.date === recentLabDate;
     return false;
   });
 
@@ -120,6 +116,9 @@ export default function Dashboard() {
         )}
       >
         <ScrollView
+          // style={{
+          //   backgroundColor: g.red,
+          // }}
           contentContainerStyle={[
             s.scrollContent,
             { paddingBottom: tabBarHeight + g.size(32) },
