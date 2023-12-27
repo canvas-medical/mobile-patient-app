@@ -15,6 +15,11 @@ import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  appointmentLocation: {
+    ...g.bodyMedium,
+    color: g.white,
+    textDecorationLine: 'underline',
+  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
@@ -57,17 +62,12 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(4),
   },
-  practitioner: {
+  reason: {
     ...g.bodyXLarge,
     color: g.white,
   },
-  practitionerData: {
+  reasonData: {
     flex: 1,
-  },
-  practitionerLocation: {
-    ...g.bodyMedium,
-    color: g.white,
-    textDecorationLine: 'underline',
   },
 });
 
@@ -119,9 +119,9 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
           <FontAwesome5 name="user-md" size={g.size(36)} color={g.white} />
-          <View style={s.practitionerData}>
+          <View style={s.reasonData}>
             <Text
-              style={s.practitioner}
+              style={s.reason}
               numberOfLines={1}
             >
               {capitalizeFirstCharacter(reasonCode[0].text)}
@@ -146,7 +146,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   : <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />
                 }
                 <Text
-                  style={s.practitionerLocation}
+                  style={s.appointmentLocation}
                   numberOfLines={1}
                 >
                   {isOfficeVisit ? 'Open in maps' : 'Join video call'}

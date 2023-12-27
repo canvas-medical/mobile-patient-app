@@ -19,6 +19,13 @@ const s = StyleSheet.create({
   addressRow: {
     alignItems: 'flex-start',
   },
+  card: {
+    borderRadius: g.size(8),
+    overflow: 'hidden',
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+    gap: g.size(12),
+  },
   dataColumn: {
     flex: 1,
     gap: g.size(8),
@@ -59,13 +66,6 @@ const s = StyleSheet.create({
     ...g.labelSmall,
     color: g.white,
   },
-  profileCard: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(12),
-  },
   userContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -104,7 +104,7 @@ export function ProfileCard({ data }: { data: Patient }) {
 
   return (
     <>
-      <View style={s.profileCard}>
+      <View style={s.card}>
         <BlurFill />
         <View style={s.userContainer}>
           {data?.photo[0]?.url ? (

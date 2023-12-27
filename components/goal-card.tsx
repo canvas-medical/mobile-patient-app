@@ -13,7 +13,7 @@ const s = StyleSheet.create({
     gap: g.size(4),
   },
   goal: {
-    ...g.labelSmall,
+    ...g.labelMedium,
     color: g.white,
   },
   goalInfo: {
@@ -21,7 +21,7 @@ const s = StyleSheet.create({
     alignItems: 'flex-end',
   },
   goalText: {
-    ...g.bodySmall,
+    ...g.bodyMedium,
     color: g.white,
   },
   row: {
