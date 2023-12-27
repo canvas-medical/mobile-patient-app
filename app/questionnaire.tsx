@@ -5,7 +5,10 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
-  Platform, ActivityIndicator, TouchableWithoutFeedback, Keyboard,
+  Platform,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';

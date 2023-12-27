@@ -20,9 +20,6 @@ const s = StyleSheet.create({
     borderRadius: g.size(8),
     overflow: 'hidden',
     padding: g.size(16),
-    borderWidth: 1,
-    borderColor: g.red,
-    borderStyle: 'solid',
   },
   extraInfo: {
     flex: 1,

@@ -116,9 +116,6 @@ export default function Dashboard() {
         )}
       >
         <ScrollView
-          // style={{
-          //   backgroundColor: g.red,
-          // }}
           contentContainerStyle={[
             s.scrollContent,
             { paddingBottom: tabBarHeight + g.size(32) },

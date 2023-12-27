@@ -6,9 +6,6 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     gap: g.size(16),
-    borderWidth: 1,
-    borderColor: g.red,
-    borderStyle: 'solid',
   },
   diagnosticContainer: {
     rowGap: g.size(16),
