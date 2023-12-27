@@ -1,6 +1,7 @@
 export interface DiagnosticReport {
   id: string;
   issued: string;
+  date: string;
   code: {
     text: string;
   };

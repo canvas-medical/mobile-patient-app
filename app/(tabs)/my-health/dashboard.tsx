@@ -94,12 +94,9 @@ export default function Dashboard() {
   const activeConditions = conditions?.filter((condition: Condition) => condition.clinicalStatus.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
   const activeAllergies = allergies?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
-  const recentLabDate = labs?.[0]?.effectiveDateTime;
-  const recentLabs = labs?.filter((lab: LabImagingReport | DiagnosticReport) => {
-    if ('effectiveDateTime' in lab) return lab.effectiveDateTime === recentLabDate;
-    if ('date' in lab) return lab.date === recentLabDate;
-    return false;
-  });
+  const recentLabDate = labs?.[0]?.date;
+  const recentLabs = labs?.filter((lab: LabImagingReport | DiagnosticReport) =>
+    new Date(lab.date).toDateString() === new Date(recentLabDate).toDateString());
 
   return (
     <Screen>
