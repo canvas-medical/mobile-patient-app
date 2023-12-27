@@ -14,13 +14,19 @@ const config = new DdSdkReactNativeConfiguration(
   true // track errors.
 );
 config.nativeCrashReportEnabled = true;
+console.log('dd config', config);
 
 export default function Index() {
   const navigationState = useRootNavigationState();
   const { isFetching, data: patient } = usePatient();
+
+  console.log('dd config', config);
+
   useEffect(() => {
     const initializeDataDog = async () => {
-      await DdSdkReactNative.initialize(config);
+      console.log('inititalizing', DdSdkReactNative);
+      const init = await DdSdkReactNative.initialize(config);
+      console.log('init', init);
     };
     initializeDataDog();
   }, []);

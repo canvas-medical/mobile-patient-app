@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@datadog/datadog-ci": "^2.26.0",
     "@react-native-community/eslint-config": "^3.2.0",
     "@tanstack/eslint-plugin-query": "^4.36.1",
     "@types/react": "^18.2.28",
