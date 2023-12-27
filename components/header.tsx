@@ -67,6 +67,7 @@ export function Header() {
   const [showBackButton, setShowBackButton] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const { data } = usePatient();
+
   const heightValue = useRef(new Animated.Value(0)).current;
   const paddingValue = useRef(new Animated.Value(0)).current;
   const opacityValue = useRef(new Animated.Value(0)).current;

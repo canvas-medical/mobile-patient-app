@@ -92,7 +92,7 @@ const formattedDate = (date: string | number | Date) =>
 export function ProfileCard({ data }: { data: Patient }) {
   const navigation = useNavigation();
   const phoneNumber = formatPhoneNumber(data?.telecom?.find((t) => t.system === 'phone')?.value);
-  const email = data?.telecom.find((t) => t.system === 'email')?.value;
+  const email = data?.telecom?.find((t) => t.system === 'email')?.value;
 
   const logout = () => {
     const state = navigation.getState();

@@ -11,6 +11,7 @@
   "dependencies": {
     "@config-plugins/react-native-blob-util": "^6.0.0",
     "@config-plugins/react-native-pdf": "^6.0.0",
+    "@datadog/mobile-react-native": "^2.0.1",
     "@expo-google-fonts/alata": "^0.2.3",
     "@hookform/error-message": "^2.0.1",
     "@react-native-community/datetimepicker": "7.2.0",
@@ -26,6 +27,7 @@
     "expo-app-loading": "^2.1.1",
     "expo-blur": "~12.4.1",
     "expo-constants": "~14.4.2",
+    "expo-datadog": "^50.0.0",
     "expo-dev-client": "~2.4.12",
     "expo-device": "~5.4.0",
     "expo-font": "~11.4.0",

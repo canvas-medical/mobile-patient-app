@@ -85,6 +85,8 @@ export function useCreatePatient() {
 async function getPatient() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
+  if (!patientId) throw (new Error('No patient id found'));
+
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
     method: 'GET',
     headers: {
@@ -92,14 +94,12 @@ async function getPatient() {
       accept: 'application/json'
     }
   });
-  const patient = await res.json();
-  return patient;
+  return res.json();
 }
 
 export function usePatient() {
-  const patientQuery = useQuery({
+  return useQuery({
     queryKey: ['patient_data'],
     queryFn: () => getPatient(),
   });
-  return patientQuery;
 }
