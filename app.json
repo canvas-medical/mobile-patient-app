@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.brewerdigital.fhirdashboard",
-      "buildNumber": "6",
+      "buildNumber": "8",
       "infoPlist": {
         "NSCameraUsageDescription": "This app does not use the camera."
       }

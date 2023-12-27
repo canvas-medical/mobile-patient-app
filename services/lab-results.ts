@@ -19,16 +19,14 @@ async function getLabResults() {
   const patientID = await SecureStore.getItemAsync('patient_id');
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  const imagingReports = await fetchReport(`${apiUrl}/DocumentReference?patient=patient/${patientID}&category=imagingreport`, token);
-  const labReports = await fetchReport(`${apiUrl}/DocumentReference?patient=patient/${patientID}&category=labreport`, token);
+  const imagingReports = await fetchReport(`${apiUrl}/DocumentReference?subject=Patient/${patientID}&category=imagingreport`, token);
+  const labReports = await fetchReport(`${apiUrl}/DocumentReference?subject=Patient/${patientID}&category=labreport`, token);
   const diagnosticsReports = await fetchReport(`${apiUrl}/DiagnosticReport?patient=Patient/${patientID}`, token);
   return [
     ...imagingReports,
     ...labReports,
     ...diagnosticsReports.map((report: any) => ({ ...report, date: report.issued })),
-  ].sort((a: any, b: any) => (
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  ));
+  ].sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function useLabResults() {

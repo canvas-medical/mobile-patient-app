@@ -1,28 +1,27 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { BlurFill } from '@components';
+import { formatDate } from '@utils';
 import { Goal } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-    padding: g.size(16),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+    gap: g.size(4),
   },
   goal: {
-    ...g.labelSmall,
+    ...g.labelMedium,
     color: g.white,
   },
   goalInfo: {
     flex: 1,
     alignItems: 'flex-end',
   },
-  goalInfoContainer: {
-    flex: 1,
-    gap: g.size(4),
-  },
   goalText: {
-    ...g.bodySmall,
+    ...g.bodyMedium,
     color: g.white,
   },
   row: {
@@ -34,7 +33,6 @@ const s = StyleSheet.create({
 
 export function GoalCard({ goal }: { goal: Goal }) {
   const {
-    id,
     achievementStatus: { coding: [{ display: achievementStatus }] },
     priority: { coding: [{ display: priority }] },
     note: [{ text: note }],
@@ -42,46 +40,29 @@ export function GoalCard({ goal }: { goal: Goal }) {
     target: [{ dueDate: targetDate }],
     startDate
   } = goal;
-  const formattedDate = (date: string | number | Date) => new Date(date).toLocaleDateString('en-US', {
-    timeZone: 'UTC',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
 
   return (
-    <View
-      key={id}
-      style={s.card}
-    >
+    <View style={s.card}>
       <BlurFill />
-      <View style={s.goalInfoContainer}>
-        <Text
-          style={s.goal}
-        >
-          {description}
+      <Text style={s.goal}>
+        {description}
+      </Text>
+      <Text style={s.goalText}>
+        {note}
+      </Text>
+      <View style={s.row}>
+        <Text style={s.goalText}>
+          {achievementStatus}
         </Text>
-        <Text
-          style={s.goalText}
-        >
-          {note}
-        </Text>
-        <View style={s.row}>
-          <Text
-            style={s.goalText}
-          >
-            {achievementStatus}
+        <View style={s.goalInfo}>
+          <Text style={s.goalText}>
+            {priority}
           </Text>
-          <View style={s.goalInfo}>
-            <Text style={s.goalText}>
-              {priority}
-            </Text>
-            <Text style={s.goalText}>
-              {formattedDate(startDate)}
-              {' to '}
-              {formattedDate(targetDate)}
-            </Text>
-          </View>
+          <Text style={s.goalText}>
+            {formatDate(startDate)}
+            {' to '}
+            {formatDate(targetDate)}
+          </Text>
         </View>
       </View>
     </View>

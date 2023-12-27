@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Medication } from '@interfaces';
 import { BlurFill, ExplainButton } from '@components';
 import { g } from '@styles';
@@ -8,12 +8,9 @@ const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-    padding: g.size(16),
-  },
-  cardContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: g.size(12),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+    gap: g.size(8),
   },
   date: {
     ...g.bodySmall,
@@ -31,14 +28,9 @@ const s = StyleSheet.create({
     gap: g.size(12),
   },
   medication: {
-    ...g.bodyLarge,
+    ...g.labelMedium,
     color: g.white,
-    maxWidth: '95%',
-  },
-  medicationInfoContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
-    gap: g.size(8),
+    maxWidth: '92%',
   },
 });
 
@@ -60,25 +52,16 @@ export function MedicationCard({ med }: { med: Medication }) {
       description={med.medicationCodeableConcept.coding[0].display}
     >
       <BlurFill />
-      <View style={s.cardContent}>
-        <MaterialCommunityIcons name="pill" size={g.size(48)} color={g.white} />
-        <View style={s.medicationInfoContainer}>
-          <Text style={s.medication}>
-            {medication.charAt(0).toUpperCase() + medication.slice(1)}
-          </Text>
-          <View style={s.dosageAndDateContainer}>
-            <Text style={s.dosage}>
-              {dosage[0].text.charAt(0).toUpperCase() + dosage[0].text.slice(1)}
-            </Text>
-            <Text style={s.date}>
-              {new Date(dateAsserted).toLocaleDateString('en-US', {
-                year: '2-digit',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </Text>
-          </View>
-        </View>
+      <Text style={s.medication}>
+        {capitalizeFirstCharacter(medication)}
+      </Text>
+      <View style={s.dosageAndDateContainer}>
+        <Text style={s.dosage}>
+          {capitalizeFirstCharacter(dosage[0].text)}
+        </Text>
+        <Text style={s.date}>
+          {formatDate(dateAsserted)}
+        </Text>
       </View>
     </ExplainButton>
   );
@@ -86,9 +69,7 @@ export function MedicationCard({ med }: { med: Medication }) {
 
 export function MedicationSkeleton() {
   return (
-    <View
-      style={s.card}
-    >
+    <View style={s.card}>
       <BlurFill />
     </View>
   );

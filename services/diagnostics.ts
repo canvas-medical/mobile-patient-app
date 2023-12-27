@@ -25,6 +25,7 @@ export function useDiagnostics() {
 }
 
 async function getDiagnosticURI(id: string) {
+  if (!id) return null;
   const token = await getToken();
   const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/DiagnosticReport/${id}`, {
     method: 'GET',
@@ -37,7 +38,7 @@ async function getDiagnosticURI(id: string) {
   return json.presentedForm[0].url;
 }
 
-export function useDiagnosticURI(id: string) {
+export function useDiagnosticURI(id: string | null) {
   const diagnosticQuery = useQuery({
     queryKey: [`diagnostic-id: ${id}`],
     queryFn: () => getDiagnosticURI(id),

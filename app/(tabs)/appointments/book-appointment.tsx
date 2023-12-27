@@ -18,7 +18,7 @@ import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
-import { formatTime } from '@utils';
+import { formatDate, formatTime, timeZoneOffset } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import { Button, Screen, BlurFill } from '@components';
 import { g } from '@styles';
@@ -179,16 +179,10 @@ export default function BookAppointment() {
   const { data: slotData, isLoading: isLoadingSlots } = useSlot(selectedDate as string, selectedSchedule.id, appointmentDuration);
   const { mutate: onCreateAppointment, isPending, isSuccess } = useCreateAppointment();
   const bookDisabled = !Object.keys(selectedSlot).length;
-  const dateValue = new Date(new Date(selectedDate).getTime() + (new Date(selectedDate).getTimezoneOffset() * 60000));
-  const futureDateSelected = dateValue.getDate() > new Date().getDate();
-  const dateLabel = dateValue.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
+  const futureDateSelected = timeZoneOffset(selectedDate).getDate() > new Date().getDate();
 
   function onChangeDate(event: DateTimePickerEvent) {
-    if (event.type === 'dismissed' && dateValue.getDate() === new Date().getDate()) {
+    if (event.type === 'dismissed' && timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
       setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
     }
     if (event.type === 'set') {
@@ -240,7 +234,7 @@ export default function BookAppointment() {
             {showDatePicker && (
               <DateTimePicker
                 mode="date"
-                value={dateValue}
+                value={timeZoneOffset(selectedDate)}
                 minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
                 themeVariant="dark"
                 maximumDate={null}
@@ -262,7 +256,7 @@ export default function BookAppointment() {
                     !futureDateSelected && s.pickerAndDateButtonPlaceholder,
                   ]}
                 >
-                  {futureDateSelected ? dateLabel : 'Select a date'}
+                  {futureDateSelected ? formatDate(selectedDate) : 'Select a date'}
                 </Text>
               </TouchableOpacity>
             )}
@@ -366,7 +360,7 @@ export default function BookAppointment() {
                     <Text style={s.sectionHeader}>
                       Appointments available for
                       {' '}
-                      {dateLabel}
+                      {formatDate(selectedDate)}
                     </Text>
                     <View style={s.slotButtonsContainer}>
                       {slotData.map((slot: Slot) => {
