@@ -23,12 +23,25 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
   },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: g.white,
+    borderTopLeftRadius: g.size(36),
+    borderTopRightRadius: g.size(36),
+    padding: g.size(36),
+    justifyContent: 'space-between',
+    gap: g.size(48),
+  },
   formContainer: {
     flex: 1,
-    gap: g.size(56)
+    gap: g.size(56),
   },
   formInputs: {
     gap: g.size(24),
+  },
+  greeting: {
+    ...g.labelXLarge,
+    color: g.black,
   },
   header: {
     padding: g.size(36),
@@ -40,6 +53,11 @@ const s = StyleSheet.create({
     backgroundColor: g.white,
     position: 'absolute',
     bottom: 0,
+  },
+  subGreeting: {
+    ...g.bodyMedium,
+    color: g.neutral300,
+    marginTop: g.size(2),
   },
   title: {
     ...g.titleLarge,
@@ -89,84 +107,94 @@ export default function Coverage() {
                   Coverage
                 </Text>
               </View>
-              <View style={s.formContainer}>
-                <View style={s.formInputs}>
-                  <Controller
-                    name="insurer"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <Input
-                        type="selector"
-                        name="insurer"
-                        label="Insurance Provider"
-                        placeholder="Select your insurance provider"
-                        onFocus={() => clearErrors}
-                        options={Object.keys(Insurers)}
-                        onChange={onChange}
-                        value={value}
-                        forwardedRef={ref}
-                        error={errors.insurer}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="memberId"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <Input
-                        type="text"
-                        name="memberId"
-                        label="Member ID"
-                        placeholder="Enter your member ID"
-                        onFocus={() => clearErrors}
-                        onChange={onChange}
-                        value={value}
-                        onSubmitEditing={() => setFocus('groupNumber')}
-                        autoCapitalize="words"
-                        keyboardType="default"
-                        textContentType="none"
-                        returnKeyType="next"
-                        forwardedRef={ref}
-                        error={errors.memberId}
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="groupNumber"
-                    control={control}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <Input
-                        type="text"
-                        name="groupNumber"
-                        label="Group Number"
-                        placeholder="Enter your group number"
-                        onFocus={() => clearErrors()}
-                        onChange={onChange}
-                        value={value}
-                        autoCapitalize="words"
-                        keyboardType="default"
-                        textContentType="none"
-                        returnKeyType="next"
-                        forwardedRef={ref}
-                        error={errors.groupNumber}
-                        onSubmitEditing={() => Keyboard.dismiss()}
-                      />
-                    )}
-                  />
+              <View style={s.contentContainer}>
+                <View>
+                  <Text style={s.greeting}>
+                    Welcome
+                  </Text>
+                  <Text style={s.subGreeting}>
+                    Fill out a few personal details to get started
+                  </Text>
                 </View>
-                <View style={s.buttons}>
-                  <Button
-                    onPress={handleSubmit((data) => onCreateCoverage(data))}
-                    label={isPending ? 'Submitting...' : 'Submit'}
-                    theme="primary"
-                  />
-                  <Button
-                    onPress={() => router.push('consents')}
-                    label="Self-Pay"
-                    theme="secondary"
-                  />
+                <View style={s.formContainer}>
+                  <View style={s.formInputs}>
+                    <Controller
+                      name="insurer"
+                      control={control}
+                      rules={{ required: { value: true, message: 'Required' } }}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <Input
+                          type="selector"
+                          name="insurer"
+                          label="Insurance Provider"
+                          placeholder="Select your insurance provider"
+                          onFocus={() => clearErrors}
+                          options={Object.keys(Insurers)}
+                          onChange={onChange}
+                          value={value}
+                          forwardedRef={ref}
+                          error={errors.insurer}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="memberId"
+                      control={control}
+                      rules={{ required: { value: true, message: 'Required' } }}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <Input
+                          type="text"
+                          name="memberId"
+                          label="Member ID"
+                          placeholder="Enter your member ID"
+                          onFocus={() => clearErrors}
+                          onChange={onChange}
+                          value={value}
+                          onSubmitEditing={() => setFocus('groupNumber')}
+                          autoCapitalize="words"
+                          keyboardType="default"
+                          textContentType="none"
+                          returnKeyType="next"
+                          forwardedRef={ref}
+                          error={errors.memberId}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="groupNumber"
+                      control={control}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <Input
+                          type="text"
+                          name="groupNumber"
+                          label="Group Number"
+                          placeholder="Enter your group number"
+                          onFocus={() => clearErrors()}
+                          onChange={onChange}
+                          value={value}
+                          autoCapitalize="words"
+                          keyboardType="default"
+                          textContentType="none"
+                          returnKeyType="next"
+                          forwardedRef={ref}
+                          error={errors.groupNumber}
+                          onSubmitEditing={() => Keyboard.dismiss()}
+                        />
+                      )}
+                    />
+                  </View>
+                  <View style={s.buttons}>
+                    <Button
+                      onPress={handleSubmit((data: any) => onCreateCoverage(data))} // TODO: Type
+                      label={isPending ? 'Submitting...' : 'Submit'}
+                      theme="primary"
+                    />
+                    <Button
+                      onPress={() => router.push('consents')}
+                      label="Self-Pay"
+                      theme="secondary"
+                    />
+                  </View>
                 </View>
               </View>
             </View>
