@@ -1,21 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { BlurFill } from '@components';
+import { formatDate } from '@utils';
 import { Procedure } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   blurContainer: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-    padding: g.size(12),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
     gap: g.size(4),
   },
   procedureDate: {
-    ...g.labelSmall,
+    ...g.bodySmall,
     color: g.white,
   },
   procedureType: {
-    ...g.labelSmall,
+    ...g.labelMedium,
     color: g.white,
   },
 });
@@ -34,12 +36,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
         {codeDisplay}
       </Text>
       <Text style={s.procedureDate}>
-        {new Date(performedDateTime).toLocaleDateString('en-US', {
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })}
+        {formatDate(performedDateTime)}
       </Text>
     </View>
   );

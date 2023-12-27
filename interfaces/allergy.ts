@@ -14,4 +14,5 @@ export interface Allergy {
   reaction: {
     severity: string;
   }[];
+  recordedDate: string;
 }

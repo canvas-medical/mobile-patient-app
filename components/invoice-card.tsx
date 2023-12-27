@@ -1,19 +1,24 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import { BlurFill } from '@components';
+import { formatDate } from '@utils';
 import { Invoice } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
-    padding: g.size(12),
-    paddingRight: g.size(8),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+  },
+  chevron: {
+    left: g.size(8),
+    bottom: g.size(4),
   },
   date: {
-    ...g.labelSmall,
+    ...g.bodySmall,
     color: g.white,
   },
   label: {
@@ -46,16 +51,11 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
         <Text style={s.label}>
           {display}
         </Text>
-        <Feather name="chevron-right" size={g.size(28)} color={g.white} />
+        <Feather name="chevron-right" size={g.size(28)} color={g.white} style={s.chevron} />
       </View>
       <Text style={s.date}>
-        {new Date(date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
-        })}
+        {formatDate(date)}
       </Text>
-
     </TouchableOpacity>
   );
 }

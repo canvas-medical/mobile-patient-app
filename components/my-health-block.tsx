@@ -1,14 +1,15 @@
+import { ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  cardContainer: {
+    rowGap: g.size(16),
+  },
   container: {
     flex: 1,
     gap: g.size(16),
-  },
-  diagnosticContainer: {
-    rowGap: g.size(16),
   },
   headerContainer: {
     flexDirection: 'row',
@@ -45,7 +46,7 @@ export function MyHealthBlock(
     viewAll,
     loading,
   }: {
-    children: any,
+    children: ReactNode,
     title: string,
     icon: any,
     viewAllRoute?: string,
@@ -70,9 +71,9 @@ export function MyHealthBlock(
           </TouchableOpacity>
         )}
       </View>
-      <View style={s.diagnosticContainer}>
+      <View style={s.cardContainer}>
         {children}
-        {!children?.length && title !== 'Vitals' && !loading && (
+        {Array.isArray(children) && !children.length && title !== 'Vitals' && !loading && (
           <Text style={s.zeroState}>
             No Active
             {' '}

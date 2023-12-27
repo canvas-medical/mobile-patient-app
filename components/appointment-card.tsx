@@ -8,20 +8,25 @@ import {
   Alert,
 } from 'react-native';
 import { Feather, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { BlurFill } from '@components';
-import { Appointment } from '@interfaces';
-import { formatTime } from '@utils';
 import { useClinicLocation } from '@services';
+import { capitalizeFirstCharacter, formatDate, formatTime } from '@utils';
+import { Appointment } from '@interfaces';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  appointmentLocation: {
+    ...g.bodyMedium,
+    color: g.white,
+    textDecorationLine: 'underline',
+  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
   },
   cardContent: {
-    padding: g.size(20),
-    paddingTop: g.size(16),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
   },
   cardRow: {
     flexDirection: 'row',
@@ -58,17 +63,12 @@ const s = StyleSheet.create({
     padding: g.size(4),
     gap: g.size(4),
   },
-  practitioner: {
+  reason: {
     ...g.bodyXLarge,
     color: g.white,
   },
-  practitionerData: {
+  reasonData: {
     flex: 1,
-  },
-  practitionerLocation: {
-    ...g.bodyMedium,
-    color: g.white,
-    textDecorationLine: 'underline',
   },
 });
 
@@ -81,7 +81,6 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
     contained,
   } = appointment;
   const { data: clinicAddress } = useClinicLocation();
-  const formattedDate = new Date(start).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: '2-digit' });
   const isOfficeVisit = appointmentType.coding[0].display === 'Office Visit';
 
   const startTime = new Date(start).getTime();
@@ -107,7 +106,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             style={s.dateTime}
             numberOfLines={1}
           >
-            {formattedDate}
+            {formatDate(start)}
             &nbsp;
             •
             &nbsp;
@@ -121,12 +120,12 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
           <FontAwesome5 name="user-md" size={g.size(36)} color={g.white} />
-          <View style={s.practitionerData}>
+          <View style={s.reasonData}>
             <Text
-              style={s.practitioner}
+              style={s.reason}
               numberOfLines={1}
             >
-              {reasonCode[0].text.charAt(0).toUpperCase() + reasonCode[0].text.slice(1)}
+              {capitalizeFirstCharacter(reasonCode[0].text)}
             </Text>
             {displayNavLink && (
               <TouchableOpacity
@@ -148,7 +147,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   : <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />
                 }
                 <Text
-                  style={s.practitionerLocation}
+                  style={s.appointmentLocation}
                   numberOfLines={1}
                 >
                   {isOfficeVisit ? 'Open in maps' : 'Join video call'}

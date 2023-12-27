@@ -16,7 +16,7 @@ import { FieldError, UseFormClearErrors } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { Overlay } from '@rneui/themed';
-import { formatPhoneNumber } from '@utils';
+import { formatDate, formatPhoneNumber, timeZoneOffset } from '@utils';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -192,19 +192,13 @@ function DatePickerComponent(props) {
   } = props;
   const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
   const valueIsToday = value === new Date().toISOString().slice(0, 10);
-  const dateValue = new Date(new Date(value).getTime() + (new Date(value).getTimezoneOffset() * 60000));
-  const dateLabel = dateValue.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
 
   return (
     <>
       {showDatePicker && (
         <DateTimePicker
           mode="date"
-          value={dateValue}
+          value={timeZoneOffset(value)}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
           onChange={(e: any) => {
@@ -227,7 +221,7 @@ function DatePickerComponent(props) {
               valueIsToday && !!error && s.selectorButtonPlaceholderError,
             ]}
           >
-            {valueIsToday ? 'Select a date' : dateLabel}
+            {valueIsToday ? 'Select a date' : formatDate(value)}
           </Text>
         </TouchableOpacity>
       )}

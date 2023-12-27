@@ -1,41 +1,39 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { BlurFill } from '@components';
 import { Vital } from '@interfaces';
-import { vitalsValueSwitch, vitalsIconSwitch } from '@utils';
+import { vitalsValueSwitch, vitalsIconSwitch, formatDate } from '@utils';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  blurContainer: {
+  bottomRow: {
+    flexDirection: 'row',
+    gap: g.size(8),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  card: {
     width: (g.width - g.size(48)) / 2,
     borderRadius: g.size(8),
     overflow: 'hidden',
     padding: g.size(8),
-    paddingBottom: g.size(32),
-  },
-  bottomRow: {
-    position: 'absolute',
-    bottom: g.size(8),
-    left: g.size(8),
-    flexDirection: 'row',
-    gap: g.size(8),
-    alignItems: 'center',
-    width: '100%',
     justifyContent: 'space-between',
   },
   firstBlurContainer: {
-    width: g.width - g.size(32),
+    width: '100%',
   },
   topRow: {
+    flex: 1,
     flexDirection: 'row',
     gap: g.size(8),
     justifyContent: 'space-between',
+    marginBottom: g.size(8),
   },
   vitalData: {
     ...g.labelMedium,
     color: g.white,
   },
   vitalDate: {
-    ...g.labelSmall,
+    ...g.bodySmall,
     color: g.white,
   },
   vitalLabel: {
@@ -54,7 +52,7 @@ export function VitalCard({ vital, vitalsOdd, index }: {
   return (
     <View
       style={[
-        s.blurContainer,
+        s.card,
         index === 0 && vitalsOdd && s.firstBlurContainer,
       ]}
     >
@@ -67,30 +65,19 @@ export function VitalCard({ vital, vitalsOdd, index }: {
       </View>
       <View style={s.bottomRow}>
         <Text style={s.vitalDate}>
-          {new Date(issued).toLocaleDateString('en-US', {
-            year: '2-digit',
-            month: 'short',
-            day: 'numeric'
-          })}
+          {formatDate(issued)}
         </Text>
         <Text style={s.vitalData}>
           {vitalsValueSwitch(coding[0].display, vital)}
         </Text>
       </View>
-
     </View>
   );
 }
 
-export function VitalCardSkeleton({ vitalsOdd, index }) {
+export function VitalCardSkeleton() {
   return (
-    <View
-      style={[
-        s.blurContainer,
-        index === 0 && vitalsOdd && s.firstBlurContainer,
-        { height: g.size(48) }
-      ]}
-    >
+    <View style={[s.card, { height: g.size(48) }]}>
       <BlurFill />
     </View>
   );
