@@ -36,12 +36,10 @@ const s = StyleSheet.create({
 
 export function MedicationCard({ med }: { med: Medication }) {
   const {
-    medicationCodeableConcept: {
-      coding: [{ display: medication }],
-    },
-    dosage,
-    dateAsserted,
-  } = med;
+    medicationCodeableConcept: { coding: [{ display: medication = '' }] = [{}] } = {},
+    dosage = [{ text: '' }],
+    dateAsserted = ''
+  } = med ?? {};
 
   return (
     <ExplainButton

@@ -34,10 +34,11 @@ const s = StyleSheet.create({
 
 export function InvoiceCard({ invoice }: { invoice: Invoice }) {
   const {
-    date,
-    content: [{ attachment: { url } }],
-    type: { coding: [{ display }] },
-  } = invoice;
+    date = '',
+    content: [{ attachment: { url = '' } = {} } = {}] = [],
+    type: { coding: [{ display = '' } = {}] = [] } = {},
+  } = invoice ?? {};
+
   return (
     <TouchableOpacity
       style={s.card}

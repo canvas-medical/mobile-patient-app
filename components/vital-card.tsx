@@ -48,7 +48,11 @@ export function VitalCard({ vital, vitalsOdd, index }: {
   vitalsOdd: boolean,
   index: number,
 }) {
-  const { issued, code: { coding } } = vital;
+  const {
+    issued = '',
+    code: { coding = [{ display: '' }] } = {}
+  } = vital ?? {};
+
   return (
     <View
       style={[

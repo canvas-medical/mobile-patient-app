@@ -35,7 +35,7 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "package": "com.brewerdigital.fhirdashboard",
+      "package": "com.brewerdigital.fhirdashboard"
     },
     "web": {
       "favicon": "./assets/appstore.png"
