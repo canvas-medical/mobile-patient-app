@@ -103,6 +103,9 @@ export default function Dashboard() {
   const recentLabDate = labs?.[0]?.date;
   const recentLabs = labs?.filter((lab: LabImagingReport) =>
     new Date(lab.date).toDateString() === new Date(recentLabDate).toDateString());
+  const recentProcedureDate = procedures?.[0]?.performedDateTime;
+  const recentProcedures = procedures?.filter((procedure: Procedure) =>
+    new Date(procedure.performedDateTime).toDateString() === new Date(recentProcedureDate).toDateString());
 
   return (
     <Screen>
@@ -197,7 +200,7 @@ export default function Dashboard() {
           >
             {loadingProcedures
               ? <ActivityIndicator color={g.white} />
-              : procedures?.slice(0, 1).map((procedure: Procedure) => (
+              : recentProcedures?.map((procedure: Procedure) => (
                 <ProcedureCard
                   key={procedure.id}
                   procedure={procedure}
