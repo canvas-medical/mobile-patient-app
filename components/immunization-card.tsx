@@ -26,9 +26,9 @@ const s = StyleSheet.create({
 
 export function ImmunizationCard({ immunization }: { immunization: Immunization }) {
   const {
-    vaccineCode: { coding: [{ display }] },
-    occurrenceDateTime,
-  } = immunization;
+    vaccineCode: { coding: [{ display = '' } = {}] = [] } = {},
+    occurrenceDateTime = ''
+  } = immunization ?? {};
 
   return (
     <ExplainButton

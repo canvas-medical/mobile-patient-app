@@ -74,14 +74,14 @@ const s = StyleSheet.create({
 
 export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const {
-    start,
-    end,
-    appointmentType,
-    reasonCode,
-    contained,
-  } = appointment;
+    start = '',
+    end = '',
+    appointmentType = { coding: [{ display: '' }] },
+    reasonCode = [{ text: '' }],
+    contained = [{ address: '' }],
+  } = appointment ?? {};
   const { data: clinicAddress } = useClinicLocation();
-  const isOfficeVisit = appointmentType.coding[0].display === 'Office Visit';
+  const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
 
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();

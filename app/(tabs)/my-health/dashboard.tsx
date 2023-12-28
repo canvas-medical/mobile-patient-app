@@ -95,10 +95,10 @@ export default function Dashboard() {
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
-  const activeMedications = medications?.filter((med: Medication) => med.status === 'active');
-  const activeConditions = conditions?.filter((condition: Condition) => condition.clinicalStatus.text === 'Active');
-  const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
-  const activeAllergies = allergies?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
+  const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
+  const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
+  const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));
+  const activeAllergies = allergies?.filter((allergy: Allergy) => allergy?.clinicalStatus?.text === 'Active');
   const recentLabDate = labs?.[0]?.date;
   const recentLabs = labs?.filter((lab: LabImagingReport) =>
     new Date(lab.date).toDateString() === new Date(recentLabDate).toDateString());
