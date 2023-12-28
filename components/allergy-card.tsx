@@ -29,15 +29,11 @@ const s = StyleSheet.create({
 
 export function AllergyCard({ allergy }: { allergy: Allergy }) {
   const {
-    code: {
-      coding: [{ display }],
-    },
-    note,
-    reaction,
-    recordedDate,
-  } = allergy;
-  const text = note ? note[0]?.text : '';
-  const severity = reaction ? reaction[0]?.severity : '';
+    code: { coding: [{ display = '' } = {}] = [] } = {},
+    note: [{ text = '' } = {}] = [],
+    reaction: [{ severity = '' } = {}] = [],
+    recordedDate = ''
+  } = allergy ?? {};
 
   const severityColor = (): string => {
     switch (severity.toLowerCase()) {
