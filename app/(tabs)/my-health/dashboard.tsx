@@ -26,6 +26,7 @@ import {
   Vital,
   LabImagingReport,
   Procedure,
+  DocumentResource,
 } from '@interfaces';
 import {
   AiWelcomeWizard,
@@ -33,6 +34,7 @@ import {
   ConditionCard,
   LabReportCard,
   LabReportSkeleton,
+  EducationalMaterialCard,
   GoalCard,
   Header,
   ImmunizationCard,
@@ -72,8 +74,8 @@ const s = StyleSheet.create({
 
 export default function Dashboard() {
   const tabBarHeight = useBottomTabBarHeight();
-  const [openWizard, setOpenWizard] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
+  const [openWizard, setOpenWizard] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const { data: vitals, isLoading: loadingVitals, refetch: refetchObservations } = useObservations();
   const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
   const { data: allergies, isLoading: loadingAllergies, refetch: refetchAllergies } = useAllergies();
@@ -117,6 +119,9 @@ export default function Dashboard() {
   const recentLabDate = labs?.[0]?.date;
   const recentLabs = labs?.filter((lab: LabImagingReport) =>
     new Date(lab.date).toDateString() === new Date(recentLabDate).toDateString());
+  const recentProcedureDate = procedures?.[0]?.performedDateTime;
+  const recentProcedures = procedures?.filter((procedure: Procedure) =>
+    new Date(procedure.performedDateTime).toDateString() === new Date(recentProcedureDate).toDateString());
 
   return (
     <Screen>
@@ -221,7 +226,7 @@ export default function Dashboard() {
           >
             {loadingProcedures
               ? <ActivityIndicator color={g.white} />
-              : procedures?.slice(0, 1).map((procedure: Procedure) => (
+              : recentProcedures?.map((procedure: Procedure) => (
                 <ProcedureCard
                   key={procedure.id}
                   procedure={procedure}
@@ -312,15 +317,14 @@ export default function Dashboard() {
           >
             {loadingEducationalMaterials
               ? <ActivityIndicator color={g.white} />
-              : educationalMaterials?.slice(0, 1).map(() => (
-                // : educationalMaterials?.slice(0, 1).map((item: any) => ( // TODO: update type
-                null
-                // <EducationalMaterialCard
-                //   key={item.id}
-                //   data={item}
-                // />
+              : educationalMaterials?.map((item: DocumentResource) => ( // TODO: update type
+                <EducationalMaterialCard
+                  key={item.id}
+                  data={item}
+                />
               ))}
           </MyHealthBlock>
+          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
         </ScrollView>
       </MaskedView>
     </Screen>

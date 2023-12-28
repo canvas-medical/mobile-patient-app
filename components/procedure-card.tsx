@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { formatDate } from '@utils';
 import { Procedure } from '@interfaces';
-import { BlurFill } from '@components';
+import { BlurFill, ExplainButton } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -27,7 +27,13 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
   const codeDisplay = code?.coding[0]?.display;
 
   return (
-    <View style={s.blurContainer}>
+    <ExplainButton
+      style={s.blurContainer}
+      id={procedure.id}
+      resourceType={procedure.resourceType}
+      codes={procedure.code.coding}
+      description={procedure.code.coding[0].display}
+    >
       <BlurFill />
       <Text
         style={s.procedureType}
@@ -38,7 +44,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
       <Text style={s.procedureDate}>
         {formatDate(performedDateTime)}
       </Text>
-    </View>
+    </ExplainButton>
   );
 }
 

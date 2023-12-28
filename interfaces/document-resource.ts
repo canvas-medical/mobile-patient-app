@@ -1,5 +1,4 @@
 export interface DocumentResource {
-  resource: {
     resourceType: string
     id: string
     status: string
@@ -49,4 +48,3 @@ export interface DocumentResource {
       }
     }
   }
-}
