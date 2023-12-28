@@ -26,9 +26,9 @@ const s = StyleSheet.create({
 
 export function ConditionCard({ condition }: { condition: Condition }) {
   const {
-    code: { text },
-    recordedDate,
-  } = condition;
+    code: { text = '' } = {},
+    recordedDate = ''
+  } = condition ?? {};
 
   return (
     <ExplainButton

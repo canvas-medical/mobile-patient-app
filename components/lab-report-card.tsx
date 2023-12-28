@@ -56,18 +56,18 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
   if ('type' in report) {
     data = {
       id: report.id,
-      date: report.date,
-      display: report.type.coding[0].display,
-      status: report.status,
-      uri: report.content[0].attachment.url,
+      date: report.date ?? '',
+      display: report.type?.coding ? report.type?.coding[0]?.display ?? '' : '',
+      status: report.status ?? 'current',
+      uri: report.content ? report.content[0]?.attachment?.url ?? '' : '',
     };
   } else {
     data = {
       id: report.id,
-      date: report.issued,
-      display: `${report.code.text} - ${report.category[0].coding[0].display}`,
-      status: report.status,
-      uri: diagnosticURI
+      date: report.issued ?? '',
+      display: `${report.code?.text ?? ''} - ${report.category ? report.category[0]?.coding[0]?.display ?? '' : ''}`,
+      status: report.status ?? 'current',
+      uri: diagnosticURI ?? ''
     };
   }
 

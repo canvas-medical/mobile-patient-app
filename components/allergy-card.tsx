@@ -32,10 +32,12 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
     code: {
       coding: [{ display }],
     },
-    note: [{ text }],
-    reaction: [{ severity }],
+    note,
+    reaction,
     recordedDate,
   } = allergy;
+  const text = note ? note[0]?.text : '';
+  const severity = reaction ? reaction[0]?.severity : '';
 
   const severityColor = (): string => {
     switch (severity.toLowerCase()) {

@@ -33,13 +33,13 @@ const s = StyleSheet.create({
 
 export function GoalCard({ goal }: { goal: Goal }) {
   const {
-    achievementStatus: { coding: [{ display: achievementStatus }] },
-    priority: { coding: [{ display: priority }] },
-    note: [{ text: note }],
-    description: { text: description },
-    target: [{ dueDate: targetDate }],
-    startDate
-  } = goal;
+    achievementStatus: { coding: [{ display: achievementStatus }] } = { coding: [{ display: '' }] },
+    priority: { coding: [{ display: priority }] } = { coding: [{ display: '' }] },
+    note: [{ text: note }] = [{ text: '' }],
+    description: { text: description } = { text: '' },
+    target: [{ dueDate: targetDate }] = [{ dueDate: '' }],
+    startDate = ''
+  } = goal ?? {};
 
   return (
     <View style={s.card}>

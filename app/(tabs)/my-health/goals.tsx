@@ -18,9 +18,8 @@ const s = StyleSheet.create({
 export default function Goals() {
   const { data, isLoading, refetch } = useGoals();
   const activeStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
-  const inactiveStates = ['Not Achieved', 'Not Attainable', 'Achieved'];
-  const activeGoals = data?.filter((item: Goal) => activeStates.includes(item.achievementStatus.coding[0].display));
-  const inactiveGoals = data?.filter((item: Goal) => inactiveStates.includes(item.achievementStatus.coding[0].display));
+  const activeGoals = data?.filter((item: Goal) => activeStates.includes(item?.achievementStatus?.coding[0]?.display));
+  const inactiveGoals = data?.filter((item: Goal) => !activeStates.includes(item?.achievementStatus?.coding[0]?.display));
 
   return (
     <StackListView
