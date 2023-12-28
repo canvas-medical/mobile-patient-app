@@ -65,7 +65,10 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
     >
       <BlurFill />
       <View style={s.row}>
-        <Text style={s.displayText}>
+        <Text
+          style={s.displayText}
+          numberOfLines={2}
+        >
           {display}
         </Text>
         {data

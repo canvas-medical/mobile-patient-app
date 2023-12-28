@@ -25,7 +25,8 @@ import {
   DiagnosticReport,
   Vital,
   LabImagingReport,
-  Procedure, DocumentResource,
+  Procedure,
+  DocumentResource,
 } from '@interfaces';
 import {
   AiWelcomeWizard,
