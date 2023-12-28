@@ -73,7 +73,7 @@ async function patientCreate(data) {
 
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: FormData) => patientCreate(data),
+    mutationFn: (data) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: () => {
       Alert.alert(
