@@ -17,9 +17,8 @@ async function getConditions() {
 }
 
 export function useConditions() {
-  const conditionsQuery = useQuery({
+  return useQuery({
     queryKey: ['conditions'],
     queryFn: () => getConditions(),
   });
-  return conditionsQuery;
 }

@@ -17,11 +17,10 @@ async function getDiagnostics() {
 }
 
 export function useDiagnostics() {
-  const diagnosticQuery = useQuery({
+  return useQuery({
     queryKey: ['diagnostics'],
     queryFn: () => getDiagnostics(),
   });
-  return diagnosticQuery;
 }
 
 async function getDiagnosticURI(id: string) {
@@ -39,9 +38,8 @@ async function getDiagnosticURI(id: string) {
 }
 
 export function useDiagnosticURI(id: string | null) {
-  const diagnosticQuery = useQuery({
+  return useQuery({
     queryKey: [`diagnostic-id: ${id}`],
     queryFn: () => getDiagnosticURI(id),
   });
-  return diagnosticQuery;
 }

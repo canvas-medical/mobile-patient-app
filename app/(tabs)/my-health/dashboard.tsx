@@ -100,7 +100,7 @@ export default function Dashboard() {
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal.achievementStatus.coding[0].display));
   const activeAllergies = allergies?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
   const recentLabDate = labs?.[0]?.date;
-  const recentLabs = labs?.filter((lab: LabImagingReport | DiagnosticReport) =>
+  const recentLabs = labs?.filter((lab: LabImagingReport) =>
     new Date(lab.date).toDateString() === new Date(recentLabDate).toDateString());
 
   return (
@@ -132,7 +132,7 @@ export default function Dashboard() {
           >
             <View style={s.vitalsContainer}>
               {loadingVitals
-                ? Array.from(Array(6)).map(() => <VitalCardSkeleton />)
+                ? Array.from(Array(6)).map((_, i) => { const key = i * 2; return (<VitalCardSkeleton key={key} />); })
                 : vitals?.map((vital: Vital, i: number) => (
                   <VitalCard
                     index={i}

@@ -20,8 +20,7 @@ async function getQuestionnaire(id: string) {
     }
   });
   if (!res.ok) throw new Error();
-  const json = await res.json();
-  return json;
+  return await res.json();
 }
 
 export function useQuestionnaire(id: string) {
@@ -87,7 +86,6 @@ export function useQuestionnaireSubmit() {
     onSuccess: () => router.push('(tabs)/my-health'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
-      console.log(e);
       Alert.alert(
         'Error',
         'There was an error submitting the form. Please try again.',
