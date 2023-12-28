@@ -15,6 +15,7 @@ const s = StyleSheet.create({
   container: {
     justifyContent: 'flex-end',
     paddingHorizontal: g.size(36),
+    paddingBottom: g.size(192),
   },
   or: {
     ...g.titleLarge,
@@ -39,9 +40,10 @@ const s = StyleSheet.create({
   version: {
     ...g.bodySmall,
     color: g.neutral100,
-    textAlign: 'left',
-    marginTop: g.size(192),
-    bottom: g.size(22)
+    opacity: 0.8,
+    position: 'absolute',
+    left: g.size(16),
+    bottom: g.size(16)
   }
 });
 

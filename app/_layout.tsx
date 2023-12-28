@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import * as Notifications from 'expo-notifications';
