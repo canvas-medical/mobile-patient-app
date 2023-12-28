@@ -24,8 +24,7 @@ export default function Index() {
   useEffect(() => {
     if (!navigationState?.key || isFetching) return;
     if (patient?.id) {
-      // router.replace('(tabs)/my-health');
-      router.replace('coverage');
+      router.replace('(tabs)/my-health');
     } else router.replace('initial');
   }, [navigationState, patient, isFetching]);
 
