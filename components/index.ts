@@ -1,11 +1,12 @@
 export { AiModal } from '@components/ai-modal';
 export { AiWelcomeWizard } from '@components/ai-welcome-wizard';
-export { ExplainButton } from '@components/explain-button';
 export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { BlurFill } from '@components/blur-fill';
 export { Button } from '@components/button';
 export { ConditionCard } from '@components/condition-card';
+export { EducationalMaterialCard } from '@components/educational-material-card';
+export { ExplainButton } from '@components/explain-button';
 export { GoalCard } from '@components/goal-card';
 export { Header } from '@components/header';
 export { ImmunizationCard } from '@components/immunization-card';

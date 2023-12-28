@@ -29,6 +29,7 @@ const s = StyleSheet.create({
     ...g.bodyMedium,
     color: g.white,
     opacity: 0.9,
+    padding: g.size(2),
   },
   zeroState: {
     ...g.bodyMedium,

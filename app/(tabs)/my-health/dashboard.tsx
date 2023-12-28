@@ -25,7 +25,7 @@ import {
   DiagnosticReport,
   Vital,
   LabImagingReport,
-  Procedure,
+  Procedure, DocumentResource,
 } from '@interfaces';
 import {
   AiWelcomeWizard,
@@ -33,6 +33,7 @@ import {
   ConditionCard,
   LabReportCard,
   LabReportSkeleton,
+  EducationalMaterialCard,
   GoalCard,
   Header,
   ImmunizationCard,
@@ -106,7 +107,6 @@ export default function Dashboard() {
   return (
     <Screen>
       <Header />
-      <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />
       <MaskedView
         style={s.maskedView}
         maskElement={(
@@ -288,15 +288,14 @@ export default function Dashboard() {
           >
             {loadingEducationalMaterials
               ? <ActivityIndicator color={g.white} />
-              : educationalMaterials?.slice(0, 1).map(() => (
-                // : educationalMaterials?.slice(0, 1).map((item: any) => ( // TODO: update type
-                null
-                // <EducationalMaterialCard
-                //   key={item.id}
-                //   data={item}
-                // />
+              : educationalMaterials?.map((item: DocumentResource) => ( // TODO: update type
+                <EducationalMaterialCard
+                  key={item.id}
+                  data={item}
+                />
               ))}
           </MyHealthBlock>
+          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
         </ScrollView>
       </MaskedView>
     </Screen>
