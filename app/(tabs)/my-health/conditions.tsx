@@ -23,7 +23,7 @@ export default function Conditions() {
   return (
     <StackListView
       title="Conditions"
-      icon={<FontAwesome5 name="heart-broken" size={g.size(36)} color={g.white} />}
+      icon={<FontAwesome5 name="notes-medical" size={g.size(36)} color={g.white} />}
       isLoading={isLoading}
       refetch={refetch}
     >

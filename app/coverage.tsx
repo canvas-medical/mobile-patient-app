@@ -185,7 +185,7 @@ export default function Coverage() {
                   </View>
                   <View style={s.buttons}>
                     <Button
-                      onPress={handleSubmit((data) => onCreateCoverage(data))}
+                      onPress={handleSubmit((data: any) => onCreateCoverage(data))} // TODO: Type
                       label={isPending ? 'Submitting...' : 'Submit'}
                       theme="primary"
                     />

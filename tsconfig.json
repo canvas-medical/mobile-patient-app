@@ -12,11 +12,17 @@
       "@components/*": [
         "components/*"
       ],
+      "@constants/*": [
+        "constants/*"
+      ],
       "@interfaces/*": [
         "interfaces/*"
       ],
       "@services/*": [
         "services/*"
+      ],
+      "@stores": [
+        "store/*"
       ],
       "@styles": [
         "style-variables.ts"

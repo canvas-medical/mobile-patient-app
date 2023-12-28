@@ -23,7 +23,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: g.white,
     borderTopLeftRadius: g.size(36),
     borderTopRightRadius: g.size(36),
@@ -46,6 +46,9 @@ const s = StyleSheet.create({
   loading: {
     flex: 1,
     paddingBottom: g.size(120),
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   scrollCover: {
     width: g.width,
@@ -85,72 +88,70 @@ export default function Questionnaire() {
   return (
     <Screen>
       <View style={s.scrollCover} />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView contentContainerStyle={s.container}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={s.container}>
-              <View style={s.header}>
-                <TouchableOpacity onPress={() => router.back()}>
-                  <Feather
-                    name="arrow-left"
-                    size={g.size(36)}
-                    color={g.white}
-                  />
-                </TouchableOpacity>
-                <Text style={s.title}>
-                  Questionnaires
+      <KeyboardAvoidingView
+        style={s.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <ScrollView contentContainerStyle={s.scrollContent}>
+            <View style={s.header}>
+              <TouchableOpacity onPress={() => router.back()}>
+                <Feather
+                  name="arrow-left"
+                  size={g.size(36)}
+                  color={g.white}
+                />
+              </TouchableOpacity>
+              <Text style={s.title}>
+                Questionnaires
+              </Text>
+            </View>
+            <View style={s.contentContainer}>
+              <View>
+                <Text style={s.greeting}>
+                  Welcome
+                </Text>
+                <Text style={s.subGreeting}>
+                  Fill out a few personal details to get started
                 </Text>
               </View>
-              <View style={s.contentContainer}>
-                <View>
-                  <Text style={s.greeting}>
-                    Welcome
-                  </Text>
-                  <Text style={s.subGreeting}>
-                    Fill out a few personal details to get started
-                  </Text>
-                </View>
-                <View style={s.formContainer}>
-                  {isFetching
-                    ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
-                    : (
-                      <>
-                        {questionnaire?.item.map((question: Question) => (
-                          <Controller
-                            name={question.linkId}
-                            control={control}
-                            rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
-                            key={question.linkId}
-                            render={({ field: { onChange, value } }) => (
-                              <Input
-                                placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
-                                type={dataTypeMap[question.type]}
-                                name={question.text}
-                                label={question.text}
-                                options={question.answerOption.map((answer) => (
-                                  { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
-                                onFocus={() => clearErrors()}
-                                onChange={(e) => onChange(e)}
-                                value={value}
-                                error={errors[question.linkId] as FieldError}
-                              />
-                            )}
+              {isFetching
+                ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
+                : (
+                  <View style={s.formContainer}>
+                    {questionnaire?.item.map((question: Question) => (
+                      <Controller
+                        name={question.linkId}
+                        control={control}
+                        rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
+                        key={question.linkId}
+                        render={({ field: { onChange, value } }) => (
+                          <Input
+                            placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
+                            type={dataTypeMap[question.type]}
+                            name={question.text}
+                            label={question.text}
+                            options={question.answerOption.map((answer) => (
+                              { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
+                            onFocus={() => clearErrors()}
+                            onChange={(e) => onChange(e)}
+                            value={value}
+                            error={errors[question.linkId] as FieldError}
                           />
-                        ))}
-                        <Button
-                          onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
-                          disabled={isPending}
-                          label={isPending ? 'Submitting...' : 'Submit'}
-                          theme="primary"
-                        />
-                      </>
-                    )
-                  }
-                </View>
-              </View>
+                        )}
+                      />
+                    ))}
+                    <Button
+                      onPress={handleSubmit((data) => onQuestionnaireSubmit({ formData: data, questionnaireData: questionnaire }))}
+                      disabled={isPending}
+                      label={isPending ? 'Submitting...' : 'Submit'}
+                      theme="primary"
+                    />
+                  </View>
+                )}
             </View>
-          </TouchableWithoutFeedback>
-        </ScrollView>
+          </ScrollView>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </Screen>
   );

@@ -20,6 +20,12 @@ const s = StyleSheet.create({
   buttonContainer: {
     marginTop: 'auto',
   },
+  checkboxButton: {
+    width: g.size(28),
+    height: g.size(28),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   consentItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -102,7 +108,11 @@ export default function Consents() {
                   </Text>
                 </View>
                 <View style={s.consentItem}>
-                  <TouchableOpacity disabled={!!isAccepted} onPress={() => onCreateConsent({ consent: 'Consent Document' })}>
+                  <TouchableOpacity
+                    style={s.checkboxButton}
+                    onPress={() => onCreateConsent({ consent: 'Consent Document' })}
+                    disabled={!!isAccepted}
+                  >
                     {isPending
                       ? <ActivityIndicator color={g.primaryBlue} />
                       : (
@@ -126,7 +136,7 @@ export default function Consents() {
                 </View>
                 <View style={s.buttonContainer}>
                   <Button
-                    disabled={!isAccepted}
+                    // disabled={!isAccepted}
                     theme="primary"
                     onPress={() => router.push('questionnaire')}
                     label="Next"

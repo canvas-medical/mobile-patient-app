@@ -1,0 +1,52 @@
+{
+  "cli": {
+    "version": ">= 5.9.0"
+  },
+  "build": {
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "development": {
+      "env": {
+        "EXPO_PUBLIC_AUTH_GRANT_TYPE": "client_credentials",
+        "EXPO_PUBLIC_API_URL": "https://fumage-brewerdigital-apiprize.canvasmedical.com",
+        "EXPO_PUBLIC_STRIPE_API_URL": "https://gozj2why30.execute-api.us-east-2.amazonaws.com/Prod",
+        "EXPO_PUBLIC_OPENAI_API_URL": "https://xwpu2p87c7.execute-api.us-east-2.amazonaws.com/Prod/explain_fhir_object"
+      },
+      "ios": {
+        "developmentClient": true,
+        "distribution": "internal"
+      },
+      "android": {
+        "developmentClient": true,
+        "distribution": "internal"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_AUTH_GRANT_TYPE": "client_credentials",
+        "EXPO_PUBLIC_API_URL": "https://fumage-brewerdigital-apiprize.canvasmedical.com",
+        "EXPO_PUBLIC_STRIPE_API_URL": "https://gozj2why30.execute-api.us-east-2.amazonaws.com/Prod",
+        "EXPO_PUBLIC_OPENAI_API_URL": "https://xwpu2p87c7.execute-api.us-east-2.amazonaws.com/Prod/explain_fhir_object",
+        "EXPO_PUBLIC_CLIENT_ID": "ymoBc5BYrV5ZrfDcCxd8WYnkZHV541HHNYZ8ALZH",
+        "EXPO_PUBLIC_CLIENT_SECRET": "tqZCwP03LtAFx1nYK0unFhorTHS2wiIjPRmgGWnaKpKdNlRco6sZEjeDbp8xuCk4nAn93AYgD3Mbi6K3EQfcw0apTnz9UGN6yka4iu4V620xSHgD0WOgr6VXDb5pPhXk",
+        "EXPO_PUBLIC_PRACTITIONER_ID": "3b4f8231a0dd4330927b8a8e702ce36b",
+        "EXPO_PUBLIC_CLINIC_ID": "869857f9-5e56-4385-96c5-2fbc320bd514",
+        "EXPO_PUBLIC_OPENAI_API_KEY": "TDair9KC0e98yqNyzM0K76eJW3AQWJjF2Ss4Rn72"
+      },
+      "ios": {
+        "image": "latest"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
