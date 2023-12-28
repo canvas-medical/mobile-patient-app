@@ -1,5 +1,6 @@
 export { clearHistory } from '@utils/clear-history';
 export { formatDate, timeZoneOffset } from '@utils/date-format';
+export { useKeyboardVisible } from '@utils/keyboard';
 export { formatPhoneNumber } from '@utils/phone-number-format';
 export { capitalizeFirstCharacter } from '@utils/text-format';
 export { formatTime } from '@utils/time-format';

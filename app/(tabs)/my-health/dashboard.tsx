@@ -120,7 +120,7 @@ export default function Dashboard() {
 
   return (
     <Screen>
-      <Header />
+      <Header hideBackButton />
       <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />
       <MaskedView
         style={s.maskedView}

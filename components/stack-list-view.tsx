@@ -56,7 +56,7 @@ export function StackListView({
   children: ReactNode,
 }) {
   const tabBarHeight = useBottomTabBarHeight();
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
