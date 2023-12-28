@@ -22,7 +22,8 @@ import {
   useInvoices,
   usePaymentIntentCapture,
   usePaymentNotices,
-  usePaymentNoticeSubmit
+  usePaymentNoticeSubmit,
+  usePaymentIntentCancel
 } from '@services';
 import { formatDate } from '@utils';
 import { Invoice, PaymentNotice } from '@interfaces';
@@ -123,7 +124,8 @@ export default function Billing() {
   const tabBarHeight = useBottomTabBarHeight();
 
   const { mutate: onPaymentIntentCapture, isSuccess: paymentIntentSuccess, isPending: paymentIntentPending } = usePaymentIntentCapture();
-  const { mutate: onPaymentNoticeSubmit, isSuccess: paymentNoticeSuccess, isPending: paymentNoticePending } = usePaymentNoticeSubmit();
+  const { mutate: onPaymentNoticeSubmit, isSuccess: paymentNoticeSuccess, isPending: paymentNoticePending, error: paymentNoticeError } = usePaymentNoticeSubmit();
+  const { mutate: onPaymentIntentCancel, isSuccess: paymentIntentCanceled, isPending: paymentIntentCanceling } = usePaymentIntentCancel();
   const { data: paymentNotices, isLoading: loadingPaymentNotices, refetch: refetchPaymentNotices } = usePaymentNotices();
 
   const disabled = Number(amount) < 1 || paymentNoticePending || paymentIntentPending;
@@ -169,6 +171,15 @@ export default function Billing() {
     };
     capturePayment();
   }, [paymentNoticeSuccess]);
+
+  useEffect(() => {
+    const cancelPayment = async () => {
+      if (!paymentNoticeError) return;
+      onPaymentIntentCancel(paymentIntentId);
+      setPaymentIntentId('');
+    };
+    cancelPayment();
+  }, [paymentNoticeError]);
 
   useEffect(() => {
     const clearForm = async () => {

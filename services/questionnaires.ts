@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useStateMachine } from 'little-state-machine';
 import { ApiError, Question } from '@interfaces';
+import Bugsnag from '@bugsnag/expo';
 import { resetAction } from '@store';
 import { getToken } from './access-token';
 
@@ -21,8 +22,7 @@ async function getQuestionnaire(id: string) {
     }
   });
   if (!res.ok) throw new Error();
-  const json = await res.json();
-  return json;
+  return await res.json();
 }
 
 export function useQuestionnaire(id: string) {
@@ -91,7 +91,7 @@ export function useQuestionnaireSubmit() {
       router.push('(tabs)/my-health');
     },
     onError: (e) => {
-      console.log(e);
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error submitting the form. Please try again.',

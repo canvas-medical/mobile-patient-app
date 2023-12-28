@@ -2,6 +2,7 @@ import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 function birthSexCodeSwitch(birthSex) {
@@ -75,7 +76,8 @@ export function useCreatePatient() {
   return useMutation({
     mutationFn: (data) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
-    onError: () => {
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error creating your account. Please try again.',
@@ -91,6 +93,8 @@ export function useCreatePatient() {
 async function getPatient() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
+  if (!patientId) throw (new Error('No patient id found'));
+
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
     method: 'GET',
     headers: {
@@ -98,8 +102,7 @@ async function getPatient() {
       accept: 'application/json'
     }
   });
-  const patient = await res.json();
-  return patient;
+  return res.json();
 }
 
 export function usePatient() {

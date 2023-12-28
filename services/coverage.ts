@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { useMutation } from '@tanstack/react-query';
 import { ApiError } from '@interfaces';
 import * as SecureStore from 'expo-secure-store';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 export const Insurers = {
@@ -33,7 +34,7 @@ export const Insurers = {
   },
 };
 
-async function coverageCreate(data) {
+async function coverageCreate(data: {insurer: string, memberId: string, groupNumber?: string}) {
   const token = await getToken();
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -98,9 +99,10 @@ async function coverageCreate(data) {
 
 export function useCreateCoverage() {
   return useMutation({
-    mutationFn: (data) => coverageCreate(data),
+    mutationFn: (data: {insurer: string, memberId: string, groupNumber?: string}) => coverageCreate(data),
     onSuccess: () => router.push('consents'),
-    onError: () => {
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error creating your account. Please try again.',

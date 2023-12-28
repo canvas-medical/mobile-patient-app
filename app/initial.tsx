@@ -37,6 +37,14 @@ const s = StyleSheet.create({
     ...g.titleLarge,
     marginBottom: g.size(20),
   },
+  version: {
+    ...g.bodySmall,
+    color: g.neutral100,
+    opacity: 0.8,
+    position: 'absolute',
+    left: g.size(16),
+    bottom: g.size(16)
+  }
 });
 
 export default function Initial() {
@@ -100,6 +108,9 @@ export default function Initial() {
           />
         </Overlay>
       )}
+      <Text style={s.version}>
+        Version: 1.0.0 (9)
+      </Text>
     </Screen>
   );
 }

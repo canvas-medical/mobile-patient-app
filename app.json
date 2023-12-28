@@ -18,12 +18,13 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.brewerdigital.fhirdashboard",
-      "buildNumber": "8",
+      "buildNumber": "9",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app does not use the camera."
+        "NSCameraUsageDescription": "This app uses the camera to securely capture credit card information."
       }
     },
     "android": {
+      "versionCode": 9,
       "adaptiveIcon": {
         "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"
@@ -34,7 +35,7 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "package": "com.brewerdigital.fhirdashboard"
+      "package": "com.brewerdigital.fhirdashboard",
     },
     "web": {
       "favicon": "./assets/appstore.png"
@@ -42,7 +43,13 @@
     "plugins": [
       "expo-router",
       "@config-plugins/react-native-blob-util",
-      "@config-plugins/react-native-pdf"
+      "@config-plugins/react-native-pdf",
+      "@bugsnag/plugin-expo-eas-sourcemaps",
+      ["expo-build-properties", {
+        "android": {
+          "usesCleartextTraffic": true
+        }
+      }]
     ],
     "extra": {
       "router": {
@@ -50,6 +57,9 @@
       },
       "eas": {
         "projectId": "eabcadfa-7fee-400e-8e04-f2f5c4d1d35b"
+      },
+      "bugsnag": {
+        "apiKey": "1e30b647adf4a385efbbb03d2c5f3a34"
       }
     },
     "owner": "brewerdigital"

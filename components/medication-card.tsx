@@ -69,7 +69,9 @@ export function MedicationCard({ med }: { med: Medication }) {
 
 export function MedicationSkeleton() {
   return (
-    <View style={s.card}>
+    <View
+      style={[s.card, { height: g.size(60) }]}
+    >
       <BlurFill />
     </View>
   );

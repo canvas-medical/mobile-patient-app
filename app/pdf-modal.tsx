@@ -55,6 +55,7 @@ export default function PdfModal() {
   return (
     <View style={s.contentContainer}>
       <Pdf
+        trustAllCerts={false}
         source={{ uri: uri as string }}
         style={s.pdf}
       />

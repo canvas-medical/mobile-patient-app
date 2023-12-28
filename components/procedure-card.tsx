@@ -45,7 +45,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
 export function ProcedureSkeleton() {
   return (
     <View
-      style={s.blurContainer}
+      style={[s.blurContainer, { height: g.size(48) }]}
     >
       <BlurFill />
     </View>

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 async function getPaymentNotices() {
@@ -62,7 +63,7 @@ export function usePaymentNoticeSubmit() {
   return useMutation({
     mutationFn: (amount: string) => paymentNoticeSubmit(amount),
     onError: (e) => {
-      // TODO: release charge if something goes wrong here
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Payment Refunded',
         e.message,
