@@ -228,7 +228,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/conditions"
             title="Conditions"
             viewAll={!!conditions?.length}
-            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.white} />}
             loading={loadingConditions}
           >
             {loadingConditions

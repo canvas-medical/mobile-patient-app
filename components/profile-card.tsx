@@ -4,7 +4,7 @@ import { router, useNavigation } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
-import { capitalizeFirstCharacter, formatDate, formatPhoneNumber } from '@utils';
+import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
 import { Patient } from '@interfaces';
 import { BlurFill } from '@components/blur-fill';
 import { g } from '@styles';
@@ -94,11 +94,7 @@ export function ProfileCard({ data }: { data: Patient }) {
   const queryClient = useQueryClient();
 
   const logout = () => {
-    const state = navigation.getState();
-    navigation.reset({
-      ...state,
-      routes: state.routes.map((route) => ({ ...route, state: undefined }))
-    });
+    clearHistory(navigation);
     SecureStore.deleteItemAsync('patient_id');
     SecureStore.deleteItemAsync('push_token');
     queryClient.clear();

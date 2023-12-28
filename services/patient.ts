@@ -59,6 +59,12 @@ async function patientCreate(data) {
       ],
       gender: data.gender.toLowerCase(),
       birthDate: data.birthDate,
+      address: [{
+        line: [data.addressLine1, ...(data.addressLine2 ? [data.addressLine2] : [])],
+        city: data.city,
+        state: data.stateAbbreviation,
+        postalCode: data.postalCode
+      }],
     })
   });
   if (!res.ok) throw new Error();
@@ -68,7 +74,7 @@ async function patientCreate(data) {
 
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data) => patientCreate(data),
+    mutationFn: (data) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
