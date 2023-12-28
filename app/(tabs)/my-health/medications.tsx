@@ -17,8 +17,9 @@ const s = StyleSheet.create({
 
 export default function Medications() {
   const { data, isLoading, refetch } = useMedications();
-  const activeMedications = data.filter((med: Medication) => med.status === 'active');
-  const expiredMedications = data.filter((med: Medication) => med.status === 'stopped');
+  const activeStatuses = ['active', 'intended'];
+  const activeMedications = data.filter((med: Medication) => activeStatuses.includes(med.status));
+  const expiredMedications = data.filter((med: Medication) => !activeStatuses.includes(med.status));
 
   return (
     <StackListView
