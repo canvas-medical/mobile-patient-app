@@ -39,6 +39,9 @@ const s = StyleSheet.create({
   greeting: {
     ...g.bodySmall,
     color: g.white,
+    height: g.size(16),
+    width: '100%',
+    textAlign: 'right',
   },
   label: {
     ...g.labelMedium,
@@ -46,6 +49,7 @@ const s = StyleSheet.create({
   },
   labelContainer: {
     alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   nameAndAvatarContainer: {
     minHeight: g.size(48),

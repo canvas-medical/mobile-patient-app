@@ -115,7 +115,7 @@ export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisibl
                 width={g.size(25)}
                 height={g.size(25)}
               />
-              <Text style={s.text}>Press on the card until it changes to this</Text>
+              <Text style={s.text}>Press on the lightbulb until it changes to this</Text>
               <LightbulbSVG
                 fill={g.goldenYellow}
                 width={g.size(25)}
