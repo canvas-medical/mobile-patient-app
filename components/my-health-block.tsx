@@ -44,12 +44,14 @@ export function MyHealthBlock(
     title,
     icon,
     viewAll,
+    loading,
   }: {
     children: ReactNode,
     title: string,
     icon: any,
     viewAllRoute?: string,
     viewAll: boolean,
+    loading: boolean,
   }
 ) {
   return (
@@ -71,7 +73,7 @@ export function MyHealthBlock(
       </View>
       <View style={s.cardContainer}>
         {children}
-        {Array.isArray(children) && !children.length && title !== 'Vitals' && (
+        {Array.isArray(children) && !children.length && title !== 'Vitals' && !loading && (
           <Text style={s.zeroState}>
             No Active
             {' '}

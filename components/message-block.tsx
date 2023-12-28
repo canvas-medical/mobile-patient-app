@@ -58,6 +58,7 @@ export function MessageBlock({ received, message }: { received: boolean, message
           <RenderHtml
             baseStyle={s.messageReceivedText}
             source={{ html: message }}
+            tagsStyles={{ p: { padding: 0, margin: 0, } }}
           />
           <View style={s.leftArrow} />
         </View>

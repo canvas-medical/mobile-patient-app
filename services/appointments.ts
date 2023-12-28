@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AppointmentCreationData } from '@interfaces';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 async function getAppointments() {
@@ -20,11 +21,10 @@ async function getAppointments() {
 }
 
 export function useAppointments() {
-  const appointmentsQuery = useQuery({
+  return useQuery({
     queryKey: ['appointments'],
     queryFn: () => getAppointments(),
   });
-  return appointmentsQuery;
 }
 
 async function getSlot(date: string, id: string, duration) {
@@ -41,11 +41,10 @@ async function getSlot(date: string, id: string, duration) {
 }
 
 export function useSlot(date: string, id: string, duration: number) {
-  const slotQuery = useQuery({
+  return useQuery({
     queryKey: ['slot', date, id],
     queryFn: () => getSlot(date, id, duration),
   });
-  return slotQuery;
 }
 
 async function appointmentCreate({
@@ -62,7 +61,7 @@ async function appointmentCreate({
       accept: 'application/json',
       'content-type': 'application/json',
     },
-    // TODO: Strip out unused key values
+    // TODO: Strip out unused key values, @reid, can we send the description of the visit here?
     body: JSON.stringify({
       resourceType: 'Appointment',
       // contained: [{
@@ -145,7 +144,8 @@ export function useCreateAppointment() {
         { cancelable: false }
       );
     },
-    onError: () => {
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error booking your appointment. Please try again.',

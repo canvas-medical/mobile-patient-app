@@ -60,6 +60,7 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
+    padding: g.size(4),
     gap: g.size(4),
   },
   reason: {

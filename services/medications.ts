@@ -17,9 +17,8 @@ async function getMedications() {
 }
 
 export function useMedications() {
-  const medicationsQuery = useQuery({
+  return useQuery({
     queryKey: ['medications'],
     queryFn: () => getMedications(),
   });
-  return medicationsQuery;
 }

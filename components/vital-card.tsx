@@ -77,7 +77,7 @@ export function VitalCard({ vital, vitalsOdd, index }: {
 
 export function VitalCardSkeleton() {
   return (
-    <View style={s.card}>
+    <View style={[s.card, { height: g.size(48) }]}>
       <BlurFill />
     </View>
   );

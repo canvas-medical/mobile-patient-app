@@ -17,9 +17,8 @@ async function getObservations() {
 }
 
 export function useObservations() {
-  const observationsQuery = useQuery({
+  return useQuery({
     queryKey: ['observations'],
     queryFn: () => getObservations(),
   });
-  return observationsQuery;
 }

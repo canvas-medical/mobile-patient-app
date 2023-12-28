@@ -15,9 +15,8 @@ async function getSchedule() {
 }
 
 export function useSchedule() {
-  const scheduleQuery = useQuery({
+  return useQuery({
     queryKey: ['schedule'],
     queryFn: () => getSchedule(),
   });
-  return scheduleQuery;
 }
