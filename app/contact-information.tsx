@@ -14,6 +14,8 @@ import { Feather } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { useStateMachine } from 'little-state-machine';
 import { Button, Screen, Input } from '@components';
+import { americanStatesArray } from '@constants';
+import { useCreatePatient } from '@services';
 import { updateAction } from '@store';
 import { g } from '@styles';
 
@@ -64,16 +66,16 @@ const s = StyleSheet.create({
 });
 
 type FormData = {
-  preferredName: string
-  firstName: string
-  middleName: string
-  lastName: string
-  gender: string
-  birthSex: string
-  birthDate: string
+  email: string
+  phone: string
+  addressLine1: string
+  addressLine2: string
+  city: string
+  stateAbbreviation: string
+  postalCode: string
 }
 
-export default function PersonalDetails() {
+export default function ContactInformation() {
   const {
     control,
     setFocus,
@@ -82,17 +84,18 @@ export default function PersonalDetails() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      preferredName: null,
-      firstName: null,
-      middleName: null,
-      lastName: null,
-      gender: null,
-      birthSex: null,
-      birthDate: new Date().toISOString().slice(0, 10),
+      email: null,
+      phone: null,
+      addressLine1: null,
+      addressLine2: null,
+      city: null,
+      stateAbbreviation: null,
+      postalCode: null,
     },
     shouldFocusError: false,
   });
-  const { actions } = useStateMachine({ updateAction });
+  const { state: personalDetails, actions } = useStateMachine({ updateAction });
+  const { mutate: onCreatePatient, isPending } = useCreatePatient();
 
   return (
     <Screen>
@@ -110,7 +113,7 @@ export default function PersonalDetails() {
                   />
                 </TouchableOpacity>
                 <Text style={s.title}>
-                  Personal Details
+                  Contact Information
                 </Text>
               </View>
               <View style={s.contentContainer}>
@@ -119,182 +122,188 @@ export default function PersonalDetails() {
                     Welcome
                   </Text>
                   <Text style={s.subGreeting}>
-                    Fill out a few personal details to get started
+                    Please fill out your contact information
                   </Text>
                 </View>
                 <View style={s.formContainer}>
                   <View style={s.formInputs}>
                     <Controller
-                      name="preferredName"
+                      name="email"
                       control={control}
+                      rules={{
+                        required: { value: true, message: 'Required' },
+                        validate: (value) => {
+                          const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                          if (!regex.test(value)) return 'Please enter a valid email address';
+                          return true;
+                        }
+                      }}
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="text"
-                          name="preferredName"
-                          label="Preferred Name (optional)"
-                          placeholder="Enter your preferred name"
+                          name="email"
+                          label="Email"
+                          placeholder="Enter your email"
+                          onFocus={() => clearErrors()}
+                          onChange={onChange}
+                          value={value}
+                          onSubmitEditing={() => setFocus('phone')}
+                          autoCapitalize="none"
+                          keyboardType="email-address"
+                          textContentType="emailAddress"
+                          returnKeyType="next"
+                          forwardedRef={ref}
+                          error={errors.email}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="phone"
+                      control={control}
+                      rules={{
+                        required: { value: true, message: 'Required' },
+                        validate: (value) => {
+                          const regex = /^\(\d{3}\) \d{3}-\d{4}$/;
+                          if (!regex.test(value)) return 'Please enter a valid phone number';
+                          return true;
+                        }
+                      }}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <Input
+                          type="text"
+                          name="phone"
+                          label="Phone"
+                          placeholder="Enter your phone number"
+                          onFocus={() => clearErrors()}
+                          onChange={onChange}
+                          value={value}
+                          onSubmitEditing={() => setFocus('addressLine1')}
+                          autoCapitalize="none"
+                          keyboardType="phone-pad"
+                          textContentType="telephoneNumber"
+                          returnKeyType="next"
+                          forwardedRef={ref}
+                          error={errors.phone}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="addressLine1"
+                      control={control}
+                      rules={{ required: { value: true, message: 'Required' } }}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <Input
+                          type="text"
+                          name="addressLine1"
+                          label="Address"
+                          placeholder="Enter your address"
                           onFocus={() => clearErrors}
                           onChange={onChange}
                           value={value}
-                          onSubmitEditing={() => setFocus('firstName')}
+                          onSubmitEditing={() => setFocus('addressLine2')}
                           autoCapitalize="words"
                           keyboardType="default"
-                          textContentType="nickname"
+                          textContentType="streetAddressLine1"
                           returnKeyType="next"
                           forwardedRef={ref}
-                          error={errors.preferredName}
+                          error={errors.addressLine1}
                         />
                       )}
                     />
                     <Controller
-                      name="firstName"
+                      name="addressLine2"
+                      control={control}
+                      render={({ field: { onChange, value, ref } }) => (
+                        <Input
+                          type="text"
+                          name="addressLine2"
+                          label="Apartment, suite, etc. (optional)"
+                          placeholder="Enter your apartment, suite, etc."
+                          onFocus={() => clearErrors()}
+                          onChange={onChange}
+                          value={value}
+                          onSubmitEditing={() => setFocus('city')}
+                          autoCapitalize="words"
+                          keyboardType="default"
+                          textContentType="streetAddressLine2"
+                          returnKeyType="next"
+                          forwardedRef={ref}
+                          error={errors.addressLine2}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="city"
                       control={control}
                       rules={{ required: { value: true, message: 'Required' } }}
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="text"
-                          name="firstName"
-                          label="First Name"
-                          placeholder="Enter your first name"
+                          name="city"
+                          label="City"
+                          placeholder="Enter your city"
                           onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
-                          onSubmitEditing={() => setFocus('middleName')}
+                          onSubmitEditing={() => setFocus('stateAbbreviation')}
                           autoCapitalize="words"
                           keyboardType="default"
-                          textContentType="givenName"
+                          textContentType="addressCity"
                           returnKeyType="next"
                           forwardedRef={ref}
-                          error={errors.firstName}
+                          error={errors.city}
                         />
                       )}
                     />
                     <Controller
-                      name="middleName"
-                      control={control}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="text"
-                          name="middleName"
-                          label="Middle Name (optional)"
-                          placeholder="Enter your middle name"
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          onSubmitEditing={() => setFocus('lastName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="middleName"
-                          returnKeyType="next"
-                          forwardedRef={ref}
-                          error={errors.middleName}
-                        />
-                      )}
-                    />
-                    <Controller
-                      name="lastName"
-                      control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="text"
-                          name="lastName"
-                          label="Last Name"
-                          placeholder="Enter your last name"
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          onSubmitEditing={() => setFocus('gender')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="familyName"
-                          returnKeyType="next"
-                          forwardedRef={ref}
-                          error={errors.lastName}
-                        />
-                      )}
-                    />
-                    <Controller
-                      name="gender"
+                      name="stateAbbreviation"
                       control={control}
                       rules={{ required: { value: true, message: 'Required' } }}
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="selector"
-                          name="gender"
-                          label="Gender"
-                          placeholder="Select your gender"
-                          options={[
-                            'Male',
-                            'Female',
-                            'Other',
-                            'Unknown',
-                          ]}
+                          name="state"
+                          label="State"
+                          placeholder="Select your state"
+                          options={americanStatesArray}
                           onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
                           forwardedRef={ref}
-                          error={errors.gender}
+                          error={errors.stateAbbreviation}
                         />
                       )}
                     />
                     <Controller
-                      name="birthSex"
+                      name="postalCode"
                       control={control}
                       rules={{ required: { value: true, message: 'Required' } }}
-                      render={({ field: { onChange, value } }) => (
+                      render={({ field: { onChange, value, ref } }) => (
                         <Input
-                          type="selector"
-                          name="birthSex"
-                          label="Sex at Birth"
-                          placeholder="Sex at birth"
-                          options={[
-                            'Male',
-                            'Female',
-                            'Other',
-                            'Unknown',
-                          ]}
+                          type="text"
+                          name="postalCode"
+                          label="Zip Code"
+                          placeholder="Enter your zip code"
                           onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
-                          error={errors.birthSex}
-                        />
-                      )}
-                    />
-                    <Controller
-                      name="birthDate"
-                      control={control}
-                      rules={{
-                        validate: {
-                          required: (value) => {
-                            const today = new Date().toISOString().slice(0, 10);
-                            if (today === value) return 'Required';
-                            return true;
-                          }
-                        }
-                      }}
-                      render={({ field: { onChange, value } }) => (
-                        <Input
-                          type="date-picker"
-                          name="birthDate"
-                          label="Date of Birth"
-                          placeholder="Enter your date of birth"
-                          onFocus={() => clearErrors()}
-                          value={value}
-                          minimumDate={null}
-                          maximumDate={new Date()}
-                          onChange={onChange}
-                          error={errors.birthDate}
+                          onSubmitEditing={() => Keyboard.dismiss()}
+                          autoCapitalize="none"
+                          keyboardType="number-pad"
+                          textContentType="postalCode"
+                          returnKeyType="done"
+                          forwardedRef={ref}
+                          error={errors.postalCode}
                         />
                       )}
                     />
                   </View>
                   <Button
-                    onPress={handleSubmit((data: any) => {
+                    onPress={handleSubmit((data: any) => { // TODO: fix type
                       actions.updateAction(data);
-                      router.push('contact-information');
+                      onCreatePatient({ ...personalDetails, ...data });
                     })}
-                    label="Continue"
+                    label={isPending ? 'Registering...' : 'Register'}
                     theme="primary"
                   />
                 </View>

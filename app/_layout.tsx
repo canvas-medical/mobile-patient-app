@@ -5,6 +5,7 @@ import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StateMachineProvider } from 'little-state-machine';
 import { registerForPushNotificationsAsync } from '@services';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
@@ -41,16 +42,19 @@ export default function RootLayout() {
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="initial" options={{ headerShown: false }} />
-        <Stack.Screen name="personal-details" options={{ headerShown: false }} />
-        <Stack.Screen name="consents" options={{ headerShown: false }} />
-        <Stack.Screen name="questionnaire" options={{ headerShown: false }} />
-        <Stack.Screen name="coverage" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
-      </Stack>
+      <StateMachineProvider>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="initial" options={{ headerShown: false }} />
+          <Stack.Screen name="personal-details" options={{ headerShown: false }} />
+          <Stack.Screen name="contact-information" options={{ headerShown: false }} />
+          <Stack.Screen name="consents" options={{ headerShown: false }} />
+          <Stack.Screen name="questionnaire" options={{ headerShown: false }} />
+          <Stack.Screen name="coverage" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
+        </Stack>
+      </StateMachineProvider>
     </QueryClientProvider>
   );
 }

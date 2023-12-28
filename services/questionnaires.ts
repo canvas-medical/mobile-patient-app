@@ -1,8 +1,10 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
-import { Alert } from 'react-native';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useStateMachine } from 'little-state-machine';
 import { ApiError, Question } from '@interfaces';
+import { resetAction } from '@store';
 import { getToken } from './access-token';
 
 export enum QuestionnaireIds {
@@ -81,9 +83,13 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
 }
 
 export function useQuestionnaireSubmit() {
+  const { actions } = useStateMachine({ resetAction });
   return useMutation({
     mutationFn: (data: { formData: { key: string }; questionnaireData: { id: string, item: Question[] } }) => questionnaireSubmit(data),
-    onSuccess: () => router.push('(tabs)/my-health'),
+    onSuccess: () => {
+      actions.resetAction();
+      router.push('(tabs)/my-health');
+    },
     onError: (e) => {
       console.log(e);
       Alert.alert(
