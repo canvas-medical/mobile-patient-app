@@ -51,6 +51,7 @@ async function appointmentCreate({
   startTime,
   endTime,
   practitionerID,
+  reason,
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
@@ -61,66 +62,29 @@ async function appointmentCreate({
       accept: 'application/json',
       'content-type': 'application/json',
     },
-    // TODO: Strip out unused key values, @reid, can we send the description of the visit here?
     body: JSON.stringify({
       resourceType: 'Appointment',
-      // contained: [{
-      //   resourceType: 'Endpoint',
-      //   id: 'appointment-meeting-endpoint',
-      // status: 'active',
-      //   connectionType: {
-      //     code: 'https'
-      //   },
-      //   payloadType: [{
-      //     coding: [{
-      //       code: 'video-call'
-      //     }]
-      //   }],
-      //   address: 'https://url-for-video-chat.example.com?meeting=abc123'
-      // }],
       status: 'proposed',
-      // appointmentType: {
-      //   coding: [{
-      //     system: 'http://snomed.info/sct',
-      //     code: '448337001',
-      //     display: 'Telemedicine consultation with patient (procedure)'
-      //   }]
-      // },
-      // reasonCode: [{
-      //   coding: [{
-      //     system: 'INTERNAL',
-      //     code: 'INIV',
-      //     display: 'Initial Visit',
-      //     userSelected: false
-      //   }],
-      //   text: 'Initial 30 Minute Visit'
-      // }],
+      reasonCode: [{
+        text: reason
+      }],
       supportingInformation: [
         {
-          reference: 'Location/1' // TODO: This seems that it should always be 1 but I want to check with Canvas
-          // From Canvas docs: You can use a Location reference within the SupportingInformation attribute to specify the Location of the appointment.
-          // To get the location id, use the Schedule Search endpoint. This will give you a resource.id like Location.1-Staff.c2ff4546548e46ab8959jh3.
-          // The Location ID is the value displayed after the period. If your instance only has one practice location, the ID will always be 1.
+          reference: 'Location/1'
         },
-        // {
-        //   reference: '#appointment-meeting-endpoint',
-        //   type: 'Endpoint'
-        // }
       ],
       start: startTime,
       end: endTime,
       participant: [
         {
           actor: { reference: `Patient/${patientID}` },
-          status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
-          // Update: i had to change this to "accepted" due to an error but the docs clearly state "active".
-          // It's set to "accepted" in the example though 🤔
+          // According to FHIR, the 'status' field is mandatory. Although Canvas doesn't use it and suggests 'active', the valid value is 'accepted'.
+          status: 'accepted'
         },
         {
           actor: { reference: practitionerID },
-          status: 'accepted' // Per FHIR, status is required, but it is not used by Canvas. Canvas recommends sending “active”
-          // Update: i had to change this to "accepted" due to an error but the docs clearly state "active"
-          // It's set to "accepted" in the example though 🤔
+          // According to FHIR, the 'status' field is mandatory. Although Canvas doesn't use it and suggests 'active', the valid value is 'accepted'.
+          status: 'accepted'
         },
       ]
     })

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, View, Text, RefreshControl } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -72,17 +72,18 @@ const s = StyleSheet.create({
 });
 
 export default function Dashboard() {
-  const [openWizard, setOpenWizard] = useState(false);
   const tabBarHeight = useBottomTabBarHeight();
-  const { data: vitals, isLoading: loadingVitals } = useObservations();
-  const { data: medications, isLoading: loadingMedications } = useMedications();
-  const { data: allergies, isLoading: loadingAllergies } = useAllergies();
-  const { data: procedures, isLoading: loadingProcedures } = useProcedures();
-  const { data: immunizations, isLoading: loadingImmunizations } = useImmunizations();
-  const { data: conditions, isLoading: loadingConditions } = useConditions();
-  const { data: goals, isFetching: loadingGoals } = useGoals();
-  const { data: labs, isLoading: loadingLabs } = useLabResults();
-  const { data: educationalMaterials, isLoading: loadingEducationalMaterials } = useEducationalMaterials();
+  const [openWizard, setOpenWizard] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const { data: vitals, isLoading: loadingVitals, refetch: refetchObservations } = useObservations();
+  const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
+  const { data: allergies, isLoading: loadingAllergies, refetch: refetchAllergies } = useAllergies();
+  const { data: procedures, isLoading: loadingProcedures, refetch: refetchProcedures } = useProcedures();
+  const { data: immunizations, isLoading: loadingImmunizations, refetch: refetchImmunizations } = useImmunizations();
+  const { data: conditions, isLoading: loadingConditions, refetch: refetchConditions } = useConditions();
+  const { data: goals, isFetching: loadingGoals, refetch: refetchGoals } = useGoals();
+  const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
+  const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
   useEffect(() => {
     const welcomeWizard = async () => {
       const isReturningUser = await SecureStore.getItemAsync('is_returning_user');
@@ -93,6 +94,20 @@ export default function Dashboard() {
     };
     welcomeWizard();
   }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetchObservations();
+    await refetchMedications();
+    await refetchAllergies();
+    await refetchProcedures();
+    await refetchImmunizations();
+    await refetchConditions();
+    await refetchGoals();
+    await refetchLabResults();
+    await refetchEducationalMaterials();
+    setRefreshing(false);
+  };
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
@@ -109,7 +124,8 @@ export default function Dashboard() {
 
   return (
     <Screen>
-      <Header />
+      <Header hideBackButton />
+      <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />
       <MaskedView
         style={s.maskedView}
         maskElement={(
@@ -125,6 +141,15 @@ export default function Dashboard() {
             s.scrollContent,
             { paddingBottom: tabBarHeight + g.size(32) },
           ]}
+          refreshControl={(
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={g.white}
+              colors={[g.white]}
+              progressViewOffset={g.size(40)}
+            />
+          )}
         >
           {/* Vitals */}
           <MyHealthBlock

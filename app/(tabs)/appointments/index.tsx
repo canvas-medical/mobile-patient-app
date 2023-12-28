@@ -67,7 +67,7 @@ const s = StyleSheet.create({
 export default function Appointments() {
   const tabBarHeight = useBottomTabBarHeight();
   const { data, isLoading, refetch } = useAppointments();
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const upcomingAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) > new Date());
   const pastAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) <= new Date());
   const onRefresh = async () => {
@@ -78,7 +78,7 @@ export default function Appointments() {
 
   return (
     <Screen>
-      <Header />
+      <Header hideBackButton />
       <View style={s.titleContainer}>
         <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.white} />
         <Text style={s.title}>
@@ -98,7 +98,7 @@ export default function Appointments() {
                     colors={[g.transparent, g.white]}
                     locations={[0.0175, 0.065]}
                   />
-                  )}
+                )}
               >
                 <ScrollView
                   contentContainerStyle={[
@@ -116,30 +116,30 @@ export default function Appointments() {
                   )}
                 >
                   {upcomingAppointments.length > 0 && (
-                  <View style={s.scrollSection}>
-                    <Text style={s.sectionLabel}>
-                      Upcoming
-                    </Text>
-                    {upcomingAppointments.map((appt) => (
-                      <AppointmentCard
-                        key={appt.id}
-                        appointment={appt}
-                      />
-                    ))}
-                  </View>
+                    <View style={s.scrollSection}>
+                      <Text style={s.sectionLabel}>
+                        Upcoming
+                      </Text>
+                      {upcomingAppointments.map((appt) => (
+                        <AppointmentCard
+                          key={appt.id}
+                          appointment={appt}
+                        />
+                      ))}
+                    </View>
                   )}
                   {pastAppointments.length > 0 && (
-                  <View style={s.scrollSection}>
-                    <Text style={s.sectionLabel}>
-                      Past
-                    </Text>
-                    {pastAppointments.map((appt) => (
-                      <AppointmentCard
-                        key={appt.id}
-                        appointment={appt}
-                      />
-                    ))}
-                  </View>
+                    <View style={s.scrollSection}>
+                      <Text style={s.sectionLabel}>
+                        Past
+                      </Text>
+                      {pastAppointments.map((appt) => (
+                        <AppointmentCard
+                          key={appt.id}
+                          appointment={appt}
+                        />
+                      ))}
+                    </View>
                   )}
                 </ScrollView>
               </MaskedView>

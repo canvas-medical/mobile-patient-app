@@ -78,8 +78,8 @@ const s = StyleSheet.create({
 });
 
 export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (arg: boolean) => void }) {
-  const [isPressed, setIsPressed] = useState(false);
-  const [swapModals, setSwapModals] = useState(false);
+  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [swapModals, setSwapModals] = useState<boolean>(false);
 
   return (
     <Modal

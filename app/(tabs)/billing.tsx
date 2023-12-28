@@ -114,6 +114,7 @@ const s = StyleSheet.create({
 });
 
 export default function Billing() {
+  const tabBarHeight = useBottomTabBarHeight();
   const { data: invoices, isLoading: loadingInvoices, refetch: refetchInvoices } = useInvoices();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -121,12 +122,25 @@ export default function Billing() {
   const [error, setError] = useState<string>('');
   const [paymentIntentId, setPaymentIntentId] = useState<string>('');
 
-  const tabBarHeight = useBottomTabBarHeight();
-
-  const { mutate: onPaymentIntentCapture, isSuccess: paymentIntentSuccess, isPending: paymentIntentPending } = usePaymentIntentCapture();
-  const { mutate: onPaymentNoticeSubmit, isSuccess: paymentNoticeSuccess, isPending: paymentNoticePending, error: paymentNoticeError } = usePaymentNoticeSubmit();
-  const { mutate: onPaymentIntentCancel, isSuccess: paymentIntentCanceled, isPending: paymentIntentCanceling } = usePaymentIntentCancel();
-  const { data: paymentNotices, isLoading: loadingPaymentNotices, refetch: refetchPaymentNotices } = usePaymentNotices();
+  const {
+    mutate: onPaymentIntentCapture,
+    isSuccess: paymentIntentSuccess,
+    isPending: paymentIntentPending,
+  } = usePaymentIntentCapture();
+  const {
+    mutate: onPaymentNoticeSubmit,
+    isSuccess: paymentNoticeSuccess,
+    isPending: paymentNoticePending,
+    error: paymentNoticeError,
+  } = usePaymentNoticeSubmit();
+  const {
+    mutate: onPaymentIntentCancel,
+  } = usePaymentIntentCancel();
+  const {
+    data: paymentNotices,
+    isLoading: loadingPaymentNotices,
+    refetch: refetchPaymentNotices,
+  } = usePaymentNotices();
 
   const disabled = Number(amount) < 1 || paymentNoticePending || paymentIntentPending;
 
@@ -195,7 +209,7 @@ export default function Billing() {
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Screen>
-          <Header />
+          <Header hideBackButton />
           <View style={s.titleContainer}>
             <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />
             <Text style={s.title}>

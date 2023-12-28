@@ -22,7 +22,8 @@ async function getQuestionnaire(id: string) {
     }
   });
   if (!res.ok) throw new Error();
-  return res.json();
+  const json = await res.json();
+  return json;
 }
 
 export function useQuestionnaire(id: string) {

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Platform,
@@ -7,13 +7,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
+import Modal from 'react-native-modal';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { Overlay } from '@rneui/themed';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
@@ -29,29 +30,24 @@ const s = StyleSheet.create({
     marginTop: Platform.OS === 'android' ? g.size(48) : g.size(16),
     marginLeft: g.size(16),
   },
+  backdrop: {
+    flex: 1,
+    backgroundColor: g.black,
+    opacity: 0.5,
+  },
   bookButton: {
     position: 'absolute',
     left: g.size(16),
     right: g.size(16),
-    opacity: 1,
-    borderWidth: 1,
-    borderColor: g.white,
-  },
-  bookButtonDisabled: {
-    backgroundColor: g.neutral100,
-    opacity: 0.9,
   },
   buttonSelected: {
     backgroundColor: g.white,
   },
-  dateSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   error: {
     ...g.bodyMedium,
     color: g.white,
+    textAlign: 'center',
+    marginBottom: g.size(176),
   },
   labelSelected: {
     color: g.primaryBlue,
@@ -64,10 +60,23 @@ const s = StyleSheet.create({
   maskedView: {
     flex: 1,
   },
+  modal: {
+    paddingHorizontal: g.size(8),
+    paddingBottom: g.size(12),
+    backgroundColor: g.white,
+    borderRadius: g.size(16),
+    gap: g.size(4),
+  },
+  modalContainer: {
+    marginTop: -g.size(12),
+  },
   pickerAndDateButton: {
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
     borderRadius: g.size(50),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     overflow: 'hidden',
   },
   pickerAndDateButtonLabel: {
@@ -76,13 +85,6 @@ const s = StyleSheet.create({
   },
   pickerAndDateButtonPlaceholder: {
     color: g.neutral200
-  },
-  pickerOverlay: {
-    width: g.width * 0.85,
-    borderRadius: g.size(16),
-    backgroundColor: g.white,
-    paddingVertical: 0,
-    marginVertical: 0,
   },
   practitionerButtonsContainer: {
     gap: g.size(16),
@@ -170,9 +172,12 @@ const reasonsForDoctorVisit = [
 
 export default function BookAppointment() {
   const tabBarHeight = useBottomTabBarHeight();
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(Platform.OS === 'ios');
+  const scrollViewRef = useRef<ScrollView>();
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [tentativeDate, setTentativeDate] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [showReasonPicker, setShowReasonPicker] = useState<boolean>(false);
+  const [tentativeReason, setTentativeReason] = useState<string>('');
   const [appointmentReason, setAppointmentReason] = useState<string>('');
   const [appointmentDuration, setAppointmentDuration] = useState<number>(0);
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule>({} as Schedule);
@@ -183,20 +188,37 @@ export default function BookAppointment() {
   const bookDisabled = !Object.keys(selectedSlot).length;
   const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
 
-  function onChangeDate(event: DateTimePickerEvent) {
-    if (event.type === 'dismissed' && timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
+  function closeDatePicker() {
+    if (tentativeDate === 0) {
       setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-    }
-    if (event.type === 'set') {
-      setSelectedDate(new Date(event.nativeEvent.timestamp).toISOString().slice(0, 10));
-      if (Platform.OS === 'android') setShowDatePicker(false);
-    }
+    } else setSelectedDate(new Date(tentativeDate).toISOString().slice(0, 10));
+    setShowDatePicker(false);
   }
 
+  function onChangeDate(date: number) {
+    if (timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
+      setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
+    }
+    setSelectedDate(new Date(date).toISOString().slice(0, 10));
+  }
+
+  useEffect(() => {
+    if (!!Object.keys(selectedSchedule)?.length && slotData?.length === 0) {
+      scrollViewRef?.current?.scrollToEnd();
+    }
+  }, [slotData]);
+
   function buttonLabel() {
-    if (isPending) return 'Booking...';
-    if (isSuccess) return 'Booked!';
-    return 'Book Appointment';
+    switch (true) {
+      case !appointmentReason: return 'Select a reason';
+      case !futureDateSelected: return 'Select a date';
+      case !Object.keys(selectedSchedule).length: return 'Select a practitioner';
+      case slotData?.length === 0: return 'Select a different date';
+      case !Object.keys(selectedSlot).length: return 'Select a time';
+      case isPending: return 'Booking...';
+      case isSuccess: return 'Booked!';
+      default: return 'Book Appointment';
+    }
   }
 
   return (
@@ -219,32 +241,126 @@ export default function BookAppointment() {
           <LinearGradient
             style={s.maskedView}
             colors={[g.transparent, g.white]}
-            locations={[0.0175, 0.065]}
+            locations={[0, 0.06]}
           />
         )}
       >
         <ScrollView
           contentContainerStyle={s.scrollContent}
-          scrollEnabled={!!appointmentReason}
+          scrollEnabled={futureDateSelected}
+          ref={scrollViewRef}
         >
-          <View style={[s.sectionContainer, Platform.OS === 'ios' && s.dateSection]}>
+          <View style={s.sectionContainer}>
             <Text style={s.sectionHeader}>
-              Date
+              Reason for Visit
             </Text>
-            {showDatePicker && (
-              <DateTimePicker
-                mode="date"
-                value={timeZoneOffset(selectedDate)}
-                minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
-                themeVariant="dark"
-                maximumDate={null}
-                onChange={(e: DateTimePickerEvent) => {
-                  onChangeDate(e);
-                  if (Platform.OS === 'android') setShowDatePicker(false);
-                }}
-              />
-            )}
-            {Platform.OS === 'android' && (
+            <>
+              <TouchableOpacity
+                style={s.pickerAndDateButton}
+                onPress={() => setShowReasonPicker(true)}
+              >
+                <BlurFill />
+                <Text
+                  style={[
+                    s.pickerAndDateButtonLabel,
+                    !appointmentReason && s.pickerAndDateButtonPlaceholder,
+                  ]}
+                >
+                  {appointmentReason || 'Select'}
+                </Text>
+                <Feather name="chevron-down" size={g.size(20)} color={g.white} />
+              </TouchableOpacity>
+              <View style={s.modalContainer}>
+                <Modal
+                  animationIn="fadeIn"
+                  animationOut="fadeOut"
+                  isVisible={showReasonPicker}
+                  swipeDirection="right"
+                  onSwipeComplete={() => setShowReasonPicker(false)}
+                  customBackdrop={(
+                    <TouchableWithoutFeedback onPress={() => setShowReasonPicker(false)}>
+                      <View style={s.backdrop} />
+                    </TouchableWithoutFeedback>
+                  )}
+                >
+                  <View style={s.modal}>
+                    <Picker
+                      selectedValue={tentativeReason}
+                      onValueChange={(itemValue) => setTentativeReason(itemValue)}
+                    >
+                      {reasonsForDoctorVisit.map((item: { reasonLabel: string }) => (
+                        <Picker.Item
+                          key={item.reasonLabel}
+                          label={item.reasonLabel}
+                          value={item.reasonLabel}
+                        />
+                      ))}
+                    </Picker>
+                    <Button
+                      label="Select Reason"
+                      theme="primary"
+                      onPress={() => {
+                        setShowReasonPicker(false);
+                        if (reasonsForDoctorVisit.find((item) => item.reasonLabel === tentativeReason)?.appointmentDuration) {
+                          setAppointmentReason(tentativeReason);
+                          setAppointmentDuration(reasonsForDoctorVisit.find((item) => item.reasonLabel === tentativeReason)?.appointmentDuration);
+                        }
+                      }}
+                    />
+                  </View>
+                </Modal>
+              </View>
+            </>
+          </View>
+          {!!appointmentReason && (
+            <View style={s.sectionContainer}>
+              <Text style={s.sectionHeader}>
+                Date
+              </Text>
+              {Platform.OS === 'android' && showDatePicker && (
+                <DateTimePicker
+                  mode="date"
+                  value={timeZoneOffset(selectedDate)}
+                  minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
+                  themeVariant="dark"
+                  maximumDate={null}
+                  onChange={(e: DateTimePickerEvent) => {
+                    setShowDatePicker(false);
+                    onChangeDate(e.nativeEvent.timestamp);
+                  }}
+                />
+              )}
+              {Platform.OS === 'ios' && (
+                <Modal
+                  animationIn="fadeIn"
+                  animationOut="fadeOut"
+                  isVisible={showDatePicker}
+                  swipeDirection="right"
+                  onSwipeComplete={() => closeDatePicker()}
+                  customBackdrop={(
+                    <TouchableWithoutFeedback onPress={() => closeDatePicker()}>
+                      <View style={s.backdrop} />
+                    </TouchableWithoutFeedback>
+                  )}
+                >
+                  <View style={s.modal}>
+                    <DateTimePicker
+                      mode="date"
+                      display="inline"
+                      value={timeZoneOffset(selectedDate)}
+                      minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
+                      themeVariant="light"
+                      maximumDate={null}
+                      onChange={(e: DateTimePickerEvent) => setTentativeDate(e.nativeEvent.timestamp)}
+                    />
+                    <Button
+                      label="Select Date"
+                      theme="primary"
+                      onPress={() => closeDatePicker()}
+                    />
+                  </View>
+                </Modal>
+              )}
               <TouchableOpacity
                 style={s.pickerAndDateButton}
                 onPress={() => setShowDatePicker(true)}
@@ -256,61 +372,13 @@ export default function BookAppointment() {
                     !futureDateSelected && s.pickerAndDateButtonPlaceholder,
                   ]}
                 >
-                  {futureDateSelected ? formatDate(selectedDate) : 'Select a date'}
+                  {futureDateSelected ? formatDate(selectedDate, 'numeric') : 'Select a date'}
                 </Text>
+                <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.white} />
               </TouchableOpacity>
-            )}
-          </View>
-          {futureDateSelected && (
-            <View style={s.sectionContainer}>
-              <Text style={s.sectionHeader}>
-                Reason for Visit
-              </Text>
-              <>
-                <TouchableOpacity
-                  style={s.pickerAndDateButton}
-                  onPress={() => setShowReasonPicker(true)}
-                >
-                  <BlurFill />
-                  <Text
-                    style={[
-                      s.pickerAndDateButtonLabel,
-                      !appointmentReason && s.pickerAndDateButtonPlaceholder,
-                    ]}
-                  >
-                    {appointmentReason || 'Select'}
-                  </Text>
-                </TouchableOpacity>
-                {showReasonPicker && (
-                  <Overlay
-                    isVisible={showReasonPicker}
-                    onBackdropPress={() => setShowReasonPicker(false)}
-                    overlayStyle={s.pickerOverlay}
-                  >
-                    <Picker
-                      selectedValue={appointmentReason}
-                      onValueChange={(itemValue) => {
-                        if (reasonsForDoctorVisit.find((item) => item.reasonLabel === itemValue)?.appointmentDuration) {
-                          setAppointmentReason(itemValue);
-                          setAppointmentDuration(reasonsForDoctorVisit.find((item) => item.reasonLabel === itemValue)?.appointmentDuration);
-                        }
-                        if (Platform.OS === 'android') setShowReasonPicker(false);
-                      }}
-                    >
-                      {reasonsForDoctorVisit.map((item: { reasonLabel: string }) => (
-                        <Picker.Item
-                          key={item.reasonLabel}
-                          label={item.reasonLabel}
-                          value={item.reasonLabel}
-                        />
-                      ))}
-                    </Picker>
-                  </Overlay>
-                )}
-              </>
             </View>
           )}
-          {!!appointmentReason && (
+          {futureDateSelected && (
             <>
               {isLoadingSchedules
                 ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
@@ -361,7 +429,7 @@ export default function BookAppointment() {
                     <Text style={s.sectionHeader}>
                       Appointments available for
                       {' '}
-                      {formatDate(selectedDate)}
+                      {formatDate(selectedDate, 'numeric')}
                     </Text>
                     <View style={s.slotButtonsContainer}>
                       {slotData.map((slot: Slot) => {
@@ -387,27 +455,25 @@ export default function BookAppointment() {
                   </View>
                 )}
                 {!!Object.keys(selectedSchedule).length && slotData.length === 0 && (
-                <Text style={s.error}>There are no available appointments for the selected date. Please choose a different day.</Text>)}
+                  <Text style={s.error}>There are no available appointments for the selected date. Please choose a different day.</Text>)}
               </>
             )}
         </ScrollView>
-        {!!slotData?.length && (
-          <Button
-            label={buttonLabel()}
-            theme={bookDisabled ? 'tertiary' : 'secondary'}
-            style={[
-              s.bookButton,
-              bookDisabled && s.bookButtonDisabled,
-              { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(12) }
-            ]}
-            onPress={() => onCreateAppointment({
-              startTime: selectedSlot?.start,
-              endTime: selectedSlot?.end,
-              practitionerID: selectedSchedule?.actor[0]?.reference,
-            })}
-            disabled={bookDisabled}
-          />
-        )}
+        <Button
+          label={buttonLabel()}
+          theme="secondary"
+          style={[
+            s.bookButton,
+            { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(12) }
+          ]}
+          onPress={() => onCreateAppointment({
+            startTime: selectedSlot?.start,
+            endTime: selectedSlot?.end,
+            practitionerID: selectedSchedule?.actor[0]?.reference,
+            reason: appointmentReason,
+          })}
+          disabled={bookDisabled}
+        />
       </MaskedView>
     </Screen>
   );
