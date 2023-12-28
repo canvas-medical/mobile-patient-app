@@ -9,7 +9,7 @@ import {
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useDiagnosticURI } from '@services';
-import { capitalizeFirstCharacter, formatDate } from '@utils';
+import { formatDate } from '@utils';
 import { DiagnosticReport, LabImagingReport, LabReport } from '@interfaces';
 import { BlurFill } from '@components';
 import { g } from '@styles';
@@ -20,7 +20,7 @@ const s = StyleSheet.create({
     overflow: 'hidden',
     paddingVertical: g.size(12),
     paddingHorizontal: g.size(16),
-    gap: g.size(6),
+    gap: g.size(4),
   },
   chevron: {
     left: g.size(8),
@@ -29,6 +29,7 @@ const s = StyleSheet.create({
   date: {
     ...g.bodySmall,
     color: g.white,
+    alignSelf: 'flex-end',
   },
   displayText: {
     flex: 1,
@@ -92,14 +93,9 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
           ? <ActivityIndicator color={g.white} />
           : !!data.uri && <Feather name="chevron-right" size={g.size(28)} color={g.white} style={s.chevron} />}
       </View>
-      <View style={[s.row, s.rowBottom]}>
-        <Text style={s.status}>
-          {capitalizeFirstCharacter(data.status)}
-        </Text>
-        <Text style={s.date}>
-          {formatDate(data.date)}
-        </Text>
-      </View>
+      <Text style={s.date}>
+        {formatDate(data.date)}
+      </Text>
     </TouchableOpacity>
   );
 }

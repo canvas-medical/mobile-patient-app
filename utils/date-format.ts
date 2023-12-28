@@ -1,6 +1,6 @@
-export function formatDate(date: string) {
+export function formatDate(date: string, year: 'numeric' | '2-digit' = '2-digit') {
   return new Date(date).toLocaleDateString('en-US', {
-    year: '2-digit',
+    year,
     month: 'short',
     day: 'numeric',
     timeZone: 'UTC'

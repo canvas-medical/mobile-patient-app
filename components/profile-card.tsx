@@ -128,7 +128,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                   style={s.dataPoint}
                   numberOfLines={1}
                 >
-                  {formatDate(data?.birthDate)}
+                  {formatDate(data?.birthDate, 'numeric')}
                 </Text>
               </View>
             )}

@@ -26,9 +26,8 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   backButton: {
     alignSelf: 'flex-start',
-    marginTop: g.size(48),
+    marginTop: Platform.OS === 'android' ? g.size(48) : g.size(16),
     marginLeft: g.size(16),
-    marginBottom: -g.size(16),
   },
   bookButton: {
     position: 'absolute',
@@ -146,8 +145,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(16),
     paddingLeft: g.size(20),
-    paddingTop: g.size(36),
-    marginBottom: Platform.OS === 'ios' ? g.size(8) : 0,
+    marginTop: g.size(12),
   },
 });
 
@@ -199,14 +197,12 @@ export default function BookAppointment() {
 
   return (
     <Screen>
-      {Platform.OS === 'android' && (
-        <TouchableOpacity
-          style={s.backButton}
-          onPress={() => router.back()}
-        >
-          <Feather name="arrow-left" size={g.size(48)} color={g.white} />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={s.backButton}
+        onPress={() => router.back()}
+      >
+        <Feather name="arrow-left" size={g.size(48)} color={g.white} />
+      </TouchableOpacity>
       <View style={s.titleContainer}>
         <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.white} />
         <Text style={s.title}>
