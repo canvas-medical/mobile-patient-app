@@ -23,7 +23,6 @@ import { formatDate, formatTime, timeZoneOffset } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import { Button, Screen, BlurFill } from '@components';
 import { g } from '@styles';
-import { set } from 'react-hook-form';
 
 const s = StyleSheet.create({
   backButton: {
