@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator, View, Text, RefreshControl } from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  View,
+  Text,
+  RefreshControl,
+} from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
