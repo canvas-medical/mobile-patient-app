@@ -103,9 +103,8 @@ async function getPatient() {
 }
 
 export function usePatient() {
-  const patientQuery = useQuery({
+  return useQuery({
     queryKey: ['patient_data'],
     queryFn: () => getPatient(),
   });
-  return patientQuery;
 }

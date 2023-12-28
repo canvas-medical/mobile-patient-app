@@ -20,11 +20,10 @@ async function getAppointments() {
 }
 
 export function useAppointments() {
-  const appointmentsQuery = useQuery({
+  return useQuery({
     queryKey: ['appointments'],
     queryFn: () => getAppointments(),
   });
-  return appointmentsQuery;
 }
 
 async function getSlot(date: string, id: string, duration) {
@@ -41,11 +40,10 @@ async function getSlot(date: string, id: string, duration) {
 }
 
 export function useSlot(date: string, id: string, duration: number) {
-  const slotQuery = useQuery({
+  return useQuery({
     queryKey: ['slot', date, id],
     queryFn: () => getSlot(date, id, duration),
   });
-  return slotQuery;
 }
 
 async function appointmentCreate({
