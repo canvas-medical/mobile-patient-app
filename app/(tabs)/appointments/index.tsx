@@ -78,7 +78,7 @@ export default function Appointments() {
 
   return (
     <Screen>
-      <Header />
+      <Header hideBackButton />
       <View style={s.titleContainer}>
         <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.white} />
         <Text style={s.title}>

@@ -138,7 +138,7 @@ export default function Messages() {
             <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
           </Animated.View>
         </TouchableOpacity>
-        <Header />
+        <Header hideBackButton />
       </View>
       <KeyboardAvoidingView
         style={s.container}

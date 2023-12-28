@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   TouchableOpacity,
   View,
@@ -7,7 +7,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { useFocusEffect, useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { Image } from 'expo-image';
 import { Feather, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { usePatient } from '@services';
@@ -66,21 +66,14 @@ const s = StyleSheet.create({
   }
 });
 
-export function Header() {
+export function Header({ hideBackButton = false }: { hideBackButton?: boolean }) {
   const navigation = useNavigation();
-  const [showBackButton, setShowBackButton] = useState<boolean>(false);
   const [openProfile, setOpenProfile] = useState<boolean>(false);
   const { data } = usePatient();
 
   const heightValue = useRef(new Animated.Value(0)).current;
   const paddingValue = useRef(new Animated.Value(0)).current;
   const opacityValue = useRef(new Animated.Value(0)).current;
-
-  useFocusEffect(
-    useCallback(() => {
-      setShowBackButton(navigation.getState().type !== 'tab' && navigation.getState().index > 0);
-    }, [navigation])
-  );
 
   function toggleProfile() {
     Animated.timing(heightValue, {
@@ -104,12 +97,10 @@ export function Header() {
     setOpenProfile(!openProfile);
   }
 
-  console.log('Hello: ', opacityValue);
-
   return (
     <View style={s.container}>
       <View style={s.controlsContainer}>
-        {showBackButton && (
+        {!hideBackButton && (
           <TouchableOpacity
             style={s.backButton}
             onPress={() => navigation.goBack()}

@@ -471,6 +471,7 @@ export default function BookAppointment() {
             startTime: selectedSlot?.start,
             endTime: selectedSlot?.end,
             practitionerID: selectedSchedule?.actor[0]?.reference,
+            reason: appointmentReason,
           })}
           disabled={bookDisabled}
         />

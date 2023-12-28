@@ -51,6 +51,7 @@ async function appointmentCreate({
   startTime,
   endTime,
   practitionerID,
+  reason,
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
@@ -67,7 +68,7 @@ async function appointmentCreate({
       // contained: [{
       //   resourceType: 'Endpoint',
       //   id: 'appointment-meeting-endpoint',
-      // status: 'active',
+      //   status: 'active',
       //   connectionType: {
       //     code: 'https'
       //   },
@@ -78,23 +79,17 @@ async function appointmentCreate({
       //   }],
       //   address: 'https://url-for-video-chat.example.com?meeting=abc123'
       // }],
-      status: 'proposed',
+      // status: 'proposed',
       // appointmentType: {
       //   coding: [{
       //     system: 'http://snomed.info/sct',
       //     code: '448337001',
-      //     display: 'Telemedicine consultation with patient (procedure)'
+      //     display: 'Telemedicine'
       //   }]
       // },
-      // reasonCode: [{
-      //   coding: [{
-      //     system: 'INTERNAL',
-      //     code: 'INIV',
-      //     display: 'Initial Visit',
-      //     userSelected: false
-      //   }],
-      //   text: 'Initial 30 Minute Visit'
-      // }],
+      reasonCode: [{
+        text: reason
+      }],
       supportingInformation: [
         {
           reference: 'Location/1' // TODO: This seems that it should always be 1 but I want to check with Canvas

@@ -19,4 +19,5 @@ export interface AppointmentCreationData {
   startTime: string,
   endTime: string,
   practitionerID: string,
+  reason: string,
 }
