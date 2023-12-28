@@ -41,13 +41,6 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
-  rowBottom: {
-    alignItems: 'center',
-  },
-  status: {
-    ...g.bodyMedium,
-    color: g.white,
-  },
 });
 
 export function LabReportCard({ report }: { report: LabImagingReport | DiagnosticReport }) {
