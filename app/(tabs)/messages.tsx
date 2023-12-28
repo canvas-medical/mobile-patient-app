@@ -9,14 +9,17 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Keyboard,
+  Animated,
+  Easing,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useFocusEffect } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
+import { useKeyboardVisible } from '@utils';
 import { MessageBlock, Screen, Header, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
@@ -35,6 +38,12 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingLeft: g.size(24),
   },
   input: {
     ...g.bodyMedium,
@@ -59,6 +68,9 @@ const s = StyleSheet.create({
     borderRadius: g.size(20),
     minHeight: g.size(36),
   },
+  keyboardHideButton: {
+    marginBottom: g.size(4),
+  },
   loading: {
     flex: 1,
   },
@@ -73,6 +85,8 @@ const s = StyleSheet.create({
 
 export default function Messages() {
   const tabBarHeight = useBottomTabBarHeight();
+  const keyboardVisible = useKeyboardVisible();
+  const opacityValue = useRef(new Animated.Value(0)).current;
   const [containerLayout, setContainerLayout] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
   const [size, setSize] = useState<number>(g.size(32));
@@ -99,9 +113,33 @@ export default function Messages() {
     Keyboard.dismiss();
   }, [isSuccess]);
 
+  function toggleKeyBoard() {
+    Animated.timing(opacityValue, {
+      toValue: keyboardVisible ? 1 : 0,
+      duration: 200,
+      easing: Easing.ease,
+      useNativeDriver: false,
+    }).start();
+  }
+
+  useEffect(() => {
+    toggleKeyBoard();
+  }, [keyboardVisible]);
+
   return (
     <Screen style={{ paddingBottom: tabBarHeight }}>
-      <Header />
+      <View style={s.headerContainer}>
+        <TouchableOpacity
+          onPress={() => Keyboard.dismiss()}
+          disabled={!keyboardVisible}
+          style={s.keyboardHideButton}
+        >
+          <Animated.View style={{ opacity: opacityValue }}>
+            <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
+          </Animated.View>
+        </TouchableOpacity>
+        <Header />
+      </View>
       <KeyboardAvoidingView
         style={s.container}
         behavior="height"
@@ -154,12 +192,11 @@ export default function Messages() {
             <TextInput
               style={{ ...s.input, height: size }}
               multiline
-              editable
               placeholder="Message here..."
               value={message}
               onChange={(e) => setMessage(e.nativeEvent.text)}
               onFocus={() => null}
-              autoCapitalize="none"
+              autoCapitalize="sentences"
               keyboardType="default"
               textContentType="none"
               placeholderTextColor={g.neutral200}

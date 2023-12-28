@@ -190,7 +190,7 @@ function DatePickerComponent(props) {
     onChange,
     error,
   } = props;
-  const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(Platform.OS === 'ios');
   const valueIsToday = value === new Date().toISOString().slice(0, 10);
 
   return (

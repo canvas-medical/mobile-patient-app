@@ -68,8 +68,8 @@ const s = StyleSheet.create({
 
 export function Header() {
   const navigation = useNavigation();
-  const [showBackButton, setShowBackButton] = useState(false);
-  const [openProfile, setOpenProfile] = useState(false);
+  const [showBackButton, setShowBackButton] = useState<boolean>(false);
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
   const { data } = usePatient();
 
   const heightValue = useRef(new Animated.Value(0)).current;
@@ -103,6 +103,8 @@ export function Header() {
     }).start();
     setOpenProfile(!openProfile);
   }
+
+  console.log('Hello: ', opacityValue);
 
   return (
     <View style={s.container}>
