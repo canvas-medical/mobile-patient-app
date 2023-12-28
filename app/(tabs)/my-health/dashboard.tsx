@@ -97,14 +97,14 @@ export default function Dashboard() {
   const onRefresh = async () => {
     setRefreshing(true);
     await refetchObservations();
-    await refetchMedications;
-    await refetchAllergies;
-    await refetchProcedures;
-    await refetchImmunizations;
-    await refetchConditions;
-    await refetchGoals;
-    await refetchLabResults;
-    await refetchEducationalMaterials;
+    await refetchMedications();
+    await refetchAllergies();
+    await refetchProcedures();
+    await refetchImmunizations();
+    await refetchConditions();
+    await refetchGoals();
+    await refetchLabResults();
+    await refetchEducationalMaterials();
     setRefreshing(false);
   };
 
