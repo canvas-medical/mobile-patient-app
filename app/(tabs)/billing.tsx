@@ -133,11 +133,8 @@ export default function Billing() {
     isPending: paymentNoticePending,
     error: paymentNoticeError,
   } = usePaymentNoticeSubmit();
-  // TODO: Check if unused paymentIntentCancel variables can be removed
   const {
     mutate: onPaymentIntentCancel,
-    isSuccess: paymentIntentCanceled,
-    isPending: paymentIntentCanceling,
   } = usePaymentIntentCancel();
   const {
     data: paymentNotices,
