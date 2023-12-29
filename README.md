@@ -52,5 +52,6 @@ Please note that this project is open source, so contributions are welcome. Plea
 ## About Brewer Digital
 
 <a href="https://brewerdigital.com/">
-  <img align="left" src=""/>
+  <img align="left" width="33%" src="https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/676b2fd1-34f3-44ef-b6a3-3b4b409eb87f"/>
 </a>
+Text here
