@@ -232,7 +232,10 @@ export default function BookAppointment() {
             />
           )}
           {!!appointmentReason && (
-            <SelectAppointmentDate selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            <SelectAppointmentDate
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
           )}
           {futureDateSelected && (
             <>
