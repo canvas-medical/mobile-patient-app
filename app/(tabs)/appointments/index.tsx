@@ -82,7 +82,7 @@ export default function Appointments() {
     const scheduleNotifications = async () => {
       const scheduled = await Notifications.getAllScheduledNotificationsAsync();
       console.log(scheduled);
-      upcomingAppointments.map(async (upcomingAppointment: Appointment) => {
+      upcomingAppointments.filter((appt: Appointment) => appt.status !== 'cancelled').map(async (upcomingAppointment: Appointment) => {
         const {
           id = '',
           start = '',
