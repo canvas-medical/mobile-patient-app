@@ -10,7 +10,6 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#006CE9"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -18,13 +17,13 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.brewerdigital.fhirdashboard",
-      "buildNumber": "9",
+      "buildNumber": "11",
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to securely capture credit card information."
       }
     },
     "android": {
-      "versionCode": 9,
+      "versionCode": 11,
       "adaptiveIcon": {
         "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"
@@ -35,7 +34,8 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "package": "com.brewerdigital.fhirdashboard"
+      "package": "com.brewerdigital.fhirdashboard",
+      "googleServicesFile": "./google-services.json",
     },
     "web": {
       "favicon": "./assets/appstore.png"

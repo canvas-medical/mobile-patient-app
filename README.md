@@ -16,11 +16,8 @@ By streamlining the process of managing health information, VivoCare Health enha
 
 ## Requirements
 
-- Node.js
-- npm
-- React Native CLI
-- Expo CLI
-- Android Studio or Xcode (for running the app on a simulator or real device)
+- [Node.js ^18.16.0](https://nodejs.org/en/download)
+- [Android Studio](https://developer.android.com/studio/install) or [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) (for running the app on a simulator or real device)
 
 ## Installation
 
@@ -31,7 +28,7 @@ Please refer to the [Installation Guide](./docs/INSTALLATION.md) for detailed in
 After you have installed the necessary dependencies and set up the project, you can run the application using the following command:
 
 ```bash
-npx expo start --dev-client
+npx expo start
 ```
 
 Once the application is running, you can navigate through the app to book an appointment. Select the reason for your visit, the type of appointment, a date, and a practitioner. Then, choose a time slot and confirm your booking.
