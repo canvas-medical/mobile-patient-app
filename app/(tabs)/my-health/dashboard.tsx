@@ -81,7 +81,7 @@ const s = StyleSheet.create({
 
 export default function Dashboard() {
   const tabBarHeight = useBottomTabBarHeight();
-  const [openWizard, setOpenWizard] = useState<boolean>(true);
+  const [openWizard, setOpenWizard] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const { data: vitals, isLoading: loadingVitals, refetch: refetchObservations } = useObservations();
   const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
@@ -329,7 +329,7 @@ export default function Dashboard() {
                 />
               ))}
           </MyHealthBlock>
-          {openWizard && (<AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />)}
+          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
         </ScrollView>
       </MaskedView>
     </Screen>
