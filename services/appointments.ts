@@ -17,8 +17,7 @@ async function getAppointments() {
     }
   });
   const json = await res.json();
-  const allAppointments = json.entry?.map((entry) => entry.resource)?.sort((a: any, b: any) => (new Date(b.start).getTime() - new Date(a.start).getTime())) || [];
-  return allAppointments.filter((appt) => appt.status !== 'cancelled');
+  return json.entry?.map((entry) => entry.resource)?.sort((a: any, b: any) => (new Date(b.start).getTime() - new Date(a.start).getTime())) || [];
 }
 
 export function useAppointments() {
