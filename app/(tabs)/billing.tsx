@@ -207,7 +207,7 @@ export default function Billing() {
 
   return (
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Screen>
           <Header hideBackButton />
           <View style={s.titleContainer}>
@@ -280,7 +280,7 @@ export default function Billing() {
                             refreshing={refreshing}
                             onRefresh={onRefresh}
                             tintColor={g.white}
-                            colors={[g.white]}
+                            colors={[g.primaryBlue]}
                             progressViewOffset={g.size(40)}
                           />
                         )}

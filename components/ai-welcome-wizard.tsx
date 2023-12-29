@@ -82,69 +82,71 @@ export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisibl
   const [swapModals, setSwapModals] = useState<boolean>(false);
 
   return (
-    <Modal
-      animationIn="fadeIn"
-      animationOut="fadeOut"
-      isVisible={modalVisible}
-      swipeDirection="right"
-      onSwipeComplete={() => setModalVisible(false)}
-      customBackdrop={(
-        <TouchableWithoutFeedback onPress={() => swapModals && setModalVisible(false)}>
-          <View style={s.backdrop} />
-        </TouchableWithoutFeedback>
-      )}
-    >
-      {!swapModals ? (
-        <Animated.View exiting={FadeOutDown}>
-          <Pressable
-            onTouchStart={() => setIsPressed(true)}
-            onTouchEnd={() => setIsPressed(false)}
-            onLongPress={() => {
-              setSwapModals(true);
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
-            }}
-            style={s.card}
-          >
-            <BlurFill opacity={1} />
-            <Text style={s.header}>Welcome to Your Health App</Text>
-            <View style={s.textContainer}>
-              <Text style={s.text}>Look for this icon</Text>
-              <LightbulbSVG
-                initialFill={Platform.OS === 'ios' ? g.white : g.neutral500}
-                fill={g.transparent}
+    <View>
+      <Modal
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        isVisible={modalVisible}
+        swipeDirection="right"
+        onSwipeComplete={() => setModalVisible(false)}
+        customBackdrop={(
+          <TouchableWithoutFeedback onPress={() => swapModals && setModalVisible(false)}>
+            <View style={s.backdrop} />
+          </TouchableWithoutFeedback>
+        )}
+      >
+        {!swapModals ? (
+          <Animated.View exiting={FadeOutDown}>
+            <Pressable
+              onTouchStart={() => setIsPressed(true)}
+              onTouchEnd={() => setIsPressed(false)}
+              onLongPress={() => {
+                setSwapModals(true);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy).catch(() => console.log('Haptic error'));
+              }}
+              style={s.card}
+            >
+              <BlurFill opacity={1} />
+              <Text style={s.header}>Welcome to Your Health App</Text>
+              <View style={s.textContainer}>
+                <Text style={s.text}>Look for this icon</Text>
+                <LightbulbSVG
+                  initialFill={Platform.OS === 'ios' ? g.white : g.neutral500}
+                  fill={g.transparent}
+                  width={g.size(25)}
+                  height={g.size(25)}
+                />
+                <Text style={s.text}>Press on the lightbulb until it changes to this</Text>
+                <LightbulbSVG
+                  fill={g.goldenYellow}
+                  width={g.size(25)}
+                  height={g.size(25)}
+                />
+                <Text style={s.text}>
+                  Doing so will reveal detailed AI-generated insights about your health information.
+                  Give it a try now by pressing on this popup until the lightbulb in the upper right turns on!
+                </Text>
+              </View>
+              <LightbulbOnSVG
+                lightbulbOn={isPressed}
+                color={(Platform.OS === 'ios' || isPressed) ? g.white : g.neutral500}
                 width={g.size(25)}
                 height={g.size(25)}
               />
-              <Text style={s.text}>Press on the lightbulb until it changes to this</Text>
-              <LightbulbSVG
-                fill={g.goldenYellow}
-                width={g.size(25)}
-                height={g.size(25)}
-              />
-              <Text style={s.text}>
-                Doing so will reveal detailed AI-generated insights about your health information.
-                Give it a try now by pressing on this popup until the lightbulb in the upper right turns on!
-              </Text>
+            </Pressable>
+          </Animated.View>
+        ) : (
+          <Animated.View entering={FadeInUp} exiting={FadeOut}>
+            <View style={s.headerContainer}>
+              <FontAwesome name="lightbulb-o" size={24} color={g.goldenYellow} />
+              <Text style={s.secondModalHeader}>Explain</Text>
             </View>
-            <LightbulbOnSVG
-              lightbulbOn={isPressed}
-              color={(Platform.OS === 'ios' || isPressed) ? g.white : g.neutral500}
-              width={g.size(25)}
-              height={g.size(25)}
-            />
-          </Pressable>
-        </Animated.View>
-      ) : (
-        <Animated.View entering={FadeInUp} exiting={FadeOut}>
-          <View style={s.headerContainer}>
-            <FontAwesome name="lightbulb-o" size={24} color={g.goldenYellow} />
-            <Text style={s.secondModalHeader}>Explain</Text>
-          </View>
-          <View style={s.container}>
-            <Text style={s.blueText}>Great job! You&apos;ve unlocked AI insights. Tap anywhere outside of this popup to close.</Text>
-          </View>
-        </Animated.View>
-      )}
-    </Modal>
+            <View style={s.container}>
+              <Text style={s.blueText}>Great job! You&apos;ve unlocked AI insights. Tap anywhere outside of this popup to close.</Text>
+            </View>
+          </Animated.View>
+        )}
+      </Modal>
+    </View>
   );
 }

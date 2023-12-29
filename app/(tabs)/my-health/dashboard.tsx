@@ -133,7 +133,6 @@ export default function Dashboard() {
   return (
     <Screen>
       <Header hideBackButton />
-      <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />
       <MaskedView
         style={s.maskedView}
         maskElement={(
@@ -154,7 +153,7 @@ export default function Dashboard() {
               refreshing={refreshing}
               onRefresh={onRefresh}
               tintColor={g.white}
-              colors={[g.white]}
+              colors={[g.primaryBlue]}
               progressViewOffset={g.size(40)}
             />
           )}
@@ -314,7 +313,6 @@ export default function Dashboard() {
           </MyHealthBlock>
 
           {/* Educational Materials */}
-          {/* TODO: update with education components and data */}
           <MyHealthBlock
             viewAllRoute="my-health/education"
             title="Educational Materials"
