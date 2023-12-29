@@ -76,6 +76,8 @@ export default function Appointments() {
     setRefreshing(false);
   };
 
+  console.log('Hello: ', data);
+
   return (
     <Screen>
       <Header hideBackButton />

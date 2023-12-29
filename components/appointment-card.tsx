@@ -6,9 +6,10 @@ import {
   Platform,
   Linking,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Feather, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useClinicLocation } from '@services';
+import { useClinicLocation, useCancelAppointment } from '@services';
 import { capitalizeFirstCharacter, formatDate, formatTime } from '@utils';
 import { Appointment } from '@interfaces';
 import { BlurFill } from '@components';
@@ -20,9 +21,21 @@ const s = StyleSheet.create({
     color: g.white,
     textDecorationLine: 'underline',
   },
+  cancelledCopy: {
+    ...g.bodyMedium,
+    color: g.severityRed,
+  },
+  cancelledCopyContainer: {
+    minHeight: g.size(28),
+    padding: g.size(4),
+    justifyContent: 'center',
+  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
+  },
+  cardCancelled: {
+    opacity: 0.5,
   },
   cardContent: {
     paddingVertical: g.size(12),
@@ -62,6 +75,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     padding: g.size(4),
     gap: g.size(4),
+    minHeight: g.size(28),
   },
   reason: {
     ...g.bodyXLarge,
@@ -74,14 +88,21 @@ const s = StyleSheet.create({
 
 export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const {
+    id,
     start = '',
     end = '',
     appointmentType = { coding: [{ display: '' }] },
     reasonCode = [{ text: '' }],
     contained = [{ address: '' }],
+    status = '',
+    participant,
   } = appointment ?? {};
   const { data: clinicAddress } = useClinicLocation();
+  const { mutate: onCancelAppointment, isPending } = useCancelAppointment();
   const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
+  const cancelled = status === 'cancelled';
+
+  const practitionerID = participant?.find((p) => p.actor?.type === 'Practitioner')?.actor?.reference;
 
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();
@@ -96,7 +117,51 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   }) : contained[0]?.address;
 
   return (
-    <View style={s.card}>
+    <TouchableOpacity
+      style={[s.card, cancelled && s.cardCancelled]}
+      disabled={cancelled || isPending}
+      // disabled={cancelled || isPending || isSuccess}
+      onPress={() => {
+        Alert.alert(
+          'Would you like to cancel this appointment?',
+          '',
+          [
+            {
+              text: 'No',
+              style: 'cancel',
+            },
+            {
+              text: 'Yes',
+              style: 'destructive',
+              onPress: () => {
+                Alert.alert(
+                  'Are you sure?',
+                  '',
+                  [
+                    {
+                      text: 'No',
+                      style: 'cancel',
+                    },
+                    {
+                      text: "Yes, I'm sure",
+                      style: 'destructive',
+                      onPress: () => {
+                        onCancelAppointment({
+                          id,
+                          start,
+                          end,
+                          practitionerID,
+                        });
+                      },
+                    },
+                  ],
+                );
+              },
+            },
+          ],
+        );
+      }}
+    >
       <BlurFill />
       <View style={s.leftBorder} />
       <View style={s.cardContent}>
@@ -116,6 +181,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             {' '}
             {formatTime(end, true)}
           </Text>
+          {isPending && <ActivityIndicator color={g.white} />}
         </View>
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
@@ -127,7 +193,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             >
               {capitalizeFirstCharacter(reasonCode[0].text)}
             </Text>
-            {displayNavLink && (
+            {displayNavLink && !cancelled && (
               <TouchableOpacity
                 style={s.navLink}
                 onPress={() => {
@@ -154,9 +220,16 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 </Text>
               </TouchableOpacity>
             )}
+            {cancelled && (
+              <View style={s.cancelledCopyContainer}>
+                <Text style={s.cancelledCopy}>
+                  Appointment cancelled
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

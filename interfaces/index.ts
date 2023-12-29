@@ -1,6 +1,6 @@
 export type { Allergy } from '@interfaces/allergy';
 export type { ApiError } from '@interfaces/api_error';
-export type { Appointment, AppointmentCreationData } from '@interfaces/appointment';
+export type { Appointment, AppointmentCreationData, AppointmentCancellationData } from '@interfaces/appointment';
 export type { Coding } from '@interfaces/coding';
 export type { Condition } from '@interfaces/condition';
 export type { DocumentResource } from '@interfaces/document-resource';
