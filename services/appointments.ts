@@ -55,7 +55,6 @@ async function appointmentCreate({
   appointmentType,
   appointmentTypeCode,
 }: AppointmentCreationData) {
-  console.log('IS VIDEO CALL: ', appointmentType === 'Video Call');
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
