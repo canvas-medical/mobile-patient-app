@@ -20,6 +20,17 @@ const s = StyleSheet.create({
     color: g.white,
     textDecorationLine: 'underline',
   },
+  appointmentType: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: g.size(4),
+    gap: g.size(4),
+  },
+  appointmentTypeText: {
+    ...g.bodyMedium,
+    color: g.white,
+  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
@@ -76,24 +87,24 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const {
     start = '',
     end = '',
-    appointmentType = { coding: [{ display: '' }] },
-    reasonCode = [{ text: '' }],
-    contained = [{ address: '' }],
+    appointmentType: { coding: [{ display: appointmentTypeText = '' } = {}] = [] } = {},
+    reasonCode: [{ text: reasonText = '' } = {}] = [],
+    contained: [{ address = '' } = {}] = [],
   } = appointment ?? {};
   const { data: clinicAddress } = useClinicLocation();
-  const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
 
+  const isOfficeVisit = appointmentTypeText === 'Office Visit';
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();
   const isWithin30MinBeforeOr15MinAfterApptTime = currentTime >= startTime - 30 * 60 * 1000 && currentTime <= startTime + 15 * 60 * 1000;
-  const displayNavLink = ((!isOfficeVisit && !!contained[0]?.address)
+  const displayNavLink = ((!isOfficeVisit && !!address)
     || (isOfficeVisit && !!clinicAddress))
     && (currentTime <= startTime + 15 * 60 * 1000);
 
   const url = isOfficeVisit ? Platform.select({
     ios: `https://maps.apple.com?address=${clinicAddress}`,
     android: `https://www.google.com/maps/search/?api=1&query=${clinicAddress}`,
-  }) : contained[0]?.address;
+  }) : address;
 
   return (
     <View style={s.card}>
@@ -125,9 +136,9 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               style={s.reason}
               numberOfLines={1}
             >
-              {capitalizeFirstCharacter(reasonCode[0].text)}
+              {capitalizeFirstCharacter(reasonText)}
             </Text>
-            {displayNavLink && (
+            {displayNavLink ? (
               <TouchableOpacity
                 style={s.navLink}
                 onPress={() => {
@@ -142,10 +153,9 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   }
                 }}
               >
-                {isOfficeVisit
-                  ? <Ionicons name="navigate" size={g.size(18)} color={g.white} />
-                  : <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />
-                }
+                {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.white} />}
+                {appointmentTypeText === 'Telemedicine' && <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />}
+                {appointmentTypeText === 'Phone Call' && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.white} />}
                 <Text
                   style={s.appointmentLocation}
                   numberOfLines={1}
@@ -153,6 +163,31 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   {isOfficeVisit ? 'Open in maps' : 'Join video call'}
                 </Text>
               </TouchableOpacity>
+            ) : (
+              <View style={s.appointmentType}>
+                {appointmentTypeText === 'Phone Call' && (
+                  <>
+                    <FontAwesome5 name="phone-alt" size={g.size(16)} color={g.white} />
+                    <Text
+                      style={s.appointmentTypeText}
+                      numberOfLines={1}
+                    >
+                      Call from Provider
+                    </Text>
+                  </>
+                )}
+                {appointmentTypeText === 'Home Visit' && (
+                <>
+                  <Ionicons name="home" size={g.size(16)} color={g.white} />
+                  <Text
+                    style={s.appointmentTypeText}
+                    numberOfLines={1}
+                  >
+                    Home Visit
+                  </Text>
+                </>
+                )}
+              </View>
             )}
           </View>
         </View>

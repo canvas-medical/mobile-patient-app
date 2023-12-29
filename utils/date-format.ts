@@ -3,7 +3,6 @@ export function formatDate(date: string, year: 'numeric' | '2-digit' = '2-digit'
     year,
     month: 'short',
     day: 'numeric',
-    timeZone: 'UTC'
   });
 }
 

@@ -8,20 +8,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
-import Modal from 'react-native-modal';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatDate, formatTime, timeZoneOffset } from '@utils';
 import { Schedule, Slot } from '@interfaces';
-import { Button, Screen, BlurFill } from '@components';
+import {
+  Button, Screen, BlurFill, SelectAppointmentDate, SelectAppointmentType, SelectReasonForVisit
+} from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -29,11 +27,6 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: Platform.OS === 'android' ? g.size(48) : g.size(16),
     marginLeft: g.size(16),
-  },
-  backdrop: {
-    flex: 1,
-    backgroundColor: g.black,
-    opacity: 0.5,
   },
   bookButton: {
     position: 'absolute',
@@ -59,32 +52,6 @@ const s = StyleSheet.create({
   },
   maskedView: {
     flex: 1,
-  },
-  modal: {
-    paddingHorizontal: g.size(8),
-    paddingBottom: g.size(12),
-    backgroundColor: g.white,
-    borderRadius: g.size(16),
-    gap: g.size(4),
-  },
-  modalContainer: {
-    marginTop: -g.size(12),
-  },
-  modalToggleButton: {
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
-    borderRadius: g.size(50),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  modalToggleButtonLabel: {
-    ...g.bodyLarge,
-    color: g.white,
-  },
-  modalToggleButtonPlaceholder: {
-    color: g.neutral200
   },
   practitionerButtonsContainer: {
     gap: g.size(16),
@@ -155,44 +122,40 @@ const s = StyleSheet.create({
   },
 });
 
-const reasonsForDoctorVisit = [
-  { reasonLabel: 'Select One', appointmentDuration: 0 },
+const baseReasonsForDoctorVisit = [
   { reasonLabel: 'Routine check-up', appointmentDuration: 80 },
   { reasonLabel: 'Symptoms evaluation', appointmentDuration: 40 },
   { reasonLabel: 'Follow-up appointment', appointmentDuration: 20 },
-  { reasonLabel: 'Vaccination', appointmentDuration: 20 },
   { reasonLabel: 'Medication refill', appointmentDuration: 20 },
   { reasonLabel: 'Health concern', appointmentDuration: 20 },
   { reasonLabel: 'Specialist referral', appointmentDuration: 40 },
-  { reasonLabel: 'Lab test', appointmentDuration: 40 },
-  { reasonLabel: 'Physical examination', appointmentDuration: 80 },
   { reasonLabel: 'Preventive care', appointmentDuration: 40 },
   { reasonLabel: 'Other', appointmentDuration: 60 },
 ];
 
-const appointmentTypes = [
-  { appointmentTypeLabel: 'Select One', appointmentTypeCode: '0' },
-  { appointmentTypeLabel: 'Office Visit', appointmentTypeCode: '308335008' },
-  { appointmentTypeLabel: 'Video Call', appointmentTypeCode: '448337001' },
-  { appointmentTypeLabel: 'Phone Call', appointmentTypeCode: '185317003' },
-  { appointmentTypeLabel: 'Home Visit', appointmentTypeCode: '439708006' },
-  // { appointmentTypeLabel: 'Lab Visit', appointmentTypeCode: '31108002' },
-  // { appointmentTypeLabel: 'Inpatient', appointmentTypeCode: '53923005' },
+const inPersonExtraReasons = [
+  { reasonLabel: 'Vaccination', appointmentDuration: 20 },
+  { reasonLabel: 'Lab test', appointmentDuration: 40 },
+  { reasonLabel: 'Physical examination', appointmentDuration: 80 },
 ];
+
+const inPersonReasonsForDoctorVisit = [{ reasonLabel: 'Select One', appointmentDuration: 0 }, ...inPersonExtraReasons, ...baseReasonsForDoctorVisit];
+const telehealthReasonsForDoctorVisit = [{ reasonLabel: 'Select One', appointmentDuration: 0 }, ...baseReasonsForDoctorVisit];
+
+const reasonsForDoctorVisitMap = {
+  'Office Visit': inPersonReasonsForDoctorVisit,
+  'Home Visit': inPersonReasonsForDoctorVisit,
+  'Video Call': telehealthReasonsForDoctorVisit,
+  'Phone Call': telehealthReasonsForDoctorVisit,
+};
 
 export default function BookAppointment() {
   const tabBarHeight = useBottomTabBarHeight();
   const scrollViewRef = useRef<ScrollView>();
-  const [showReasonPicker, setShowReasonPicker] = useState<boolean>(false);
-  const [tentativeReason, setTentativeReason] = useState<string>('');
   const [appointmentReason, setAppointmentReason] = useState<string>('');
   const [appointmentDuration, setAppointmentDuration] = useState<number>(0);
-  const [showAppointmentTypePicker, setShowAppointmentTypePicker] = useState<boolean>(false);
   const [appointmentType, setAppointmentType] = useState<string>('');
   const [appointmentTypeCode, setAppointmentTypeCode] = useState<string>('');
-  const [tentativeAppointmentType, setTentativeAppointment] = useState<string>('');
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [tentativeDate, setTentativeDate] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<string>(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`);
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule>({} as Schedule);
   const [selectedSlot, setSelectedSlot] = useState<Slot>({} as Slot);
@@ -201,20 +164,6 @@ export default function BookAppointment() {
   const { mutate: onCreateAppointment, isPending, isSuccess } = useCreateAppointment();
   const bookDisabled = !Object.keys(selectedSlot).length;
   const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
-
-  function closeDatePicker() {
-    if (tentativeDate === 0) {
-      setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-    } else setSelectedDate(new Date(tentativeDate).toISOString().slice(0, 10));
-    setShowDatePicker(false);
-  }
-
-  function onChangeDate(date: number) {
-    if (timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
-      setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-    }
-    setSelectedDate(new Date(date).toISOString().slice(0, 10));
-  }
 
   useEffect(() => {
     if (!!Object.keys(selectedSchedule)?.length && slotData?.length === 0) {
@@ -264,199 +213,21 @@ export default function BookAppointment() {
           scrollEnabled={futureDateSelected}
           ref={scrollViewRef}
         >
-          <View style={s.sectionContainer}>
-            <Text style={s.sectionHeader}>
-              Reason for Visit
-            </Text>
-            <>
-              <TouchableOpacity
-                style={s.modalToggleButton}
-                onPress={() => setShowReasonPicker(true)}
-              >
-                <BlurFill />
-                <Text
-                  style={[
-                    s.modalToggleButtonLabel,
-                    !appointmentReason && s.modalToggleButtonPlaceholder,
-                  ]}
-                >
-                  {appointmentReason || 'Select'}
-                </Text>
-                <Feather name="chevron-down" size={g.size(20)} color={g.white} />
-              </TouchableOpacity>
-              <View style={s.modalContainer}>
-                <Modal
-                  animationIn="fadeIn"
-                  animationOut="fadeOut"
-                  isVisible={showReasonPicker}
-                  swipeDirection="right"
-                  onSwipeComplete={() => setShowReasonPicker(false)}
-                  customBackdrop={(
-                    <TouchableWithoutFeedback onPress={() => setShowReasonPicker(false)}>
-                      <View style={s.backdrop} />
-                    </TouchableWithoutFeedback>
-                  )}
-                >
-                  <View style={s.modal}>
-                    <Picker
-                      selectedValue={tentativeReason}
-                      onValueChange={(itemValue) => setTentativeReason(itemValue)}
-                    >
-                      {reasonsForDoctorVisit.map((item: { reasonLabel: string }) => (
-                        <Picker.Item
-                          key={item.reasonLabel}
-                          label={item.reasonLabel}
-                          value={item.reasonLabel}
-                        />
-                      ))}
-                    </Picker>
-                    <Button
-                      label="Select Reason"
-                      theme="primary"
-                      onPress={() => {
-                        setShowReasonPicker(false);
-                        if (reasonsForDoctorVisit.find((item) => item.reasonLabel === tentativeReason)?.appointmentDuration) {
-                          setAppointmentReason(tentativeReason);
-                          setAppointmentDuration(reasonsForDoctorVisit.find((item) => item.reasonLabel === tentativeReason)?.appointmentDuration);
-                        }
-                      }}
-                    />
-                  </View>
-                </Modal>
-              </View>
-            </>
-          </View>
-          {!!appointmentReason && (
-            <View style={s.sectionContainer}>
-              <Text style={s.sectionHeader}>
-                Appointment Type
-              </Text>
-              <>
-                <TouchableOpacity
-                  style={s.modalToggleButton}
-                  onPress={() => setShowAppointmentTypePicker(true)}
-                >
-                  <BlurFill />
-                  <Text
-                    style={[
-                      s.modalToggleButtonLabel,
-                      !appointmentType && s.modalToggleButtonPlaceholder,
-                    ]}
-                  >
-                    {appointmentType || 'Select'}
-                  </Text>
-                  <Feather name="chevron-down" size={g.size(20)} color={g.white} />
-                </TouchableOpacity>
-                <View style={s.modalContainer}>
-                  <Modal
-                    animationIn="fadeIn"
-                    animationOut="fadeOut"
-                    isVisible={showAppointmentTypePicker}
-                    swipeDirection="right"
-                    onSwipeComplete={() => setShowAppointmentTypePicker(false)}
-                    customBackdrop={(
-                      <TouchableWithoutFeedback onPress={() => setShowAppointmentTypePicker(false)}>
-                        <View style={s.backdrop} />
-                      </TouchableWithoutFeedback>
-                    )}
-                  >
-                    <View style={s.modal}>
-                      <Picker
-                        selectedValue={tentativeAppointmentType}
-                        onValueChange={(itemValue) => setTentativeAppointment(itemValue)}
-                      >
-                        {appointmentTypes.map((item: { appointmentTypeLabel: string }) => (
-                          <Picker.Item
-                            key={item.appointmentTypeLabel}
-                            label={item.appointmentTypeLabel}
-                            value={item.appointmentTypeLabel}
-                          />
-                        ))}
-                      </Picker>
-                      <Button
-                        label="Select Appointment Type"
-                        theme="primary"
-                        onPress={() => {
-                          setShowAppointmentTypePicker(false);
-                          if (appointmentTypes.find((item) => item.appointmentTypeLabel === tentativeAppointmentType)?.appointmentTypeCode) {
-                            setAppointmentType(tentativeAppointmentType);
-                            setAppointmentTypeCode(appointmentTypes.find((item) => (
-                              item.appointmentTypeLabel === tentativeAppointmentType
-                            ))?.appointmentTypeCode);
-                          }
-                        }}
-                      />
-                    </View>
-                  </Modal>
-                </View>
-              </>
-            </View>
-          )}
+          <SelectAppointmentType
+            appointmentType={appointmentType}
+            setAppointmentType={setAppointmentType}
+            setAppointmentTypeCode={setAppointmentTypeCode}
+          />
           {!!appointmentType && (
-            <View style={s.sectionContainer}>
-              <Text style={s.sectionHeader}>
-                Date
-              </Text>
-              {Platform.OS === 'android' && showDatePicker && (
-                <DateTimePicker
-                  mode="date"
-                  value={timeZoneOffset(selectedDate)}
-                  minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
-                  themeVariant="dark"
-                  maximumDate={null}
-                  onChange={(e: DateTimePickerEvent) => {
-                    setShowDatePicker(false);
-                    onChangeDate(e.nativeEvent.timestamp);
-                  }}
-                />
-              )}
-              {Platform.OS === 'ios' && (
-                <Modal
-                  animationIn="fadeIn"
-                  animationOut="fadeOut"
-                  isVisible={showDatePicker}
-                  swipeDirection="right"
-                  onSwipeComplete={() => closeDatePicker()}
-                  customBackdrop={(
-                    <TouchableWithoutFeedback onPress={() => closeDatePicker()}>
-                      <View style={s.backdrop} />
-                    </TouchableWithoutFeedback>
-                  )}
-                >
-                  <View style={s.modal}>
-                    <DateTimePicker
-                      mode="date"
-                      display="inline"
-                      value={timeZoneOffset(selectedDate)}
-                      minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
-                      themeVariant="light"
-                      maximumDate={null}
-                      onChange={(e: DateTimePickerEvent) => setTentativeDate(e.nativeEvent.timestamp)}
-                    />
-                    <Button
-                      label="Select Date"
-                      theme="primary"
-                      onPress={() => closeDatePicker()}
-                    />
-                  </View>
-                </Modal>
-              )}
-              <TouchableOpacity
-                style={s.modalToggleButton}
-                onPress={() => setShowDatePicker(true)}
-              >
-                <BlurFill />
-                <Text
-                  style={[
-                    s.modalToggleButtonLabel,
-                    !futureDateSelected && s.modalToggleButtonPlaceholder,
-                  ]}
-                >
-                  {futureDateSelected ? formatDate(selectedDate, 'numeric') : 'Select a date'}
-                </Text>
-                <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.white} />
-              </TouchableOpacity>
-            </View>
+            <SelectReasonForVisit
+              reasonsForDoctorVisit={reasonsForDoctorVisitMap[appointmentType]}
+              appointmentReason={appointmentReason}
+              setAppointmentReason={setAppointmentReason}
+              setAppointmentDuration={setAppointmentDuration}
+            />
+          )}
+          {!!appointmentReason && (
+            <SelectAppointmentDate selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
           )}
           {futureDateSelected && (
             <>

@@ -57,6 +57,25 @@ async function appointmentCreate({
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
+  const supportingInformation = () => {
+    switch (appointmentType) {
+      case 'Office Visit':
+        return [{
+          reference: 'Location/1'
+        }];
+      case 'Video Call':
+        return [{
+          reference: 'Location/1'
+        }, {
+          reference: '#appointment-meeting-endpoint',
+          type: 'Endpoint'
+        }];
+      case 'Phone Call':
+      case 'Home Visit':
+      default:
+        return null;
+    }
+  };
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
     method: 'POST',
     headers: {
@@ -91,19 +110,7 @@ async function appointmentCreate({
       reasonCode: [{
         text: reason
       }],
-      supportingInformation: appointmentType === 'Video Call' ? [
-        {
-          reference: 'Location/1'
-        },
-        {
-          reference: '#appointment-meeting-endpoint',
-          type: 'Endpoint'
-        }
-      ] : [
-        {
-          reference: 'Location/1'
-        }
-      ],
+      supportingInformation: supportingInformation(),
       start: startTime,
       end: endTime,
       participant: [
