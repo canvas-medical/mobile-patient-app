@@ -160,9 +160,6 @@ async function appointmentCancel({
       ]
     })
   });
-  console.log('RES: ', res);
-  const json = await res.json();
-  console.log('JSON: ', json);
   if (!res.ok) throw Error;
 }
 

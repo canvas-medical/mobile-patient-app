@@ -95,13 +95,12 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
     reasonCode = [{ text: '' }],
     contained = [{ address: '' }],
     status = '',
-    participant,
+    participant = [{ actor: { type: '', reference: '' } }],
   } = appointment ?? {};
   const { data: clinicAddress } = useClinicLocation();
   const { mutate: onCancelAppointment, isPending } = useCancelAppointment();
   const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
   const cancelled = status === 'cancelled';
-
   const practitionerID = participant?.find((p) => p.actor?.type === 'Practitioner')?.actor?.reference;
 
   const startTime = new Date(start).getTime();
@@ -120,7 +119,6 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
     <TouchableOpacity
       style={[s.card, cancelled && s.cardCancelled]}
       disabled={cancelled || isPending}
-      // disabled={cancelled || isPending || isSuccess}
       onPress={() => {
         Alert.alert(
           'Would you like to cancel this appointment?',
