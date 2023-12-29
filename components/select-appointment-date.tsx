@@ -1,7 +1,12 @@
 // AppointmentDate.tsx
 import { useState } from 'react';
 import {
-  TouchableOpacity, Text, View, Platform, StyleSheet, TouchableWithoutFeedback
+  TouchableOpacity,
+  Text,
+  View,
+  Platform,
+  StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';

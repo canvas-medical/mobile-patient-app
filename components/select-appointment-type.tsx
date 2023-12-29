@@ -1,13 +1,17 @@
 // AppointmentType.tsx
 import { useState } from 'react';
 import {
-  TouchableOpacity, Text, View, StyleSheet, TouchableWithoutFeedback
+  TouchableOpacity,
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
+import { Feather } from '@expo/vector-icons';
 import { Button, BlurFill } from '@components';
 import { g } from '@styles';
-import { Feather } from '@expo/vector-icons';
 
 const s = StyleSheet.create({
   backdrop: {

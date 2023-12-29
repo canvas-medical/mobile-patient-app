@@ -94,6 +94,10 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const { data: clinicAddress } = useClinicLocation();
 
   const isOfficeVisit = appointmentTypeText === 'Office Visit';
+  const isHomeVisit = appointmentTypeText === 'Home Visit';
+  const isTelemedicine = appointmentTypeText === 'Telemedicine';
+  const isPhoneCall = appointmentTypeText === 'Phone Call';
+
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();
   const isWithin30MinBeforeOr15MinAfterApptTime = currentTime >= startTime - 30 * 60 * 1000 && currentTime <= startTime + 15 * 60 * 1000;
@@ -154,8 +158,8 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 }}
               >
                 {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.white} />}
-                {appointmentTypeText === 'Telemedicine' && <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />}
-                {appointmentTypeText === 'Phone Call' && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.white} />}
+                {isTelemedicine && <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />}
+                {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.white} />}
                 <Text
                   style={s.appointmentLocation}
                   numberOfLines={1}
@@ -165,7 +169,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               </TouchableOpacity>
             ) : (
               <View style={s.appointmentType}>
-                {appointmentTypeText === 'Phone Call' && (
+                {isPhoneCall && (
                   <>
                     <FontAwesome5 name="phone-alt" size={g.size(16)} color={g.white} />
                     <Text
@@ -176,16 +180,16 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                     </Text>
                   </>
                 )}
-                {appointmentTypeText === 'Home Visit' && (
-                <>
-                  <Ionicons name="home" size={g.size(16)} color={g.white} />
-                  <Text
-                    style={s.appointmentTypeText}
-                    numberOfLines={1}
-                  >
-                    Home Visit
-                  </Text>
-                </>
+                {isHomeVisit && (
+                  <>
+                    <Ionicons name="home" size={g.size(16)} color={g.white} />
+                    <Text
+                      style={s.appointmentTypeText}
+                      numberOfLines={1}
+                    >
+                      Home Visit
+                    </Text>
+                  </>
                 )}
               </View>
             )}

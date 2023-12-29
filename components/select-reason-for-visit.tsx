@@ -1,13 +1,17 @@
 // ReasonForVisit.tsx
 import { useState } from 'react';
 import {
-  TouchableOpacity, Text, View, StyleSheet, Platform, TouchableWithoutFeedback
+  TouchableOpacity,
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
+import { Feather } from '@expo/vector-icons';
 import { Button, BlurFill } from '@components';
 import { g } from '@styles';
-import { Feather } from '@expo/vector-icons';
 
 const s = StyleSheet.create({
   backdrop: {
@@ -58,7 +62,12 @@ interface ReasonForVisitProps {
   setAppointmentDuration: (duration: number) => void;
 }
 
-export function SelectReasonForVisit({ reasonsForDoctorVisit, appointmentReason, setAppointmentReason, setAppointmentDuration }: ReasonForVisitProps) {
+export function SelectReasonForVisit({
+  reasonsForDoctorVisit,
+  appointmentReason,
+  setAppointmentReason,
+  setAppointmentDuration
+}: ReasonForVisitProps) {
   const [showReasonPicker, setShowReasonPicker] = useState<boolean>(false);
   const [tentativeReason, setTentativeReason] = useState<string>('');
 
