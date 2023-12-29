@@ -33,12 +33,7 @@ After you have installed the necessary dependencies and set up the project, you 
 ```bash
 npx expo start --dev-client
 ```
-
-Once the application is running, you can navigate through the app to book an appointment. Select the reason for your visit, the type of appointment, a date, and a practitioner. Then, choose a time slot and confirm your booking.
-
-## Troubleshooting
-
-If you encounter any issues while setting up or running the project, please refer to the [Troubleshooting Guide](./docs/TROUBLESHOOTING.md).
+Press `a` to open the app in an Android simulator, or press `i` to open the app in an iOS simulator.
 
 ## Learning Resources
 
