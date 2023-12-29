@@ -10,24 +10,32 @@ const s = StyleSheet.create({
     overflow: 'hidden',
     paddingVertical: g.size(12),
     paddingHorizontal: g.size(16),
-    gap: g.size(4),
+  },
+  date: {
+    ...g.bodySmall,
+    color: g.white,
+    alignSelf: 'flex-end',
+  },
+  datesContainer: {
+    marginTop: g.size(4),
   },
   goal: {
+    flex: 1,
     ...g.labelMedium,
     color: g.white,
   },
   goalInfo: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  goalText: {
     ...g.bodyMedium,
     color: g.white,
   },
-  row: {
+  priorityLabel: {
+    ...g.bodySmall,
+    textAlign: 'right',
+  },
+  rowSpaceBetween: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    gap: g.size(8),
   },
 });
 
@@ -41,29 +49,53 @@ export function GoalCard({ goal }: { goal: Goal }) {
     startDate = ''
   } = goal ?? {};
 
+  const priorityColor = {
+    'High Priority': g.severityRed,
+    'Medium Priority': g.severityYellow,
+    'Low Priority': g.severityGreen,
+  };
+
   return (
     <View style={s.card}>
       <BlurFill />
-      <Text style={s.goal}>
-        {description}
-      </Text>
-      <Text style={s.goalText}>
-        {note}
-      </Text>
-      <View style={s.row}>
-        <Text style={s.goalText}>
-          {achievementStatus}
+      <View style={s.rowSpaceBetween}>
+        <Text
+          style={s.goal}
+          numberOfLines={3}
+        >
+          {description}
         </Text>
-        <View style={s.goalInfo}>
-          <Text style={s.goalText}>
-            {priority}
-          </Text>
-          <Text style={s.goalText}>
-            {formatDate(startDate)}
-            {' to '}
+        <Text style={[s.priorityLabel, { color: priorityColor[priority] }]}>
+          {priority.split(' ')[0]}
+          {'\n'}
+          {priority.split(' ')[1]}
+        </Text>
+      </View>
+      <Text style={s.goalInfo}>
+        Status:
+        &nbsp;
+        {achievementStatus}
+      </Text>
+      {!!note && (
+        <Text style={s.goalInfo}>
+          Note:
+          &nbsp;
+          {note}
+        </Text>
+      )}
+      <View style={s.datesContainer}>
+        <Text style={s.date}>
+          Started:
+          &nbsp;
+          {formatDate(startDate)}
+        </Text>
+        {!!targetDate && (
+          <Text style={s.date}>
+            Target Date:
+            &nbsp;
             {formatDate(targetDate)}
           </Text>
-        </View>
+        )}
       </View>
     </View>
   );

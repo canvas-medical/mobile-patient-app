@@ -30,14 +30,16 @@ export default function Layout() {
         tabBarInactiveTintColor: g.neutral500,
         tabBarHideOnKeyboard: Platform.OS === 'android',
         tabBarStyle: {
-          height: g.size(96),
-          paddingTop: g.size(8),
-          paddingBottom: g.size(24),
+          height: Platform.OS === 'android' ? g.size(72) : g.size(88),
+          paddingBottom: Platform.OS === 'android' ? g.size(12) : g.size(24),
           backgroundColor: g.white,
           borderTopLeftRadius: g.size(48),
           borderTopRightRadius: g.size(48),
           position: 'absolute',
           bottom: 0,
+        },
+        tabBarIconStyle: {
+          marginTop: g.size(8),
         },
       }}
     >

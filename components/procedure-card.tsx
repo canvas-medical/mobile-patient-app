@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { formatDate } from '@utils';
+import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Procedure } from '@interfaces';
 import { BlurFill, ExplainButton } from '@components';
 import { g } from '@styles';
@@ -15,6 +15,7 @@ const s = StyleSheet.create({
   procedureDate: {
     ...g.bodySmall,
     color: g.white,
+    alignSelf: 'flex-end',
   },
   procedureType: {
     ...g.labelMedium,
@@ -37,9 +38,9 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
       <BlurFill />
       <Text
         style={s.procedureType}
-        numberOfLines={1}
+        numberOfLines={3}
       >
-        {codeDisplay}
+        {capitalizeFirstCharacter(codeDisplay)}
       </Text>
       <Text style={s.procedureDate}>
         {formatDate(performedDateTime)}
@@ -50,9 +51,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
 
 export function ProcedureSkeleton() {
   return (
-    <View
-      style={[s.blurContainer, { height: g.size(48) }]}
-    >
+    <View style={[s.blurContainer, { height: g.size(48) }]}>
       <BlurFill />
     </View>
   );
