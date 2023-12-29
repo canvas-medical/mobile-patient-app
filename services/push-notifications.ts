@@ -26,7 +26,6 @@ export async function schedulePushNotification({
 
   const trigger = new Date(appointmentStartTime);
   trigger.setMinutes(trigger.getMinutes() - 30);
-  console.log('trigger', trigger.toLocaleString());
 
   await Notifications.scheduleNotificationAsync({
     content: {
