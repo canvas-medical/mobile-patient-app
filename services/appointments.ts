@@ -126,8 +126,6 @@ async function appointmentCancel({
   end,
   practitionerID,
 }: AppointmentCancellationData) {
-  console.log('ID: ', id);
-  console.log('URL: ', `${process.env.EXPO_PUBLIC_API_URL}/Appointment/${id}`);
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment/${id}`, {
