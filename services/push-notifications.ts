@@ -18,14 +18,15 @@ export async function schedulePushNotification({
   checkedIfScheduled?: boolean,
 }): Promise<void> {
   // Checking to see if this appointment already has a push notification scheduled
-  if (!checkedIfScheduled) {
-    const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-    const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentID);
-    if (alreadyScheduled) { return; }
-  }
+  // if (!checkedIfScheduled) {
+  //   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  //   const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentID);
+  //   if (alreadyScheduled) { return; }
+  // }
 
   const trigger = new Date(appointmentStartTime);
   trigger.setMinutes(trigger.getMinutes() - 30);
+  console.log('trigger', trigger.toLocaleString());
 
   await Notifications.scheduleNotificationAsync({
     content: {
@@ -33,8 +34,10 @@ export async function schedulePushNotification({
       body: `Your appointment starts in 30 minutes at ${formattedTime}`,
       data: { data: appointmentID },
     },
-    trigger,
+    trigger: { seconds: 2 },
   });
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  console.log('scheduleed', scheduled);
 }
 export async function registerForPushNotificationsAsync(): Promise<any> {
   let token: Notifications.ExpoPushToken;

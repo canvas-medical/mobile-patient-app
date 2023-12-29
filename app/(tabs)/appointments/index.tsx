@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-useless-fragment */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -9,16 +9,18 @@ import {
   RefreshControl,
   Text,
 } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { useAppointments } from '@services';
+import { schedulePushNotification, useAppointments } from '@services';
 import { Appointment } from '@interfaces';
 import { AppointmentCard, Header, Screen, ZeroState } from '@components';
 import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
+import { formatTime } from '@utils';
 
 const s = StyleSheet.create({
   bookButton: {
@@ -75,6 +77,30 @@ export default function Appointments() {
     await refetch();
     setRefreshing(false);
   };
+
+  useEffect(() => {
+    const scheduleNotifications = async () => {
+      const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+      console.log(scheduled);
+      upcomingAppointments.map(async (upcomingAppointment: Appointment) => {
+        const {
+          id = '',
+          start = '',
+          reasonCode = [{ text: '' }],
+        } = upcomingAppointment ?? {};
+        // Checking if notifications are already scheduled to reduce API calls
+        if (scheduled.find((notification) => notification.content.data.id === id)) return;
+        await schedulePushNotification({
+          appointmentStartTime: start,
+          formattedTime: formatTime(start, true),
+          appointmentDescription: reasonCode[0]?.text,
+          appointmentID: id,
+          checkedIfScheduled: true,
+        });
+      });
+    };
+    scheduleNotifications();
+  }, [upcomingAppointments]);
 
   return (
     <Screen>

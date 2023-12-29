@@ -25,6 +25,7 @@ By streamlining the process of managing health information, VivoCare Health enha
 - [Deployed Stripe Microservice](https://github.com/brewerdigital-llc/stripe-microservice) for payment processing
 - [Deployed OpenAI Microservice](https://github.com/brewerdigital-llc/fhir-ai-ms) for AI-driven insights
 - [BugSnag Account](https://app.bugsnag.com/user/new/) for error reporting
+- [Firebase](https://docs.expo.dev/push-notifications/push-notifications-setup/#get-credentials-for-development-builds) for Android push notifications
 
 ## Installation
 
@@ -41,12 +42,9 @@ Press `a` to open the app in an Android simulator, or press `i` to open the app 
 
 ## Learning Resources
 
+- [Expo](https://docs.expo.dev/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [React Navigation](https://reactnavigation.org/)
-- [Expo](https://docs.expo.dev/)
-
-Please note that this project is open source, so contributions are welcome. Please refer to the [Contributing Guide](./docs/CONTRIBUTING.md) for more information on how to contribute to this project.
 
 ## HIPAA Compliance
 
