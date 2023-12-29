@@ -18,7 +18,12 @@ import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatDate, formatTime, timeZoneOffset } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import {
-  Button, Screen, BlurFill, SelectAppointmentDate, SelectAppointmentType, SelectReasonForVisit
+  Button,
+  Screen,
+  BlurFill,
+  SelectAppointmentDate,
+  SelectAppointmentType,
+  SelectReasonForVisit
 } from '@components';
 import { g } from '@styles';
 
