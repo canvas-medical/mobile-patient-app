@@ -1,6 +1,6 @@
 export { getToken } from '@services/access-token';
 export { useAllergies } from '@services/allergies';
-export { useAppointments, useSlot, useCreateAppointment } from '@services/appointments';
+export { useAppointments, useSlot, useCreateAppointment, useCancelAppointment } from '@services/appointments';
 export { useClinicLocation } from '@services/clinic-location';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
