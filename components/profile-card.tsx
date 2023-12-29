@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { router, useNavigation } from 'expo-router';
@@ -6,7 +7,8 @@ import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
 import { Patient } from '@interfaces';
-import { BlurFill } from '@components/blur-fill';
+import { BlurFill, AiWelcomeWizard } from '@components';
+import { LightbulbSVG } from '@components/lightbulb-svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -19,6 +21,10 @@ const s = StyleSheet.create({
   },
   addressRow: {
     alignItems: 'flex-start',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   card: {
     borderRadius: g.size(8),
@@ -50,6 +56,18 @@ const s = StyleSheet.create({
     height: g.size(20),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  infoButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    gap: g.size(6),
+    marginTop: g.size(12),
+    marginLeft: g.size(8),
+    borderRadius: g.size(8),
+    paddingVertical: g.size(4),
+    paddingHorizontal: g.size(8),
+    overflow: 'hidden',
   },
   logoutButton: {
     flexDirection: 'row',
@@ -88,6 +106,7 @@ const s = StyleSheet.create({
 });
 
 export function ProfileCard({ data }: { data: Patient }) {
+  const [openWizard, setOpenWizard] = useState<boolean>(false);
   const navigation = useNavigation();
   const phoneNumber = formatPhoneNumber(data?.telecom?.find((t) => t.system === 'phone')?.value);
   const email = data?.telecom?.find((t) => t.system === 'email')?.value;
@@ -200,32 +219,49 @@ export function ProfileCard({ data }: { data: Patient }) {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={s.logoutButton}
-        onPress={() =>
-          Alert.alert(
-            'Are you sure?',
-            'Your data will become inaccessible and you will be logged out.',
-            [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {
-                text: 'Log Out',
-                style: 'destructive',
-                onPress: () => {
-                  logout();
-                },
-              },
-            ]
-          )
+      <View style={s.buttonContainer}>
+        <TouchableOpacity
+          style={s.infoButton}
+          onPress={() =>
+            setOpenWizard(true)
         }
-      >
-        <BlurFill />
-        <Text style={s.logoutLabel}>Log Out</Text>
-        <AntDesign name="logout" size={g.size(16)} color={g.white} />
-      </TouchableOpacity>
+        >
+          <BlurFill />
+          <LightbulbSVG
+            fill={g.goldenYellow}
+            width={g.size(16)}
+            height={g.size(16)}
+          />
+          <Text style={s.logoutLabel}>Info</Text>
+          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={s.logoutButton}
+          onPress={() =>
+            Alert.alert(
+              'Are you sure?',
+              'Your data will become inaccessible and you will be logged out.',
+              [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Log Out',
+                  style: 'destructive',
+                  onPress: () => {
+                    logout();
+                  },
+                },
+              ]
+            )
+        }
+        >
+          <BlurFill />
+          <Text style={s.logoutLabel}>Log Out</Text>
+          <AntDesign name="logout" size={g.size(16)} color={g.white} />
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
