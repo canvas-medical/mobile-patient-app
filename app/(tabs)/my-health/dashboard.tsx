@@ -81,7 +81,7 @@ const s = StyleSheet.create({
 
 export default function Dashboard() {
   const tabBarHeight = useBottomTabBarHeight();
-  const [openWizard, setOpenWizard] = useState<boolean>(false);
+  const [openWizard, setOpenWizard] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const { data: vitals, isLoading: loadingVitals, refetch: refetchObservations } = useObservations();
   const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
@@ -133,7 +133,6 @@ export default function Dashboard() {
   return (
     <Screen>
       <Header hideBackButton />
-      <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />
       <MaskedView
         style={s.maskedView}
         maskElement={(
@@ -154,7 +153,7 @@ export default function Dashboard() {
               refreshing={refreshing}
               onRefresh={onRefresh}
               tintColor={g.white}
-              colors={[g.white]}
+              colors={[g.primaryBlue]}
               progressViewOffset={g.size(40)}
             />
           )}
@@ -314,7 +313,6 @@ export default function Dashboard() {
           </MyHealthBlock>
 
           {/* Educational Materials */}
-          {/* TODO: update with education components and data */}
           <MyHealthBlock
             viewAllRoute="my-health/education"
             title="Educational Materials"
@@ -331,7 +329,7 @@ export default function Dashboard() {
                 />
               ))}
           </MyHealthBlock>
-          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
+          {openWizard && (<AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />)}
         </ScrollView>
       </MaskedView>
     </Screen>

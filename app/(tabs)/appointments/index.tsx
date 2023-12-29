@@ -110,7 +110,7 @@ export default function Appointments() {
                       refreshing={refreshing}
                       onRefresh={onRefresh}
                       tintColor={g.white}
-                      colors={[g.white]}
+                      colors={[g.primaryBlue]}
                       progressViewOffset={g.size(40)}
                     />
                   )}
