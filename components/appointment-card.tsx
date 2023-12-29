@@ -110,15 +110,13 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   } = appointment ?? {};
   const { data: clinicAddress } = useClinicLocation();
   const { mutate: onCancelAppointment, isPending } = useCancelAppointment();
-  const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
-  const cancelled = status === 'cancelled';
-  const practitionerID = participant?.find((p) => p.actor?.type === 'Practitioner')?.actor?.reference;
-
   const isOfficeVisit = appointmentTypeText === 'Office Visit';
   const isHomeVisit = appointmentTypeText === 'Home Visit';
   const isTelemedicine = appointmentTypeText === 'Telemedicine';
   const isPhoneCall = appointmentTypeText === 'Phone Call';
+  const cancelled = status === 'cancelled';
 
+  const practitionerID = participant?.find((p) => p.actor?.type === 'Practitioner')?.actor?.reference;
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();
   const isWithin30MinBeforeOr15MinAfterApptTime = currentTime >= startTime - 30 * 60 * 1000 && currentTime <= startTime + 15 * 60 * 1000;
@@ -161,6 +159,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                       start,
                       end,
                       practitionerID,
+                      appointmentType: appointmentTypeText,
                     });
                   },
                 },

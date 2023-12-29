@@ -36,4 +36,5 @@ export interface AppointmentCancellationData {
   start: string,
   end: string,
   practitionerID: string,
+  appointmentType: string,
 }
