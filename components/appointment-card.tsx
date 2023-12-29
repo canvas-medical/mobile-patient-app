@@ -120,6 +120,8 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();
   const isWithin30MinBeforeOr15MinAfterApptTime = currentTime >= startTime - 30 * 60 * 1000 && currentTime <= startTime + 15 * 60 * 1000;
+  const isWithin48HoursOfStartTime = Math.abs(currentTime - startTime) <= 48 * 60 * 60 * 1000;
+  const isFutureDate = new Date(startTime).getTime() > new Date().getTime();
   const displayNavLink = ((!isOfficeVisit && !!address)
     || (isOfficeVisit && !!clinicAddress))
     && (currentTime <= startTime + 15 * 60 * 1000);
@@ -196,7 +198,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             {formatTime(end, true)}
           </Text>
           {isPending && <ActivityIndicator color={g.white} />}
-          {!cancelled
+          {!cancelled && !isWithin48HoursOfStartTime && isFutureDate
             && (
             <TouchableOpacity
               disabled={cancelled || isPending}
