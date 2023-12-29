@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AppointmentCreationData, AppointmentCancellationData } from '@interfaces';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
@@ -167,9 +167,11 @@ async function appointmentCancel({
 }
 
 export function useCancelAppointment() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: AppointmentCancellationData) => appointmentCancel(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['appointments'] });
       Alert.alert(
         'Your appointment has been cancelled',
         '',
