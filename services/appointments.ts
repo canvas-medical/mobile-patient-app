@@ -47,14 +47,36 @@ export function useSlot(date: string, id: string, duration: number) {
   });
 }
 
+const supportingInformation = (appointmentType: string) => {
+  switch (appointmentType) {
+    case 'Video Call':
+    case 'Phone Call':
+    case 'Home Visit':
+      return [{
+        reference: 'Location/1'
+      }, {
+        reference: '#appointment-meeting-endpoint',
+        type: 'Endpoint'
+      }];
+    case 'Office Visit':
+    default:
+      return [{
+        reference: 'Location/1'
+      }];
+  }
+};
+
 async function appointmentCreate({
   startTime,
   endTime,
   practitionerID,
   reason,
+  appointmentType,
+  appointmentTypeCode,
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
+
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
     method: 'POST',
     headers: {
@@ -64,15 +86,32 @@ async function appointmentCreate({
     },
     body: JSON.stringify({
       resourceType: 'Appointment',
+      contained: appointmentType === 'Video Call' ? [{
+        resourceType: 'Endpoint',
+        id: 'appointment-meeting-endpoint',
+        status: 'active',
+        connectionType: {
+          code: 'https'
+        },
+        payloadType: [{
+          coding: [{
+            code: 'video-call'
+          }]
+        }],
+        address: 'https://url-for-video-chat.example.com?meeting=abc123'
+      }] : null,
       status: 'proposed',
+      appointmentType: {
+        coding: [{
+          system: 'http://snomed.info/sct',
+          code: appointmentTypeCode,
+          display: appointmentType
+        }]
+      },
       reasonCode: [{
         text: reason
       }],
-      supportingInformation: [
-        {
-          reference: 'Location/1'
-        },
-      ],
+      supportingInformation: supportingInformation(appointmentType),
       start: startTime,
       end: endTime,
       participant: [
@@ -125,6 +164,7 @@ async function appointmentCancel({
   start,
   end,
   practitionerID,
+  appointmentType,
 }: AppointmentCancellationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
@@ -139,11 +179,7 @@ async function appointmentCancel({
       status: 'cancelled',
       start,
       end,
-      supportingInformation: [
-        {
-          reference: 'Location/1'
-        },
-      ],
+      supportingInformation: supportingInformation(appointmentType),
       participant: [
         {
           actor: { reference: `Patient/${patientID}` },
@@ -158,6 +194,7 @@ async function appointmentCancel({
       ]
     })
   });
+
   if (!res.ok) throw Error;
 }
 

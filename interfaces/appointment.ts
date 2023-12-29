@@ -27,6 +27,8 @@ export interface AppointmentCreationData {
   endTime: string,
   practitionerID: string,
   reason: string,
+  appointmentType: string,
+  appointmentTypeCode: string,
 }
 
 export interface AppointmentCancellationData {
@@ -34,4 +36,5 @@ export interface AppointmentCancellationData {
   start: string,
   end: string,
   practitionerID: string,
+  appointmentType: string,
 }
