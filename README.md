@@ -2,7 +2,7 @@
 
 ## Overview
 
-VivoCare Health is a mobile application developed using TypeScript, JavaScript, React, React Native, and Expo. The application provides a user-friendly interface for managing your medical information and appointments, making it a valuable tool for both healthcare providers and patients.  The application allows users to:  
+VivoCare Health is a mobile application developed using Expo. The application provides a user-friendly interface for managing your medical information and appointments, making it a valuable tool for both healthcare providers and patients.  The application allows users to:  
 - Register and create a profile
 - Send messages to healthcare providers 
 - Schedule appointments 
@@ -50,3 +50,7 @@ If you encounter any issues while setting up or running the project, please refe
 Please note that this project is open source, so contributions are welcome. Please refer to the [Contributing Guide](./docs/CONTRIBUTING.md) for more information on how to contribute to this project.
 
 ## About Brewer Digital
+
+<a href="https://brewerdigital.com/">
+  <img align="left" src=""/>
+</a>
