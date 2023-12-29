@@ -49,6 +49,12 @@ If you encounter any issues while setting up or running the project, please refe
 
 Please note that this project is open source, so contributions are welcome. Please refer to the [Contributing Guide](./docs/CONTRIBUTING.md) for more information on how to contribute to this project.
 
+## HIPAA Compliance
+
+Stripe
+BugSnag
+AWS
+
 ## About Brewer Digital
 
 <a href="https://brewerdigital.com/">
