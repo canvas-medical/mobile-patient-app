@@ -13,6 +13,13 @@ export interface Appointment {
   contained: {
     address: string;
   }[];
+  status: string;
+  participant: {
+    actor: {
+      reference: string;
+      type: string;
+    };
+  }[];
 }
 
 export interface AppointmentCreationData {
@@ -22,4 +29,11 @@ export interface AppointmentCreationData {
   reason: string,
   appointmentType: string,
   appointmentTypeCode: string,
+}
+
+export interface AppointmentCancellationData {
+  id: string,
+  start: string,
+  end: string,
+  practitionerID: string,
 }

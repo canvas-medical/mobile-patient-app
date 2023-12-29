@@ -6,9 +6,10 @@ import {
   Platform,
   Linking,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Feather, FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useClinicLocation } from '@services';
+import { useClinicLocation, useCancelAppointment } from '@services';
 import { capitalizeFirstCharacter, formatDate, formatTime } from '@utils';
 import { Appointment } from '@interfaces';
 import { BlurFill } from '@components';
@@ -31,9 +32,21 @@ const s = StyleSheet.create({
     ...g.bodyMedium,
     color: g.white,
   },
+  cancelledCopy: {
+    ...g.bodyMedium,
+    color: g.severityRed,
+  },
+  cancelledCopyContainer: {
+    minHeight: g.size(28),
+    padding: g.size(4),
+    justifyContent: 'center',
+  },
   card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
+  },
+  cardCancelled: {
+    opacity: 0.5,
   },
   cardContent: {
     paddingVertical: g.size(12),
@@ -73,6 +86,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     padding: g.size(4),
     gap: g.size(4),
+    minHeight: g.size(28),
   },
   reason: {
     ...g.bodyXLarge,
@@ -85,13 +99,20 @@ const s = StyleSheet.create({
 
 export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const {
+    id,
     start = '',
     end = '',
     appointmentType: { coding: [{ display: appointmentTypeText = '' } = {}] = [] } = {},
     reasonCode: [{ text: reasonText = '' } = {}] = [],
     contained: [{ address = '' } = {}] = [],
+    status = '',
+    participant = [{ actor: { type: '', reference: '' } }],
   } = appointment ?? {};
   const { data: clinicAddress } = useClinicLocation();
+  const { mutate: onCancelAppointment, isPending } = useCancelAppointment();
+  const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
+  const cancelled = status === 'cancelled';
+  const practitionerID = participant?.find((p) => p.actor?.type === 'Practitioner')?.actor?.reference;
 
   const isOfficeVisit = appointmentTypeText === 'Office Visit';
   const isHomeVisit = appointmentTypeText === 'Home Visit';
@@ -110,13 +131,57 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
     android: `https://www.google.com/maps/search/?api=1&query=${clinicAddress}`,
   }) : address;
 
+  const cancelAppointment = () => {
+    Alert.alert(
+      'Would you like to cancel this appointment?',
+      '',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          style: 'destructive',
+          onPress: () => {
+            Alert.alert(
+              'Are you sure?',
+              '',
+              [
+                {
+                  text: 'No',
+                  style: 'cancel',
+                },
+                {
+                  text: "Yes, I'm sure",
+                  style: 'destructive',
+                  onPress: () => {
+                    onCancelAppointment({
+                      id,
+                      start,
+                      end,
+                      practitionerID,
+                    });
+                  },
+                },
+              ],
+            );
+          },
+        },
+      ],
+    );
+  };
+
   return (
-    <View style={s.card}>
+    <View
+      style={[s.card, cancelled && s.cardCancelled]}
+
+    >
       <BlurFill />
       <View style={s.leftBorder} />
       <View style={s.cardContent}>
         <View style={s.cardRow}>
-          <Feather name="clock" size={24} color={g.white} />
+          <Feather name="clock" size={g.size(24)} color={g.white} />
           <Text
             style={s.dateTime}
             numberOfLines={1}
@@ -131,6 +196,17 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             {' '}
             {formatTime(end, true)}
           </Text>
+          {isPending && <ActivityIndicator color={g.white} />}
+          {!cancelled
+            && (
+            <TouchableOpacity
+              disabled={cancelled || isPending}
+              onPress={cancelAppointment}
+            >
+              <MaterialIcons name="delete-forever" size={g.size(24)} color={g.white} />
+            </TouchableOpacity>
+            )
+          }
         </View>
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
@@ -142,7 +218,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             >
               {capitalizeFirstCharacter(reasonText)}
             </Text>
-            {displayNavLink ? (
+            {displayNavLink && !cancelled ? (
               <TouchableOpacity
                 style={s.navLink}
                 onPress={() => {
@@ -191,6 +267,13 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                     </Text>
                   </>
                 )}
+              </View>
+            )}
+            {cancelled && (
+              <View style={s.cancelledCopyContainer}>
+                <Text style={s.cancelledCopy}>
+                  Appointment cancelled
+                </Text>
               </View>
             )}
           </View>
