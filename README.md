@@ -30,12 +30,7 @@ After you have installed the necessary dependencies and set up the project, you 
 ```bash
 npx expo start
 ```
-
-Once the application is running, you can navigate through the app to book an appointment. Select the reason for your visit, the type of appointment, a date, and a practitioner. Then, choose a time slot and confirm your booking.
-
-## Troubleshooting
-
-If you encounter any issues while setting up or running the project, please refer to the [Troubleshooting Guide](./docs/TROUBLESHOOTING.md).
+Press `a` to open the app in an Android simulator, or press `i` to open the app in an iOS simulator.
 
 ## Learning Resources
 
@@ -46,8 +41,15 @@ If you encounter any issues while setting up or running the project, please refe
 
 Please note that this project is open source, so contributions are welcome. Please refer to the [Contributing Guide](./docs/CONTRIBUTING.md) for more information on how to contribute to this project.
 
+## HIPAA Compliance
+
+Stripe
+BugSnag
+AWS
+
 ## About Brewer Digital
 
 <a href="https://brewerdigital.com/">
-  <img align="left" src=""/>
+  <img align="left" width="33%" src="https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/676b2fd1-34f3-44ef-b6a3-3b4b409eb87f"/>
 </a>
+Text here
