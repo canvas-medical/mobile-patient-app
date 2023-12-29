@@ -83,6 +83,10 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   const { data: clinicAddress } = useClinicLocation();
   const isOfficeVisit = appointmentType?.coding[0]?.display === 'Office Visit';
 
+  // if (appointment.id === '00223edd-bfe1-408b-bfe8-590ce122b0cd') {
+  console.log('Hello: ', appointment);
+  // }
+
   const startTime = new Date(start).getTime();
   const currentTime = new Date().getTime();
   const isWithin30MinBeforeOr15MinAfterApptTime = currentTime >= startTime - 30 * 60 * 1000 && currentTime <= startTime + 15 * 60 * 1000;

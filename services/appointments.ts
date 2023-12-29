@@ -52,7 +52,10 @@ async function appointmentCreate({
   endTime,
   practitionerID,
   reason,
+  appointmentType,
+  appointmentTypeCode,
 }: AppointmentCreationData) {
+  console.log('IS VIDEO CALL: ', appointmentType === 'Video Call');
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
@@ -64,14 +67,43 @@ async function appointmentCreate({
     },
     body: JSON.stringify({
       resourceType: 'Appointment',
+      contained: appointmentType === 'Video Call' ? [{
+        resourceType: 'Endpoint',
+        id: 'appointment-meeting-endpoint',
+        status: 'active',
+        connectionType: {
+          code: 'https'
+        },
+        payloadType: [{
+          coding: [{
+            code: 'video-call'
+          }]
+        }],
+        address: 'https://url-for-video-chat.example.com?meeting=abc123'
+      }] : null,
       status: 'proposed',
+      appointmentType: {
+        coding: [{
+          system: 'http://snomed.info/sct',
+          code: appointmentTypeCode,
+          display: appointmentType
+        }]
+      },
       reasonCode: [{
         text: reason
       }],
-      supportingInformation: [
+      supportingInformation: appointmentType === 'Video Call' ? [
         {
           reference: 'Location/1'
         },
+        {
+          reference: '#appointment-meeting-endpoint',
+          type: 'Endpoint'
+        }
+      ] : [
+        {
+          reference: 'Location/1'
+        }
       ],
       start: startTime,
       end: endTime,

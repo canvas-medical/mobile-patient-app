@@ -68,7 +68,7 @@ export default function Appointments() {
   const tabBarHeight = useBottomTabBarHeight();
   const { data, isLoading, refetch } = useAppointments();
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const upcomingAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) > new Date());
+  const upcomingAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) > new Date()).reverse();
   const pastAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) <= new Date());
   const onRefresh = async () => {
     setRefreshing(true);
