@@ -115,56 +115,57 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
     android: `https://www.google.com/maps/search/?api=1&query=${clinicAddress}`,
   }) : contained[0]?.address;
 
+  const cancelAppointment = () => {
+    Alert.alert(
+      'Would you like to cancel this appointment?',
+      '',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          style: 'destructive',
+          onPress: () => {
+            Alert.alert(
+              'Are you sure?',
+              '',
+              [
+                {
+                  text: 'No',
+                  style: 'cancel',
+                },
+                {
+                  text: "Yes, I'm sure",
+                  style: 'destructive',
+                  onPress: () => {
+                    onCancelAppointment({
+                      id,
+                      start,
+                      end,
+                      practitionerID,
+                    });
+                  },
+                },
+              ],
+            );
+          },
+        },
+      ],
+    );
+  };
+
   return (
-    <TouchableOpacity
+    <View
       style={[s.card, cancelled && s.cardCancelled]}
-      disabled={cancelled || isPending}
-      onPress={() => {
-        Alert.alert(
-          'Would you like to cancel this appointment?',
-          '',
-          [
-            {
-              text: 'No',
-              style: 'cancel',
-            },
-            {
-              text: 'Yes',
-              style: 'destructive',
-              onPress: () => {
-                Alert.alert(
-                  'Are you sure?',
-                  '',
-                  [
-                    {
-                      text: 'No',
-                      style: 'cancel',
-                    },
-                    {
-                      text: "Yes, I'm sure",
-                      style: 'destructive',
-                      onPress: () => {
-                        onCancelAppointment({
-                          id,
-                          start,
-                          end,
-                          practitionerID,
-                        });
-                      },
-                    },
-                  ],
-                );
-              },
-            },
-          ],
-        );
-      }}
+
     >
       <BlurFill />
       <View style={s.leftBorder} />
       <View style={s.cardContent}>
         <View style={s.cardRow}>
-          <Feather name="clock" size={24} color={g.white} />
+          <Feather name="clock" size={g.size(24)} color={g.white} />
           <Text
             style={s.dateTime}
             numberOfLines={1}
@@ -180,6 +181,16 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             {formatTime(end, true)}
           </Text>
           {isPending && <ActivityIndicator color={g.white} />}
+          {!cancelled
+            && (
+            <TouchableOpacity
+              disabled={cancelled || isPending}
+              onPress={cancelAppointment}
+            >
+              <MaterialIcons name="delete-forever" size={g.size(24)} color={g.white} />
+            </TouchableOpacity>
+            )
+          }
         </View>
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
@@ -228,6 +239,6 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
