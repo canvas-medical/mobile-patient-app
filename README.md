@@ -1,3 +1,7 @@
+![Static Badge](https://img.shields.io/badge/license-apache-red)
+![Static Badge](https://img.shields.io/github/v/release/brewerdigital-llc/FHIR-Dashboard)
+![Static Badge](https://img.shields.io/badge/license-apache-red)
+
 # VivoCare Health
 ![app-screenshots](https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/c6954d45-9dfe-4a8d-b87d-ca05bce4e23f)
 ## Overview
@@ -18,6 +22,10 @@ By streamlining the process of managing health information, VivoCare Health enha
 
 - [Node.js ^18.16.0](https://nodejs.org/en/download)
 - [Android Studio](https://developer.android.com/studio/install) or [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) (for running the app on a simulator or real device)
+- [Deployed Stripe Microservice](https://github.com/brewerdigital-llc/stripe-microservice) for payment processing
+- [Deployed OpenAI Microservice](https://github.com/brewerdigital-llc/fhir-ai-ms) for AI-driven insights
+- [BugSnag Account](https://app.bugsnag.com/user/new/) for error reporting
+- [Firebase](https://docs.expo.dev/push-notifications/push-notifications-setup/#get-credentials-for-development-builds) for Android push notifications
 
 ## Installation
 
@@ -34,18 +42,20 @@ Press `a` to open the app in an Android simulator, or press `i` to open the app 
 
 ## Learning Resources
 
+- [Expo](https://docs.expo.dev/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [React Navigation](https://reactnavigation.org/)
-- [Expo](https://docs.expo.dev/)
-
-Please note that this project is open source, so contributions are welcome. Please refer to the [Contributing Guide](./docs/CONTRIBUTING.md) for more information on how to contribute to this project.
 
 ## HIPAA Compliance
 
-Stripe
-BugSnag
-AWS
+- **Stripe**: While Stripe is a secure platform for handling payments, it is not HIPAA compliant. Therefore, you should ensure that no Protected Health Information (PHI) is stored or processed through Stripe. All sensitive health information should be handled separately in a HIPAA-compliant manner.
+
+- **BugSnag**: BugSnag provides error reporting and monitoring for your application. To ensure HIPAA compliance when using BugSnag, you should follow their specific guidelines and best practices. These can be found in the [BugSnag Documentation](https://docs.bugsnag.com/on-premise/single-machine/).
+
+- **OpenAI**: OpenAI requires a signed Business Associate Agreement (BAA) for HIPAA compliance. Make sure to have this agreement in place before using OpenAI to process any PHI.
+
+- **AWS**: Amazon Web Services (AWS) offers a wide range of services that are eligible for use with PHI under the AWS Business Associate Addendum (BAA). Ensure that you are using only the HIPAA-eligible services for any PHI, and that you have a signed BAA with AWS. Also, ensure that you are following all necessary security best practices, such as encrypting data at rest and in transit.
+
 
 ## About Brewer Digital
 

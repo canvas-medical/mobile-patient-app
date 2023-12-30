@@ -33,7 +33,7 @@ export async function schedulePushNotification({
       body: `Your appointment starts in 30 minutes at ${formattedTime}`,
       data: { data: appointmentID },
     },
-    trigger,
+    trigger
   });
 }
 export async function registerForPushNotificationsAsync(): Promise<any> {
