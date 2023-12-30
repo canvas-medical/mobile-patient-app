@@ -35,8 +35,6 @@ export async function schedulePushNotification({
     },
     trigger
   });
-  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-  console.log('scheduleed', scheduled);
 }
 export async function registerForPushNotificationsAsync(): Promise<any> {
   let token: Notifications.ExpoPushToken;
