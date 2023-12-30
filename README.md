@@ -11,7 +11,8 @@ VivoCare Health is a mobile application developed using Expo. The application pr
 - Send messages to healthcare providers 
 - Schedule appointments 
 - Receive appointment reminders via push notifications 
-- Navigate to appointments or access telehealth links 
+- Navigate to in-person appointments via their device's native maps app
+- Access telehealth appointments via a video call
 - View and pay bills 
 - Access a dashboard with health data
 - Receive AI-driven insights to understand health data better
@@ -42,7 +43,8 @@ Press `a` to open the app in an Android simulator, or press `i` to open the app 
 
 ## Learning Resources
 
-- [Expo](https://docs.expo.dev/)
+- [Expo Documentation](https://docs.expo.dev/)
+- [Expo Router Documentation](https://docs.expo.dev/router/introduction/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 

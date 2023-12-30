@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "fhir-dashboard",
+    "name": "VivoCare",
     "slug": "fhir-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,15 +15,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.brewerdigital.fhirdashboard",
-      "buildNumber": "11",
+      "buildNumber": "16",
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to securely capture credit card information."
       }
     },
     "android": {
-      "versionCode": 11,
+      "versionCode": 16,
       "adaptiveIcon": {
         "foregroundImage": "./assets/appstore.png",
         "backgroundColor": "#ffffff"
@@ -45,11 +45,14 @@
       "@config-plugins/react-native-blob-util",
       "@config-plugins/react-native-pdf",
       "@bugsnag/plugin-expo-eas-sourcemaps",
-      ["expo-build-properties", {
-        "android": {
-          "usesCleartextTraffic": true
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
-      }]
+      ]
     ],
     "extra": {
       "router": {
