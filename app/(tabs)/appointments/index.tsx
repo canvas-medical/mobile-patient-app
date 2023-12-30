@@ -81,7 +81,6 @@ export default function Appointments() {
   useEffect(() => {
     const scheduleNotifications = async () => {
       const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-      console.log(scheduled);
       upcomingAppointments.filter((appt: Appointment) => appt.status !== 'cancelled').map(async (upcomingAppointment: Appointment) => {
         const {
           id = '',
