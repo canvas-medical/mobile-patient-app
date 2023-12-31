@@ -52,10 +52,17 @@ Here's how you can obtain the keys required in the `.env.local` file.
 #### Optional
 If these keys are not included, the associated features will not work but the app will still function
 
+*AI Explain Feature*
+
 - `EXPO_PUBLIC_OPENAI_API_URL` and `EXPO_PUBLIC_OPENAI_API_KEY`: These will be provided to you through the AWS API Gateway setup outlined in the [OpenAI Microservice documentation](https://github.com/brewerdigital-llc/fhir-ai-ms)
+
+*Bill Pay*
+
 - `EXPO_PUBLIC_STRIPE_API_URL`, `EXPO_PUBLIC_STRIPE_API_KEY`: These are from the Stripe Microservice.  You will create these as part of [deploying the Stripe Microservice](https://github.com/brewerdigital-llc/stripe-microservice)
 
 - `EXPO_PUBLIC_STRIPE_PUBLIC_KEY`: This is specific to the Stripe platform. When you create an account and register an application with Stripe, you will be provided with a public key.
+
+*Error Monitoring*
 
 - `EXPO_PUBLIC_BUGSNAG_API_KEY` and `BUGSNAG_API_KEY`: These are specific to the Bugsnag platform. When you create an account and register an application with Bugsnag, you will be provided with these credentials.
 
