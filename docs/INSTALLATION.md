@@ -76,22 +76,7 @@ After creating an account, run
 ```
 npm install -g eas-cli
 eas login
-```
-
-Next, create a new [project](https://docs.expo.dev/get-started/create-a-project) in Expo. Save the Client ID
-
-## Replace keys in app.json
-
-Open up the app.json in your code editor. Replace the eas project ID. 
-
-```
-"extra": {
-  ...
-  "eas": {
-    "projectId": ""
-  },
-  ...
-}
+eas build:configure
 ```
 
 ## Build the Application
@@ -102,7 +87,7 @@ Before you can run the application, you need to build it. This can be done using
 eas build --profile development
 ```
 
-This will create a development build of your application.
+This will prompt you to select a platform. Choose whichever platform you would like to run the application on, and follow the prompts to set up the initial build. 
 
 ## Run the Application
 
