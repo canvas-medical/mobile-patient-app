@@ -9,6 +9,8 @@ Before you begin, make sure you have the following installed:
 
 - [Node.js ^18.16.0](https://nodejs.org/en/download)
 - [Expo Account](https://expo.dev/signup)
+- [Apple Developer Account](https://expo.dev/signup](https://developer.apple.com/programs/enroll/)) (for iOS)
+- [Google Play Account](https://developer.android.com/distribute/console) (for Android)
 - [Android Studio](https://developer.android.com/studio/install) or [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) (for running the app on a simulator)
 
 *Optional*
