@@ -31,7 +31,9 @@ npm install
 
 ## Setup Environment Variables
 The application requires several environment variables to function correctly. These are stored in a `.env.local` file at the root of the project. 
+
 Copy the `env.sample` file to `.env.local` and fill in the values for the environment variables.
+
 Here's how you can obtain the keys required in the `.env.local` file. 
 
 - `EXPO_PUBLIC_AUTH_GRANT_TYPE`: This is typically set to `client_credentials` for OAuth 2.0 client credentials grant type.
@@ -73,6 +75,8 @@ After building the application, you can run it:
 ```bash
 npx expo start --dev-client
 ```
+
+Press `a` to open the app in an Android simulator, or press `i` to open the app in an iOS simulator.
 
 Congratulations, you have successfully set up the VivoCare Health application on your local machine for development!
 
