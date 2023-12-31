@@ -55,8 +55,6 @@ Here's how you can obtain the keys required in the `.env.local` file.
 - `EXPO_PUBLIC_BUGSNAG_API_KEY` and `BUGSNAG_API_KEY`: These are specific to the Bugsnag platform. When you create an account and register an application with Bugsnag, you will be provided with these credentials.
 
 - `GOOGLE_SERVICES_JSON`: This is a JSON file that contains your project configuration for Google services. You can generate this file from the Google Cloud Console when you create a project.
-The application requires several environment variables to function correctly. These are stored in a `.env.local` file at the root of the project. 
-Replace `your_client_id`, `your_client_secret`, `your_api_url`, `your_practitioner_id`, `your_clinic_id`, `your_openai_api_url`, `your_openai_api_key`, `your_dd_client_token`, `your_dd_application_id`, `your_stripe_api_url`, `your_stripe_api_key`, `your_stripe_public_key`, `your_bugsnag_api_key`, and `your_bugsnag_api_key` with your actual keys and credentials.
 
 ## Build the Application
 
