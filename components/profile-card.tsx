@@ -224,7 +224,7 @@ export function ProfileCard({ data }: { data: Patient }) {
           style={s.infoButton}
           onPress={() =>
             setOpenWizard(true)
-        }
+          }
         >
           <BlurFill />
           <LightbulbSVG
@@ -233,7 +233,13 @@ export function ProfileCard({ data }: { data: Patient }) {
             height={g.size(16)}
           />
           <Text style={s.logoutLabel}>Info</Text>
-          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
+          {openWizard && (
+            <AiWelcomeWizard
+              setModalVisible={setOpenWizard}
+              modalVisible={openWizard}
+              tapToClose
+            />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           style={s.logoutButton}
@@ -255,7 +261,7 @@ export function ProfileCard({ data }: { data: Patient }) {
                 },
               ]
             )
-        }
+          }
         >
           <BlurFill />
           <Text style={s.logoutLabel}>Log Out</Text>

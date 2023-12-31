@@ -40,6 +40,8 @@ After you have installed the necessary dependencies and set up the project, you 
 npx expo start
 ```
 Press `a` to open the app in an Android simulator, or press `i` to open the app in an iOS simulator.
+- Note: You must have an Android or iOS simulator installed on your machine to run the app in a simulator. Alternatively, you can run the app on a real device by downloading the Expo Go app and scanning the QR code that appears in the terminal after running the `npx expo start` command.
+- Note: If you are running the app on a real device, you will need to update the `API_URL` in the `config.ts` file to your local IP address. You can find your local IP address by running the `ipconfig` command in your terminal.
 
 ## Learning Resources
 
@@ -64,4 +66,4 @@ Press `a` to open the app in an Android simulator, or press `i` to open the app 
 <a href="https://brewerdigital.com/">
   <img align="left" width="33%" src="https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/676b2fd1-34f3-44ef-b6a3-3b4b409eb87f"/>
 </a>
-Text here
+With over four decades of collective industry experience, our team specializes in software development for healthcare startups. Having worked with over 50 different companies, we provide the experience to bring your ideas to life.
