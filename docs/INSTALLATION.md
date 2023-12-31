@@ -8,7 +8,7 @@ This guide will walk you through the process of setting up the VivoCare Health a
 Before you begin, make sure you have the following installed:
 
 - [Node.js ^18.16.0](https://nodejs.org/en/download)
-- [Expo CLI](https://docs.expo.dev/build/setup/)
+- [Expo Account](https://expo.dev/signup)
 - [Android Studio](https://developer.android.com/studio/install) or [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) (for running the app on a simulator)
 
 *Optional*
@@ -69,6 +69,12 @@ If these keys are not included, the associated features will not work but the ap
 
 - `EXPO_PUBLIC_BUGSNAG_API_KEY` and `BUGSNAG_API_KEY`: These are specific to the Bugsnag platform. When you create an account and register an application with Bugsnag, you will be provided with these credentials.
 
+## Set up Expo CLI
+
+```
+npm install -g eas-cli
+eas login
+```
 
 ## Build the Application
 
