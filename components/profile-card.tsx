@@ -222,9 +222,7 @@ export function ProfileCard({ data }: { data: Patient }) {
       <View style={s.buttonContainer}>
         <TouchableOpacity
           style={s.infoButton}
-          onPress={() =>
-            setOpenWizard(true)
-          }
+          onPress={() => setOpenWizard(true)}
         >
           <BlurFill />
           <LightbulbSVG
