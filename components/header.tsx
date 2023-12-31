@@ -36,20 +36,9 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  greeting: {
-    ...g.bodySmall,
-    color: g.white,
-    height: g.size(16),
-    width: '100%',
-    textAlign: 'right',
-  },
   label: {
     ...g.labelMedium,
     color: g.white,
-  },
-  labelContainer: {
-    alignItems: 'flex-end',
-    justifyContent: 'center',
   },
   nameAndAvatarContainer: {
     minHeight: g.size(48),
@@ -115,17 +104,12 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
         >
           {openProfile ? (
             <View style={s.closeContainer}>
-              <View style={s.labelContainer}>
-                <Text style={s.label}>Close</Text>
-              </View>
+              <Text style={s.label}>Close</Text>
               <AntDesign name="closecircleo" size={g.size(24)} color={g.white} />
             </View>
           ) : (
             <>
-              <View style={s.labelContainer}>
-                <Text style={s.greeting}>Hello</Text>
-                <Text style={s.label}>{`${data?.name[0]?.given[0] || ''} ${data?.name[0]?.family || ''}`}</Text>
-              </View>
+              <Text style={s.label}>{`${data?.name[0]?.given[0] || ''} ${data?.name[0]?.family || ''}`}</Text>
               {Array.isArray(data?.photo) ? (
                 <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
               ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}

@@ -77,7 +77,16 @@ const s = StyleSheet.create({
   },
 });
 
-export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: (arg: boolean) => void }) {
+export function AiWelcomeWizard({
+  modalVisible,
+  setModalVisible,
+  tapToClose = false,
+}: {
+  modalVisible:
+  boolean,
+  setModalVisible: (arg: boolean) => void,
+  tapToClose?: boolean,
+}) {
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [swapModals, setSwapModals] = useState<boolean>(false);
 
@@ -90,7 +99,7 @@ export function AiWelcomeWizard({ modalVisible, setModalVisible }: { modalVisibl
         swipeDirection="right"
         onSwipeComplete={() => setModalVisible(false)}
         customBackdrop={(
-          <TouchableWithoutFeedback onPress={() => swapModals && setModalVisible(false)}>
+          <TouchableWithoutFeedback onPress={() => (swapModals || tapToClose) && setModalVisible(false)}>
             <View style={s.backdrop} />
           </TouchableWithoutFeedback>
         )}

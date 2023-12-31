@@ -8,11 +8,12 @@
 
 VivoCare Health is a mobile application developed using Expo. The application provides a user-friendly interface for managing your medical information and appointments, making it a valuable tool for both healthcare providers and patients.  The application allows users to:  
 - Register and create a profile
-- Send messages to healthcare providers 
-- Schedule appointments 
-- Receive appointment reminders via push notifications 
-- Navigate to appointments or access telehealth links 
-- View and pay bills 
+- Send messages to healthcare providers
+- Schedule appointments
+- Receive appointment reminders via push notifications
+- Navigate to in-person appointments via their device's native maps app
+- Access telehealth appointments via a video call
+- View and pay bills
 - Access a dashboard with health data
 - Receive AI-driven insights to understand health data better
 
@@ -39,10 +40,13 @@ After you have installed the necessary dependencies and set up the project, you 
 npx expo start
 ```
 Press `a` to open the app in an Android simulator, or press `i` to open the app in an iOS simulator.
+- Note: The PDF package used in this project is not compatible with Expo Go. Therefore, you must comment out the PDF component in pdf-modal.tsx (lines 3 & 57-61) to run the app in Expo Go. Otherwise, you will have to test via the TestFlight app on iOS or the provided Google Play build on Android.
+- Note: You must have an Android or iOS simulator installed on your machine to run the app in a simulator. Alternatively, you can run the app on a real device by downloading the Expo Go app and scanning the QR code that appears in the terminal after running the `npx expo start` command.
 
 ## Learning Resources
 
-- [Expo](https://docs.expo.dev/)
+- [Expo Documentation](https://docs.expo.dev/)
+- [Expo Router Documentation](https://docs.expo.dev/router/introduction/)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 
@@ -62,4 +66,4 @@ Press `a` to open the app in an Android simulator, or press `i` to open the app 
 <a href="https://brewerdigital.com/">
   <img align="left" width="33%" src="https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/676b2fd1-34f3-44ef-b6a3-3b4b409eb87f"/>
 </a>
-Text here
+With over four decades of collective industry experience, our team specializes in software development for healthcare startups. Having worked with over 50 different companies, we provide the experience to bring your ideas to life.
