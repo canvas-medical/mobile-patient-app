@@ -69,11 +69,29 @@ If these keys are not included, the associated features will not work but the ap
 
 - `EXPO_PUBLIC_BUGSNAG_API_KEY` and `BUGSNAG_API_KEY`: These are specific to the Bugsnag platform. When you create an account and register an application with Bugsnag, you will be provided with these credentials.
 
-## Set up Expo CLI
+## Set up Expo
+
+After creating an account, run
 
 ```
 npm install -g eas-cli
 eas login
+```
+
+Next, create a new [project](https://docs.expo.dev/get-started/create-a-project) in Expo. Save the Client ID
+
+## Replace keys in app.json
+
+Open up the app.json in your code editor. Replace the eas project ID. 
+
+```
+"extra": {
+  ...
+  "eas": {
+    "projectId": ""
+  },
+  ...
+}
 ```
 
 ## Build the Application
