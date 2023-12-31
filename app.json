@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "VivoCare",
-    "slug": "fhir-app",
+    "slug": "vivocare",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/appstore.png",
