@@ -61,7 +61,7 @@ Replace `your_client_id`, `your_client_secret`, `your_api_url`, `your_practition
 Before you can run the application, you need to build it. This can be done using the Expo CLI:
 
 ```bash
-expo build --profile development
+eas build --profile development
 ```
 
 This will create a development build of your application.
