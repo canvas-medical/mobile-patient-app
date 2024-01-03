@@ -12,6 +12,13 @@ export enum QuestionnaireIds {
   'Alcohol, Tobacco, and Other Substances' = 'c8e0a3f7-9f51-47d3-9562-996b619b25e3'
 }
 
+/**
+ * Retrieves a questionnaire by its ID from the FHIR API.
+ *
+ * @param id - The ID of the questionnaire to retrieve.
+ * @returns {Promise<Object>} A promise that resolves to the questionnaire object.
+ * @throws An error if the request fails or the response is not successful.
+ */
 async function getQuestionnaire(id: string) {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Questionnaire/${id}`, {
@@ -26,12 +33,26 @@ async function getQuestionnaire(id: string) {
   return json;
 }
 
+/**
+ * Custom hook to fetch a questionnaire by its ID.
+ *
+ * @param id - The ID of the questionnaire to fetch.
+ * @returns {QueryResult} The result of the query for the questionnaire.
+ */
 export function useQuestionnaire(id: string) {
   return useQuery({
     queryKey: ['questionnaires'],
     queryFn: () => getQuestionnaire(id),
   });
 }
+
+/**
+ * Submits a questionnaire response to the server.
+ *
+ * @param data - The data object containing the form data and questionnaire data.
+ * @returns - A Promise that resolves when the questionnaire response is successfully submitted.
+ * @throws - An error if there is an issue with submitting the questionnaire response.
+ */
 
 async function questionnaireSubmit(data: { formData: { key: string }; questionnaireData: { id: string, item: Question[] } }) {
   const token = await getToken();
@@ -83,6 +104,11 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
+/**
+ * Custom hook for submitting a questionnaire response that handles fetch states and error handling automatically.
+ *
+ * @returns The mutation function for submitting the questionnaire.
+ */
 export function useQuestionnaireSubmit() {
   const { actions } = useStateMachine({ resetAction });
   return useMutation({

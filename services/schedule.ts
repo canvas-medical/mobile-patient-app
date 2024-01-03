@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the schedule data from the server.
+ *
+ * @returns {Promise<Array<any>>} A promise that resolves to an array of schedule resources.
+ */
 async function getSchedule() {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Schedule`, {
@@ -14,6 +19,11 @@ async function getSchedule() {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Custom hook for fetching schedule data that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for schedules.
+ */
 export function useSchedule() {
   return useQuery({
     queryKey: ['schedule'],

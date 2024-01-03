@@ -1,3 +1,8 @@
+/**
+ * This file contains utility functions.
+ *
+ * @module utils
+ */
 export { clearHistory } from '@utils/clear-history';
 export { formatDate, timeZoneOffset } from '@utils/date-format';
 export { useKeyboardVisible } from '@utils/keyboard';

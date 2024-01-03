@@ -5,6 +5,11 @@ import { ApiError } from '@interfaces';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the communication messages for a specific patient.
+ *
+ * @returns {Promise<Array>} A promise that resolves to an array of communication messages sorted by date.
+ */
 async function getCommunication() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -33,6 +38,11 @@ async function getCommunication() {
   });
 }
 
+/**
+ * Custom hook for fetching communication data that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for the communication data.
+ */
 export function useCommunication() {
   return useQuery({
     queryKey: ['communications'],
@@ -40,6 +50,12 @@ export function useCommunication() {
   });
 }
 
+/**
+ * Submits a communication message.
+ *
+ * @param message - The message to be submitted.
+ * @throws Error if there is an issue with the API response.
+ */
 async function communicationSubmit(message: string) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -78,6 +94,11 @@ async function communicationSubmit(message: string) {
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
+/**
+ * A custom hook that returns a mutation function for submitting a communication message.
+ *
+ * @returns A mutation function that submits a communication message.
+ */
 export function useCommunicationSubmit() {
   return useMutation({
     mutationFn: (message: string) => communicationSubmit(message),

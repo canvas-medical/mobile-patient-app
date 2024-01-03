@@ -1,3 +1,10 @@
+/**
+ * Formats a given date string into a time string.
+ *
+ * @param dateStr - The date string to be formatted.
+ * @param AMPM - A boolean indicating whether to include AM/PM in the formatted time.
+ * @returns The formatted time string.
+ */
 export function formatTime(dateStr: string, AMPM: boolean) {
   const date = new Date(dateStr);
   let hours = date.getHours();

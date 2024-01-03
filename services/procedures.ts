@@ -2,6 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the procedures associated with a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of procedure objects.
+ */
 async function getProcedures() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -16,6 +21,11 @@ async function getProcedures() {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Custom hook for fetching procedures data that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for procedures.
+ */
 export function useProcedures() {
   return useQuery({
     queryKey: ['procedures'],

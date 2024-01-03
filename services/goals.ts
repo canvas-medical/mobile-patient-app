@@ -2,6 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the goals for a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of goal objects.
+ */
 async function getGoals() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -16,6 +21,11 @@ async function getGoals() {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Custom hook for fetching goals data that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for goals.
+ */
 export function useGoals() {
   return useQuery({
     queryKey: ['goals'],

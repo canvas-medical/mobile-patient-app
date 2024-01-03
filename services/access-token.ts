@@ -2,6 +2,14 @@
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
 
+/**
+ * Retrieves an access token for authentication.
+ * If a valid token is stored in the device's secure storage and has not expired, it is returned.
+ * Otherwise, a new access token is fetched from the server using the provided credentials.
+ * The fetched access token is then stored in the secure storage along with its expiration time.
+ *
+ * @returns {Promise<string>} A promise that resolves to an access token.
+ */
 export async function getToken() {
   const tokenExpiration = await SecureStore.getItemAsync('token_expiration');
   if (tokenExpiration && Date.now() < JSON.parse(tokenExpiration)) {

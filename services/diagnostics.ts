@@ -2,6 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves diagnostic reports for a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of diagnostic reports.
+ */
 async function getDiagnostics() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
@@ -16,6 +21,11 @@ async function getDiagnostics() {
   return json.entry?.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason) || [];
 }
 
+/**
+ * Custom hook for fetching diagnostics data that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for diagnostics.
+ */
 export function useDiagnostics() {
   return useQuery({
     queryKey: ['diagnostics'],
@@ -23,6 +33,12 @@ export function useDiagnostics() {
   });
 }
 
+/**
+ * Retrieves the URI of a diagnostic report by its ID.
+ *
+ * @param id - The ID of the diagnostic report.
+ * @returns The URI of the diagnostic report.
+ */
 async function getDiagnosticURI(id: string) {
   if (!id) return null;
   const token = await getToken();
@@ -37,6 +53,12 @@ async function getDiagnosticURI(id: string) {
   return json.presentedForm[0].url;
 }
 
+/**
+ * Custom hook to fetch diagnostic URI based on the provided ID.
+ *
+ * @param id - The ID of the diagnostic.
+ * @returns {QueryResult} The result of the query containing the diagnostic URI.
+ */
 export function useDiagnosticURI(id: string | null) {
   return useQuery({
     queryKey: [`diagnostic-id: ${id}`],

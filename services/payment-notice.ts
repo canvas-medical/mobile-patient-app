@@ -5,6 +5,11 @@ import { ApiError } from '@interfaces';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves payment notices for a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} An array of payment notices.
+ */
 async function getPaymentNotices() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -19,6 +24,11 @@ async function getPaymentNotices() {
   return json.entry?.map((entry) => entry.resource).reverse() || [];
 }
 
+/**
+ * Custom hook for fetching payment notices that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for payment notices.
+ */
 export function usePaymentNotices() {
   return useQuery({
     queryKey: ['paymentNotices'],
@@ -26,7 +36,11 @@ export function usePaymentNotices() {
   });
 }
 
-// Amount is in dollars, formatted as a float
+/**
+ * Submits a payment notice with the specified amount.
+ * @param amount - The amount of the payment notice in dollars, formatted as a float.
+ * @throws {Error} - If there is an issue with the API response.
+ */
 async function paymentNoticeSubmit(amount: string) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -59,6 +73,11 @@ async function paymentNoticeSubmit(amount: string) {
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
+/**
+ * Custom hook for submitting a payment notice that handles fetch states and error handling automatically.
+ *
+ * @returns A mutation function that submits a payment notice.
+ */
 export function usePaymentNoticeSubmit() {
   return useMutation({
     mutationFn: (amount: string) => paymentNoticeSubmit(amount),
