@@ -28,7 +28,7 @@ async function getAppointments() {
 /**
  * Custom hook for fetching appointments data.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for the appointments data.
  */
 export function useAppointments() {
   return useQuery({
@@ -64,7 +64,7 @@ async function getSlot(date: string, id: string, duration) {
  * @param date - The date of the slot.
  * @param id - The ID of the slot.
  * @param duration - The duration of the slot.
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for the slot data
  */
 export function useSlot(date: string, id: string, duration: number) {
   return useQuery({

@@ -37,7 +37,7 @@ async function getQuestionnaire(id: string) {
  * Custom hook to fetch a questionnaire by its ID.
  *
  * @param id - The ID of the questionnaire to fetch.
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for the questionnaire.
  */
 export function useQuestionnaire(id: string) {
   return useQuery({

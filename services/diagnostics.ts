@@ -24,7 +24,7 @@ async function getDiagnostics() {
 /**
  * Custom hook for fetching diagnostics data.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for diagnostics.
  */
 export function useDiagnostics() {
   return useQuery({
@@ -57,7 +57,7 @@ async function getDiagnosticURI(id: string) {
  * Custom hook to fetch diagnostic URI based on the provided ID.
  *
  * @param id - The ID of the diagnostic.
- * @returns The result of the query containing the diagnostic URI.
+ * @returns {QueryResult} The result of the query containing the diagnostic URI.
  */
 export function useDiagnosticURI(id: string | null) {
   return useQuery({

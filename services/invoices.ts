@@ -24,7 +24,7 @@ async function getInvoices() {
 /**
  * Custom hook for fetching invoices data.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for invoices.
  */
 export function useInvoices() {
   return useQuery({

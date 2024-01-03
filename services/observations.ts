@@ -24,7 +24,7 @@ async function getObservations() {
 /**
  * Custom hook for fetching observations data.
  *
- * @returns The result of the useQuery hook.
+ * @returns {QueryResult} The result of the query for observations.
  */
 export function useObservations() {
   return useQuery({

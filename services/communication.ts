@@ -41,7 +41,7 @@ async function getCommunication() {
 /**
  * Custom hook for fetching communication data.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for the communication data.
  */
 export function useCommunication() {
   return useQuery({

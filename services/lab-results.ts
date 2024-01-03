@@ -44,7 +44,7 @@ async function getLabResults() {
 /**
  * Custom hook for fetching lab results data.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for lab results.
  */
 export function useLabResults() {
   return useQuery({

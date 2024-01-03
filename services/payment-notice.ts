@@ -27,7 +27,7 @@ async function getPaymentNotices() {
 /**
  * Custom hook for fetching payment notices.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for payment notices.
  */
 export function usePaymentNotices() {
   return useQuery({

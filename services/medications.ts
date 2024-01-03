@@ -24,7 +24,7 @@ async function getMedications() {
 /**
  * Custom hook for fetching medications data.
  *
- * @returns {QueryResult} The result of the query.
+ * @returns {QueryResult} The result of the query for medications.
  */
 export function useMedications() {
   return useQuery({

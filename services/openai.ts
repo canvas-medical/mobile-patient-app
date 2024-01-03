@@ -37,7 +37,7 @@ async function getOpenAiSummary(resourceType: string, description: string, codes
  * @param resourceType - The resource type for which the summary is requested.
  * @param description - The description of the resource.
  * @param codes - An array of codes associated with the resource.
- * @returns The query result containing the summary.
+ * @returns {QueryResult} The query result containing the summary.
  */
 export function useOpenAiSummary(id: string, resourceType: string, description: string, codes: { code: string, system: string }[]) {
   // Setting stale time to 500000ms (5 minutes) to avoid hitting the OpenAI Microservice more than necessary
