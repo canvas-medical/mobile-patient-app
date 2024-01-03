@@ -107,7 +107,7 @@ async function coverageCreate(data: { insurer: string, memberId: string, groupNu
 }
 
 /**
- * Custom hook for creating a coverage.
+ * Custom hook for creating a coverage record that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that creates a coverage.
  */

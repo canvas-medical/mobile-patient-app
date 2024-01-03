@@ -22,7 +22,7 @@ async function getGoals() {
 }
 
 /**
- * Custom hook for fetching goals data.
+ * Custom hook for fetching goals data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for goals.
  */

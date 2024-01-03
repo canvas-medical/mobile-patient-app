@@ -22,7 +22,7 @@ async function getProcedures() {
 }
 
 /**
- * Custom hook for fetching procedures data using the useQuery hook.
+ * Custom hook for fetching procedures data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for procedures.
  */

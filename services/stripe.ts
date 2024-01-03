@@ -88,7 +88,7 @@ export function usePaymentIntentCapture() {
 }
 
 /**
- * Custom hook for canceling a payment intent.
+ * Custom hook for canceling a payment intent that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that cancels the payment intent.
  */

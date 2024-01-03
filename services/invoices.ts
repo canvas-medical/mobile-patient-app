@@ -22,7 +22,7 @@ async function getInvoices() {
 }
 
 /**
- * Custom hook for fetching invoices data.
+ * Custom hook for fetching invoices data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for invoices.
  */

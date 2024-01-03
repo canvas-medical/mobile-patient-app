@@ -20,7 +20,7 @@ async function getSchedule() {
 }
 
 /**
- * Custom hook for fetching schedule data.
+ * Custom hook for fetching schedule data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for schedules.
  */

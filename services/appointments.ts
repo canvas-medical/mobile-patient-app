@@ -26,7 +26,7 @@ async function getAppointments() {
 }
 
 /**
- * Custom hook for fetching appointments data.
+ * Custom hook for fetching appointments data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for the appointments data.
  */
@@ -176,7 +176,7 @@ async function appointmentCreate({
 }
 
 /**
- * Custom hook for creating an appointment.
+ * Custom hook for creating an appointment that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that creates an appointment.
  */
@@ -255,7 +255,7 @@ async function appointmentCancel({
 }
 
 /**
- * Custom hook for canceling an appointment.
+ * Custom hook for canceling an appointment that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that cancels an appointment.
  */

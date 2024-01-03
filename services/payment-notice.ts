@@ -25,7 +25,7 @@ async function getPaymentNotices() {
 }
 
 /**
- * Custom hook for fetching payment notices.
+ * Custom hook for fetching payment notices that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for payment notices.
  */
@@ -74,7 +74,7 @@ async function paymentNoticeSubmit(amount: string) {
 }
 
 /**
- * Custom hook for submitting a payment notice.
+ * Custom hook for submitting a payment notice that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that submits a payment notice.
  */

@@ -22,7 +22,7 @@ async function getEducationalMaterials() {
 }
 
 /**
- * Custom hook for fetching educational materials.
+ * Custom hook for fetching educational materials that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for educational materials.
  */

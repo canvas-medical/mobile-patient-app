@@ -22,7 +22,7 @@ async function getConditions() {
 }
 
 /**
- * Custom hook for fetching conditions data.
+ * Custom hook for fetching conditions data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for conditions.
  */

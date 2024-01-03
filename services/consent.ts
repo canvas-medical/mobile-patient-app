@@ -75,7 +75,7 @@ async function consentCreate(data: { consent: string }) {
 }
 
 /**
- * Custom hook for creating a consent.
+ * Custom hook for creating a consent record that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that creates a consent.
  */

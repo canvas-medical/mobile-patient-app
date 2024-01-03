@@ -22,7 +22,7 @@ async function getDiagnostics() {
 }
 
 /**
- * Custom hook for fetching diagnostics data.
+ * Custom hook for fetching diagnostics data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for diagnostics.
  */

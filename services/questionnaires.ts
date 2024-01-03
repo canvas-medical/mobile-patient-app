@@ -105,7 +105,7 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
 }
 
 /**
- * Custom hook for submitting a questionnaire.
+ * Custom hook for submitting a questionnaire response that handles fetch states and error handling automatically.
  *
  * @returns The mutation function for submitting the questionnaire.
  */

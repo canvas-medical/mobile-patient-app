@@ -22,7 +22,7 @@ async function getObservations() {
 }
 
 /**
- * Custom hook for fetching observations data.
+ * Custom hook for fetching observations data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for observations.
  */

@@ -42,7 +42,7 @@ async function getLabResults() {
 }
 
 /**
- * Custom hook for fetching lab results data.
+ * Custom hook for fetching lab results data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for lab results.
  */

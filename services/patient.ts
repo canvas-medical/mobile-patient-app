@@ -86,7 +86,7 @@ async function patientCreate(data) {
 }
 
 /**
- * Custom hook for creating a patient.
+ * Custom hook for creating a patient record that handles fetch states and error handling automatically.
  *
  * @returns A mutation function that can be used to create a patient.
  */
@@ -130,7 +130,7 @@ async function getPatient() {
 }
 
 /**
- * Custom hook for fetching patient data.
+ * Custom hook for fetching patient data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for patient data.
  */

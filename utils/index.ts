@@ -1,5 +1,6 @@
 /**
  * This file contains utility functions.
+ *
  * @module utils
  */
 export { clearHistory } from '@utils/clear-history';

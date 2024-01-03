@@ -22,7 +22,7 @@ async function getAllergies() {
 }
 
 /**
- * Custom hook for fetching allergies data.
+ * Custom hook for fetching allergies data that handles fetch states, errors, and caching automatically.
  *
  * @returns {QueryResult} The result of the query for allergies.
  */
