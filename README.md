@@ -27,6 +27,13 @@ By streamlining the process of managing health information, VivoCare Health enha
 - [BugSnag Account](https://app.bugsnag.com/user/new/) for error reporting
 - [Firebase](https://docs.expo.dev/push-notifications/push-notifications-setup/#get-credentials-for-development-builds) for Android push notifications
 
+## Related source repositories
+
+This repository is part of the _VivoCare_ Health FHIR app project by Brewer Digital.  The other repositories are:
+
+* [FHIR AI microservice](https://github.com/brewerdigital-llc/fhir-ai-ms) - The microservice that handles AI processing for _VivoCare_.
+* [FHIR Stripe microservice](https://github.com/brewerdigital-llc/stripe-microservice) - The microservice that handles Stripe payment processing for _VivoCare_.
+
 ## Installation
 
 Please refer to the [Installation Guide](./docs/INSTALLATION.md) for detailed instructions on how to set up the project on your local machine.
