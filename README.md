@@ -1,6 +1,5 @@
 ![Static Badge](https://img.shields.io/badge/license-apache-red)
 ![Static Badge](https://img.shields.io/github/v/release/brewerdigital-llc/FHIR-Dashboard)
-![Static Badge](https://img.shields.io/badge/license-apache-red)
 
 # VivoCare Health
 ![app-screenshots](https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/c6954d45-9dfe-4a8d-b87d-ca05bce4e23f)
@@ -34,14 +33,11 @@ Please refer to the [Installation Guide](./docs/INSTALLATION.md) for detailed in
 
 ## Usage
 
-After you have installed the necessary dependencies and set up the project, you can run the application using the following command:
+After you have completed all the steps in the [Installation Guide](./docs/INSTALLATION.md), you can run the following command to run the application. 
 
 ```bash
-npx expo start
+npx expo start --dev-client
 ```
-Press `a` to open the app in an Android simulator, or press `i` to open the app in an iOS simulator.
-- Note: The PDF package used in this project is not compatible with Expo Go. Therefore, you must comment out the PDF component in pdf-modal.tsx (lines 3 & 57-61) to run the app in Expo Go. Otherwise, you will have to test via the TestFlight app on iOS or the provided Google Play build on Android.
-- Note: You must have an Android or iOS simulator installed on your machine to run the app in a simulator. Alternatively, you can run the app on a real device by downloading the Expo Go app and scanning the QR code that appears in the terminal after running the `npx expo start` command.
 
 ## Learning Resources
 
