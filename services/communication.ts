@@ -97,7 +97,7 @@ async function communicationSubmit(message: string) {
 /**
  * A custom hook that returns a mutation function for submitting a communication message.
  *
- * @returns The mutation function for submitting a communication message.
+ * @returns A mutation function that submits a communication message.
  */
 export function useCommunicationSubmit() {
   return useMutation({

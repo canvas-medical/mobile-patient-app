@@ -76,9 +76,7 @@ async function paymentNoticeSubmit(amount: string) {
 /**
  * Custom hook for submitting a payment notice.
  *
- * @returns A mutation object with the following properties:
- *   - mutationFn: A function that submits the payment notice with the specified amount.
- *   - onError: A function that handles errors during the submission process.
+ * @returns A mutation function that submits a payment notice.
  */
 export function usePaymentNoticeSubmit() {
   return useMutation({

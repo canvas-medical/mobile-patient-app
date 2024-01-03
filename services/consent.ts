@@ -77,7 +77,7 @@ async function consentCreate(data: { consent: string }) {
 /**
  * Custom hook for creating a consent.
  *
- * @returns A mutation object with the `mutationFn` and `onError` properties.
+ * @returns A mutation function that creates a consent.
  */
 export function useConsentCreate() {
   return useMutation({

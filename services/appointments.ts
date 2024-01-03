@@ -77,7 +77,7 @@ export function useSlot(date: string, id: string, duration: number) {
  * Returns an array of supporting information based on the appointment type.
  *
  * @param appointmentType - The type of appointment.
- * @returns An array of supporting information objects.
+ * @returns {Array<Object>} An array of supporting information objects.
  */
 const supportingInformation = (appointmentType: string) => {
   switch (appointmentType) {
@@ -178,10 +178,7 @@ async function appointmentCreate({
 /**
  * Custom hook for creating an appointment.
  *
- * @returns A mutation object with the following properties:
- *   - mutationFn: A function that creates an appointment using the provided data.
- *   - onSuccess: A callback function that is called when the appointment creation is successful.
- *   - onError: A callback function that is called when there is an error during appointment creation.
+ * @returns A mutation function that creates an appointment.
  */
 export function useCreateAppointment() {
   return useMutation({

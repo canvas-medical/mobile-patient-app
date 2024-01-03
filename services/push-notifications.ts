@@ -56,7 +56,7 @@ export async function schedulePushNotification({
  * requests permission to send notifications, and retrieves the Expo push token.
  * The push token is then stored securely using SecureStore.
  *
- * @returns A promise that resolves to the Expo push token.
+ * @returns {Promise<void>} A promise that resolves when the device is registered for push notifications.
  */
 export async function registerForPushNotificationsAsync(): Promise<any> {
   let token: Notifications.ExpoPushToken;
