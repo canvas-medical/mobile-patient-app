@@ -1,3 +1,8 @@
+/**
+ * This file contains all of the services used by the app.
+ *
+ * @module services
+ */
 export { getToken } from '@services/access-token';
 export { useAllergies } from '@services/allergies';
 export { useAppointments, useSlot, useCreateAppointment, useCancelAppointment } from '@services/appointments';

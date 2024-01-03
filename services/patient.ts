@@ -5,6 +5,12 @@ import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
+/**
+ * Converts the birth sex value to a corresponding code.
+ *
+ * @param {string} birthSex - The birth sex value.
+ * @returns {string} The corresponding birth sex code.
+ */
 function birthSexCodeSwitch(birthSex) {
   switch (birthSex) {
     case 'Female':
@@ -19,6 +25,13 @@ function birthSexCodeSwitch(birthSex) {
   }
 }
 
+/**
+ * Creates a new patient record.
+ *
+ * @param {object} data - The data for the patient record.
+ * @returns {Promise<void>} - A promise that resolves when the patient record is created successfully.
+ * @throws {Error} - If there is an error creating the patient record.
+ */
 async function patientCreate(data) {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
@@ -72,6 +85,11 @@ async function patientCreate(data) {
   await SecureStore.setItemAsync('patient_id', urlParts[urlParts.length - 3]);
 }
 
+/**
+ * Custom hook for creating a patient.
+ *
+ * @returns A mutation function that can be used to create a patient.
+ */
 export function useCreatePatient() {
   return useMutation({
     mutationFn: (data) => patientCreate(data), // TODO: Add types
@@ -90,6 +108,12 @@ export function useCreatePatient() {
   });
 }
 
+/**
+ * Retrieves the patient information from the server.
+ *
+ * @returns {Promise<any>} A promise that resolves to the patient information.
+ * @throws {Error} If no patient id is found.
+ */
 async function getPatient() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -105,6 +129,11 @@ async function getPatient() {
   return res.json();
 }
 
+/**
+ * Custom hook for fetching patient data.
+ *
+ * @returns The result of the query.
+ */
 export function usePatient() {
   return useQuery({
     queryKey: ['patient_data'],

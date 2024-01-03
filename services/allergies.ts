@@ -2,6 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the allergies for a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of allergy resources.
+ */
 async function getAllergies() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -16,6 +21,11 @@ async function getAllergies() {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Custom hook for fetching allergies data.
+ *
+ * @returns The result of the query.
+ */
 export function useAllergies() {
   return useQuery({
     queryKey: ['allergies'],

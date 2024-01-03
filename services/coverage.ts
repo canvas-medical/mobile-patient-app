@@ -34,7 +34,16 @@ export const Insurers = {
   },
 };
 
-async function coverageCreate(data: {insurer: string, memberId: string, groupNumber?: string}) {
+/**
+ * Creates a coverage resource for a patient with the specified insurer and member ID.
+ *
+ * @param data - The data required to create the coverage resource.
+ * @param data.insurer - The name of the insurer.
+ * @param data.memberId - The member ID of the patient.
+ * @param data.groupNumber - The group number (optional).
+ * @throws {Error} If there is an issue with creating the coverage resource.
+ */
+async function coverageCreate(data: { insurer: string, memberId: string, groupNumber?: string }) {
   const token = await getToken();
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -97,9 +106,14 @@ async function coverageCreate(data: {insurer: string, memberId: string, groupNum
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
+/**
+ * Custom hook for creating a coverage.
+ *
+ * @returns A mutation function that creates a coverage.
+ */
 export function useCreateCoverage() {
   return useMutation({
-    mutationFn: (data: {insurer: string, memberId: string, groupNumber?: string}) => coverageCreate(data),
+    mutationFn: (data: { insurer: string, memberId: string, groupNumber?: string }) => coverageCreate(data),
     onSuccess: () => router.push('consents'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });

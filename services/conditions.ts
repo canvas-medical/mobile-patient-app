@@ -2,6 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the conditions for a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of condition objects.
+ */
 async function getConditions() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
@@ -16,6 +21,11 @@ async function getConditions() {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Custom hook for fetching conditions data.
+ *
+ * @returns The result of the query.
+ */
 export function useConditions() {
   return useQuery({
     queryKey: ['conditions'],

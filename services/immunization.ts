@@ -2,6 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the immunization records for a specific patient.
+ *
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of immunization objects.
+ */
 async function getImmunizations() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -16,6 +21,11 @@ async function getImmunizations() {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Retrieves a list of immunizations using the `getImmunizations` function.
+ *
+ * @returns {QueryResult} The result of the query containing the immunizations.
+ */
 export function useImmunizations() {
   return useQuery({
     queryKey: ['immunizations'],

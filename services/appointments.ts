@@ -6,6 +6,11 @@ import { AppointmentCreationData, AppointmentCancellationData } from '@interface
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
+/**
+ * Retrieves the appointments for a specific patient.
+ *
+ * @returns {Promise<Array<any>>} A promise that resolves to an array of appointment objects.
+ */
 async function getAppointments() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
@@ -20,6 +25,11 @@ async function getAppointments() {
   return json.entry?.map((entry) => entry.resource)?.sort((a: any, b: any) => (new Date(b.start).getTime() - new Date(a.start).getTime())) || [];
 }
 
+/**
+ * Custom hook for fetching appointments data.
+ *
+ * @returns {QueryResult} The result of the query.
+ */
 export function useAppointments() {
   return useQuery({
     queryKey: ['appointments'],
@@ -27,6 +37,14 @@ export function useAppointments() {
   });
 }
 
+/**
+ * Retrieves available slots for a given date and schedule ID.
+ *
+ * @param date - The date for which slots are to be retrieved.
+ * @param id - The schedule ID.
+ * @param duration - The duration of each slot.
+ * @returns {Promise<Array<any>>} A promise that resolves to an array of slot objects.
+ */
 async function getSlot(date: string, id: string, duration) {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Slot?schedule=${id}&start=${date}&end=${date}&duration=${duration}`, {
@@ -40,6 +58,14 @@ async function getSlot(date: string, id: string, duration) {
   return json.entry?.map((entry) => entry.resource) || [];
 }
 
+/**
+ * Custom hook to fetch and manage slot data.
+ *
+ * @param date - The date of the slot.
+ * @param id - The ID of the slot.
+ * @param duration - The duration of the slot.
+ * @returns The result of the query.
+ */
 export function useSlot(date: string, id: string, duration: number) {
   return useQuery({
     queryKey: ['slot', date, id],
@@ -47,6 +73,12 @@ export function useSlot(date: string, id: string, duration: number) {
   });
 }
 
+/**
+ * Returns an array of supporting information based on the appointment type.
+ *
+ * @param appointmentType - The type of appointment.
+ * @returns An array of supporting information objects.
+ */
 const supportingInformation = (appointmentType: string) => {
   switch (appointmentType) {
     case 'Video Call':
@@ -66,6 +98,18 @@ const supportingInformation = (appointmentType: string) => {
   }
 };
 
+/**
+ * Creates a new appointment.
+ *
+ * @param startTime - The start time of the appointment.
+ * @param endTime - The end time of the appointment.
+ * @param practitionerID - The ID of the practitioner associated with the appointment.
+ * @param reason - The reason for the appointment.
+ * @param appointmentType - The type of the appointment.
+ * @param appointmentTypeCode - The code representing the appointment type.
+ * @returns {Promise<void>} A promise that resolves when the appointment is created.
+ * @throws Error if the server response is not OK.
+ */
 async function appointmentCreate({
   startTime,
   endTime,
@@ -131,6 +175,14 @@ async function appointmentCreate({
   if (!res.ok) throw Error;
 }
 
+/**
+ * Custom hook for creating an appointment.
+ *
+ * @returns A mutation object with the following properties:
+ *   - mutationFn: A function that creates an appointment using the provided data.
+ *   - onSuccess: A callback function that is called when the appointment creation is successful.
+ *   - onError: A callback function that is called when there is an error during appointment creation.
+ */
 export function useCreateAppointment() {
   return useMutation({
     mutationFn: (data: AppointmentCreationData) => appointmentCreate(data),
@@ -159,6 +211,13 @@ export function useCreateAppointment() {
   });
 }
 
+/**
+ * Cancels an appointment.
+ *
+ * @param {AppointmentCancellationData} data - The appointment cancellation data.
+ * @returns {Promise<void>} - A promise that resolves when the appointment is cancelled successfully.
+ * @throws {Error} - If the cancellation request fails.
+ */
 async function appointmentCancel({
   id,
   start,
@@ -198,6 +257,11 @@ async function appointmentCancel({
   if (!res.ok) throw Error;
 }
 
+/**
+ * Custom hook for canceling an appointment.
+ *
+ * @returns A mutation function that cancels an appointment.
+ */
 export function useCancelAppointment() {
   const queryClient = useQueryClient();
   return useMutation({

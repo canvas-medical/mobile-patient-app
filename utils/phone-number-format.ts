@@ -1,3 +1,9 @@
+/**
+ * Formats a phone number by adding parentheses and dashes.
+ *
+ * @param value - The phone number to format.
+ * @returns The formatted phone number.
+ */
 export function formatPhoneNumber(value: string): string {
   if (!value) return '';
   const phoneNumber = value.replace(/\D/g, '');

@@ -11,6 +11,13 @@ import {
 import { Vital } from '@interfaces';
 import { g } from '@styles';
 
+/**
+ * Converts the vital data value based on the type of vital.
+ *
+ * @param type - The type of vital.
+ * @param vitalData - The vital data object.
+ * @returns The converted vital value.
+ */
 export function vitalsValueSwitch(type: string, vitalData: Vital) {
   switch (type) {
     case 'Weight':
@@ -32,6 +39,12 @@ export function vitalsValueSwitch(type: string, vitalData: Vital) {
   }
 }
 
+/**
+ * Returns the corresponding icon component based on the given type.
+ *
+ * @param type - The type of vital.
+ * @returns The icon component.
+ */
 export function vitalsIconSwitch(type: string) {
   switch (type) {
     case 'Weight':

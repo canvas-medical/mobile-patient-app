@@ -13,6 +13,13 @@ export const ConsentPDFs = {
   'Consent Document': 'https://www.mainemed.com/sites/default/files/content/Consent%20to%20Treat%20%26%20Acknowledgement.pdf',
 };
 
+/**
+ * Creates a consent record for a patient.
+ *
+ * @param data - The consent data, including the consent type.
+ * @returns {Promise<void>} - A promise that resolves when the consent record is created successfully.
+ * @throws - An error if there is an issue creating the consent record.
+ */
 async function consentCreate(data: { consent: string }) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -67,6 +74,11 @@ async function consentCreate(data: { consent: string }) {
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
+/**
+ * Custom hook for creating a consent.
+ *
+ * @returns A mutation object with the `mutationFn` and `onError` properties.
+ */
 export function useConsentCreate() {
   return useMutation({
     mutationFn: (data: { consent: string }) => consentCreate(data),
