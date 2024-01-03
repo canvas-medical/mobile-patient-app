@@ -24,7 +24,7 @@ async function getEducationalMaterials() {
 /**
  * Custom hook for fetching educational materials.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useEducationalMaterials() {
   return useQuery({

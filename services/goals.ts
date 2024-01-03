@@ -24,7 +24,7 @@ async function getGoals() {
 /**
  * Custom hook for fetching goals data.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useGoals() {
   return useQuery({

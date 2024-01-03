@@ -24,7 +24,7 @@ async function getProcedures() {
 /**
  * Custom hook for fetching procedures data using the useQuery hook.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useProcedures() {
   return useQuery({

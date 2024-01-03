@@ -132,7 +132,7 @@ async function getPatient() {
 /**
  * Custom hook for fetching patient data.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function usePatient() {
   return useQuery({

@@ -24,7 +24,7 @@ async function getAllergies() {
 /**
  * Custom hook for fetching allergies data.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useAllergies() {
   return useQuery({

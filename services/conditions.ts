@@ -24,7 +24,7 @@ async function getConditions() {
 /**
  * Custom hook for fetching conditions data.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useConditions() {
   return useQuery({

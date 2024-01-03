@@ -16,7 +16,7 @@ export enum QuestionnaireIds {
  * Retrieves a questionnaire by its ID from the FHIR API.
  *
  * @param id - The ID of the questionnaire to retrieve.
- * @returns {Promise <Object>} A promise that resolves to the questionnaire object.
+ * @returns {Promise<Object>} A promise that resolves to the questionnaire object.
  * @throws An error if the request fails or the response is not successful.
  */
 async function getQuestionnaire(id: string) {
@@ -37,7 +37,7 @@ async function getQuestionnaire(id: string) {
  * Custom hook to fetch a questionnaire by its ID.
  *
  * @param id - The ID of the questionnaire to fetch.
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useQuestionnaire(id: string) {
   return useQuery({

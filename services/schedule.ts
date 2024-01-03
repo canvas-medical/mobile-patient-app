@@ -22,7 +22,7 @@ async function getSchedule() {
 /**
  * Custom hook for fetching schedule data.
  *
- * @returns The result of the query.
+ * @returns {QueryResult} The result of the query.
  */
 export function useSchedule() {
   return useQuery({
