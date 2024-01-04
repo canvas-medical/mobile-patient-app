@@ -4,10 +4,10 @@ import { Text, View } from 'react-native';
 import { useRootNavigationState, router } from 'expo-router';
 import { usePatient } from '@services';
 import { Screen } from '@components';
-import Bugsnag from '@bugsnag/expo';
+// import Bugsnag from '@bugsnag/expo';
 
-Bugsnag.start();
-const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
+// Bugsnag.start();
+// const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
 function ErrorView() {
   // TODO: test this error view.
@@ -29,8 +29,6 @@ export default function Index() {
   }, [navigationState, patient, isFetching]);
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorView}>
-      <Screen />
-    </ErrorBoundary>
+    <Screen />
   );
 }

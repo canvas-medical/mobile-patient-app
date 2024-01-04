@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
-import Bugsnag from '@bugsnag/expo';
+// import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 /**
@@ -103,7 +103,7 @@ export function useCommunicationSubmit() {
   return useMutation({
     mutationFn: (message: string) => communicationSubmit(message),
     onError: (e) => {
-      Bugsnag.leaveBreadcrumb('Error', { error: e });
+      // Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error sending the message. Please try again.',

@@ -40,7 +40,7 @@
       "expo-router",
       "@config-plugins/react-native-blob-util",
       "@config-plugins/react-native-pdf",
-      "@bugsnag/plugin-expo-eas-sourcemaps",
+      // "@bugsnag/plugin-expo-eas-sourcemaps",
       [
         "expo-build-properties",
         {

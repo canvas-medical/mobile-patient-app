@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
-import Bugsnag from '@bugsnag/expo';
+// import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 /**
@@ -95,7 +95,7 @@ export function useCreatePatient() {
     mutationFn: (data) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
-      Bugsnag.leaveBreadcrumb('Error', { error: e });
+      // Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error creating your account. Please try again.',
