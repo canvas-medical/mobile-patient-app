@@ -200,12 +200,12 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
           {isPending && <ActivityIndicator color={g.white} />}
           {!cancelled && !isWithin48HoursOfStartTime && isFutureDate
             && (
-              <TouchableOpacity
-                disabled={cancelled || isPending}
-                onPress={cancelAppointment}
-              >
-                <MaterialIcons name="delete-forever" size={g.size(24)} color={g.white} />
-              </TouchableOpacity>
+            <TouchableOpacity
+              disabled={cancelled || isPending}
+              onPress={cancelAppointment}
+            >
+              <MaterialIcons name="delete-forever" size={g.size(24)} color={g.white} />
+            </TouchableOpacity>
             )
           }
         </View>
@@ -217,7 +217,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               style={s.reason}
               numberOfLines={1}
             >
-              {reasonText === 'No description given' ? 'Symptoms evaluation' : capitalizeFirstCharacter(reasonText)}
+              {capitalizeFirstCharacter(reasonText)}
             </Text>
             {displayNavLink && !cancelled ? (
               <TouchableOpacity

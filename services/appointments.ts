@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AppointmentCreationData, AppointmentCancellationData } from '@interfaces';
-// import Bugsnag from '@bugsnag/expo';
+import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 /**
@@ -197,7 +197,7 @@ export function useCreateAppointment() {
       );
     },
     onError: (e) => {
-      // Bugsnag.leaveBreadcrumb('Error', { error: e });
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error booking your appointment. Please try again.',
@@ -273,7 +273,7 @@ export function useCancelAppointment() {
       );
     },
     onError: (e) => {
-      // Bugsnag.leaveBreadcrumb('Error', { error: e });
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         'There was an error canceling your appointment. Please try again.',

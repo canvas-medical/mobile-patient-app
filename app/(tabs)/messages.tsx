@@ -43,6 +43,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    paddingLeft: g.size(24),
   },
   input: {
     ...g.bodyMedium,

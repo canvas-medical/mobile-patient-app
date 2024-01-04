@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { Alert } from 'react-native';
-// import Bugsnag from '@bugsnag/expo';
+import Bugsnag from '@bugsnag/expo';
 
 /**
  * Retrieves a payment intent from the Stripe API.
@@ -74,7 +74,7 @@ export function usePaymentIntentCapture() {
   return useMutation({
     mutationFn: (id: string) => paymentIntentCapture(id),
     onError: (e) => {
-      // Bugsnag.leaveBreadcrumb('Error', { error: e });
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         e.message,
@@ -96,7 +96,7 @@ export function usePaymentIntentCancel() {
   return useMutation({
     mutationFn: (id: string) => paymentIntentCancel(id),
     onError: (e) => {
-      // Bugsnag.leaveBreadcrumb('Error', { error: e });
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
         e.message,
