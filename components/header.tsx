@@ -87,7 +87,10 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
   }
 
   return (
-    <View style={s.container}>
+    <View
+      style={s.container}
+      onLayout={(event) => { console.log(event.nativeEvent.layout); }}
+    >
       <View style={s.controlsContainer}>
         {!hideBackButton && (
           <TouchableOpacity

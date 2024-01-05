@@ -40,10 +40,11 @@ const s = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: g.size(112),
+    paddingBottom: g.size(12),
+    paddingRight: g.size(24),
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    paddingLeft: g.size(24),
   },
   input: {
     ...g.bodyMedium,
@@ -68,9 +69,6 @@ const s = StyleSheet.create({
     borderRadius: g.size(20),
     minHeight: g.size(36),
   },
-  keyboardHideButton: {
-    marginBottom: g.size(4),
-  },
   loading: {
     flex: 1,
   },
@@ -86,6 +84,7 @@ const s = StyleSheet.create({
 export default function Messages() {
   const tabBarHeight = useBottomTabBarHeight();
   const keyboardVisible = useKeyboardVisible();
+  const heightValue = useRef(new Animated.Value(0)).current;
   const opacityValue = useRef(new Animated.Value(0)).current;
   const [containerLayout, setContainerLayout] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
@@ -114,6 +113,12 @@ export default function Messages() {
   }, [isSuccess]);
 
   function toggleKeyBoard() {
+    Animated.timing(heightValue, {
+      toValue: keyboardVisible ? g.size(112) : 0,
+      duration: 100,
+      easing: Easing.ease,
+      useNativeDriver: false,
+    }).start();
     Animated.timing(opacityValue, {
       toValue: keyboardVisible ? 1 : 0,
       duration: 200,
@@ -132,13 +137,11 @@ export default function Messages() {
         <TouchableOpacity
           onPress={() => Keyboard.dismiss()}
           disabled={!keyboardVisible}
-          style={s.keyboardHideButton}
         >
           <Animated.View style={{ opacity: opacityValue }}>
             <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
           </Animated.View>
         </TouchableOpacity>
-        <Header hideBackButton />
       </View>
       <KeyboardAvoidingView
         style={s.container}
