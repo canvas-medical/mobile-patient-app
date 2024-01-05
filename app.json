@@ -53,9 +53,6 @@
     "extra": {
       "router": {
         "origin": false
-      },
-      "bugsnag": {
-        "apiKey": "1e30b647adf4a385efbbb03d2c5f3a34"
       }
     }
   }

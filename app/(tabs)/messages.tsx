@@ -20,7 +20,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { useKeyboardVisible } from '@utils';
-import { MessageBlock, Screen, Header, ZeroState } from '@components';
+import { MessageBlock, Screen, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
@@ -84,7 +84,6 @@ const s = StyleSheet.create({
 export default function Messages() {
   const tabBarHeight = useBottomTabBarHeight();
   const keyboardVisible = useKeyboardVisible();
-  const heightValue = useRef(new Animated.Value(0)).current;
   const opacityValue = useRef(new Animated.Value(0)).current;
   const [containerLayout, setContainerLayout] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
@@ -113,12 +112,6 @@ export default function Messages() {
   }, [isSuccess]);
 
   function toggleKeyBoard() {
-    Animated.timing(heightValue, {
-      toValue: keyboardVisible ? g.size(112) : 0,
-      duration: 100,
-      easing: Easing.ease,
-      useNativeDriver: false,
-    }).start();
     Animated.timing(opacityValue, {
       toValue: keyboardVisible ? 1 : 0,
       duration: 200,
