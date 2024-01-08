@@ -20,7 +20,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { useKeyboardVisible } from '@utils';
-import { MessageBlock, Screen, Header, ZeroState } from '@components';
+import { MessageBlock, Screen, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
@@ -40,10 +40,11 @@ const s = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: g.size(112),
+    paddingBottom: g.size(12),
+    paddingRight: g.size(24),
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    paddingLeft: g.size(24),
   },
   input: {
     ...g.bodyMedium,
@@ -67,9 +68,6 @@ const s = StyleSheet.create({
     backgroundColor: g.white,
     borderRadius: g.size(20),
     minHeight: g.size(36),
-  },
-  keyboardHideButton: {
-    marginBottom: g.size(4),
   },
   loading: {
     flex: 1,
@@ -132,13 +130,11 @@ export default function Messages() {
         <TouchableOpacity
           onPress={() => Keyboard.dismiss()}
           disabled={!keyboardVisible}
-          style={s.keyboardHideButton}
         >
           <Animated.View style={{ opacity: opacityValue }}>
             <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
           </Animated.View>
         </TouchableOpacity>
-        <Header hideBackButton />
       </View>
       <KeyboardAvoidingView
         style={s.container}
