@@ -7,8 +7,7 @@ import { Image } from 'expo-image';
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
 import { Patient } from '@interfaces';
-import { BlurFill, AiWelcomeWizard } from '@components';
-import { LightbulbSVG } from '@components/lightbulb-svg';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -220,25 +219,6 @@ export function ProfileCard({ data }: { data: Patient }) {
         </View>
       </View>
       <View style={s.buttonContainer}>
-        <TouchableOpacity
-          style={s.infoButton}
-          onPress={() => setOpenWizard(true)}
-        >
-          <BlurFill />
-          <LightbulbSVG
-            fill={g.goldenYellow}
-            width={g.size(16)}
-            height={g.size(16)}
-          />
-          <Text style={s.logoutLabel}>Info</Text>
-          {openWizard && (
-            <AiWelcomeWizard
-              setModalVisible={setOpenWizard}
-              modalVisible={openWizard}
-              tapToClose
-            />
-          )}
-        </TouchableOpacity>
         <TouchableOpacity
           style={s.logoutButton}
           onPress={() =>
