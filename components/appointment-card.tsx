@@ -16,6 +16,11 @@ import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  appointmentAddress: {
+    ...g.bodySmall,
+    opacity: 0.75,
+    color: g.white,
+  },
   appointmentLocation: {
     ...g.bodyMedium,
     color: g.white,
@@ -85,6 +90,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: g.size(4),
+    paddingLeft: 0,
     gap: g.size(4),
     minHeight: g.size(28),
   },
@@ -237,12 +243,20 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.white} />}
                 {isTelemedicine && <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />}
                 {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.white} />}
-                <Text
-                  style={s.appointmentLocation}
-                  numberOfLines={1}
-                >
-                  {isOfficeVisit ? 'Open in maps' : 'Join video call'}
-                </Text>
+                <View>
+                  <Text
+                    style={s.appointmentLocation}
+                    numberOfLines={1}
+                  >
+                    {isOfficeVisit ? 'Get directions' : 'Join video call'}
+                  </Text>
+                  <Text
+                    style={s.appointmentAddress}
+                    numberOfLines={1}
+                  >
+                    {isOfficeVisit && clinicAddress}
+                  </Text>
+                </View>
               </TouchableOpacity>
             ) : (
               <View style={s.appointmentType}>
