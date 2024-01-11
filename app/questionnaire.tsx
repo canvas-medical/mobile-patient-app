@@ -121,7 +121,7 @@ export default function Questionnaire() {
                   <View style={s.formContainer}>
                     {questionnaire?.item.map((question: Question) => (
                       <Controller
-                        name={question.type === 'choice' ? `${question.linkId} (optional)` : question.linkId}
+                        name={question.linkId}
                         control={control}
                         rules={{ required: { value: question.type === 'choice', message: 'Required' } }}
                         key={question.linkId}
@@ -131,7 +131,7 @@ export default function Questionnaire() {
                             buttonText={question.type === 'choice' ? 'Select' : null}
                             type={dataTypeMap[question.type]}
                             name={question.text}
-                            label={question.text}
+                            label={question.type === 'choice' ? question.text : `${question.text} (optional)`}
                             options={question.answerOption.map((answer) => (
                               { label: answer.valueCoding.display, value: answer.valueCoding.code }))}
                             onFocus={() => clearErrors()}
