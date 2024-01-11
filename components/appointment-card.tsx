@@ -17,14 +17,13 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   appointmentAddress: {
-    ...g.bodySmall,
-    opacity: 0.75,
+    ...g.bodyMedium,
+    textDecorationLine: 'underline',
     color: g.white,
   },
   appointmentLocation: {
-    ...g.bodyMedium,
+    ...g.bodySmall,
     color: g.white,
-    textDecorationLine: 'underline',
   },
   appointmentType: {
     alignSelf: 'flex-start',
