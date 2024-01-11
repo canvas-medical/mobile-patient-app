@@ -242,7 +242,7 @@ function DatePickerComponent(props) {
             <DateTimePicker
               mode="date"
               display="spinner"
-              value={timeZoneOffset(value)}
+              value={new Date(value)}
               minimumDate={minimumDate}
               maximumDate={maximumDate}
               onChange={(e: any) => {
