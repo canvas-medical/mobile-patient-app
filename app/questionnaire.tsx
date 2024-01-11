@@ -128,6 +128,7 @@ export default function Questionnaire() {
                         render={({ field: { onChange, value } }) => (
                           <Input
                             placeholder={question.type === 'choice' ? 'Make a selection' : 'Enter text'}
+                            buttonText={question.type === 'choice' ? 'Select' : null}
                             type={dataTypeMap[question.type]}
                             name={question.text}
                             label={question.text}

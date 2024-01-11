@@ -125,6 +125,7 @@ export default function Coverage() {
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="selector"
+                          buttonText="Select"
                           name="insurer"
                           label="Insurance Provider"
                           placeholder="Select your insurance provider"
