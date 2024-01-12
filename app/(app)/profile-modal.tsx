@@ -490,8 +490,7 @@ export default function ProfileModal() {
                     style={[s.input, !!errors.addressLine1 && s.inputError]}
                     placeholder="Address line 1"
                     placeholderTextColor={errors.addressLine1 ? g.neutral500 : g.neutral200}
-                    // onFocus={() => clearErrors()}
-                    onFocus={(e) => console.log('EEEE: ', e)}
+                    onFocus={() => clearErrors()}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
                     }}
