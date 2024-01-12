@@ -65,6 +65,7 @@ export default function Layout() {
       <Tabs.Screen
         name="messages"
         options={{
+          unmountOnBlur: true,
           title: 'Messages',
           tabBarAccessibilityLabel: 'Messages',
           headerShown: false,

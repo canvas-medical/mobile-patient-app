@@ -88,7 +88,7 @@ export default function PersonalDetails() {
       lastName: null,
       gender: null,
       birthSex: null,
-      birthDate: new Date().toISOString().slice(0, 10),
+      birthDate: null,
     },
     shouldFocusError: false,
   });
@@ -235,6 +235,7 @@ export default function PersonalDetails() {
                           value={value}
                           forwardedRef={ref}
                           error={errors.gender}
+                          buttonText="Select"
                         />
                       )}
                     />
@@ -258,6 +259,7 @@ export default function PersonalDetails() {
                           onChange={onChange}
                           value={value}
                           error={errors.birthSex}
+                          buttonText="Select"
                         />
                       )}
                     />
@@ -279,6 +281,7 @@ export default function PersonalDetails() {
                           name="birthDate"
                           label="Date of Birth"
                           placeholder="Enter your date of birth"
+                          iosSpinner
                           onFocus={() => clearErrors()}
                           value={value}
                           minimumDate={null}
