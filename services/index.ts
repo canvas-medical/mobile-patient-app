@@ -20,7 +20,7 @@ export { useLabResults } from '@services/lab-results';
 export { useMedications } from '@services/medications';
 export { useObservations } from '@services/observations';
 export { useOpenAiSummary } from '@services/openai';
-export { useCreatePatient, usePatient } from '@services/patient';
+export { useCreatePatient, usePatient, useUpdatePatient } from '@services/patient';
 export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-notice';
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
 export { useProcedures } from '@services/procedures';

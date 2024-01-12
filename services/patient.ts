@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
@@ -32,7 +32,7 @@ function birthSexCodeSwitch(birthSex) {
  * @returns {Promise<void>} - A promise that resolves when the patient record is created successfully.
  * @throws {Error} - If there is an error creating the patient record.
  */
-async function patientCreate(data) {
+async function patientCreate(data: any) { // TODO: Add types
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
     method: 'POST',
@@ -92,7 +92,7 @@ async function patientCreate(data) {
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: any) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -138,5 +138,100 @@ export function usePatient() {
   return useQuery({
     queryKey: ['patient_data'],
     queryFn: () => getPatient(),
+  });
+}
+
+/**
+ * Updates a patient record.
+ *
+ * @param {object} data - The data for the patient record.
+ * @returns {Promise<void>} - A promise that resolves when the patient record is updated successfully.
+ * @throws {Error} - If there is an error updating the patient record.
+ */
+async function updatePatient(data: any) { // TODO: Add types
+  console.log('FIRED ===');
+  const token = await getToken();
+  const patientId = await SecureStore.getItemAsync('patient_id');
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      resourceType: 'Patient',
+      extension: [
+        {
+          url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
+          valueCode: birthSexCodeSwitch(data.birthSex),
+        },
+      ],
+      name: [
+        {
+          use: 'official',
+          family: data.lastName,
+          given: [data.firstName, ...(data.middleName ? [data.middleName] : [])]
+        },
+        ...(data.preferredName ? [{
+          use: 'nickname',
+          given: [data.preferredName]
+        }] : [])
+      ],
+      telecom: [
+        {
+          system: 'phone',
+          value: data.phone,
+        },
+        {
+          system: 'email',
+          value: data.email,
+        }
+      ],
+      gender: data.gender.toLowerCase(),
+      birthDate: data.birthDate,
+      address: [{
+        line: [data.addressLine1, ...(data.addressLine2 ? [data.addressLine2] : [])],
+        city: data.city,
+        state: data.stateAbbreviation,
+        postalCode: data.postalCode
+      }],
+    })
+  });
+  console.log('RES: ', res);
+  const json = await res.json();
+  console.log('JSON: ', json);
+  if (!res.ok) throw new Error();
+}
+
+/**
+ * Custom hook for updating a patient record that handles fetch states and error handling automatically.
+ *
+ * @returns A mutation function that can be used to update a patient.
+ */
+export function useUpdatePatient() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: any) => updatePatient(data), // TODO: Add types
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['patient_data'] });
+      Alert.alert(
+        'Your profile has been updated',
+        '',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    },
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
+      Alert.alert(
+        'Error',
+        'There was an error updating your profile. Please try again.',
+        [
+          { text: 'OK' }
+        ],
+        { cancelable: false }
+      );
+    },
   });
 }

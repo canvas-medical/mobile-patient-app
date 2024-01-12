@@ -61,7 +61,7 @@ const s = StyleSheet.create({
 
 export function SelectAppointmentDate({ selectedDate, setSelectedDate }: AppointmentDateProps) {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [tentativeDate, setTentativeDate] = useState<number>(0);
+  const [provisionalDate, setProvisionalDate] = useState<number>(0);
   const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
 
   function onChangeDate(date: number) {
@@ -72,9 +72,9 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
   }
 
   function closeDatePicker() {
-    if (tentativeDate === 0) {
+    if (provisionalDate === 0) {
       setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-    } else setSelectedDate(new Date(tentativeDate).toISOString().slice(0, 10));
+    } else setSelectedDate(new Date(provisionalDate).toISOString().slice(0, 10));
     setShowDatePicker(false);
   }
 
@@ -117,7 +117,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
               minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
               themeVariant="light"
               maximumDate={null}
-              onChange={(e: DateTimePickerEvent) => setTentativeDate(e.nativeEvent.timestamp)}
+              onChange={(e: DateTimePickerEvent) => setProvisionalDate(e.nativeEvent.timestamp)}
             />
             <Button
               label="Select Date"

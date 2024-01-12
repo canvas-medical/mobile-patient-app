@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import { View, Text, StyleSheet } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import { g } from '@styles';

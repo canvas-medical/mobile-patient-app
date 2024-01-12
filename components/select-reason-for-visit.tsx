@@ -69,7 +69,7 @@ export function SelectReasonForVisit({
   setAppointmentDuration
 }: ReasonForVisitProps) {
   const [showReasonPicker, setShowReasonPicker] = useState<boolean>(false);
-  const [tentativeReason, setTentativeReason] = useState<string>('');
+  const [provisionalReason, setProvisionalReason] = useState<string>('');
 
   return (
     <View style={s.sectionContainer}>
@@ -107,8 +107,8 @@ export function SelectReasonForVisit({
           >
             <View style={s.modal}>
               <Picker
-                selectedValue={tentativeReason}
-                onValueChange={(itemValue) => setTentativeReason(itemValue)}
+                selectedValue={provisionalReason}
+                onValueChange={(itemValue) => setProvisionalReason(itemValue)}
               >
                 {reasonsForDoctorVisit.map((item: { reasonLabel: string }) => (
                   <Picker.Item
@@ -123,9 +123,9 @@ export function SelectReasonForVisit({
                 theme="primary"
                 onPress={() => {
                   setShowReasonPicker(false);
-                  if (reasonsForDoctorVisit.find((item) => item.reasonLabel === tentativeReason)?.appointmentDuration) {
-                    setAppointmentReason(tentativeReason);
-                    setAppointmentDuration(reasonsForDoctorVisit.find((item) => item.reasonLabel === tentativeReason)?.appointmentDuration);
+                  if (reasonsForDoctorVisit.find((item) => item.reasonLabel === provisionalReason)?.appointmentDuration) {
+                    setAppointmentReason(provisionalReason);
+                    setAppointmentDuration(reasonsForDoctorVisit.find((item) => item.reasonLabel === provisionalReason)?.appointmentDuration);
                   }
                 }}
               />

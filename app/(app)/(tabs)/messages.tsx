@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
