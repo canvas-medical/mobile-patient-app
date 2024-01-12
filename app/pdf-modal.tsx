@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useConsentCreate } from '@services';
@@ -54,11 +54,11 @@ export default function PdfModal() {
 
   return (
     <View style={s.contentContainer}>
-      <Pdf
+      {/* <Pdf
         trustAllCerts={false}
         source={{ uri: uri as string }}
         style={s.pdf}
-      />
+      /> */}
       <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
         <Feather name="x" size={32} color={g.neutral500} />
       </TouchableOpacity>
