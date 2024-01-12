@@ -20,7 +20,7 @@ import {
   useMedications,
   useObservations,
   useEducationalMaterials,
-  useProcedures,
+  useProcedures, useQuestionnaireResponses,
 } from '@services';
 import {
   Allergy,
@@ -87,6 +87,8 @@ export default function Dashboard() {
   const { data: immunizations, isLoading: loadingImmunizations, refetch: refetchImmunizations } = useImmunizations();
   const { data: conditions, isLoading: loadingConditions, refetch: refetchConditions } = useConditions();
   const { data: goals, isFetching: loadingGoals, refetch: refetchGoals } = useGoals();
+  const { data: questionnaireResponses, isLoading: loadingQuestionnaireResponses, refetch: refetchQuestionnaireResponses } = useQuestionnaireResponses();
+  console.log(questionnaireResponses);
   const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
 

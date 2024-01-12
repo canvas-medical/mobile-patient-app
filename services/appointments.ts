@@ -120,6 +120,7 @@ async function appointmentCreate({
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
+  console.log('appointment create', startTime, endTime, practitionerID, reason, appointmentType, appointmentTypeCode);
 
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
     method: 'POST',
@@ -172,6 +173,9 @@ async function appointmentCreate({
       ]
     })
   });
+  console.log('res.status', res.status);
+  const json = await res.json();
+  console.log('json', json);
   if (!res.ok) throw Error;
 }
 
@@ -197,6 +201,7 @@ export function useCreateAppointment() {
       );
     },
     onError: (e) => {
+      console.log('error', e);
       Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
