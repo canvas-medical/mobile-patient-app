@@ -207,7 +207,6 @@ function DatePickerComponent(props) {
     iosSpinner,
   } = props;
   const [showDatePicker, setShowDatePicker] = useState<boolean>(Platform.OS === 'ios' && !iosSpinner);
-
   return (
     <>
       {showDatePicker && !iosSpinner && (

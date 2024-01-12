@@ -15,7 +15,7 @@ import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
-import { formatDate, formatTime, timeZoneOffset } from '@utils';
+import { formatDate, formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import {
   Button,
@@ -161,14 +161,14 @@ export default function BookAppointment() {
   const [appointmentDuration, setAppointmentDuration] = useState<number>(0);
   const [appointmentType, setAppointmentType] = useState<string>('');
   const [appointmentTypeCode, setAppointmentTypeCode] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<string>(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule>({} as Schedule);
   const [selectedSlot, setSelectedSlot] = useState<Slot>({} as Slot);
   const { data: scheduleData, isLoading: isLoadingSchedules } = useSchedule();
-  const { data: slotData, isLoading: isLoadingSlots } = useSlot(selectedDate as string, selectedSchedule.id, appointmentDuration);
+  const { data: slotData, isLoading: isLoadingSlots } = useSlot(selectedDate.toISOString().slice(0, 10), selectedSchedule.id, appointmentDuration);
   const { mutate: onCreateAppointment, isPending, isSuccess } = useCreateAppointment();
   const bookDisabled = !Object.keys(selectedSlot).length;
-  const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
+  const futureDateSelected = selectedDate > new Date();
 
   useEffect(() => {
     if (!!Object.keys(selectedSchedule)?.length && slotData?.length === 0) {
@@ -288,7 +288,7 @@ export default function BookAppointment() {
                     <Text style={s.sectionHeader}>
                       Appointments available for
                       {' '}
-                      {formatDate(selectedDate, 'numeric')}
+                      {formatDate(selectedDate.toISOString(), 'numeric', true)}
                     </Text>
                     <View style={s.slotButtonsContainer}>
                       {slotData.map((slot: Slot) => {
@@ -301,11 +301,11 @@ export default function BookAppointment() {
                           >
                             <BlurFill />
                             <Text style={[s.slotButtonLabel, selected && s.labelSelected]}>
-                              {formatTime(slot.start, false)}
+                              {formatTime(slot.start)}
                               {' '}
                               -
                               {' '}
-                              {formatTime(slot.end, true)}
+                              {formatTime(slot.end, true, true)}
                             </Text>
                           </TouchableOpacity>
                         );
