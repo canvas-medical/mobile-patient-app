@@ -242,6 +242,7 @@ function DatePickerComponent(props) {
             <DateTimePicker
               mode="date"
               display="spinner"
+              themeVariant="light"
               value={new Date(value)}
               minimumDate={minimumDate}
               maximumDate={maximumDate}

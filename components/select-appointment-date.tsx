@@ -64,14 +64,6 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
   const [tentativeDate, setTentativeDate] = useState<number>(0);
   const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
 
-  const setDate = (event: DateTimePickerEvent, date: Date) => {
-    const {
-      type,
-      nativeEvent: { timestamp, utcOffset },
-    } = event;
-    setSelectedDate(new Date(timestamp));
-  };
-
   function onChangeDate(date: number) {
     if (timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
       setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
@@ -98,8 +90,8 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
       {Platform.OS === 'android' && showDatePicker && (
         <DateTimePicker
           mode="date"
-          timeZoneName="Etc/UTC"
-          value={timeZoneOffset(selectedDate)}
+          timeZoneName="Etc/Universal"
+          value={new Date(selectedDate)}
           minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
           themeVariant="dark"
           maximumDate={null}
@@ -125,13 +117,13 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
           <View style={s.modal}>
             <DateTimePicker
               mode="date"
-              timeZoneName="Etc/UTC"
+              timeZoneName="Etc/Universal"
               display="inline"
-              value={timeZoneOffset(selectedDate)}
+              value={new Date(selectedDate)}
               minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
               themeVariant="light"
               maximumDate={null}
-              onChange={(e: DateTimePickerEvent) => setTentativeDate(e.nativeEvent.timestamp)}
+              onChange={(e: DateTimePickerEvent) => { console.log(e); setTentativeDate(e.nativeEvent.timestamp); }}
             />
             <Button
               label="Select Date"
