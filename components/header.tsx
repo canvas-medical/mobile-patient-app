@@ -8,7 +8,6 @@ import { router, useNavigation } from 'expo-router';
 import { Image } from 'expo-image';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { usePatient } from '@services';
-// import { ProfileCard } from '@components'; // Remove ProfileCard component
 import { g } from '@styles';
 
 const s = StyleSheet.create({

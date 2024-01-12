@@ -136,7 +136,7 @@ export default function Consents() {
                 </View>
                 <View style={s.buttonContainer}>
                   <Button
-                    // disabled={!isAccepted}
+                    disabled={!isAccepted}
                     theme="primary"
                     onPress={() => router.push('questionnaire')}
                     label="Next"

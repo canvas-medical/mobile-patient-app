@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-export default function RootLayout() {
+export default function AppLayout() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -9,7 +9,7 @@ export default function RootLayout() {
         options={{
           presentation: 'modal',
           headerShown: false,
-          gestureEnabled: false, // maybe remove
+          gestureEnabled: false,
         }}
       />
     </Stack>
