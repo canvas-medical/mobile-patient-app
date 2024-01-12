@@ -8,10 +8,11 @@
  */
 export function formatTime(dateStr: string, AMPM: boolean = false, timezone: boolean = false) {
   const date = new Date(dateStr);
-  const timeZone = timezone && date.toString().match(/((\w*?)(-))/g)[0].replace(/\W/g, '');
+  const dateWithTimezone = date.toLocaleString('en-US', { timeZoneName: 'short' });
+  const timeZone = timezone && dateWithTimezone?.split(' ').pop();
   let hours = date.getHours();
   const minutes = date.getMinutes();
-  const ampm = AMPM && hours >= 12 ? 'PM' : 'AM';
-  const strTime = `${(hours %= 12) || '12'}:${minutes < 10 ? `0${minutes}` : minutes} ${ampm || ''} ${timeZone || ''}`;
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const strTime = `${(hours %= 12) || '12'}:${minutes < 10 ? `0${minutes}` : minutes} ${AMPM ? ampm : ''} ${timeZone || ''}`;
   return strTime;
 }

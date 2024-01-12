@@ -288,7 +288,7 @@ export default function BookAppointment() {
                     <Text style={s.sectionHeader}>
                       Appointments available for
                       {' '}
-                      {formatDate(selectedDate.toISOString(), 'numeric', true)}
+                      {formatDate(selectedDate.toISOString(), 'numeric')}
                     </Text>
                     <View style={s.slotButtonsContainer}>
                       {slotData.map((slot: Slot) => {
