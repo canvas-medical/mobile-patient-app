@@ -264,6 +264,7 @@ export default function ContactInformation() {
                           type="selector"
                           name="state"
                           label="State"
+                          buttonText="Submit"
                           placeholder="Select your state"
                           options={americanStatesArray}
                           onFocus={() => clearErrors()}

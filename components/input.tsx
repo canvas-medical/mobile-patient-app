@@ -9,7 +9,7 @@ import {
   TextInputChangeEventData,
   TouchableOpacity,
   TextInputSubmitEditingEventData,
-  Platform,
+  Platform, TouchableWithoutFeedback,
 } from 'react-native';
 import { Octicons } from '@expo/vector-icons';
 import { FieldError, UseFormClearErrors } from 'react-hook-form';
@@ -18,8 +18,15 @@ import { Picker } from '@react-native-picker/picker';
 import { Overlay } from '@rneui/themed';
 import { formatDate, formatPhoneNumber, timeZoneOffset } from '@utils';
 import { g } from '@styles';
+import { Button } from '@components/button';
+import Modal from 'react-native-modal';
 
 const s = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: g.black,
+    opacity: 0.5,
+  },
   container: {
     gap: g.size(4),
   },
@@ -60,6 +67,13 @@ const s = StyleSheet.create({
     ...g.labelMedium,
     color: g.neutral300,
   },
+  modal: {
+    paddingHorizontal: g.size(8),
+    paddingBottom: g.size(12),
+    backgroundColor: g.white,
+    borderRadius: g.size(16),
+    gap: g.size(4),
+  },
   passwordRevealButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -69,7 +83,6 @@ const s = StyleSheet.create({
     width: '85%',
     borderRadius: g.size(16),
     backgroundColor: g.white,
-    paddingVertical: 0
   },
   selectorButton: {
     paddingVertical: g.size(8),
@@ -119,11 +132,13 @@ interface DateInputProps extends InputProps {
   type: 'date-picker',
   minimumDate: Date | null,
   maximumDate: Date | null,
+  iosSpinner?: boolean
 }
 
 interface SelectorInputProps extends InputProps {
   type: 'selector',
   options: string[] | { value: string, label: string }[],
+  buttonText?: string,
 }
 
 function TextComponent(props) {
@@ -189,13 +204,13 @@ function DatePickerComponent(props) {
     maximumDate,
     onChange,
     error,
+    iosSpinner,
   } = props;
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(Platform.OS === 'ios');
-  const valueIsToday = value === new Date().toISOString().slice(0, 10);
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(Platform.OS === 'ios' && !iosSpinner);
 
   return (
     <>
-      {showDatePicker && (
+      {showDatePicker && !iosSpinner && (
         <DateTimePicker
           mode="date"
           value={timeZoneOffset(value)}
@@ -209,7 +224,40 @@ function DatePickerComponent(props) {
           }}
         />
       )}
-      {Platform.OS === 'android' && (
+
+      {iosSpinner && (
+        <Modal
+          animationIn="fadeIn"
+          animationOut="fadeOut"
+          isVisible={showDatePicker}
+          swipeDirection="right"
+          onSwipeComplete={() => setShowDatePicker(false)}
+          customBackdrop={(
+            <TouchableWithoutFeedback onPress={() => setShowDatePicker(false)}>
+              <View style={s.backdrop} />
+            </TouchableWithoutFeedback>
+          )}
+        >
+          <View style={s.modal}>
+            <DateTimePicker
+              mode="date"
+              display="spinner"
+              value={new Date(value)}
+              minimumDate={minimumDate}
+              maximumDate={maximumDate}
+              onChange={(e: any) => {
+                if (e.type === 'set') {
+                  onChange(new Date(e.nativeEvent.timestamp).toISOString().slice(0, 10));
+                  if (Platform.OS === 'android') setShowDatePicker(false);
+                }
+              }}
+            />
+            <Button label="Select" theme="primary" onPress={() => setShowDatePicker(false)} />
+          </View>
+        </Modal>
+      )}
+
+      {(Platform.OS === 'android' || iosSpinner) && (
         <TouchableOpacity
           style={[s.selectorButton, !!error && s.inputContainerError]}
           onPress={() => setShowDatePicker(true)}
@@ -217,11 +265,11 @@ function DatePickerComponent(props) {
           <Text
             style={[
               s.selectorButtonLabel,
-              valueIsToday && !error && s.selectorButtonPlaceholder,
-              valueIsToday && !!error && s.selectorButtonPlaceholderError,
+              !value && !error && s.selectorButtonPlaceholder,
+              !value && !!error && s.selectorButtonPlaceholderError,
             ]}
           >
-            {valueIsToday ? 'Select a date' : formatDate(value)}
+            {!value ? 'Select a date' : formatDate(value, 'numeric')}
           </Text>
         </TouchableOpacity>
       )}
@@ -231,6 +279,7 @@ function DatePickerComponent(props) {
 
 function SelectorComponent(props) {
   const {
+    buttonText,
     placeholder,
     value,
     onChange,
@@ -289,6 +338,15 @@ function SelectorComponent(props) {
               );
             })}
           </Picker>
+          {buttonText
+          && (
+          <Button
+            label={buttonText}
+            disabled={!value}
+            theme="primary"
+            onPress={() => setShow(false)}
+          />
+          )}
         </Overlay>
       )}
     </>
