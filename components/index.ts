@@ -1,5 +1,3 @@
-export { AiModal } from '@components/ai-modal';
-export { AiWelcomeWizard } from '@components/ai-welcome-wizard';
 export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
 export { BlurFill } from '@components/blur-fill';
@@ -17,7 +15,6 @@ export { LightbulbOnSVG } from '@components/lightbulb-on-svg';
 export { MedicationCard, MedicationSkeleton } from '@components/medication-card';
 export { MessageBlock } from '@components/message-block';
 export { MyHealthBlock } from '@components/my-health-block';
-export { ProfileCard } from '@components/profile-card';
 export { ProcedureCard } from '@components/procedure-card';
 export { Screen } from '@components/screen';
 export { SelectReasonForVisit } from '@components/select-reason-for-visit';
