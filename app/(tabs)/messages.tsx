@@ -177,7 +177,7 @@ export default function Messages() {
                         <MessageBlock
                           received={mess.resource.sender.type === 'Practitioner'}
                           key={mess.resource.id}
-                          message={mess.resource.payload[0].contentString}
+                          message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
                         />
                       ))}
                     </ScrollView>
