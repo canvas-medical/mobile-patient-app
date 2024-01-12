@@ -149,7 +149,6 @@ export function usePatient() {
  * @throws {Error} - If there is an error updating the patient record.
  */
 async function updatePatient(data: any) { // TODO: Add types
-  console.log('FIRED ===');
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
@@ -198,9 +197,6 @@ async function updatePatient(data: any) { // TODO: Add types
       }],
     })
   });
-  console.log('RES: ', res);
-  const json = await res.json();
-  console.log('JSON: ', json);
   if (!res.ok) throw new Error();
 }
 

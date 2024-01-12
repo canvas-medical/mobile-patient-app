@@ -65,19 +65,6 @@ const s = StyleSheet.create({
   },
 });
 
-// firstName
-// middleName
-// lastName
-// email
-// phone
-// addressLine1
-// addressLine2
-// city
-// stateAbbreviation
-// postalCode
-// birthday
-// gender
-
 type FormData = {
   email: string
   phone: string
@@ -210,7 +197,7 @@ export default function ContactInformation() {
                           name="addressLine1"
                           label="Address"
                           placeholder="Enter your address"
-                          onFocus={() => clearErrors}
+                          onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
                           onSubmitEditing={() => setFocus('addressLine2')}

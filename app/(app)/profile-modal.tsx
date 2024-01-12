@@ -1,5 +1,4 @@
-/* eslint-disable max-len */ // Maybe Remove
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -10,24 +9,26 @@ import {
   TextInputChangeEventData,
   NativeSyntheticEvent,
   Keyboard,
+  TouchableWithoutFeedback,
+  Alert,
+  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { useQueryClient } from '@tanstack/react-query';
 import { useForm, Controller } from 'react-hook-form';
+import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { router, useNavigation } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as SecureStore from 'expo-secure-store';
-import { useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { Feather, FontAwesome, MaterialIcons, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useUpdatePatient, usePatient } from '@services';
-import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber, timeZoneOffset } from '@utils';
+import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
+import { Button } from '@components';
+import { americanStatesArray } from '@constants';
 import blurs from '@assets/images/blurs.png';
 import { g } from '@styles';
-import { Button } from '@components';
-import { Picker } from '@react-native-picker/picker';
 
 const s = StyleSheet.create({
   actionButton: {
@@ -46,6 +47,9 @@ const s = StyleSheet.create({
     ...g.labelMedium,
     color: g.white,
   },
+  actionButtonLabelDisabled: {
+    opacity: 0.6,
+  },
   actionContainer: {
     width: '100%',
     flexDirection: 'row',
@@ -57,13 +61,22 @@ const s = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: g.size(16),
+    top: Platform.OS === 'ios' ? g.size(16) : g.size(40),
     left: g.size(16),
   },
   backdrop: {
     flex: 1,
     backgroundColor: g.black,
     opacity: 0.5,
+  },
+  birthDate: {
+    ...g.labelSmall,
+    color: g.white,
+  },
+  birthDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: g.size(8),
   },
   blurCircles: {
     position: 'absolute',
@@ -80,11 +93,11 @@ const s = StyleSheet.create({
     backgroundColor: g.primaryBlue,
     borderBottomLeftRadius: g.size(28),
     borderBottomRightRadius: g.size(28),
-    paddingTop: g.size(36),
+    paddingTop: Platform.OS === 'ios' ? g.size(48) : g.size(80),
     paddingHorizontal: g.size(20),
-    paddingBottom: g.size(32),
+    paddingBottom: g.size(24),
     alignItems: 'center',
-    gap: g.size(28), // maybe increase
+    gap: g.size(28),
   },
   iconLabelContainer: {
     flexDirection: 'row',
@@ -127,8 +140,10 @@ const s = StyleSheet.create({
   name: {
     ...g.labelXLarge,
     color: g.white,
+    textAlign: 'center',
+    paddingHorizontal: g.size(60),
   },
-  nameAndPhotoContainer: {
+  nameAndBirthDateContainer: {
     alignItems: 'center',
     gap: g.size(8),
   },
@@ -143,17 +158,11 @@ const s = StyleSheet.create({
     borderBottomWidth: g.size(1),
     borderBottomColor: g.neutral200
   },
-  patientDataValue: {
-    ...g.bodyLarge,
-    color: g.neutral800,
-    marginLeft: g.size(32),
-  },
-  photo: {
-    width: g.size(120),
-    height: g.size(120),
-    borderRadius: g.size(60),
+  scroll: {
+    flex: 1,
   },
   scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: g.size(20),
     paddingBottom: g.size(32),
   },
@@ -163,7 +172,10 @@ const s = StyleSheet.create({
   },
   selectorButtonLabelError: {
     color: g.neutral500
-  }
+  },
+  selectorButtonLabelPlaceholder: {
+    color: g.neutral200
+  },
 });
 
 type FormData = {
@@ -178,658 +190,538 @@ type FormData = {
   city: string
   stateAbbreviation: string
   postalCode: string
-  gender: string
   birthDate: string
+  gender: string
 }
 
-export default function PdfModal() {
+export default function ProfileModal() {
   const queryClient = useQueryClient();
   const navigation = useNavigation();
   const { data: patient } = usePatient();
+  const preferredName = patient?.name[1] ? patient?.name[1].given[0] : null;
+  const firstName = patient?.name[0].given[0] ? patient?.name[0].given[0] : null;
+  const middleName = patient?.name[0].given[1] ? patient?.name[0].given[1] : null;
+  const lastName = patient?.name[0].family ? patient?.name[0].family : null;
+  const email = patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
+    ? patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
+    : null;
+  const phone = patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value
+    ? formatPhoneNumber(patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value)
+    : null;
+  const addressLine1 = patient?.address && patient?.address[0]?.line[0] ? patient?.address[0]?.line[0] : null;
+  const addressLine2 = patient?.address && patient?.address[0]?.line[1] ? patient?.address[0]?.line[1] : null;
+  const city = patient?.address && patient?.address[0]?.city ? patient?.address[0]?.city : null;
+  const stateAbbreviation = patient?.address && patient?.address[0]?.state ? patient?.address[0]?.state : null;
+  const postalCode = patient?.address && patient?.address[0]?.postalCode ? patient?.address[0]?.postalCode : null;
+  const birthDate = patient?.birthDate ? patient?.birthDate : '';
+  const gender = patient?.gender ? patient?.gender : '';
   const {
     control,
     setFocus,
     handleSubmit,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isDirty },
+    reset,
   } = useForm<FormData>({
     defaultValues: {
-      preferredName: patient?.name[1].given[0] || null,
-      firstName: patient?.name[0].given[0] || null,
-      middleName: patient?.name[0].given[1] || null,
-      lastName: patient?.name[0].family || null,
-      email: patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value || null,
-      phone: formatPhoneNumber(patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value) || null,
-      addressLine1: patient?.address[0]?.line[0] || null,
-      addressLine2: patient?.address[0]?.line[1] || null,
-      city: patient?.address[0]?.city || null,
-      stateAbbreviation: patient?.address[0]?.state || null,
-      postalCode: patient?.address[0]?.postalCode || null,
-      birthDate: new Date().toISOString().slice(0, 10) || null,
-      gender: patient?.gender || null,
+      preferredName,
+      firstName,
+      middleName,
+      lastName,
+      email,
+      phone,
+      addressLine1,
+      addressLine2,
+      city,
+      stateAbbreviation,
+      postalCode,
+      birthDate,
+      gender,
     },
     shouldFocusError: false,
   });
+
   const { mutate: onUpdatePatient, isPending } = useUpdatePatient();
-  const [updating, setUpdating] = useState<boolean>(true);
-  // const [updating, setUpdating] = useState<boolean>(false);
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [showGenderPicker, setShowGenderPicker] = useState<boolean>(false);
-  const [provisionalDate, setProvisionalDate] = useState<number>(0);
-  const [provisionalGender, setProvisionalGender] = useState<string>('');
-  const phoneNumber = formatPhoneNumber(patient?.telecom?.find((t) => t.system === 'phone')?.value);
-  const email = patient?.telecom?.find((t) => t.system === 'email')?.value;
+  const [showStatePicker, setShowStatePicker] = useState<boolean>(false);
+  const [provisionalGender, setProvisionalGender] = useState<string>(gender);
+  const [provisionalState, setProvisionalState] = useState<string>(stateAbbreviation || americanStatesArray[0]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        Alert.alert(
+          'Are you sure?',
+          'Any unsaved changes will be discarded',
+          [
+            {
+              text: 'Discard',
+              style: 'destructive',
+              onPress: () => {
+                unsubscribe();
+                navigation.dispatch(e.data.action);
+              }
+            },
+            { text: 'Keep Editing', onPress: () => { } },
+          ]
+        );
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, isDirty]);
 
   const logout = () => {
-    clearHistory(navigation);
-    SecureStore.deleteItemAsync('patient_id');
-    SecureStore.deleteItemAsync('push_token');
-    queryClient.clear();
-    router.replace('initial');
+    Alert.alert(
+      'Are you sure?',
+      'You will be logged out of your account',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Log Out',
+          style: 'destructive',
+          onPress: async () => {
+            clearHistory(navigation);
+            SecureStore.deleteItemAsync('patient_id');
+            SecureStore.deleteItemAsync('push_token');
+            queryClient.clear();
+            router.replace('initial');
+          }
+        },
+      ]
+    );
   };
 
-  const patientData = [
-    {
-      label: 'Email',
-      dataValue: email,
-      icon: <Fontisto name="email" size={g.size(24)} color={g.neutral300} />,
-    },
-    {
-      label: 'Phone',
-      dataValue: phoneNumber,
-      icon: <Feather name="smartphone" size={g.size(24)} color={g.neutral300} />,
-    },
-    {
-      label: 'Address',
-      dataValue: patient?.address ? `${patient?.address[0]?.line[0]}\n${patient?.address[0]?.city}, ${patient?.address[0]?.state} ${patient?.address[0]?.postalCode}` : null,
-      icon: <Feather name="home" size={g.size(24)} color={g.neutral300} />,
-    },
-    {
-      label: 'Birthday',
-      dataValue: formatDate(patient?.birthDate, 'numeric'),
-      icon: <MaterialCommunityIcons name="cake-variant-outline" size={g.size(24)} color={g.neutral300} />,
-    },
-    {
-      label: 'Gender',
-      dataValue: capitalizeFirstCharacter(patient?.gender) || null,
-      icon: <Feather name="user" size={g.size(24)} color={g.neutral300} />,
-    },
-  ];
-
-  function logoutSaveButtonLabelSwitch() {
-    switch (true) {
-      case !updating:
-        return 'Logout';
-      case isPending:
-        return 'Saving...';
-      default:
-        return 'Save Changes';
-    }
-  }
-
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={s.container}>
-        <LinearGradient
-          style={s.header}
-          colors={[g.primaryBlue, g.secondaryBlue]}
-          locations={[0.25, 1]}
-          end={{ x: 0, y: 1 }}
+    <View style={s.container}>
+      <LinearGradient
+        style={s.header}
+        colors={[g.primaryBlue, g.secondaryBlue]}
+        locations={[0.25, 1]}
+        end={{ x: 0, y: 1 }}
+      >
+        <Image
+          style={s.blurCircles}
+          source={blurs}
+        />
+        <TouchableOpacity
+          style={s.backButton}
+          onPress={() => navigation.goBack()}
         >
-          <Image
-            style={s.blurCircles}
-            source={blurs}
-          />
-          <TouchableOpacity
-            style={s.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Feather name="arrow-left" size={g.size(48)} color={g.white} />
-          </TouchableOpacity>
-          <View style={s.nameAndPhotoContainer}>
-            {Array.isArray(patient?.photo) ? (
-              <Image source={{ uri: patient?.photo[0].url }} style={s.photo} />
-            ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
-            <Text style={s.name}>{`${patient?.name[0]?.given[0] || ''} ${patient?.name[0]?.family || ''}`}</Text>
+          <Feather name="arrow-left" size={g.size(48)} color={g.white} />
+        </TouchableOpacity>
+        <View style={s.nameAndBirthDateContainer}>
+          <Text style={s.name}>
+            {`${patient?.name[0]?.given[0] || ''} ${patient?.name[0]?.family || ''}`}
+          </Text>
+          <View style={s.birthDateContainer}>
+            <MaterialCommunityIcons name="cake-variant-outline" size={g.size(16)} color={g.white} />
+            <Text style={s.birthDate}>
+              {formatDate(patient?.birthDate, 'numeric')}
+            </Text>
           </View>
-          <View style={s.actionContainer}>
-            <View style={s.actionButtonContainer}>
-              <TouchableOpacity
-                style={s.actionButton}
-                onPress={() => setUpdating(!updating)} // Todo: update
-              >
-                <Text style={s.actionButtonLabel}>
-                  {updating ? 'Cancel' : 'Update Profile'}
-                </Text>
-                {updating
-                  ? <MaterialCommunityIcons name="cancel" size={g.size(24)} color={g.white} />
-                  : <Feather name="edit-2" size={g.size(22)} color={g.white} />}
-              </TouchableOpacity>
+        </View>
+        <View style={s.actionContainer}>
+          <View style={s.actionButtonContainer}>
+            <TouchableOpacity
+              style={s.actionButton}
+              onPress={() => logout()}
+            >
+              <Text style={s.actionButtonLabel}>
+                Logout
+              </Text>
+              <MaterialIcons name="logout" size={g.size(24)} color={g.white} />
+            </TouchableOpacity>
+          </View>
+          <View style={s.actionDivider} />
+          <View style={s.actionButtonContainer}>
+            <TouchableOpacity
+              style={s.actionButton}
+              onPress={handleSubmit((data: any) => {
+                Keyboard.dismiss();
+                onUpdatePatient(data);
+                reset(data);
+              })}
+              disabled={!isDirty || isPending}
+            >
+              <Text style={[s.actionButtonLabel, !isDirty && s.actionButtonLabelDisabled]}>
+                {isPending ? 'Saving...' : 'Save Changes'}
+              </Text>
+              <Feather name="edit-2" size={g.size(22)} color={g.white} style={!isDirty && s.actionButtonLabelDisabled} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </LinearGradient>
+      <KeyboardAvoidingView
+        behavior="padding"
+        enabled={Platform.OS === 'ios'}
+        keyboardVerticalOffset={g.size(55)}
+        style={s.scroll}
+      >
+        <ScrollView
+          style={s.scroll}
+          contentContainerStyle={s.scrollContent}
+        >
+          <View style={s.patientDataListItem}>
+            <View style={s.iconLabelContainer}>
+              <Feather name="user" size={g.size(24)} color={g.neutral300} />
+              <Text style={s.patientDataLabel}>
+                Preferred Name
+                <Text style={s.inputOptional}> - Optional</Text>
+              </Text>
             </View>
-            <View style={s.actionDivider} />
-            <View style={s.actionButtonContainer}>
-              <TouchableOpacity
-                style={s.actionButton}
-                onPress={!updating
-                  ? () => logout()
-                  : handleSubmit((data: any) => {
-                    console.log('data: ', data);
-                    onUpdatePatient(data);
-                  })}
-              >
-                <Text style={s.actionButtonLabel}>
-                  {logoutSaveButtonLabelSwitch()}
-                </Text>
-                {
-                  updating
-                    ? <MaterialIcons name="save-alt" size={g.size(24)} color={g.white} />
-                    : <MaterialIcons name="logout" size={g.size(24)} color={g.white} />
+            <Controller
+              name="preferredName"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={[s.input, !!errors.preferredName && s.inputError]}
+                  placeholder="Preferred Name"
+                  placeholderTextColor={errors.preferredName ? g.neutral500 : g.neutral200}
+                  onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                    onChange(e.nativeEvent.text);
+                  }}
+                  value={value}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  autoCapitalize="words"
+                  keyboardType="default"
+                  textContentType="nickname"
+                  returnKeyType="done"
+                />
+              )}
+            />
+          </View>
+          <View style={s.patientDataListItem}>
+            <View style={s.iconLabelContainer}>
+              <Fontisto name="email" size={g.size(24)} color={g.neutral300} />
+              <Text style={s.patientDataLabel}>
+                Email
+                {errors.email && <Text style={s.inputRequired}>{` - ${errors.email.message}`}</Text>}
+              </Text>
+            </View>
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                required: { value: true, message: 'Required' },
+                validate: (value) => {
+                  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!regex.test(value)) return 'Please enter a valid email address';
+                  return true;
                 }
-              </TouchableOpacity>
-            </View>
+              }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={[s.input, !!errors.email && s.inputError]}
+                  placeholder="Email"
+                  placeholderTextColor={errors.email ? g.neutral500 : g.neutral200}
+                  onFocus={() => clearErrors()}
+                  onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                    onChange(e.nativeEvent.text);
+                  }}
+                  value={value}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  returnKeyType="done"
+                />
+              )}
+            />
           </View>
-        </LinearGradient>
-        <ScrollView contentContainerStyle={s.scrollContent}>
-          {!updating
-            ? patientData.map(({ label, dataValue, icon }) => (
-              <>
-                {(!!dataValue || updating) && (
-                  <View key={label} style={s.patientDataListItem}>
-                    <View style={s.iconLabelContainer}>
-                      {icon}
-                      <Text style={s.patientDataLabel}>{label}</Text>
-                    </View>
-                    <Text style={s.patientDataValue}>{dataValue}</Text>
-                  </View>
-                )}
-              </>
-            )) : (
-              <>
-                <View style={s.patientDataListItem}>
-                  <View style={s.iconLabelContainer}>
-                    <Feather name="user" size={g.size(24)} color={g.neutral300} />
-                    <Text style={s.patientDataLabel}>Name</Text>
-                  </View>
-                  <Controller
-                    name="preferredName"
-                    control={control}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          Preferred
-                          <Text style={s.inputOptional}> - Optional</Text>
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.preferredName && s.inputError]}
-                          placeholder="Preferred name"
-                          placeholderTextColor={errors.preferredName ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('firstName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="givenName"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="firstName"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          First
-                          {errors.firstName && <Text style={s.inputRequired}> - Required</Text>}
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.firstName && s.inputError]}
-                          placeholder="First name"
-                          placeholderTextColor={errors.firstName ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('middleName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="givenName"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="middleName"
-                    control={control}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          Middle
-                          <Text style={s.inputOptional}> - Optional</Text>
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.middleName && s.inputError]}
-                          placeholder="Middle name"
-                          placeholderTextColor={errors.middleName ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('lastName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="middleName"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="lastName"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          Last
-                          {errors.lastName && <Text style={s.inputRequired}> - Required</Text>}
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.lastName && s.inputError]}
-                          placeholder="Last name"
-                          placeholderTextColor={errors.lastName ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('email')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="familyName"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                </View>
-                <View style={s.patientDataListItem}>
-                  <View style={s.iconLabelContainer}>
-                    <Fontisto name="email" size={g.size(24)} color={g.neutral300} />
-                    <Text style={s.patientDataLabel}>Email</Text>
-                  </View>
-                  <Controller
-                    name="email"
-                    control={control}
-                    rules={{
-                      required: { value: true, message: 'Required' },
-                      validate: (value) => {
-                        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                        if (!regex.test(value)) return 'Please enter a valid email address';
-                        return true;
-                      }
+          <View style={s.patientDataListItem}>
+            <View style={s.iconLabelContainer}>
+              <Feather name="smartphone" size={g.size(24)} color={g.neutral300} />
+              <Text style={s.patientDataLabel}>
+                Phone
+                {errors.phone && <Text style={s.inputRequired}>{` - ${errors.phone.message}`}</Text>}
+              </Text>
+            </View>
+            <Controller
+              name="phone"
+              control={control}
+              rules={{
+                required: { value: true, message: 'Required' },
+                validate: (value) => {
+                  const regex = /^\(\d{3}\) \d{3}-\d{4}$/;
+                  if (!regex.test(value)) return 'Please enter a valid phone number';
+                  return true;
+                }
+              }}
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  style={[s.input, !!errors.phone && s.inputError]}
+                  placeholder="Phone Number"
+                  placeholderTextColor={errors.phone ? g.neutral500 : g.neutral200}
+                  onFocus={() => clearErrors()}
+                  onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                    onChange(formatPhoneNumber(e.nativeEvent.text));
+                  }}
+                  value={value}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  autoCapitalize="none"
+                  keyboardType="phone-pad"
+                  textContentType="telephoneNumber"
+                  returnKeyType="done"
+                />
+              )}
+            />
+          </View>
+          <View style={s.patientDataListItem}>
+            <View style={s.iconLabelContainer}>
+              <Feather name="home" size={g.size(24)} color={g.neutral300} />
+              <Text style={s.patientDataLabel}>Address</Text>
+            </View>
+            <Controller
+              name="addressLine1"
+              control={control}
+              rules={{ required: { value: true, message: 'Required' } }}
+              render={({ field: { onChange, value } }) => (
+                <View>
+                  <Text style={[s.patientDataLabel, s.inputLabel]}>
+                    Street Address
+                    {errors.addressLine1 && <Text style={s.inputRequired}>{` - ${errors.addressLine1.message}`}</Text>}
+                  </Text>
+                  <TextInput
+                    style={[s.input, !!errors.addressLine1 && s.inputError]}
+                    placeholder="Address line 1"
+                    placeholderTextColor={errors.addressLine1 ? g.neutral500 : g.neutral200}
+                    // onFocus={() => clearErrors()}
+                    onFocus={(e) => console.log('EEEE: ', e)}
+                    onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                      onChange(e.nativeEvent.text);
                     }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <TextInput
-                        style={[s.input, !!errors.email && s.inputError]}
-                        placeholder="Email"
-                        placeholderTextColor={errors.email ? g.neutral500 : g.neutral200}
-                        onFocus={() => clearErrors}
-                        onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                          onChange(e.nativeEvent.text);
-                        }}
-                        value={value}
-                        onSubmitEditing={() => setFocus('phone')}
-                        autoCapitalize="none"
-                        keyboardType="email-address"
-                        textContentType="emailAddress"
-                        returnKeyType="next"
-                        ref={ref}
-                      />
-                    )}
+                    value={value}
+                    onSubmitEditing={() => setFocus('addressLine2')}
+                    autoCapitalize="words"
+                    keyboardType="default"
+                    textContentType="streetAddressLine1"
+                    returnKeyType="next"
                   />
                 </View>
-                <View style={s.patientDataListItem}>
-                  <View style={s.iconLabelContainer}>
-                    <Feather name="smartphone" size={g.size(24)} color={g.neutral300} />
-                    <Text style={s.patientDataLabel}>Phone</Text>
-                  </View>
-                  <Controller
-                    name="phone"
-                    control={control}
-                    rules={{
-                      required: { value: true, message: 'Required' },
-                      validate: (value) => {
-                        const regex = /^\(\d{3}\) \d{3}-\d{4}$/;
-                        if (!regex.test(value)) return 'Please enter a valid phone number';
-                        return true;
-                      }
+              )}
+            />
+            <Controller
+              name="addressLine2"
+              control={control}
+              render={({ field: { onChange, value, ref } }) => (
+                <View>
+                  <Text style={[s.patientDataLabel, s.inputLabel]}>
+                    Address Line 2
+                    <Text style={s.inputOptional}> - Optional</Text>
+                  </Text>
+                  <TextInput
+                    style={[s.input, !!errors.addressLine2 && s.inputError]}
+                    placeholder="Address line 2"
+                    placeholderTextColor={errors.addressLine2 ? g.neutral500 : g.neutral200}
+                    onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                      onChange(e.nativeEvent.text);
                     }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <TextInput
-                        style={[s.input, !!errors.phone && s.inputError]}
-                        placeholder="Phone"
-                        placeholderTextColor={errors.phone ? g.neutral500 : g.neutral200}
-                        onFocus={() => clearErrors}
-                        onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                          onChange(formatPhoneNumber(e.nativeEvent.text));
-                        }}
-                        value={value}
-                        onSubmitEditing={() => setFocus('addressLine1')}
-                        autoCapitalize="none"
-                        keyboardType="phone-pad"
-                        textContentType="telephoneNumber"
-                        returnKeyType="next"
-                        ref={ref}
-                      />
-                    )}
+                    value={value}
+                    onSubmitEditing={() => setFocus('city')}
+                    autoCapitalize="words"
+                    keyboardType="default"
+                    textContentType="streetAddressLine2"
+                    returnKeyType="next"
+                    ref={ref}
                   />
                 </View>
-                <View style={s.patientDataListItem}>
-                  <View style={s.iconLabelContainer}>
-                    <Feather name="home" size={g.size(24)} color={g.neutral300} />
-                    <Text style={s.patientDataLabel}>Address</Text>
-                  </View>
-                  <Controller
-                    name="addressLine1"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          Street Address
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.addressLine1 && s.inputError]}
-                          placeholder="Address line 1"
-                          placeholderTextColor={errors.addressLine1 ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('addressLine2')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="fullStreetAddress"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="addressLine2"
-                    control={control}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          Address Line 2
-                          <Text style={s.inputOptional}> - Optional</Text>
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.addressLine2 && s.inputError]}
-                          placeholder="Address line 2"
-                          placeholderTextColor={errors.addressLine2 ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('city')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="fullStreetAddress"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="city"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          City
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.city && s.inputError]}
-                          placeholder="City"
-                          placeholderTextColor={errors.city ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('stateAbbreviation')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="addressCity"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="stateAbbreviation"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          State
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.stateAbbreviation && s.inputError]}
-                          placeholder="State"
-                          placeholderTextColor={errors.stateAbbreviation ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          onSubmitEditing={() => setFocus('postalCode')}
-                          autoCapitalize="characters"
-                          keyboardType="default"
-                          textContentType="addressState"
-                          returnKeyType="next"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
-                  />
-                  <Controller
-                    name="postalCode"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <View>
-                        <Text style={[s.patientDataLabel, s.inputLabel]}>
-                          Zip Code
-                        </Text>
-                        <TextInput
-                          style={[s.input, !!errors.postalCode && s.inputError]}
-                          placeholder="Postal code"
-                          placeholderTextColor={errors.postalCode ? g.neutral500 : g.neutral200}
-                          onFocus={() => clearErrors}
-                          onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
-                            onChange(e.nativeEvent.text);
-                          }}
-                          value={value}
-                          autoCapitalize="characters"
-                          keyboardType="default"
-                          textContentType="postalCode"
-                          returnKeyType="done"
-                          ref={ref}
-                        />
-                      </View>
-                    )}
+              )}
+            />
+            <Controller
+              name="city"
+              control={control}
+              rules={{ required: { value: true, message: 'Required' } }}
+              render={({ field: { onChange, value, ref } }) => (
+                <View>
+                  <Text style={[s.patientDataLabel, s.inputLabel]}>
+                    City
+                    {errors.city && <Text style={s.inputRequired}>{` - ${errors.city.message}`}</Text>}
+                  </Text>
+                  <TextInput
+                    style={[s.input, !!errors.city && s.inputError]}
+                    placeholder="City"
+                    placeholderTextColor={errors.city ? g.neutral500 : g.neutral200}
+                    onFocus={() => clearErrors()}
+                    onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                      onChange(e.nativeEvent.text);
+                    }}
+                    value={value}
+                    onSubmitEditing={() => setFocus('postalCode')}
+                    autoCapitalize="words"
+                    keyboardType="default"
+                    textContentType="addressCity"
+                    returnKeyType="next"
+                    ref={ref}
                   />
                 </View>
-                <View style={s.patientDataListItem}>
-                  <View style={s.iconLabelContainer}>
-                    <MaterialCommunityIcons name="cake-variant-outline" size={g.size(24)} color={g.neutral300} />
-                    <Text style={s.patientDataLabel}>Birthday</Text>
-                  </View>
-                  <Controller
-                    name="birthDate"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <>
-                        {Platform.OS === 'android' && showDatePicker && (
-                          <DateTimePicker
-                            mode="date"
-                            value={timeZoneOffset(value)}
-                            themeVariant="dark"
-                            maximumDate={new Date()}
-                            onChange={(e: DateTimePickerEvent) => {
-                              if (e.type === 'set') {
-                                onChange(new Date(e.nativeEvent.timestamp).toISOString().slice(0, 10));
-                                setShowDatePicker(false);
-                              }
-                            }}
+              )}
+            />
+            <Controller
+              name="postalCode"
+              control={control}
+              rules={{ required: { value: true, message: 'Required' } }}
+              render={({ field: { onChange, value, ref } }) => (
+                <View>
+                  <Text style={[s.patientDataLabel, s.inputLabel]}>
+                    Zip Code
+                    {errors.postalCode && <Text style={s.inputRequired}>{` - ${errors.postalCode.message}`}</Text>}
+                  </Text>
+                  <TextInput
+                    style={[s.input, !!errors.postalCode && s.inputError]}
+                    placeholder="Postal code"
+                    placeholderTextColor={errors.postalCode ? g.neutral500 : g.neutral200}
+                    onFocus={() => clearErrors()}
+                    onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+                      onChange(e.nativeEvent.text);
+                    }}
+                    value={value}
+                    onSubmitEditing={() => Keyboard.dismiss()}
+                    autoCapitalize="characters"
+                    keyboardType="number-pad"
+                    textContentType="postalCode"
+                    returnKeyType="done"
+                    ref={ref}
+                  />
+                </View>
+              )}
+            />
+            <Controller
+              name="stateAbbreviation"
+              control={control}
+              rules={{ required: { value: true, message: 'Required' } }}
+              render={({ field: { onChange, value } }) => (
+                <View>
+                  <Text style={[s.patientDataLabel, s.inputLabel]}>
+                    State
+                    {errors.stateAbbreviation && <Text style={s.inputRequired}>{` - ${errors.stateAbbreviation.message}`}</Text>}
+                  </Text>
+                  <Modal
+                    animationIn="fadeIn"
+                    animationOut="fadeOut"
+                    isVisible={showStatePicker}
+                    swipeDirection="right"
+                    onSwipeComplete={() => setShowStatePicker(false)}
+                    customBackdrop={(
+                      <TouchableWithoutFeedback onPress={() => setShowStatePicker(false)}>
+                        <View style={s.backdrop} />
+                      </TouchableWithoutFeedback>
+                    )}
+                  >
+                    <View style={s.modal}>
+                      <Picker
+                        selectedValue={provisionalState}
+                        onValueChange={(itemValue) => setProvisionalState(itemValue)}
+                      >
+                        {americanStatesArray.map((option) => (
+                          <Picker.Item
+                            key={option}
+                            label={option}
+                            value={option}
                           />
-                        )}
-                        {Platform.OS === 'ios' && (
-                          <Modal
-                            animationIn="fadeIn"
-                            animationOut="fadeOut"
-                            isVisible={showDatePicker}
-                            swipeDirection="right"
-                            onSwipeComplete={() => setShowDatePicker(false)}
-                            customBackdrop={(
-                              <TouchableWithoutFeedback onPress={() => setShowDatePicker(false)}>
-                                <View style={s.backdrop} />
-                              </TouchableWithoutFeedback>
-                            )}
-                          >
-                            <View style={s.modal}>
-                              <DateTimePicker
-                                mode="date"
-                                display="inline"
-                                value={timeZoneOffset(value)}
-                                themeVariant="light"
-                                maximumDate={new Date()}
-                                onChange={(e: DateTimePickerEvent) => setProvisionalDate(e.nativeEvent.timestamp)}
-                              />
-                              <Button
-                                label="Select Date"
-                                theme="primary"
-                                onPress={() => {
-                                  onChange(new Date(provisionalDate).toISOString().slice(0, 10));
-                                  setShowDatePicker(false);
-                                }}
-                              />
-                            </View>
-                          </Modal>
-                        )}
-                        <TouchableOpacity
-                          style={[s.input, !!errors.birthDate && s.inputError]}
-                          onPress={() => setShowDatePicker(true)}
-                        >
-                          <Text
-                            style={[
-                              s.selectorButtonLabel,
-                              !!errors.birthDate && s.selectorButtonLabelError,
-                            ]}
-                          >
-                            {formatDate(value, 'numeric')}
-                          </Text>
-                        </TouchableOpacity>
-                      </>
-                    )}
-                  />
+                        ))}
+                      </Picker>
+                      <Button
+                        label="Select"
+                        theme="primary"
+                        onPress={() => {
+                          onChange(provisionalState);
+                          setShowStatePicker(false);
+                        }}
+                      />
+                    </View>
+                  </Modal>
+                  <TouchableOpacity
+                    style={[s.input, !!errors.stateAbbreviation && s.inputError]}
+                    onPress={() => setShowStatePicker(true)}
+                  >
+                    <Text
+                      style={[
+                        s.selectorButtonLabel,
+                        !value && s.selectorButtonLabelPlaceholder,
+                        !!errors.stateAbbreviation && s.selectorButtonLabelError,
+                      ]}
+                    >
+                      {value || 'Select a state'}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <View style={[s.patientDataListItem, s.lastListItem]}>
-                  <View style={s.iconLabelContainer}>
-                    <Feather name="user" size={g.size(24)} color={g.neutral300} />
-                    <Text style={s.patientDataLabel}>Gender</Text>
-                  </View>
-                  <Controller
-                    name="gender"
-                    control={control}
-                    rules={{ required: { value: true, message: 'Required' } }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      // onFocus={() => clearErrors()}
-                      //   onChange={onChange}
-                      //   value={value}
-                      //   forwardedRef={ref}
-                      //   error={errors.gender}
-                      // />
-                      <>
-                        <Modal
-                          animationIn="fadeIn"
-                          animationOut="fadeOut"
-                          isVisible={showGenderPicker}
-                          swipeDirection="right"
-                          onSwipeComplete={() => setShowGenderPicker(false)}
-                          customBackdrop={(
-                            <TouchableWithoutFeedback onPress={() => setShowGenderPicker(false)}>
-                              <View style={s.backdrop} />
-                            </TouchableWithoutFeedback>
-                          )}
-                        >
-                          <View style={s.modal}>
-                            <Picker
-                              selectedValue={value}
-                              onValueChange={(itemValue) => setProvisionalGender(itemValue)}
-                            >
-                              {['Male', 'Female', 'Other', 'Unknown'].map((option) => (
-                                <Picker.Item
-                                  key={option}
-                                  label={option}
-                                  value={option}
-                                />
-                              ))}
-                            </Picker>
-                            <Button
-                              label="Select"
-                              theme="primary"
-                              onPress={() => {
-                                onChange(provisionalGender);
-                                setShowGenderPicker(false);
-                              }}
-                            />
-                          </View>
-                        </Modal>
-                        <TouchableOpacity
-                          style={[s.input, !!errors.birthDate && s.inputError]}
-                          onPress={() => setShowGenderPicker(true)}
-                        >
-                          <Text
-                            style={[
-                              s.selectorButtonLabel,
-                              !!errors.birthDate && s.selectorButtonLabelError,
-                            ]}
-                          >
-                            {capitalizeFirstCharacter(value)}
-                          </Text>
-                        </TouchableOpacity>
-                      </>
+              )}
+            />
+          </View>
+          <View style={[s.patientDataListItem, s.lastListItem]}>
+            <View style={s.iconLabelContainer}>
+              <Feather name="user" size={g.size(24)} color={g.neutral300} />
+              <Text style={s.patientDataLabel}>
+                Gender
+                {errors.gender && <Text style={s.inputRequired}>{` - ${errors.gender.message}`}</Text>}
+              </Text>
+            </View>
+            <Controller
+              name="gender"
+              control={control}
+              rules={{ required: { value: true, message: 'Required' } }}
+              render={({ field: { onChange, value } }) => (
+                <>
+                  <Modal
+                    animationIn="fadeIn"
+                    animationOut="fadeOut"
+                    isVisible={showGenderPicker}
+                    swipeDirection="right"
+                    onSwipeComplete={() => setShowGenderPicker(false)}
+                    customBackdrop={(
+                      <TouchableWithoutFeedback onPress={() => setShowGenderPicker(false)}>
+                        <View style={s.backdrop} />
+                      </TouchableWithoutFeedback>
                     )}
-                  />
-                </View>
-              </>
-            )}
+                  >
+                    <View style={s.modal}>
+                      <Picker
+                        selectedValue={capitalizeFirstCharacter(provisionalGender)}
+                        onValueChange={(itemValue) => setProvisionalGender(itemValue)}
+                      >
+                        {['Male', 'Female', 'Other', 'Unknown'].map((option) => (
+                          <Picker.Item
+                            key={option}
+                            label={option}
+                            value={option}
+                          />
+                        ))}
+                      </Picker>
+                      <Button
+                        label="Select"
+                        theme="primary"
+                        onPress={() => {
+                          onChange(provisionalGender);
+                          setShowGenderPicker(false);
+                        }}
+                      />
+                    </View>
+                  </Modal>
+                  <TouchableOpacity
+                    style={[s.input, !!errors.gender && s.inputError]}
+                    onPress={() => setShowGenderPicker(true)}
+                  >
+                    <Text
+                      style={[
+                        s.selectorButtonLabel,
+                        !value && s.selectorButtonLabelPlaceholder,
+                        !!errors.gender && s.selectorButtonLabelError,
+                      ]}
+                    >
+                      {capitalizeFirstCharacter(value)}
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            />
+          </View>
         </ScrollView>
-      </View>
-    </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
