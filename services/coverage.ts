@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { ApiError } from '@interfaces';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
@@ -126,5 +126,36 @@ export function useCreateCoverage() {
         { cancelable: false }
       );
     },
+  });
+}
+
+/**
+ * Gets the coverage resource for the patient.
+ *
+ * @throws {Error} If there is an issue with getting the coverage resource.
+ */
+async function getCoverage() {
+  const token = await getToken();
+  const patientId = await SecureStore.getItemAsync('patient_id');
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage?patient=Patient/${patientId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json',
+    },
+  });
+  const json = await res.json();
+  return json.entry?.map((entry) => entry.resource)[0] || {};
+}
+
+/**
+ * Custom hook for fetching patient coverage that handles fetch states, errors, and caching automatically.
+ *
+ * @returns {QueryResult} The result of the query for patient coverage.
+ */
+export function useCoverage() {
+  return useQuery({
+    queryKey: ['patient_coverage'],
+    queryFn: () => getCoverage(),
   });
 }
