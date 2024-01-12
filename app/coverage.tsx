@@ -125,6 +125,7 @@ export default function Coverage() {
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="selector"
+                          buttonText="Select"
                           name="insurer"
                           label="Insurance Provider"
                           placeholder="Select your insurance provider"
@@ -167,7 +168,7 @@ export default function Coverage() {
                         <Input
                           type="text"
                           name="groupNumber"
-                          label="Group Number"
+                          label="Group Number (optional)"
                           placeholder="Enter your group number"
                           onFocus={() => clearErrors()}
                           onChange={onChange}

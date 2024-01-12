@@ -17,7 +17,7 @@ export async function getToken() {
     return accessToken;
   }
   Bugsnag.leaveBreadcrumb(`Fetching new access token, body: ${`grant_type=${process.env.EXPO_PUBLIC_AUTH_GRANT_TYPE}&client_id=${process.env.EXPO_PUBLIC_CLIENT_ID}&client_secret=${process.env.EXPO_PUBLIC_CLIENT_SECRET}`}`);
-  const res = await fetch('https://brewerdigital-apiprize.canvasmedical.com/auth/token/', {
+  const res = await fetch('https://brewer-api-prize.canvasmedical.com/auth/token/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

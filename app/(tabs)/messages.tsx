@@ -97,6 +97,14 @@ export default function Messages() {
     if (num > g.size(32) && num < g.size(500)) { setSize(num); }
   };
 
+  useEffect(() => {
+    // Setting messages to refetch every 30 seconds when the user is on the messaging screen
+    const interval = setInterval(refetch, 30 * 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   useFocusEffect(
     useCallback(() => {
       scrollViewRef?.current?.scrollToEnd();
@@ -169,7 +177,7 @@ export default function Messages() {
                         <MessageBlock
                           received={mess.resource.sender.type === 'Practitioner'}
                           key={mess.resource.id}
-                          message={mess.resource.payload[0].contentString}
+                          message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
                         />
                       ))}
                     </ScrollView>
