@@ -64,6 +64,14 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
   const [tentativeDate, setTentativeDate] = useState<number>(0);
   const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
 
+  const setDate = (event: DateTimePickerEvent, date: Date) => {
+    const {
+      type,
+      nativeEvent: { timestamp, utcOffset },
+    } = event;
+    setSelectedDate(new Date(timestamp));
+  };
+
   function onChangeDate(date: number) {
     if (timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
       setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
@@ -77,6 +85,10 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
     } else setSelectedDate(new Date(tentativeDate).toISOString().slice(0, 10));
     setShowDatePicker(false);
   }
+  console.log(selectedDate);
+  console.log(new Date(selectedDate));
+  console.log(tentativeDate);
+  console.log(new Date(tentativeDate));
 
   return (
     <View style={s.sectionContainer}>
@@ -86,6 +98,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
       {Platform.OS === 'android' && showDatePicker && (
         <DateTimePicker
           mode="date"
+          timeZoneName="Etc/UTC"
           value={timeZoneOffset(selectedDate)}
           minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
           themeVariant="dark"
@@ -112,6 +125,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
           <View style={s.modal}>
             <DateTimePicker
               mode="date"
+              timeZoneName="Etc/UTC"
               display="inline"
               value={timeZoneOffset(selectedDate)}
               minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
