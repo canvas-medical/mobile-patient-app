@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -10,7 +10,6 @@ import {
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as SecureStore from 'expo-secure-store';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
   useAllergies,
@@ -36,7 +35,6 @@ import {
   DocumentResource,
 } from '@interfaces';
 import {
-  AiWelcomeWizard,
   AllergyCard,
   ConditionCard,
   LabReportCard,
@@ -81,7 +79,6 @@ const s = StyleSheet.create({
 
 export default function Dashboard() {
   const tabBarHeight = useBottomTabBarHeight();
-  const [openWizard, setOpenWizard] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const { data: vitals, isLoading: loadingVitals, refetch: refetchObservations } = useObservations();
   const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
@@ -92,16 +89,6 @@ export default function Dashboard() {
   const { data: goals, isFetching: loadingGoals, refetch: refetchGoals } = useGoals();
   const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
-  useEffect(() => {
-    const welcomeWizard = async () => {
-      const isReturningUser = await SecureStore.getItemAsync('is_returning_user');
-      if (!isReturningUser) {
-        setOpenWizard(true);
-        await SecureStore.setItemAsync('is_returning_user', 'true');
-      }
-    };
-    welcomeWizard();
-  }, []);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -286,7 +273,7 @@ export default function Dashboard() {
           >
             {loadingLabs
               ? <LabReportSkeleton />
-              : recentLabs.map((report: LabImagingReport | DiagnosticReport) => (
+              : recentLabs?.map((report: LabImagingReport | DiagnosticReport) => (
                 <LabReportCard
                   key={report.id}
                   report={report}
@@ -329,7 +316,6 @@ export default function Dashboard() {
                 />
               ))}
           </MyHealthBlock>
-          {openWizard && <AiWelcomeWizard setModalVisible={setOpenWizard} modalVisible={openWizard} />}
         </ScrollView>
       </MaskedView>
     </Screen>

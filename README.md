@@ -14,7 +14,6 @@ VivoCare Health is a mobile application developed using Expo. The application pr
 - Access telehealth appointments via a video call
 - View and pay bills
 - Access a dashboard with health data
-- Receive AI-driven insights to understand health data better
 
 By streamlining the process of managing health information, VivoCare Health enhances the efficiency and accessibility of healthcare services.
 
@@ -23,7 +22,6 @@ By streamlining the process of managing health information, VivoCare Health enha
 - [Node.js ^18.16.0](https://nodejs.org/en/download)
 - [Android Studio](https://developer.android.com/studio/install) or [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) (for running the app on a simulator or real device)
 - [Deployed Stripe Microservice](https://github.com/brewerdigital-llc/stripe-microservice) for payment processing
-- [Deployed OpenAI Microservice](https://github.com/brewerdigital-llc/fhir-ai-ms) for AI-driven insights
 - [BugSnag Account](https://app.bugsnag.com/user/new/) for error reporting
 - [Firebase](https://docs.expo.dev/push-notifications/push-notifications-setup/#get-credentials-for-development-builds) for Android push notifications
 
@@ -31,7 +29,6 @@ By streamlining the process of managing health information, VivoCare Health enha
 
 This repository is part of the _VivoCare_ Health FHIR app project by Brewer Digital.  The other repositories are:
 
-* [FHIR AI microservice](https://github.com/brewerdigital-llc/fhir-ai-ms) - The microservice that handles AI processing for _VivoCare_.
 * [FHIR Stripe microservice](https://github.com/brewerdigital-llc/stripe-microservice) - The microservice that handles Stripe payment processing for _VivoCare_.
 
 ## Installation
@@ -58,8 +55,6 @@ npx expo start --dev-client
 - **Stripe**: While Stripe is a secure platform for handling payments, it is not HIPAA compliant. Therefore, you should ensure that no Protected Health Information (PHI) is stored or processed through Stripe. All sensitive health information should be handled separately in a HIPAA-compliant manner.
 
 - **BugSnag**: BugSnag provides error reporting and monitoring for your application. To ensure HIPAA compliance when using BugSnag, you should follow their specific guidelines and best practices. These can be found in the [BugSnag Documentation](https://docs.bugsnag.com/on-premise/single-machine/).
-
-- **OpenAI**: OpenAI requires a signed Business Associate Agreement (BAA) for HIPAA compliance. Make sure to have this agreement in place before using OpenAI to process any PHI.
 
 - **AWS**: Amazon Web Services (AWS) offers a wide range of services that are eligible for use with PHI under the AWS Business Associate Addendum (BAA). Ensure that you are using only the HIPAA-eligible services for any PHI, and that you have a signed BAA with AWS. Also, ensure that you are following all necessary security best practices, such as encrypting data at rest and in transit.
 
