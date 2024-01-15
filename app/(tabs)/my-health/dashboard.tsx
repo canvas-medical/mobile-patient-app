@@ -20,7 +20,8 @@ import {
   useMedications,
   useObservations,
   useEducationalMaterials,
-  useProcedures, useQuestionnaireResponses,
+  useProcedures,
+  useQuestionnaireResponses,
 } from '@services';
 import {
   Allergy,
@@ -32,7 +33,7 @@ import {
   Vital,
   LabImagingReport,
   Procedure,
-  DocumentResource,
+  DocumentResource, QuestionnaireResponse,
 } from '@interfaces';
 import {
   AllergyCard,
@@ -49,9 +50,10 @@ import {
   ProcedureCard,
   Screen,
   VitalCard,
-  VitalCardSkeleton,
+  VitalCardSkeleton, QuestionnaireResponseCard,
 } from '@components';
 import { g } from '@styles';
+import Questionnaire from '@app/questionnaire';
 
 const s = StyleSheet.create({
   maskedView: {
@@ -88,7 +90,6 @@ export default function Dashboard() {
   const { data: conditions, isLoading: loadingConditions, refetch: refetchConditions } = useConditions();
   const { data: goals, isFetching: loadingGoals, refetch: refetchGoals } = useGoals();
   const { data: questionnaireResponses, isLoading: loadingQuestionnaireResponses, refetch: refetchQuestionnaireResponses } = useQuestionnaireResponses();
-  console.log(questionnaireResponses);
   const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
 
@@ -281,6 +282,23 @@ export default function Dashboard() {
                   report={report}
                 />
               ))}
+          </MyHealthBlock>
+
+          {/* Questionnaire Responses */}
+          <MyHealthBlock
+            title="Questionnaires"
+            viewAll={false}
+            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.white} />}
+            loading={loadingQuestionnaireResponses}
+          >
+            {loadingQuestionnaireResponses
+              ? <ActivityIndicator color={g.white} />
+              : questionnaireResponses?.map((questionnaire: QuestionnaireResponse) => (
+                <QuestionnaireResponseCard
+                  key={questionnaire.id}
+                  response={questionnaire}
+                />
+              )) || []}
           </MyHealthBlock>
 
           {/* Goals */}

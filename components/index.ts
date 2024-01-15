@@ -15,6 +15,7 @@ export { MessageBlock } from '@components/message-block';
 export { MyHealthBlock } from '@components/my-health-block';
 export { ProfileCard } from '@components/profile-card';
 export { ProcedureCard } from '@components/procedure-card';
+export { QuestionnaireResponseCard } from '@components/questionnaire-response-card';
 export { Screen } from '@components/screen';
 export { SelectReasonForVisit } from '@components/select-reason-for-visit';
 export { SelectAppointmentDate } from '@components/select-appointment-date';
