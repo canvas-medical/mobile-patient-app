@@ -11,7 +11,8 @@ const global = {
   white: '#FAFAFA',
   opaqueWhite: '#FAFAFA30',
   black: '#1A1A1A',
-  primaryBlue: '#006CE9', // Lighter
+  // primaryBlue: '#006CE9', // Lighter
+  primaryBlue: '#093EFE', // Lighter
   secondaryBlue: '#0039AA', // Darker
   blurBlue: '#5288EB',
   error: '#DF3C3C30',

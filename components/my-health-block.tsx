@@ -18,7 +18,7 @@ const s = StyleSheet.create({
   },
   label: {
     ...g.titleXSmall,
-    color: g.white,
+    color: g.black,
   },
   labelContainer: {
     flexDirection: 'row',
@@ -27,13 +27,13 @@ const s = StyleSheet.create({
   },
   viewAll: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     opacity: 0.9,
     padding: g.size(2),
   },
   zeroState: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     opacity: 0.8,
     paddingLeft: g.size(16),
   },

@@ -30,16 +30,16 @@ const s = StyleSheet.create({
   },
   vitalData: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
   vitalDate: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
   },
   vitalLabel: {
     flex: 1,
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
 });
 

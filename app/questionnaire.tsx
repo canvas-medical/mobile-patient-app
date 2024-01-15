@@ -6,40 +6,48 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  ActivityIndicator,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
-import { Controller, FieldError, useForm } from 'react-hook-form';
-import { Question } from '@interfaces';
-import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
-import { Screen, Input, Button } from '@components';
+import { useForm, Controller, FieldError } from 'react-hook-form';
+import { Button, Input } from '@components';
 import { g } from '@styles';
+import { Image } from 'expo-image';
+import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
+import graphic from '@assets/images/graphic.png';
+import { Question } from '@interfaces';
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: g.primaryBlue,
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: g.white,
-    borderTopLeftRadius: g.size(36),
-    borderTopRightRadius: g.size(36),
     padding: g.size(36),
     justifyContent: 'space-between',
-    gap: g.size(48),
+    gap: g.size(36),
   },
   formContainer: {
     flex: 1,
     gap: g.size(24),
+  },
+  graphic: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.width * 0.66,
+    aspectRatio: 1,
   },
   greeting: {
     ...g.labelXLarge,
     color: g.black,
   },
   header: {
+    gap: g.size(16),
     padding: g.size(36),
     paddingTop: g.size(72),
   },
@@ -47,15 +55,14 @@ const s = StyleSheet.create({
     flex: 1,
     paddingBottom: g.size(120),
   },
+  scroll: {
+    flex: 1,
+    backgroundColor: g.white,
+    borderTopLeftRadius: g.size(36),
+    borderTopRightRadius: g.size(36),
+  },
   scrollContent: {
     flexGrow: 1,
-  },
-  scrollCover: {
-    width: g.width,
-    height: g.height * 0.6,
-    backgroundColor: g.white,
-    position: 'absolute',
-    bottom: 0,
   },
   subGreeting: {
     ...g.bodyMedium,
@@ -64,7 +71,6 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
-    marginTop: g.size(16),
   },
 });
 
@@ -86,33 +92,40 @@ export default function Questionnaire() {
   });
 
   return (
-    <Screen>
-      <View style={s.scrollCover} />
+    <View style={s.container}>
+      <Image
+        style={s.graphic}
+        source={graphic}
+        contentFit="fill"
+      />
+      <View style={s.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Feather
+            name="arrow-left"
+            size={g.size(36)}
+            color={g.white}
+          />
+        </TouchableOpacity>
+        <Text style={s.title}>
+          Questionnaires
+        </Text>
+      </View>
       <KeyboardAvoidingView
-        style={s.container}
+        style={s.scroll}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <ScrollView contentContainerStyle={s.scrollContent}>
-            <View style={s.header}>
-              <TouchableOpacity onPress={() => router.back()}>
-                <Feather
-                  name="arrow-left"
-                  size={g.size(36)}
-                  color={g.white}
-                />
-              </TouchableOpacity>
-              <Text style={s.title}>
-                Questionnaires
-              </Text>
-            </View>
+        <ScrollView
+          style={s.scroll}
+          contentContainerStyle={s.scrollContent}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={s.contentContainer}>
               <View>
                 <Text style={s.greeting}>
                   Welcome
                 </Text>
                 <Text style={s.subGreeting}>
-                  Fill out a few personal details to get started
+                  Fill answer the required questions below
                 </Text>
               </View>
               {isFetching
@@ -150,10 +163,18 @@ export default function Questionnaire() {
                     />
                   </View>
                 )}
+              {/* <Button
+                onPress={handleSubmit((data: any) => {
+                  actions.updateAction(data);
+                  router.push('contact-information');
+                })}
+                label="Continue"
+                theme="primary"
+              /> */}
             </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </ScrollView>
       </KeyboardAvoidingView>
-    </Screen>
+    </View>
   );
 }

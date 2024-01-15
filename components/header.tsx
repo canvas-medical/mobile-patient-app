@@ -9,17 +9,29 @@ import { Image } from 'expo-image';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { usePatient } from '@services';
 import { g } from '@styles';
+import graphic from '@assets/images/graphic.png';
 
 const s = StyleSheet.create({
   backButton: {
     marginLeft: g.size(8),
   },
   container: {
+    position: 'relative',
+    overflow: 'hidden',
+    backgroundColor: g.primaryBlue,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: g.size(16),
     paddingTop: g.size(72),
-    paddingHorizontal: g.size(16),
-    paddingBottom: g.size(4),
+    borderBottomLeftRadius: g.size(36),
+    borderBottomRightRadius: g.size(36),
+  },
+  graphic: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.width * 0.6,
+    aspectRatio: 1.4,
   },
   label: {
     ...g.labelMedium,
@@ -44,8 +56,14 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
   const navigation = useNavigation();
   const { data } = usePatient();
 
+  // TODO: Remove all masked gradients where necessary
+
   return (
     <View style={s.container}>
+      <Image
+        style={s.graphic}
+        source={graphic}
+      />
       {!hideBackButton && (
         <TouchableOpacity
           style={s.backButton}
