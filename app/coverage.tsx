@@ -67,7 +67,7 @@ const s = StyleSheet.create({
 
 type FormData = {
   insurer: string
-  memberId: string
+  memberID: string
   groupNumber?: string
 }
 
@@ -81,7 +81,7 @@ export default function Coverage() {
   } = useForm<FormData>({
     defaultValues: {
       insurer: null,
-      memberId: null,
+      memberID: null,
       groupNumber: null,
     },
     shouldFocusError: false,
@@ -139,13 +139,13 @@ export default function Coverage() {
                       )}
                     />
                     <Controller
-                      name="memberId"
+                      name="memberID"
                       control={control}
                       rules={{ required: { value: true, message: 'Required' } }}
                       render={({ field: { onChange, value, ref } }) => (
                         <Input
                           type="text"
-                          name="memberId"
+                          name="memberID"
                           label="Member ID"
                           placeholder="Enter your member ID"
                           onFocus={() => clearErrors()}
@@ -157,7 +157,7 @@ export default function Coverage() {
                           textContentType="none"
                           returnKeyType="next"
                           forwardedRef={ref}
-                          error={errors.memberId}
+                          error={errors.memberID}
                         />
                       )}
                     />

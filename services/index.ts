@@ -10,7 +10,7 @@ export { useClinicLocation } from '@services/clinic-location';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';
-export { useCreateCoverage, Insurers } from '@services/coverage';
+export { useCreateCoverage, Insurers, useCoverage } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
 export { useEducationalMaterials } from '@services/educational-materials';
 export { useGoals } from '@services/goals';
