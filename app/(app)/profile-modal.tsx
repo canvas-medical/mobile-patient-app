@@ -277,7 +277,7 @@ export default function ProfileModal() {
     );
   };
 
-  // How to display self-pay patients?
+  // TODO: How to display/handle self-pay patients?
 
   return (
     <View style={s.container}>
