@@ -9,6 +9,7 @@ import { StateMachineProvider } from 'little-state-machine';
 import { registerForPushNotificationsAsync } from '@services';
 import Poetsen from '@assets/fonts/PoetsenOne-Regular.ttf';
 import { g } from '@styles';
+import { StatusBar } from 'expo-status-bar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,6 +43,7 @@ export default function RootLayout() {
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
     <QueryClientProvider client={queryClient}>
+      <StatusBar style="light" />
       <StateMachineProvider>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
