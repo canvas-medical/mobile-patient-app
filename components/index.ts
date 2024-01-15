@@ -13,7 +13,6 @@ export { LabReportCard, LabReportSkeleton } from '@components/lab-report-card';
 export { MedicationCard, MedicationSkeleton } from '@components/medication-card';
 export { MessageBlock } from '@components/message-block';
 export { MyHealthBlock } from '@components/my-health-block';
-export { ProfileCard } from '@components/profile-card';
 export { ProcedureCard } from '@components/procedure-card';
 export { Screen } from '@components/screen';
 export { SelectReasonForVisit } from '@components/select-reason-for-visit';

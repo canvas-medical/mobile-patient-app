@@ -129,7 +129,7 @@ export default function Coverage() {
                           name="insurer"
                           label="Insurance Provider"
                           placeholder="Select your insurance provider"
-                          onFocus={() => clearErrors}
+                          onFocus={() => clearErrors()}
                           options={Object.keys(Insurers)}
                           onChange={onChange}
                           value={value}
@@ -148,7 +148,7 @@ export default function Coverage() {
                           name="memberId"
                           label="Member ID"
                           placeholder="Enter your member ID"
-                          onFocus={() => clearErrors}
+                          onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
                           onSubmitEditing={() => setFocus('groupNumber')}
