@@ -61,7 +61,7 @@ const s = StyleSheet.create({
 
 export function SelectAppointmentDate({ selectedDate, setSelectedDate }: AppointmentDateProps) {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [tentativeDate, setTentativeDate] = useState<Date>();
+  const [provisionalDate, setProvisionalDate] = useState<Date>();
   const futureDateSelected = selectedDate > new Date();
 
   function onChangeDate(date: Date) {
@@ -69,7 +69,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
   }
 
   function closeDatePicker() {
-    setSelectedDate(tentativeDate);
+    setSelectedDate(provisionalDate);
     setShowDatePicker(false);
   }
 
@@ -114,7 +114,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
               minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
               themeVariant="light"
               maximumDate={null}
-              onChange={(_e: DateTimePickerEvent, date: Date) => setTentativeDate(date)}
+              onChange={(_e: DateTimePickerEvent, date: Date) => setProvisionalDate(date)}
             />
             <Button
               label="Select Date"

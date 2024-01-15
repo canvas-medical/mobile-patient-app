@@ -197,7 +197,7 @@ export default function ContactInformation() {
                           name="addressLine1"
                           label="Address"
                           placeholder="Enter your address"
-                          onFocus={() => clearErrors}
+                          onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
                           onSubmitEditing={() => setFocus('addressLine2')}

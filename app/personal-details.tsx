@@ -133,7 +133,7 @@ export default function PersonalDetails() {
                           name="preferredName"
                           label="Preferred Name (optional)"
                           placeholder="Enter your preferred name"
-                          onFocus={() => clearErrors}
+                          onFocus={() => clearErrors()}
                           onChange={onChange}
                           value={value}
                           onSubmitEditing={() => setFocus('firstName')}

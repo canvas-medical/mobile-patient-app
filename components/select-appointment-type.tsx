@@ -74,7 +74,7 @@ const appointmentTypes = [
 
 export function SelectAppointmentType({ appointmentType, setAppointmentType, setAppointmentTypeCode }: AppointmentTypeProps) {
   const [showAppointmentTypePicker, setShowAppointmentTypePicker] = useState<boolean>(false);
-  const [tentativeAppointmentType, setTentativeAppointmentType] = useState<string>('');
+  const [provisionalAppointmentType, setProvisionalAppointmentType] = useState<string>('');
 
   return (
     <View style={s.sectionContainer}>
@@ -112,8 +112,8 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
           >
             <View style={s.modal}>
               <Picker
-                selectedValue={tentativeAppointmentType}
-                onValueChange={(itemValue) => setTentativeAppointmentType(itemValue)}
+                selectedValue={provisionalAppointmentType}
+                onValueChange={(itemValue) => setProvisionalAppointmentType(itemValue)}
               >
                 {appointmentTypes.map((item: { appointmentTypeLabel: string }) => (
                   <Picker.Item
@@ -128,10 +128,10 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
                 theme="primary"
                 onPress={() => {
                   setShowAppointmentTypePicker(false);
-                  if (appointmentTypes.find((item) => item.appointmentTypeLabel === tentativeAppointmentType)?.appointmentTypeCode) {
-                    setAppointmentType(tentativeAppointmentType);
+                  if (appointmentTypes.find((item) => item.appointmentTypeLabel === provisionalAppointmentType)?.appointmentTypeCode) {
+                    setAppointmentType(provisionalAppointmentType);
                     setAppointmentTypeCode(appointmentTypes.find((item) => (
-                      item.appointmentTypeLabel === tentativeAppointmentType
+                      item.appointmentTypeLabel === provisionalAppointmentType
                     ))?.appointmentTypeCode);
                   }
                 }}
