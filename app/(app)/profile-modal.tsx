@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -223,7 +223,7 @@ export default function ProfileModal() {
     stateAbbreviation: patient?.address && patient?.address[0]?.state ? patient?.address[0]?.state : null,
     postalCode: patient?.address && patient?.address[0]?.postalCode ? patient?.address[0]?.postalCode : null,
     birthDate: patient?.birthDate || '',
-    gender: patient?.gender || '',
+    gender: capitalizeFirstCharacter(patient?.gender) || '',
   };
   const {
     control,
