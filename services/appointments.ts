@@ -172,9 +172,6 @@ async function appointmentCreate({
       ]
     })
   });
-  console.log('res.status', res.status);
-  const json = await res.json();
-  console.log('json', json);
   if (!res.ok) throw Error;
 }
 
@@ -200,7 +197,6 @@ export function useCreateAppointment() {
       );
     },
     onError: (e) => {
-      console.log('error', e);
       Bugsnag.leaveBreadcrumb('Error', { error: e });
       Alert.alert(
         'Error',
