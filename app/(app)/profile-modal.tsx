@@ -23,6 +23,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as SecureStore from 'expo-secure-store';
 import { Image } from 'expo-image';
 import { Feather, MaterialIcons, Fontisto, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { PatientProfileFormData } from '@interfaces';
 import { useUpdatePatient, usePatient, useCoverage, Insurers } from '@services';
 import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
 import { Button } from '@components';
@@ -178,25 +179,6 @@ const s = StyleSheet.create({
   },
 });
 
-type FormData = {
-  insurer: string
-  memberID: string
-  groupNumber: string
-  preferredName: string
-  firstName: string
-  middleName: string
-  lastName: string
-  email: string
-  phone: string
-  addressLine1: string
-  addressLine2: string
-  city: string
-  stateAbbreviation: string
-  postalCode: string
-  birthDate: string
-  gender: string
-}
-
 export default function ProfileModal() {
   const queryClient = useQueryClient();
   const navigation = useNavigation();
@@ -232,7 +214,7 @@ export default function ProfileModal() {
     clearErrors,
     formState: { errors, isDirty },
     reset,
-  } = useForm<FormData>({
+  } = useForm<PatientProfileFormData>({
     defaultValues,
     shouldFocusError: false,
   });
@@ -342,7 +324,7 @@ export default function ProfileModal() {
           <View style={s.actionButtonContainer}>
             <TouchableOpacity
               style={s.actionButton}
-              onPress={handleSubmit((data: FormData) => {
+              onPress={handleSubmit((data: PatientProfileFormData) => {
                 Keyboard.dismiss();
                 onUpdatePatient(data);
                 reset(data);

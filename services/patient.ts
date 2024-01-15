@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
+import { PatientProfileFormData } from '@interfaces';
 import { coverageUpdate } from './coverage';
 import { getToken } from './access-token';
 
@@ -210,7 +211,7 @@ async function updatePatient(data: any) { // TODO: Add types
 export function useUpdatePatient() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => { // TODO: Add types
+    mutationFn: async (data: PatientProfileFormData) => {
       const { coverageID, insurer, memberID, groupNumber, ...patientData } = data;
       return (
         await coverageUpdate({ coverageID, insurer, memberID, groupNumber }),
