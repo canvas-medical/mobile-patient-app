@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -179,9 +179,9 @@ const s = StyleSheet.create({
 });
 
 type FormData = {
-  coverageProvider: string // These need to be moved, they can't be in the same data object as the rest of the patient data
-  coverageMemberId: string // These need to be moved, they can't be in the same data object as the rest of the patient data
-  coverageGroupNumber: string // These need to be moved, they can't be in the same data object as the rest of the patient data
+  insurer: string
+  memberID: string
+  groupNumber: string
   preferredName: string
   firstName: string
   middleName: string
@@ -202,26 +202,29 @@ export default function ProfileModal() {
   const navigation = useNavigation();
   const { data: patient } = usePatient();
   const { data: coverage } = useCoverage();
-  const coverageProvider = coverage?.payor ? coverage?.payor[0]?.display : '';
-  const coverageMemberId = coverage?.subscriberId || null;
-  const coverageGroupNumber = coverage?.class ? coverage?.class[0]?.value : null;
-  const preferredName = patient?.name[1] ? patient?.name[1]?.given[0] : null;
-  const firstName = patient?.name[0]?.given[0] ? patient?.name[0]?.given[0] : null;
-  const middleName = patient?.name[0]?.given[1] ? patient?.name[0]?.given[1] : null;
-  const lastName = patient?.name[0]?.family ? patient?.name[0]?.family : null;
-  const email = patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
-    ? patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
-    : null;
-  const phone = patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value
-    ? formatPhoneNumber(patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value)
-    : null;
-  const addressLine1 = patient?.address && patient?.address[0]?.line[0] ? patient?.address[0]?.line[0] : null;
-  const addressLine2 = patient?.address && patient?.address[0]?.line[1] ? patient?.address[0]?.line[1] : null;
-  const city = patient?.address && patient?.address[0]?.city ? patient?.address[0]?.city : null;
-  const stateAbbreviation = patient?.address && patient?.address[0]?.state ? patient?.address[0]?.state : null;
-  const postalCode = patient?.address && patient?.address[0]?.postalCode ? patient?.address[0]?.postalCode : null;
-  const birthDate = patient?.birthDate || '';
-  const gender = patient?.gender || '';
+  const defaultValues = {
+    coverageID: coverage?.id || '',
+    insurer: coverage?.payor ? coverage?.payor[0]?.display : '',
+    memberID: coverage?.subscriberId || '',
+    groupNumber: coverage?.class ? coverage?.class[0]?.value : null,
+    preferredName: patient?.name[1] ? patient?.name[1]?.given[0] : null,
+    firstName: patient?.name[0]?.given[0] ? patient?.name[0]?.given[0] : null,
+    middleName: patient?.name[0]?.given[1] ? patient?.name[0]?.given[1] : null,
+    lastName: patient?.name[0]?.family ? patient?.name[0]?.family : null,
+    email: patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
+      ? patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
+      : null,
+    phone: patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value
+      ? formatPhoneNumber(patient?.telecom?.find((t: { system: string }) => t.system === 'phone')?.value)
+      : null,
+    addressLine1: patient?.address && patient?.address[0]?.line[0] ? patient?.address[0]?.line[0] : null,
+    addressLine2: patient?.address && patient?.address[0]?.line[1] ? patient?.address[0]?.line[1] : null,
+    city: patient?.address && patient?.address[0]?.city ? patient?.address[0]?.city : null,
+    stateAbbreviation: patient?.address && patient?.address[0]?.state ? patient?.address[0]?.state : null,
+    postalCode: patient?.address && patient?.address[0]?.postalCode ? patient?.address[0]?.postalCode : null,
+    birthDate: patient?.birthDate || '',
+    gender: patient?.gender || '',
+  };
   const {
     control,
     setFocus,
@@ -230,38 +233,19 @@ export default function ProfileModal() {
     formState: { errors, isDirty },
     reset,
   } = useForm<FormData>({
-    defaultValues: {
-      coverageProvider, // These need to be moved, they can't be in the same data object as the rest of the patient data
-      coverageMemberId, // These need to be moved, they can't be in the same data object as the rest of the patient data
-      coverageGroupNumber, // These need to be moved, they can't be in the same data object as the rest of the patient data
-      preferredName,
-      firstName,
-      middleName,
-      lastName,
-      email,
-      phone,
-      addressLine1,
-      addressLine2,
-      city,
-      stateAbbreviation,
-      postalCode,
-      birthDate,
-      gender,
-    },
+    defaultValues,
+    // defaultValues: useMemo(() => defaultValues, [coverage, patient]),
     shouldFocusError: false,
   });
 
-  console.log('PROVIDER: ', coverageProvider);
-  console.log('MEMBER ID: ', coverageMemberId);
-  console.log('GROUP NUMBER: ', coverageGroupNumber);
-
-  const { mutate: onUpdatePatient, isPending } = useUpdatePatient();
+  const { mutateAsync: onUpdatePatient, isPending } = useUpdatePatient();
   const [showProviderPicker, setShowProviderPicker] = useState<boolean>(false);
   const [showStatePicker, setShowStatePicker] = useState<boolean>(false);
   const [showGenderPicker, setShowGenderPicker] = useState<boolean>(false);
-  const [provisionalProvider, setProvisionalProvider] = useState<string>(coverageProvider);
-  const [provisionalState, setProvisionalState] = useState<string>(stateAbbreviation || americanStatesArray[0]);
-  const [provisionalGender, setProvisionalGender] = useState<string>(gender);
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [coverage, patient]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -359,7 +343,7 @@ export default function ProfileModal() {
           <View style={s.actionButtonContainer}>
             <TouchableOpacity
               style={s.actionButton}
-              onPress={handleSubmit((data: any) => {
+              onPress={handleSubmit((data: any) => { // TODO: type
                 Keyboard.dismiss();
                 onUpdatePatient(data);
                 reset(data);
@@ -384,9 +368,6 @@ export default function ProfileModal() {
           style={s.scroll}
           contentContainerStyle={s.scrollContent}
         >
-
-
-
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
               <FontAwesome5 name="address-card" size={g.size(22)} color={g.neutral300} />
@@ -395,30 +376,38 @@ export default function ProfileModal() {
               </Text>
             </View>
             <Controller
-              name="coverageProvider"
+              name="insurer"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
                     Provider
-                    {errors.coverageProvider && <Text style={s.inputRequired}>{` - ${errors.coverageProvider.message}`}</Text>}
+                    {errors.insurer && <Text style={s.inputRequired}>{` - ${errors.insurer.message}`}</Text>}
                   </Text>
                   <Modal
                     animationIn="fadeIn"
                     animationOut="fadeOut"
                     isVisible={showProviderPicker}
                     swipeDirection="right"
-                    onSwipeComplete={() => setShowProviderPicker(false)}
+                    onSwipeComplete={() => {
+                      onChange(defaultValues.insurer);
+                      setShowProviderPicker(false);
+                    }}
                     customBackdrop={(
-                      <TouchableWithoutFeedback onPress={() => setShowProviderPicker(false)}>
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          onChange(defaultValues.insurer);
+                          setShowProviderPicker(false);
+                        }}
+                      >
                         <View style={s.backdrop} />
                       </TouchableWithoutFeedback>
                     )}
                   >
                     <View style={s.modal}>
                       <Picker
-                        selectedValue={capitalizeFirstCharacter(provisionalProvider || '')}
-                        onValueChange={(itemValue) => setProvisionalProvider(itemValue)}
+                        selectedValue={value}
+                        onValueChange={(itemValue) => onChange(itemValue)}
                       >
                         {Object.keys(Insurers).map((option) => (
                           <Picker.Item
@@ -431,22 +420,19 @@ export default function ProfileModal() {
                       <Button
                         label="Select"
                         theme="primary"
-                        onPress={() => {
-                          onChange(provisionalProvider);
-                          setShowProviderPicker(false);
-                        }}
+                        onPress={() => setShowProviderPicker(false)}
                       />
                     </View>
                   </Modal>
                   <TouchableOpacity
-                    style={[s.input, !!errors.coverageProvider && s.inputError]}
+                    style={[s.input, !!errors.insurer && s.inputError]}
                     onPress={() => setShowProviderPicker(true)}
                   >
                     <Text
                       style={[
                         s.selectorButtonLabel,
                         !value && s.selectorButtonLabelPlaceholder,
-                        !!errors.coverageProvider && s.selectorButtonLabelError,
+                        !!errors.insurer && s.selectorButtonLabelError,
                       ]}
                     >
                       {value || 'Select a provider'}
@@ -456,25 +442,25 @@ export default function ProfileModal() {
               )}
             />
             <Controller
-              name="coverageMemberId"
+              name="memberID"
               control={control}
               rules={{ required: { value: true, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
                     Member ID
-                    {errors.coverageMemberId && <Text style={s.inputRequired}>{` - ${errors.coverageMemberId.message}`}</Text>}
+                    {errors.memberID && <Text style={s.inputRequired}>{` - ${errors.memberID.message}`}</Text>}
                   </Text>
                   <TextInput
-                    style={[s.input, !!errors.coverageMemberId && s.inputError]}
+                    style={[s.input, !!errors.memberID && s.inputError]}
                     placeholder="Member ID"
-                    placeholderTextColor={errors.coverageMemberId ? g.neutral500 : g.neutral200}
+                    placeholderTextColor={errors.memberID ? g.neutral500 : g.neutral200}
                     onFocus={() => clearErrors()}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
                     }}
                     value={value}
-                    onSubmitEditing={() => setFocus('coverageGroupNumber')}
+                    onSubmitEditing={() => setFocus('groupNumber')}
                     keyboardType="default"
                     returnKeyType="next"
                   />
@@ -482,7 +468,7 @@ export default function ProfileModal() {
               )}
             />
             <Controller
-              name="coverageGroupNumber"
+              name="groupNumber"
               control={control}
               render={({ field: { onChange, value, ref } }) => (
                 <View>
@@ -491,9 +477,9 @@ export default function ProfileModal() {
                     <Text style={s.inputOptional}> - Optional</Text>
                   </Text>
                   <TextInput
-                    style={[s.input, !!errors.coverageGroupNumber && s.inputError]}
+                    style={[s.input, !!errors.groupNumber && s.inputError]}
                     placeholder="Group Number"
-                    placeholderTextColor={errors.coverageGroupNumber ? g.neutral500 : g.neutral200}
+                    placeholderTextColor={errors.groupNumber ? g.neutral500 : g.neutral200}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
                     }}
@@ -507,9 +493,6 @@ export default function ProfileModal() {
               )}
             />
           </View>
-
-
-
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
               <Feather name="user" size={g.size(24)} color={g.neutral300} />
@@ -748,17 +731,25 @@ export default function ProfileModal() {
                     animationOut="fadeOut"
                     isVisible={showStatePicker}
                     swipeDirection="right"
-                    onSwipeComplete={() => setShowStatePicker(false)}
+                    onSwipeComplete={() => {
+                      onChange(defaultValues.stateAbbreviation);
+                      setShowStatePicker(false);
+                    }}
                     customBackdrop={(
-                      <TouchableWithoutFeedback onPress={() => setShowStatePicker(false)}>
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          onChange(defaultValues.stateAbbreviation);
+                          setShowStatePicker(false);
+                        }}
+                      >
                         <View style={s.backdrop} />
                       </TouchableWithoutFeedback>
                     )}
                   >
                     <View style={s.modal}>
                       <Picker
-                        selectedValue={provisionalState}
-                        onValueChange={(itemValue) => setProvisionalState(itemValue)}
+                        selectedValue={value}
+                        onValueChange={(itemValue) => onChange(itemValue)}
                       >
                         {americanStatesArray.map((option) => (
                           <Picker.Item
@@ -771,10 +762,7 @@ export default function ProfileModal() {
                       <Button
                         label="Select"
                         theme="primary"
-                        onPress={() => {
-                          onChange(provisionalState);
-                          setShowStatePicker(false);
-                        }}
+                        onPress={() => onChange(value)}
                       />
                     </View>
                   </Modal>
@@ -815,17 +803,25 @@ export default function ProfileModal() {
                     animationOut="fadeOut"
                     isVisible={showGenderPicker}
                     swipeDirection="right"
-                    onSwipeComplete={() => setShowGenderPicker(false)}
+                    onSwipeComplete={() => {
+                      onChange(defaultValues.gender);
+                      setShowGenderPicker(false);
+                    }}
                     customBackdrop={(
-                      <TouchableWithoutFeedback onPress={() => setShowGenderPicker(false)}>
+                      <TouchableWithoutFeedback
+                        onPress={() => {
+                          onChange(defaultValues.gender);
+                          setShowGenderPicker(false);
+                        }}
+                      >
                         <View style={s.backdrop} />
                       </TouchableWithoutFeedback>
                     )}
                   >
                     <View style={s.modal}>
                       <Picker
-                        selectedValue={capitalizeFirstCharacter(provisionalGender || '')}
-                        onValueChange={(itemValue) => setProvisionalGender(itemValue)}
+                        selectedValue={capitalizeFirstCharacter(value || '')}
+                        onValueChange={(itemValue) => onChange(itemValue)}
                       >
                         {['Male', 'Female', 'Other', 'Unknown'].map((option) => (
                           <Picker.Item
@@ -838,10 +834,7 @@ export default function ProfileModal() {
                       <Button
                         label="Select"
                         theme="primary"
-                        onPress={() => {
-                          onChange(provisionalGender);
-                          setShowGenderPicker(false);
-                        }}
+                        onPress={() => setShowGenderPicker(false)}
                       />
                     </View>
                   </Modal>

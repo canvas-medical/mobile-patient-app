@@ -39,11 +39,11 @@ export const Insurers = {
  *
  * @param data - The data required to create the coverage resource.
  * @param data.insurer - The name of the insurer.
- * @param data.memberId - The member ID of the patient.
+ * @param data.memberID - The member ID of the patient.
  * @param data.groupNumber - The group number (optional).
  * @throws {Error} If there is an issue with creating the coverage resource.
  */
-async function coverageCreate(data: { insurer: string, memberId: string, groupNumber?: string }) {
+async function coverageCreate(data: { insurer: string, memberID: string, groupNumber?: string }) {
   const token = await getToken();
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -82,7 +82,7 @@ async function coverageCreate(data: { insurer: string, memberId: string, groupNu
       subscriber: {
         reference: `Patient/${patientId}`
       },
-      subscriberId: data.memberId,
+      subscriberId: data.memberID,
       beneficiary: {
         reference: `Patient/${patientId}`
       },
@@ -102,8 +102,8 @@ async function coverageCreate(data: { insurer: string, memberId: string, groupNu
       class: classes
     })
   });
-  const Json: null | ApiError = await res.json();
-  if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
+  const json: null | ApiError = await res.json();
+  if (json?.issue?.length > 0) throw new Error(json.issue[0].details.text);
 }
 
 /**
@@ -113,7 +113,7 @@ async function coverageCreate(data: { insurer: string, memberId: string, groupNu
  */
 export function useCreateCoverage() {
   return useMutation({
-    mutationFn: (data: { insurer: string, memberId: string, groupNumber?: string }) => coverageCreate(data),
+    mutationFn: (data: { insurer: string, memberID: string, groupNumber?: string }) => coverageCreate(data),
     onSuccess: () => router.push('consents'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -158,4 +158,76 @@ export function useCoverage() {
     queryKey: ['patient_coverage'],
     queryFn: () => getCoverage(),
   });
+}
+
+/**
+ * Updates coverage resource for a patient with the specified insurer and member ID.
+ *
+ * @param data - The data required to update the coverage resource.
+ * @param data.coverageID - The ID of the coverage resource.
+ * @param data.insurer - The name of the insurer.
+ * @param data.memberID - The member ID of the patient.
+ * @param data.groupNumber - The group number (optional).
+ * @throws {Error} If there is an issue with creating the coverage resource.
+ */
+export async function coverageUpdate(data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) {
+  const token = await getToken();
+  const provider = Insurers[data.insurer];
+  const patientId = await SecureStore.getItemAsync('patient_id');
+  const classes = data.groupNumber ? [
+    {
+      type: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/ValueSet/coverage-class',
+            code: 'group'
+          }
+        ]
+      },
+      value: data.groupNumber
+    },
+  ] : null;
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data.coverageID}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      resourceType: 'Coverage',
+      order: 1,
+      status: 'active',
+      type: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/ValueSet/coverage-type',
+            code: provider.code,
+          }
+        ]
+      },
+      subscriber: {
+        reference: `Patient/${patientId}`
+      },
+      subscriberId: data.memberID,
+      beneficiary: {
+        reference: `Patient/${patientId}`
+      },
+      relationship: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/ValueSet/subscriber-relationship',
+            code: 'self',
+          }
+        ]
+      },
+      payor: [
+        {
+          identifier: { value: provider.payerId }
+        }
+      ],
+      class: classes
+    })
+  });
+  if (!res.ok) throw new Error();
 }
