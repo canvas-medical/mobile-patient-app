@@ -234,7 +234,6 @@ export default function ProfileModal() {
     reset,
   } = useForm<FormData>({
     defaultValues,
-    // defaultValues: useMemo(() => defaultValues, [coverage, patient]),
     shouldFocusError: false,
   });
 
@@ -378,6 +377,7 @@ export default function ProfileModal() {
             <Controller
               name="insurer"
               control={control}
+              rules={{ required: { value: true, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
