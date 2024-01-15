@@ -120,7 +120,6 @@ async function appointmentCreate({
 }: AppointmentCreationData) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  console.log('appointment create', startTime, endTime, practitionerID, reason, appointmentType, appointmentTypeCode);
 
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment`, {
     method: 'POST',
