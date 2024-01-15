@@ -342,7 +342,7 @@ export default function ProfileModal() {
           <View style={s.actionButtonContainer}>
             <TouchableOpacity
               style={s.actionButton}
-              onPress={handleSubmit((data: any) => { // TODO: type
+              onPress={handleSubmit((data: FormData) => {
                 Keyboard.dismiss();
                 onUpdatePatient(data);
                 reset(data);
