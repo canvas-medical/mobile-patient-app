@@ -288,7 +288,10 @@ export default function ProfileModal() {
     const buttonAnimation = () => {
       // This is to draw the users attention to the save button when it is made clickable
       if (!prevIsDirtyRef.current && isDirty) {
-        buttonWidth.value = withSequence(withSpring(buttonWidth.value + g.size(5)), withSpring(buttonWidth.value - g.size(2)));
+        buttonWidth.value = withSequence(
+          withSpring(buttonWidth.value + g.size(5), { duration: 500 }),
+          withSpring(g.size(72), { duration: 500 })
+        );
         prevIsDirtyRef.current = isDirty;
       }
     };
