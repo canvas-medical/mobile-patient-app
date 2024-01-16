@@ -45,6 +45,10 @@
       "@config-plugins/react-native-blob-util",
       "@config-plugins/react-native-pdf",
       "@bugsnag/plugin-expo-eas-sourcemaps",
+      "expo-image-picker",
+      {
+        "photosPermission": "The app accesses your photos to let you share them with your friends."
+      },
       [
         "expo-build-properties",
         {
