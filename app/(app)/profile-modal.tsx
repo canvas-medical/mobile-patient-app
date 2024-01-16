@@ -180,6 +180,9 @@ const s = StyleSheet.create({
   saveButtonDisabled: {
     opacity: 0.2
   },
+  saveButtonLoading: {
+    opacity: 0.8
+  },
   scroll: {
     flex: 1,
   },
@@ -281,13 +284,15 @@ export default function ProfileModal() {
   const prevIsDirtyRef = useRef<boolean>(false);
   const buttonWidth = useSharedValue(g.size(72));
 
-  useEffect(() => () => {
-    // This is to draw the users attention to the save button
-    if (!prevIsDirtyRef.current) {
-      console.log(prevIsDirtyRef.current, isDirty);
-      buttonWidth.value = withSequence(withSpring(buttonWidth.value + g.size(3)), withSpring(buttonWidth.value - g.size(1)));
-      prevIsDirtyRef.current = isDirty;
-    }
+  useEffect(() => {
+    const buttonAnimation = () => {
+      // This is to draw the users attention to the save button when it is made clickable
+      if (!prevIsDirtyRef.current && isDirty) {
+        buttonWidth.value = withSequence(withSpring(buttonWidth.value + g.size(5)), withSpring(buttonWidth.value - g.size(2)));
+        prevIsDirtyRef.current = isDirty;
+      }
+    };
+    return buttonAnimation();
   }, [isDirty]);
 
   useEffect(() => {
@@ -792,6 +797,7 @@ export default function ProfileModal() {
         <AnimatedTouchableOpacity
           style={[s.saveButton,
             !isDirty && s.saveButtonDisabled,
+            isPending && s.saveButtonLoading,
             { width: buttonWidth, bottom: keyboardHeight + g.size(24) }]}
           onPress={handleSubmit((data: any) => {
             Keyboard.dismiss();
