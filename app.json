@@ -46,17 +46,15 @@
       "@config-plugins/react-native-pdf",
       "@bugsnag/plugin-expo-eas-sourcemaps",
       "expo-image-picker",
-      {
-        "photosPermission": "The app accesses your photos to let you share them with your friends."
-      },
       [
         "expo-build-properties",
         {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
           "android": {
             "usesCleartextTraffic": true
           }
         }
-      ],
+      ]
     ],
     "extra": {
       "router": {

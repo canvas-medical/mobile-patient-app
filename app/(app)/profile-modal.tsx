@@ -1,29 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  TextInputChangeEventData,
-  NativeSyntheticEvent,
-  Keyboard,
-  TouchableWithoutFeedback,
+  ActivityIndicator,
   Alert,
+  Keyboard,
   KeyboardAvoidingView,
+  NativeSyntheticEvent,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputChangeEventData,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
+import Animated, { useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
 import { useQueryClient } from '@tanstack/react-query';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import { router, useNavigation } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as SecureStore from 'expo-secure-store';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 import { Image } from 'expo-image';
-import { Feather, MaterialIcons, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useUpdatePatient, usePatient } from '@services';
+import { Feather, FontAwesome, Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { usePatient, useUpdatePatient } from '@services';
 import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
 import { Button } from '@components';
 import { americanStatesArray } from '@constants';
@@ -38,26 +42,9 @@ const s = StyleSheet.create({
     gap: g.size(8),
     padding: g.size(6),
   },
-  actionButtonContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   actionButtonLabel: {
     ...g.labelMedium,
     color: g.white,
-  },
-  actionButtonLabelDisabled: {
-    opacity: 0.6,
-  },
-  actionContainer: {
-    width: '100%',
-    flexDirection: 'row',
-  },
-  actionDivider: {
-    width: g.size(1),
-    height: g.size(52),
-    backgroundColor: g.white,
   },
   backButton: {
     position: 'absolute',
@@ -88,6 +75,11 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: g.white,
+  },
+  editImage: {
+    position: 'absolute',
+    bottom: g.size(8),
+    right: g.size(12)
   },
   header: {
     backgroundColor: g.primaryBlue,
@@ -130,6 +122,11 @@ const s = StyleSheet.create({
   lastListItem: {
     borderBottomWidth: 0,
   },
+  logoutButton: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? g.size(24) : g.size(48),
+    right: g.size(16),
+  },
   modal: {
     paddingHorizontal: g.size(8),
     paddingBottom: g.size(12),
@@ -147,6 +144,17 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(8),
   },
+  overlay: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    height: g.size(72),
+    width: g.size(72),
+    opacity: 0.3,
+    borderRadius: g.size(36),
+    backgroundColor: g.black,
+  },
   patientDataLabel: {
     ...g.labelSmall,
     color: g.neutral500,
@@ -157,6 +165,20 @@ const s = StyleSheet.create({
     paddingVertical: g.size(28),
     borderBottomWidth: g.size(1),
     borderBottomColor: g.neutral200
+  },
+  saveButton: {
+    ...g.shadow,
+    width: g.size(72),
+    height: g.size(72),
+    borderRadius: g.size(36),
+    backgroundColor: g.primaryBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: g.size(12),
+  },
+  saveButtonDisabled: {
+    opacity: 0.2
   },
   scroll: {
     flex: 1,
@@ -176,9 +198,15 @@ const s = StyleSheet.create({
   selectorButtonLabelPlaceholder: {
     color: g.neutral200
   },
+  userImage: {
+    height: g.size(72),
+    width: g.size(72),
+    borderRadius: g.size(36),
+  },
 });
 
 type FormData = {
+  avatar: string
   preferredName: string
   firstName: string
   middleName: string
@@ -193,6 +221,8 @@ type FormData = {
   birthDate: string
   gender: string
 }
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 export default function ProfileModal() {
   const queryClient = useQueryClient();
@@ -246,6 +276,33 @@ export default function ProfileModal() {
   const [showStatePicker, setShowStatePicker] = useState<boolean>(false);
   const [provisionalGender, setProvisionalGender] = useState<string>(gender);
   const [provisionalState, setProvisionalState] = useState<string>(stateAbbreviation || americanStatesArray[0]);
+  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [image, setImage] = useState(null);
+  const prevIsDirtyRef = useRef<boolean>(false);
+  const buttonWidth = useSharedValue(g.size(72));
+
+  useEffect(() => () => {
+    // This is to draw the users attention to the save button
+    if (!prevIsDirtyRef.current) {
+      console.log(prevIsDirtyRef.current, isDirty);
+      buttonWidth.value = withSequence(withSpring(buttonWidth.value + g.size(3)), withSpring(buttonWidth.value - g.size(1)));
+      prevIsDirtyRef.current = isDirty;
+    }
+  }, [isDirty]);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
+      setKeyboardHeight(e.endCoordinates.height);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -271,6 +328,21 @@ export default function ProfileModal() {
 
     return unsubscribe;
   }, [navigation, isDirty]);
+
+  const pickImage = async (onChange) => {
+    // No permissions request is necessary for launching the image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    const base64 = await FileSystem.readAsStringAsync(result.assets[0]?.uri, { encoding: 'base64' });
+    onChange(base64);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const logout = () => {
     Alert.alert(
@@ -314,6 +386,33 @@ export default function ProfileModal() {
         >
           <Feather name="arrow-left" size={g.size(48)} color={g.white} />
         </TouchableOpacity>
+        <View style={s.logoutButton}>
+          <TouchableOpacity
+            style={s.actionButton}
+            onPress={() => logout()}
+          >
+            <Text style={s.actionButtonLabel}>
+              Logout
+            </Text>
+            <MaterialIcons name="logout" size={g.size(24)} color={g.white} />
+          </TouchableOpacity>
+        </View>
+        <Controller
+          name="avatar"
+          control={control}
+          render={({ field: { onChange } }) => (
+            <TouchableOpacity
+              onPress={() => pickImage(onChange)}
+              activeOpacity={0}
+            >
+              {Array.isArray(patient?.photo) ? (
+                <Image source={{ uri: image || patient.photo[0].url }} style={s.userImage} />
+              ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
+              <Feather name="edit-2" size={g.size(16)} color={g.white} style={s.editImage} />
+              <View style={s.overlay} />
+            </TouchableOpacity>
+          )}
+        />
         <View style={s.nameAndBirthDateContainer}>
           <Text style={s.name}>
             {`${patient?.name[0]?.given[0] || ''} ${patient?.name[0]?.family || ''}`}
@@ -323,36 +422,6 @@ export default function ProfileModal() {
             <Text style={s.birthDate}>
               {formatDate(patient?.birthDate, 'numeric')}
             </Text>
-          </View>
-        </View>
-        <View style={s.actionContainer}>
-          <View style={s.actionButtonContainer}>
-            <TouchableOpacity
-              style={s.actionButton}
-              onPress={() => logout()}
-            >
-              <Text style={s.actionButtonLabel}>
-                Logout
-              </Text>
-              <MaterialIcons name="logout" size={g.size(24)} color={g.white} />
-            </TouchableOpacity>
-          </View>
-          <View style={s.actionDivider} />
-          <View style={s.actionButtonContainer}>
-            <TouchableOpacity
-              style={s.actionButton}
-              onPress={handleSubmit((data: any) => {
-                Keyboard.dismiss();
-                onUpdatePatient(data);
-                reset(data);
-              })}
-              disabled={!isDirty || isPending}
-            >
-              <Text style={[s.actionButtonLabel, !isDirty && s.actionButtonLabelDisabled]}>
-                {isPending ? 'Saving...' : 'Save Changes'}
-              </Text>
-              <Feather name="edit-2" size={g.size(22)} color={g.white} style={!isDirty && s.actionButtonLabelDisabled} />
-            </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>
@@ -720,6 +789,27 @@ export default function ProfileModal() {
             />
           </View>
         </ScrollView>
+        <AnimatedTouchableOpacity
+          style={[s.saveButton,
+            !isDirty && s.saveButtonDisabled,
+            { width: buttonWidth, bottom: keyboardHeight + g.size(24) }]}
+          onPress={handleSubmit((data: any) => {
+            Keyboard.dismiss();
+            onUpdatePatient(data);
+            reset(data);
+          })}
+          disabled={!isDirty || isPending}
+        >
+          {isPending ? <ActivityIndicator />
+            : (
+              <>
+                <Text style={s.actionButtonLabel}>
+                  Save
+                </Text>
+              </>
+            )
+          }
+        </AnimatedTouchableOpacity>
       </KeyboardAvoidingView>
     </View>
   );
