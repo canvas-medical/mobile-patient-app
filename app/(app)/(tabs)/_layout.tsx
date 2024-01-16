@@ -25,7 +25,7 @@ export default function Layout() {
       tabBar={TabBar}
       screenOptions={{
         tabBarActiveTintColor: g.white,
-        tabBarInactiveTintColor: g.neutral600,
+        tabBarInactiveTintColor: g.newNeutral600,
         tabBarHideOnKeyboard: Platform.OS === 'android',
       }}
     >

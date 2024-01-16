@@ -206,7 +206,7 @@ export default function Messages() {
               autoCapitalize="sentences"
               keyboardType="default"
               textContentType="none"
-              placeholderTextColor={g.neutral400}
+              placeholderTextColor={g.newNeutral400}
               onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
             />
             {isPending
