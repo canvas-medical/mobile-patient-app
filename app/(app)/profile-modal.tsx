@@ -86,8 +86,17 @@ const s = StyleSheet.create({
   },
   editImage: {
     position: 'absolute',
-    bottom: g.size(8),
-    right: g.size(12)
+    bottom: g.size(2),
+    right: g.size(2),
+    backgroundColor: g.editGreen,
+    overflow: 'hidden',
+    borderColor: g.white,
+    borderStyle: 'solid',
+    borderWidth: g.size(1),
+    borderRadius: g.size(14),
+    padding: g.size(4),
+    paddingBottom: g.size(2),
+    paddingRight: g.size(2),
   },
   header: {
     backgroundColor: g.primaryBlue,
@@ -151,17 +160,6 @@ const s = StyleSheet.create({
   nameAndBirthDateContainer: {
     alignItems: 'center',
     gap: g.size(8),
-  },
-  overlay: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    height: g.size(72),
-    width: g.size(72),
-    opacity: 0.3,
-    borderRadius: g.size(36),
-    backgroundColor: g.black,
   },
   patientDataLabel: {
     ...g.labelSmall,
@@ -411,8 +409,7 @@ export default function ProfileModal() {
               {Array.isArray(patient?.photo) ? (
                 <Image source={{ uri: image || patient.photo[0].url }} style={s.userImage} />
               ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
-              <Feather name="edit-2" size={g.size(16)} color={g.white} style={s.editImage} />
-              <View style={s.overlay} />
+              <MaterialIcons name="mode-edit" size={g.size(16)} color={g.white} style={s.editImage} />
             </TouchableOpacity>
           )}
         />
