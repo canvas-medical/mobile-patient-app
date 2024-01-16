@@ -85,7 +85,7 @@ const s = StyleSheet.create({
     ...g.bodyLarge,
     color: g.white,
     overflow: 'hidden',
-    backgroundColor: g.primaryBlue, // TODO: refactor this. This background color shouldn't be on the text
+    backgroundColor: g.primaryBlue,
     borderRadius: g.size(18),
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),

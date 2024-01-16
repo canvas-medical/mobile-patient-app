@@ -43,8 +43,6 @@ interface Props {
   style?: { [key: string]: number | string } | { [key: string]: number | string }[];
 }
 
-// TODO: Remove all linear gradients
-
 export function Button(props: Props) {
   const { label, onPress, theme, disabled, style = {} } = props;
 

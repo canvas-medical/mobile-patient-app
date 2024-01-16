@@ -52,7 +52,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   inputContainer: {
-    backgroundColor: g.neutral50,
+    backgroundColor: g.newNeutral150,
     borderRadius: g.size(50),
     overflow: 'hidden',
     flexDirection: 'row',
@@ -61,11 +61,11 @@ const s = StyleSheet.create({
     backgroundColor: g.error,
   },
   inputError: {
-    color: g.neutral500,
+    color: g.newNeutral500,
   },
   label: {
     ...g.labelMedium,
-    color: g.neutral300,
+    color: g.newNeutral500,
   },
   modal: {
     paddingHorizontal: g.size(8),
@@ -87,7 +87,7 @@ const s = StyleSheet.create({
   selectorButton: {
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
-    backgroundColor: g.neutral50,
+    backgroundColor: g.newNeutral150,
     borderRadius: g.size(50),
   },
   selectorButtonLabel: {
@@ -95,10 +95,10 @@ const s = StyleSheet.create({
     color: g.black,
   },
   selectorButtonPlaceholder: {
-    color: g.neutral200
+    color: g.newNeutral400
   },
   selectorButtonPlaceholderError: {
-    color: g.neutral500
+    color: g.newNeutral500
   }
 });
 
@@ -164,7 +164,7 @@ function TextComponent(props) {
       <TextInput
         style={[s.input, error && s.inputError, style]}
         placeholder={placeholder}
-        placeholderTextColor={error ? g.neutral500 : g.neutral200}
+        placeholderTextColor={error ? g.newNeutral500 : g.newNeutral400}
         secureTextEntry={name.toLowerCase().includes('password') && hidePassword}
         onFocus={() => onFocus()}
         onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
@@ -189,7 +189,7 @@ function TextComponent(props) {
           <Octicons
             name={hidePassword ? 'eye' : 'eye-closed'}
             size={g.size(24)}
-            color={error ? g.neutral500 : g.neutral300}
+            color={error ? g.newNeutral500 : g.newNeutral400}
           />
         </TouchableOpacity>
       )}
@@ -339,14 +339,14 @@ function SelectorComponent(props) {
             })}
           </Picker>
           {buttonText
-          && (
-          <Button
-            label={buttonText}
-            disabled={!value}
-            theme="primary"
-            onPress={() => setShow(false)}
-          />
-          )}
+            && (
+              <Button
+                label={buttonText}
+                disabled={!value}
+                theme="primary"
+                onPress={() => setShow(false)}
+              />
+            )}
         </Overlay>
       )}
     </>

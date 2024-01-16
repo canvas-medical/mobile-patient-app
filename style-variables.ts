@@ -1,7 +1,5 @@
 import { Dimensions } from 'react-native';
 
-// Remove gradient from primary button;
-
 const global = {
   // Screen Dimensions
   width: Dimensions.get('window').width,
@@ -22,20 +20,13 @@ const global = {
   newNeutral800: '#1e293b',
   newNeutral900: '#0f172a',
   black: '#020617',
+  transparent: 'transparent',
   primaryBlue: '#3B66FD', // Lighter
   secondaryBlue: '#2154FF', // Middle
   tertiaryBlue: '#093EFE', // Darker
   error: '#DF3C3C30',
   red: '#ED4337',
   green: '#16a34a',
-  neutral50: '#CECECE36',
-  neutral100: '#D9D9D9',
-  neutral200: '#C3C3C3',
-  neutral300: '#989898',
-  neutral500: '#6C6C6C',
-  neutral800: '#27272a',
-  neutral900: '#171717', // TODO: Replace neutrals with TW neutrals and check all instances of neutrals
-  transparent: 'transparent',
   severityRed: '#B22222',
   severityYellow: '#FFFF00',
   severityGreen: '#00FF00',

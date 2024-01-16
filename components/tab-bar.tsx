@@ -9,8 +9,8 @@ const s = StyleSheet.create({
     borderTopLeftRadius: g.size(40),
     borderTopRightRadius: g.size(40),
     overflow: 'hidden',
-    paddingTop: g.size(8), // TODO: Revisit - check on android
-    paddingBottom: g.size(20), // TODO: Revisit - check on android
+    paddingTop: g.size(8),
+    paddingBottom: g.size(20),
     paddingHorizontal: g.size(10),
   },
   container: {

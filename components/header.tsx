@@ -56,8 +56,6 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
   const navigation = useNavigation();
   const { data } = usePatient();
 
-  // TODO: Remove all masked gradients where necessary
-
   return (
     <View style={s.container}>
       <Image

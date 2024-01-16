@@ -276,8 +276,6 @@ export default function ProfileModal() {
     );
   };
 
-  // TODO: How to display/handle self-pay patients?
-
   return (
     <View style={s.container}>
       <View style={s.header}>

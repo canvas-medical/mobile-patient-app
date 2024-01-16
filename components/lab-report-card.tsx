@@ -65,8 +65,6 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
     };
   }
 
-  // TODO: Check color of all activity indicators
-
   return (
     <TouchableOpacity
       style={s.card}
