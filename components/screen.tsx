@@ -3,19 +3,19 @@ import { StyleSheet, StyleProp } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import blurs from '@assets/images/blurs.png';
+import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  blurCircles: {
+  container: {
+    flex: 1,
+  },
+  graphic: {
     position: 'absolute',
     top: 0,
     right: 0,
-    width: g.size(200),
-    height: g.size(200),
-  },
-  container: {
-    flex: 1,
+    width: g.width * 0.8,
+    aspectRatio: 59 / 77,
   },
 });
 
@@ -32,8 +32,8 @@ export function Screen({ children, style }: Props) {
     >
       <StatusBar style="light" />
       <Image
-        style={s.blurCircles}
-        source={blurs}
+        style={s.graphic}
+        source={graphic}
       />
       {children}
     </LinearGradient>

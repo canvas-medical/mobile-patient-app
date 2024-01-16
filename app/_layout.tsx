@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useFonts, Alata_400Regular as Alata } from '@expo-google-fonts/alata';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StateMachineProvider } from 'little-state-machine';
@@ -42,6 +43,7 @@ export default function RootLayout() {
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
   return (
     <QueryClientProvider client={queryClient}>
+      <StatusBar style="light" />
       <StateMachineProvider>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
