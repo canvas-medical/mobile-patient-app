@@ -76,7 +76,7 @@ export default function Consents() {
   const params = useLocalSearchParams();
   const { accepted } = params;
 
-  const isAccepted = isSuccess || accepted;
+  const isAccepted = isSuccess || !!accepted;
 
   return (
     <View style={s.container}>

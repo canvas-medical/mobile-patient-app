@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Medication } from '@interfaces';
-import { BlurFill, ExplainButton } from '@components';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -42,13 +42,7 @@ export function MedicationCard({ med }: { med: Medication }) {
   } = med ?? {};
 
   return (
-    <ExplainButton
-      style={s.card}
-      id={med.id}
-      resourceType={med.resourceType}
-      codes={med.medicationCodeableConcept.coding}
-      description={med.medicationCodeableConcept.coding[0].display}
-    >
+    <View style={s.card}>
       <BlurFill />
       <Text style={s.medication}>
         {capitalizeFirstCharacter(medication)}
@@ -61,7 +55,7 @@ export function MedicationCard({ med }: { med: Medication }) {
           {formatDate(dateAsserted)}
         </Text>
       </View>
-    </ExplainButton>
+    </View>
   );
 }
 
