@@ -93,8 +93,6 @@ export default function Coverage() {
   });
   const { mutate: onCreateCoverage, isPending } = useCreateCoverage();
 
-  // TODO: look into keyboardShouldPersistTaps prop on ScrollViews
-
   return (
     <View style={s.container}>
       <Image

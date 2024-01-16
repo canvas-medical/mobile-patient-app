@@ -163,14 +163,6 @@ export default function Questionnaire() {
                     />
                   </View>
                 )}
-              {/* <Button
-                onPress={handleSubmit((data: any) => {
-                  actions.updateAction(data);
-                  router.push('contact-information');
-                })}
-                label="Continue"
-                theme="primary"
-              /> */}
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
