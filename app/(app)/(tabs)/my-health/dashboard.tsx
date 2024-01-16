@@ -21,6 +21,7 @@ import {
   useObservations,
   useEducationalMaterials,
   useProcedures,
+  useQuestionnaireResponses,
 } from '@services';
 import {
   Allergy,
@@ -32,7 +33,7 @@ import {
   Vital,
   LabImagingReport,
   Procedure,
-  DocumentResource,
+  DocumentResource, QuestionnaireResponse,
 } from '@interfaces';
 import {
   AllergyCard,
@@ -47,13 +48,17 @@ import {
   MedicationSkeleton,
   MyHealthBlock,
   ProcedureCard,
-  Screen,
   VitalCard,
-  VitalCardSkeleton,
+  VitalCardSkeleton, QuestionnaireResponseCard,
 } from '@components';
 import { g } from '@styles';
+import Questionnaire from '@app/questionnaire';
 
 const s = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: g.white,
+  },
   maskedView: {
     flex: 1,
   },
@@ -71,7 +76,7 @@ const s = StyleSheet.create({
   },
   zeroState: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     opacity: 0.8,
     paddingLeft: g.size(16),
   }
@@ -87,6 +92,7 @@ export default function Dashboard() {
   const { data: immunizations, isLoading: loadingImmunizations, refetch: refetchImmunizations } = useImmunizations();
   const { data: conditions, isLoading: loadingConditions, refetch: refetchConditions } = useConditions();
   const { data: goals, isFetching: loadingGoals, refetch: refetchGoals } = useGoals();
+  const { data: questionnaireResponses, isLoading: loadingQuestionnaireResponses, refetch: refetchQuestionnaireResponses } = useQuestionnaireResponses();
   const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
 
@@ -118,7 +124,7 @@ export default function Dashboard() {
     new Date(procedure.performedDateTime).toDateString() === new Date(recentProcedureDate).toDateString());
 
   return (
-    <Screen>
+    <View style={s.container}>
       <Header hideBackButton />
       <MaskedView
         style={s.maskedView}
@@ -139,7 +145,7 @@ export default function Dashboard() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              tintColor={g.white}
+              tintColor={g.primaryBlue}
               colors={[g.primaryBlue]}
               progressViewOffset={g.size(40)}
             />
@@ -149,7 +155,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Vitals"
             viewAll={false}
-            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.white} />}
+            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.black} />}
             loading={loadingVitals}
           >
             <View style={s.vitalsContainer}>
@@ -178,7 +184,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/medications"
             title="Medications"
             viewAll={!!medications?.length}
-            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.white} />}
+            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.black} />}
             loading={loadingMedications}
           >
             {loadingMedications
@@ -196,7 +202,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/allergies"
             title="Allergies"
             viewAll={!!allergies?.length}
-            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.white} />}
+            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.black} />}
             loading={loadingAllergies}
           >
             {loadingAllergies
@@ -214,7 +220,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/procedures"
             title="Procedures"
             viewAll={procedures?.length > 1}
-            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.white} />}
+            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.black} />}
             loading={loadingProcedures}
           >
             {loadingProcedures
@@ -232,7 +238,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/immunizations"
             title="Immunizations"
             viewAll={immunizations?.length > 1}
-            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.white} />}
+            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.black} />}
             loading={loadingImmunizations}
           >
             {loadingImmunizations
@@ -250,7 +256,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/conditions"
             title="Conditions"
             viewAll={!!conditions?.length}
-            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.white} />}
+            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.black} />}
             loading={loadingConditions}
           >
             {loadingConditions
@@ -268,7 +274,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/lab-results"
             title="Labs"
             viewAll={!!labs?.length}
-            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.white} />}
+            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.black} />}
             loading={loadingLabs}
           >
             {loadingLabs
@@ -281,12 +287,29 @@ export default function Dashboard() {
               ))}
           </MyHealthBlock>
 
+          {/* Questionnaire Responses */}
+          <MyHealthBlock
+            title="Questionnaires"
+            viewAll={false}
+            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.white} />}
+            loading={loadingQuestionnaireResponses}
+          >
+            {loadingQuestionnaireResponses
+              ? <ActivityIndicator color={g.white} />
+              : questionnaireResponses?.map((questionnaire: QuestionnaireResponse) => (
+                <QuestionnaireResponseCard
+                  key={questionnaire.id}
+                  response={questionnaire}
+                />
+              )) || []}
+          </MyHealthBlock>
+
           {/* Goals */}
           <MyHealthBlock
             viewAllRoute="my-health/goals"
             title="Goals"
             viewAll={!!goals?.length}
-            icon={<Feather name="target" size={g.size(20)} color={g.white} />}
+            icon={<Feather name="target" size={g.size(20)} color={g.black} />}
             loading={loadingGoals}
           >
             {loadingGoals
@@ -304,7 +327,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/education"
             title="Educational Materials"
             viewAll={educationalMaterials?.length > 1}
-            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.white} />}
+            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.black} />}
             loading={false}
           >
             {loadingEducationalMaterials
@@ -318,6 +341,6 @@ export default function Dashboard() {
           </MyHealthBlock>
         </ScrollView>
       </MaskedView>
-    </Screen>
+    </View>
   );
 }

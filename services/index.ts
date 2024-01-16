@@ -10,7 +10,7 @@ export { useClinicLocation } from '@services/clinic-location';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';
-export { useCreateCoverage, Insurers } from '@services/coverage';
+export { useCreateCoverage, Insurers, useCoverage } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
 export { useEducationalMaterials } from '@services/educational-materials';
 export { useGoals } from '@services/goals';
@@ -24,5 +24,6 @@ export { usePaymentNotices, usePaymentNoticeSubmit } from '@services/payment-not
 export { schedulePushNotification, registerForPushNotificationsAsync } from '@services/push-notifications';
 export { useProcedures } from '@services/procedures';
 export { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services/questionnaires';
+export { useQuestionnaireResponses, useQuestionnaireResponse } from '@services/questionnaire-response';
 export { useSchedule } from '@services/schedule';
 export { usePaymentIntentCapture, getPaymentIntent, usePaymentIntentCancel } from '@services/stripe';

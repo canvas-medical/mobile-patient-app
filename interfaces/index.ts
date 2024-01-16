@@ -11,8 +11,9 @@ export type { LabReport, LabImagingReport, DiagnosticReport } from '@interfaces/
 export type { Medication } from '@interfaces/medication';
 export type { Message } from '@interfaces/message';
 export type { PaymentNotice } from '@interfaces/payment-notice';
-export type { Patient } from '@interfaces/patient';
+export type { Patient, PatientProfileFormData } from '@interfaces/patient';
 export type { Procedure } from '@interfaces/procedure';
 export type { Question } from '@interfaces/question';
+export type { QuestionnaireResponse } from '@interfaces/questionnaire-response';
 export type { Schedule, Slot } from '@interfaces/schedule';
 export type { Vital } from '@interfaces/vital';

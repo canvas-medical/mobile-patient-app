@@ -9,7 +9,7 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   disabled: {
-    opacity: 0.5,
+    opacity: 0.7,
   },
   gradient: {
     paddingVertical: g.size(12),

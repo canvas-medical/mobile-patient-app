@@ -1,9 +1,10 @@
 import { Alert } from 'react-native';
-import { ApiError } from '@interfaces';
+import { ApiError, PatientProfileFormData } from '@interfaces';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
+import { coverageUpdate } from './coverage';
 import { getToken } from './access-token';
 
 interface PatientInfo {
@@ -145,7 +146,8 @@ async function getPatient() {
       accept: 'application/json'
     }
   });
-  return res.json();
+  const json = await res.json();
+  return json;
 }
 
 /**
@@ -231,9 +233,15 @@ async function updatePatient(data: PatientInfo): Promise<void> {
 export function useUpdatePatient() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: PatientInfo) => updatePatient(data),
+    mutationFn: async (data: PatientProfileFormData) => {
+      const { coverageID, insurer, memberID, groupNumber, ...patientData } = data;
+      return (
+        await coverageUpdate({ coverageID, insurer, memberID, groupNumber }),
+        updatePatient(patientData)
+      );
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['patient_data'] });
+      queryClient.invalidateQueries({ queryKey: ['patient_data', 'patient_coverage'] });
       Alert.alert(
         'Your profile has been updated',
         '',

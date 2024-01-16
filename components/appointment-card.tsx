@@ -196,11 +196,11 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             &nbsp;
             •
             &nbsp;
-            {formatTime(start, false)}
+            {formatTime(start)}
             {' '}
             -
             {' '}
-            {formatTime(end, true)}
+            {formatTime(end, true, true)}
           </Text>
           {isPending && <ActivityIndicator color={g.white} />}
           {!cancelled && !isWithin48HoursOfStartTime && isFutureDate

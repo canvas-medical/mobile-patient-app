@@ -10,47 +10,54 @@ import {
   Keyboard,
 } from 'react-native';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { useStateMachine } from 'little-state-machine';
-import { Button, Screen, Input } from '@components';
+import { Button, Input } from '@components';
 import { updateAction } from '@store';
+import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: g.primaryBlue,
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: g.white,
-    borderTopLeftRadius: g.size(36),
-    borderTopRightRadius: g.size(36),
     padding: g.size(36),
     justifyContent: 'space-between',
-    gap: g.size(48),
+    gap: g.size(36),
   },
   formContainer: {
     flex: 1,
-    gap: g.size(56),
-  },
-  formInputs: {
     gap: g.size(24),
+  },
+  graphic: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.width * 0.66,
+    aspectRatio: 1,
   },
   greeting: {
     ...g.labelXLarge,
     color: g.black,
   },
   header: {
+    gap: g.size(16),
     padding: g.size(36),
     paddingTop: g.size(72),
   },
-  scrollCover: {
-    width: g.width,
-    height: g.height * 0.6,
+  scroll: {
+    flex: 1,
     backgroundColor: g.white,
-    position: 'absolute',
-    bottom: 0,
+    borderTopLeftRadius: g.size(36),
+    borderTopRightRadius: g.size(36),
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   subGreeting: {
     ...g.bodyMedium,
@@ -59,7 +66,6 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
-    marginTop: g.size(16),
   },
 });
 
@@ -95,217 +101,223 @@ export default function PersonalDetails() {
   const { actions } = useStateMachine({ updateAction });
 
   return (
-    <Screen>
-      <View style={s.scrollCover} />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView>
+    <View style={s.container}>
+      <Image
+        style={s.graphic}
+        source={graphic}
+        contentFit="fill"
+      />
+      <View style={s.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Feather
+            name="arrow-left"
+            size={g.size(36)}
+            color={g.white}
+          />
+        </TouchableOpacity>
+        <Text style={s.title}>
+          Personal Details
+        </Text>
+      </View>
+      <KeyboardAvoidingView
+        style={s.scroll}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView
+          style={s.scroll}
+          contentContainerStyle={s.scrollContent}
+        >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={s.container}>
-              <View style={s.header}>
-                <TouchableOpacity onPress={() => router.back()}>
-                  <Feather
-                    name="arrow-left"
-                    size={g.size(36)}
-                    color={g.white}
-                  />
-                </TouchableOpacity>
-                <Text style={s.title}>
-                  Personal Details
+            <View style={s.contentContainer}>
+              <View>
+                <Text style={s.greeting}>
+                  Welcome
+                </Text>
+                <Text style={s.subGreeting}>
+                  Fill out a few personal details to get started
                 </Text>
               </View>
-              <View style={s.contentContainer}>
-                <View>
-                  <Text style={s.greeting}>
-                    Welcome
-                  </Text>
-                  <Text style={s.subGreeting}>
-                    Fill out a few personal details to get started
-                  </Text>
-                </View>
-                <View style={s.formContainer}>
-                  <View style={s.formInputs}>
-                    <Controller
+              <View style={s.formContainer}>
+                <Controller
+                  name="preferredName"
+                  control={control}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      type="text"
                       name="preferredName"
-                      control={control}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="text"
-                          name="preferredName"
-                          label="Preferred Name (optional)"
-                          placeholder="Enter your preferred name"
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          onSubmitEditing={() => setFocus('firstName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="nickname"
-                          returnKeyType="next"
-                          forwardedRef={ref}
-                          error={errors.preferredName}
-                        />
-                      )}
+                      label="Preferred Name (optional)"
+                      placeholder="Enter your preferred name"
+                      onFocus={() => clearErrors()}
+                      onChange={onChange}
+                      value={value}
+                      onSubmitEditing={() => setFocus('firstName')}
+                      autoCapitalize="words"
+                      keyboardType="default"
+                      textContentType="nickname"
+                      returnKeyType="next"
+                      forwardedRef={ref}
+                      error={errors.preferredName}
                     />
-                    <Controller
+                  )}
+                />
+                <Controller
+                  name="firstName"
+                  control={control}
+                  rules={{ required: { value: true, message: 'Required' } }}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      type="text"
                       name="firstName"
-                      control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="text"
-                          name="firstName"
-                          label="First Name"
-                          placeholder="Enter your first name"
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          onSubmitEditing={() => setFocus('middleName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="givenName"
-                          returnKeyType="next"
-                          forwardedRef={ref}
-                          error={errors.firstName}
-                        />
-                      )}
+                      label="First Name"
+                      placeholder="Enter your first name"
+                      onFocus={() => clearErrors()}
+                      onChange={onChange}
+                      value={value}
+                      onSubmitEditing={() => setFocus('middleName')}
+                      autoCapitalize="words"
+                      keyboardType="default"
+                      textContentType="givenName"
+                      returnKeyType="next"
+                      forwardedRef={ref}
+                      error={errors.firstName}
                     />
-                    <Controller
+                  )}
+                />
+                <Controller
+                  name="middleName"
+                  control={control}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      type="text"
                       name="middleName"
-                      control={control}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="text"
-                          name="middleName"
-                          label="Middle Name (optional)"
-                          placeholder="Enter your middle name"
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          onSubmitEditing={() => setFocus('lastName')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="middleName"
-                          returnKeyType="next"
-                          forwardedRef={ref}
-                          error={errors.middleName}
-                        />
-                      )}
+                      label="Middle Name (optional)"
+                      placeholder="Enter your middle name"
+                      onFocus={() => clearErrors()}
+                      onChange={onChange}
+                      value={value}
+                      onSubmitEditing={() => setFocus('lastName')}
+                      autoCapitalize="words"
+                      keyboardType="default"
+                      textContentType="middleName"
+                      returnKeyType="next"
+                      forwardedRef={ref}
+                      error={errors.middleName}
                     />
-                    <Controller
+                  )}
+                />
+                <Controller
+                  name="lastName"
+                  control={control}
+                  rules={{ required: { value: true, message: 'Required' } }}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      type="text"
                       name="lastName"
-                      control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="text"
-                          name="lastName"
-                          label="Last Name"
-                          placeholder="Enter your last name"
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          onSubmitEditing={() => setFocus('gender')}
-                          autoCapitalize="words"
-                          keyboardType="default"
-                          textContentType="familyName"
-                          returnKeyType="next"
-                          forwardedRef={ref}
-                          error={errors.lastName}
-                        />
-                      )}
+                      label="Last Name"
+                      placeholder="Enter your last name"
+                      onFocus={() => clearErrors()}
+                      onChange={onChange}
+                      value={value}
+                      onSubmitEditing={() => setFocus('gender')}
+                      autoCapitalize="words"
+                      keyboardType="default"
+                      textContentType="familyName"
+                      returnKeyType="next"
+                      forwardedRef={ref}
+                      error={errors.lastName}
                     />
-                    <Controller
+                  )}
+                />
+                <Controller
+                  name="gender"
+                  control={control}
+                  rules={{ required: { value: true, message: 'Required' } }}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <Input
+                      type="selector"
                       name="gender"
-                      control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
-                      render={({ field: { onChange, value, ref } }) => (
-                        <Input
-                          type="selector"
-                          name="gender"
-                          label="Gender"
-                          placeholder="Select your gender"
-                          options={[
-                            'Male',
-                            'Female',
-                            'Other',
-                            'Unknown',
-                          ]}
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          forwardedRef={ref}
-                          error={errors.gender}
-                          buttonText="Select"
-                        />
-                      )}
+                      label="Gender"
+                      placeholder="Select your gender"
+                      options={[
+                        'Male',
+                        'Female',
+                        'Other',
+                        'Unknown',
+                      ]}
+                      onFocus={() => clearErrors()}
+                      onChange={onChange}
+                      value={value}
+                      forwardedRef={ref}
+                      error={errors.gender}
+                      buttonText="Select"
                     />
-                    <Controller
+                  )}
+                />
+                <Controller
+                  name="birthSex"
+                  control={control}
+                  rules={{ required: { value: true, message: 'Required' } }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      type="selector"
                       name="birthSex"
-                      control={control}
-                      rules={{ required: { value: true, message: 'Required' } }}
-                      render={({ field: { onChange, value } }) => (
-                        <Input
-                          type="selector"
-                          name="birthSex"
-                          label="Sex at Birth"
-                          placeholder="Sex at birth"
-                          options={[
-                            'Male',
-                            'Female',
-                            'Other',
-                            'Unknown',
-                          ]}
-                          onFocus={() => clearErrors()}
-                          onChange={onChange}
-                          value={value}
-                          error={errors.birthSex}
-                          buttonText="Select"
-                        />
-                      )}
+                      label="Sex at Birth"
+                      placeholder="Sex at birth"
+                      options={[
+                        'Male',
+                        'Female',
+                        'Other',
+                        'Unknown',
+                      ]}
+                      onFocus={() => clearErrors()}
+                      onChange={onChange}
+                      value={value}
+                      error={errors.birthSex}
+                      buttonText="Select"
                     />
-                    <Controller
+                  )}
+                />
+                <Controller
+                  name="birthDate"
+                  control={control}
+                  rules={{
+                    validate: {
+                      required: (value) => {
+                        const today = new Date().toISOString().slice(0, 10);
+                        if (today === value) return 'Required';
+                        return true;
+                      }
+                    }
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      type="date-picker"
                       name="birthDate"
-                      control={control}
-                      rules={{
-                        validate: {
-                          required: (value) => {
-                            const today = new Date().toISOString().slice(0, 10);
-                            if (today === value) return 'Required';
-                            return true;
-                          }
-                        }
-                      }}
-                      render={({ field: { onChange, value } }) => (
-                        <Input
-                          type="date-picker"
-                          name="birthDate"
-                          label="Date of Birth"
-                          placeholder="Enter your date of birth"
-                          iosSpinner
-                          onFocus={() => clearErrors()}
-                          value={value}
-                          minimumDate={null}
-                          maximumDate={new Date()}
-                          onChange={onChange}
-                          error={errors.birthDate}
-                        />
-                      )}
+                      label="Date of Birth"
+                      placeholder="Enter your date of birth"
+                      iosSpinner
+                      onFocus={() => clearErrors()}
+                      value={value}
+                      minimumDate={null}
+                      maximumDate={new Date()}
+                      onChange={onChange}
+                      error={errors.birthDate}
                     />
-                  </View>
-                  <Button
-                    onPress={handleSubmit((data: any) => {
-                      actions.updateAction(data);
-                      router.push('contact-information');
-                    })}
-                    label="Continue"
-                    theme="primary"
-                  />
-                </View>
+                  )}
+                />
               </View>
+              <Button
+                onPress={handleSubmit((data: any) => {
+                  actions.updateAction(data);
+                  router.push('contact-information');
+                })}
+                label="Continue"
+                theme="primary"
+              />
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
-    </Screen>
+    </View>
   );
 }

@@ -97,3 +97,24 @@ export interface Patient {
   photo: Photo[];
   communication: Communication[];
 }
+
+export interface PatientProfileFormData {
+  avatar: string
+  coverageID: string
+  insurer: string
+  memberID: string
+  groupNumber: string
+  preferredName: string
+  firstName: string
+  middleName: string
+  lastName: string
+  email: string
+  phone: string
+  addressLine1: string
+  addressLine2: string
+  city: string
+  stateAbbreviation: string
+  postalCode: string
+  birthDate: string
+  gender: string
+}

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { Image } from 'expo-image';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
 import { Overlay } from '@rneui/themed';
-import { Button, Screen } from '@components';
+import { Button } from '@components';
+import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -13,9 +15,18 @@ const s = StyleSheet.create({
     gap: g.size(16),
   },
   container: {
+    flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: g.size(36),
-    paddingBottom: g.size(192),
+    paddingBottom: g.size(120),
+    backgroundColor: g.primaryBlue,
+  },
+  graphic: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.width * 0.8,
+    aspectRatio: 59 / 77,
   },
   or: {
     ...g.titleLarge,
@@ -71,7 +82,11 @@ export default function Initial() {
   }, [value]);
 
   return (
-    <Screen style={s.container}>
+    <View style={s.container}>
+      <Image
+        style={s.graphic}
+        source={graphic}
+      />
       <Text style={s.title}>Welcome</Text>
       <Text style={s.subtitle}>Manage your medical records</Text>
       <Text style={s.subtitleEmphasized}>seamlessly and intuitively</Text>
@@ -111,6 +126,6 @@ export default function Initial() {
       <Text style={s.version}>
         Version: 1.1.0
       </Text>
-    </Screen>
+    </View>
   );
 }
