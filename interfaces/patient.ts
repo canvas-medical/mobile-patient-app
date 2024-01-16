@@ -99,10 +99,11 @@ export interface Patient {
 }
 
 export interface PatientProfileFormData {
-  coverageID: string
-  insurer: string
-  memberID: string
-  groupNumber: string
+  avatar?: string
+  coverageID?: string
+  insurer?: string
+  memberID?: string
+  groupNumber?: string
   preferredName: string
   firstName: string
   middleName: string
@@ -115,5 +116,6 @@ export interface PatientProfileFormData {
   stateAbbreviation: string
   postalCode: string
   birthDate: string
+  birthSex: string
   gender: string
 }

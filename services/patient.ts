@@ -1,9 +1,9 @@
 import { Alert } from 'react-native';
+import { ApiError, PatientProfileFormData } from '@interfaces';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
-import { PatientProfileFormData } from '@interfaces';
 import { coverageUpdate } from './coverage';
 import { getToken } from './access-token';
 
@@ -13,7 +13,7 @@ import { getToken } from './access-token';
  * @param {string} birthSex - The birth sex value.
  * @returns {string} The corresponding birth sex code.
  */
-function birthSexCodeSwitch(birthSex) {
+function birthSexCodeSwitch(birthSex: string): string {
   switch (birthSex) {
     case 'Female':
     case 'Male':
@@ -34,7 +34,7 @@ function birthSexCodeSwitch(birthSex) {
  * @returns {Promise<void>} - A promise that resolves when the patient record is created successfully.
  * @throws {Error} - If there is an error creating the patient record.
  */
-async function patientCreate(data: any) { // TODO: Add types
+async function patientCreate(data: PatientProfileFormData): Promise<void> {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
     method: 'POST',
@@ -94,7 +94,7 @@ async function patientCreate(data: any) { // TODO: Add types
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: any) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: PatientProfileFormData) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -151,9 +151,48 @@ export function usePatient() {
  * @returns {Promise<void>} - A promise that resolves when the patient record is updated successfully.
  * @throws {Error} - If there is an error updating the patient record.
  */
-async function updatePatient(data: any) { // TODO: Add types
+async function updatePatient(data: PatientProfileFormData): Promise<void> {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
+  const body = {
+    resourceType: 'Patient',
+    extension: [
+      {
+        url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
+        valueCode: birthSexCodeSwitch(data.birthSex),
+      },
+    ],
+    name: [
+      {
+        use: 'official',
+        family: data.lastName,
+        given: [data.firstName, ...(data.middleName ? [data.middleName] : [])]
+      },
+      ...(data.preferredName ? [{
+        use: 'nickname',
+        given: [data.preferredName]
+      }] : [])
+    ],
+    telecom: [
+      {
+        system: 'phone',
+        value: data.phone,
+      },
+      {
+        system: 'email',
+        value: data.email,
+      }
+    ],
+    gender: data.gender.toLowerCase(),
+    birthDate: data.birthDate,
+    address: [{
+      line: [data.addressLine1, ...(data.addressLine2 ? [data.addressLine2] : [])],
+      city: data.city,
+      state: data.stateAbbreviation,
+      postalCode: data.postalCode
+    }],
+    ...(data.avatar) && { photo: [{ data: data.avatar }] },
+  };
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
     method: 'PUT',
     headers: {
@@ -161,46 +200,11 @@ async function updatePatient(data: any) { // TODO: Add types
       accept: 'application/json',
       'content-type': 'application/json',
     },
-    body: JSON.stringify({
-      resourceType: 'Patient',
-      extension: [
-        {
-          url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
-          valueCode: birthSexCodeSwitch(data.birthSex),
-        },
-      ],
-      name: [
-        {
-          use: 'official',
-          family: data.lastName,
-          given: [data.firstName, ...(data.middleName ? [data.middleName] : [])]
-        },
-        ...(data.preferredName ? [{
-          use: 'nickname',
-          given: [data.preferredName]
-        }] : [])
-      ],
-      telecom: [
-        {
-          system: 'phone',
-          value: data.phone,
-        },
-        {
-          system: 'email',
-          value: data.email,
-        }
-      ],
-      gender: data.gender.toLowerCase(),
-      birthDate: data.birthDate,
-      address: [{
-        line: [data.addressLine1, ...(data.addressLine2 ? [data.addressLine2] : [])],
-        city: data.city,
-        state: data.stateAbbreviation,
-        postalCode: data.postalCode
-      }],
-    })
+    body: JSON.stringify(body)
   });
   if (!res.ok) throw new Error();
+  const Json: null | ApiError = await res.json();
+  if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
 }
 
 /**
