@@ -337,17 +337,17 @@ export default function ProfileModal() {
     return unsubscribe;
   }, [navigation, isDirty]);
 
-  const pickImage = async (onChange) => {
+  const pickImage = async (onChange: (string) => void) => {
     // No permissions request is necessary for launching the image library
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       quality: 1,
     });
-    const base64 = await FileSystem.readAsStringAsync(result.assets[0]?.uri, { encoding: 'base64' });
-    onChange(base64);
     if (!result.canceled) {
+      const base64 = await FileSystem.readAsStringAsync(result.assets[0]?.uri, { encoding: 'base64' });
+      onChange(base64);
       setImage(result.assets[0].uri);
     }
   };
