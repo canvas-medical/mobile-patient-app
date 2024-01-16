@@ -12,12 +12,12 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import Modal from 'react-native-modal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BlurFill, Button } from '@components';
-import { timeZoneOffset, formatDate } from '@utils';
+import { formatDate } from '@utils';
 import { g } from '@styles';
 
 interface AppointmentDateProps {
-  selectedDate: string;
-  setSelectedDate: (date: string) => void;
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void;
 }
 
 const s = StyleSheet.create({
@@ -61,20 +61,15 @@ const s = StyleSheet.create({
 
 export function SelectAppointmentDate({ selectedDate, setSelectedDate }: AppointmentDateProps) {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [provisionalDate, setProvisionalDate] = useState<number>(0);
-  const futureDateSelected = timeZoneOffset(selectedDate) > new Date();
+  const [provisionalDate, setProvisionalDate] = useState<Date>();
+  const futureDateSelected = selectedDate > new Date();
 
-  function onChangeDate(date: number) {
-    if (timeZoneOffset(selectedDate).getDate() === new Date().getDate()) {
-      setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-    }
-    setSelectedDate(new Date(date).toISOString().slice(0, 10));
+  function onChangeDate(date: Date) {
+    setSelectedDate(date);
   }
 
   function closeDatePicker() {
-    if (provisionalDate === 0) {
-      setSelectedDate(new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-    } else setSelectedDate(new Date(provisionalDate).toISOString().slice(0, 10));
+    setSelectedDate(provisionalDate);
     setShowDatePicker(false);
   }
 
@@ -86,13 +81,14 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
       {Platform.OS === 'android' && showDatePicker && (
         <DateTimePicker
           mode="date"
-          value={timeZoneOffset(selectedDate)}
+          timeZoneName="Etc/Universal"
+          value={selectedDate}
           minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
           themeVariant="dark"
           maximumDate={null}
-          onChange={(e: DateTimePickerEvent) => {
+          onChange={(_e: DateTimePickerEvent, date: Date) => {
             setShowDatePicker(false);
-            onChangeDate(e.nativeEvent.timestamp);
+            onChangeDate(date);
           }}
         />
       )}
@@ -112,12 +108,13 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
           <View style={s.modal}>
             <DateTimePicker
               mode="date"
+              timeZoneName="Etc/Universal"
               display="inline"
-              value={timeZoneOffset(selectedDate)}
+              value={selectedDate}
               minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
               themeVariant="light"
               maximumDate={null}
-              onChange={(e: DateTimePickerEvent) => setProvisionalDate(e.nativeEvent.timestamp)}
+              onChange={(_e: DateTimePickerEvent, date: Date) => setProvisionalDate(date)}
             />
             <Button
               label="Select Date"
@@ -138,7 +135,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
             !futureDateSelected && s.modalToggleButtonPlaceholder,
           ]}
         >
-          {futureDateSelected ? formatDate(selectedDate, 'numeric') : 'Select a date'}
+          {futureDateSelected ? formatDate(selectedDate.toISOString(), 'numeric') : 'Select a date'}
         </Text>
         <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.black} />
       </TouchableOpacity>

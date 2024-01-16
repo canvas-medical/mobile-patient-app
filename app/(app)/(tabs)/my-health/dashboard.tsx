@@ -21,6 +21,7 @@ import {
   useObservations,
   useEducationalMaterials,
   useProcedures,
+  useQuestionnaireResponses,
 } from '@services';
 import {
   Allergy,
@@ -32,7 +33,7 @@ import {
   Vital,
   LabImagingReport,
   Procedure,
-  DocumentResource,
+  DocumentResource, QuestionnaireResponse,
 } from '@interfaces';
 import {
   AllergyCard,
@@ -48,9 +49,10 @@ import {
   MyHealthBlock,
   ProcedureCard,
   VitalCard,
-  VitalCardSkeleton,
+  VitalCardSkeleton, QuestionnaireResponseCard,
 } from '@components';
 import { g } from '@styles';
+import Questionnaire from '@app/questionnaire';
 
 const s = StyleSheet.create({
   container: {
@@ -90,6 +92,7 @@ export default function Dashboard() {
   const { data: immunizations, isLoading: loadingImmunizations, refetch: refetchImmunizations } = useImmunizations();
   const { data: conditions, isLoading: loadingConditions, refetch: refetchConditions } = useConditions();
   const { data: goals, isFetching: loadingGoals, refetch: refetchGoals } = useGoals();
+  const { data: questionnaireResponses, isLoading: loadingQuestionnaireResponses, refetch: refetchQuestionnaireResponses } = useQuestionnaireResponses();
   const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
 
@@ -276,12 +279,29 @@ export default function Dashboard() {
           >
             {loadingLabs
               ? <LabReportSkeleton />
-              : recentLabs.map((report: LabImagingReport | DiagnosticReport) => (
+              : recentLabs?.map((report: LabImagingReport | DiagnosticReport) => (
                 <LabReportCard
                   key={report.id}
                   report={report}
                 />
               ))}
+          </MyHealthBlock>
+
+          {/* Questionnaire Responses */}
+          <MyHealthBlock
+            title="Questionnaires"
+            viewAll={false}
+            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.white} />}
+            loading={loadingQuestionnaireResponses}
+          >
+            {loadingQuestionnaireResponses
+              ? <ActivityIndicator color={g.white} />
+              : questionnaireResponses?.map((questionnaire: QuestionnaireResponse) => (
+                <QuestionnaireResponseCard
+                  key={questionnaire.id}
+                  response={questionnaire}
+                />
+              )) || []}
           </MyHealthBlock>
 
           {/* Goals */}

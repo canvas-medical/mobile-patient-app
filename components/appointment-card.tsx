@@ -16,10 +16,15 @@ import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  appointmentLocation: {
+  appointmentAddress: {
     ...g.bodyMedium,
     color: g.black,
     textDecorationLine: 'underline',
+    color: g.white,
+  },
+  appointmentLocation: {
+    ...g.bodySmall,
+    color: g.white,
   },
   appointmentType: {
     alignSelf: 'flex-start',
@@ -85,6 +90,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: g.size(4),
+    paddingLeft: 0,
     gap: g.size(4),
     minHeight: g.size(28),
   },
@@ -191,11 +197,11 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             &nbsp;
             •
             &nbsp;
-            {formatTime(start, false)}
+            {formatTime(start)}
             {' '}
             -
             {' '}
-            {formatTime(end, true)}
+            {formatTime(end, true, true)}
           </Text>
           {isPending && <ActivityIndicator color={g.primaryBlue} />}
           {!cancelled && !isWithin48HoursOfStartTime && isFutureDate
@@ -237,12 +243,20 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.black} />}
                 {isTelemedicine && <MaterialIcons name="video-call" size={g.size(20)} color={g.black} />}
                 {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.black} />}
-                <Text
-                  style={s.appointmentLocation}
-                  numberOfLines={1}
-                >
-                  {isOfficeVisit ? 'Open in maps' : 'Join video call'}
-                </Text>
+                <View>
+                  <Text
+                    style={s.appointmentLocation}
+                    numberOfLines={1}
+                  >
+                    {isOfficeVisit ? 'Get directions' : 'Join video call'}
+                  </Text>
+                  <Text
+                    style={s.appointmentAddress}
+                    numberOfLines={1}
+                  >
+                    {isOfficeVisit && clinicAddress}
+                  </Text>
+                </View>
               </TouchableOpacity>
             ) : (
               <View style={s.appointmentType}>

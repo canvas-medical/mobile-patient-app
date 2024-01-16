@@ -55,6 +55,7 @@ export default function RootLayout() {
           <Stack.Screen name="coverage" options={{ headerShown: false }} />
           <Stack.Screen name="(app)" options={{ headerShown: false }} />
           <Stack.Screen name="pdf-modal" options={{ presentation: 'modal', headerShown: false }} />
+          <Stack.Screen name="questionnaire-response-details" options={{ presentation: 'modal', headerShown: false }} />
         </Stack>
       </StateMachineProvider>
     </QueryClientProvider>
