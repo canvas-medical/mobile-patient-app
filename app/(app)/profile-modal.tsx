@@ -86,8 +86,8 @@ const s = StyleSheet.create({
   },
   editImage: {
     position: 'absolute',
-    bottom: g.size(2),
-    right: g.size(2),
+    bottom: 0,
+    right: 0,
     backgroundColor: g.editGreen,
     overflow: 'hidden',
     borderColor: g.white,
