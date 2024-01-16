@@ -15,7 +15,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Animated, { useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming
+} from 'react-native-reanimated';
 import { useQueryClient } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
@@ -260,15 +265,19 @@ export default function ProfileModal() {
   const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
   const [image, setImage] = useState(null);
   const prevIsDirtyRef = useRef<boolean>(false);
-  const buttonWidth = useSharedValue(g.size(72));
+  const offset = useSharedValue(0);
 
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }));
   useEffect(() => {
     const buttonAnimation = () => {
       // This is to draw the users attention to the save button when it is made clickable
       if (!prevIsDirtyRef.current && isDirty) {
-        buttonWidth.value = withSequence(
-          withSpring(buttonWidth.value + g.size(5), { duration: 500 }),
-          withSpring(g.size(72), { duration: 500 })
+        offset.value = withRepeat(
+          withTiming(-10, { duration: 300 }),
+          2,
+          true
         );
         prevIsDirtyRef.current = isDirty;
       }
@@ -278,7 +287,9 @@ export default function ProfileModal() {
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
-      setKeyboardHeight(e.endCoordinates.height);
+      if (Platform.OS === 'ios') {
+        setKeyboardHeight(e.endCoordinates.height);
+      }
     });
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardHeight(0);
@@ -921,7 +932,8 @@ export default function ProfileModal() {
           style={[s.saveButton,
             !isDirty && s.saveButtonDisabled,
             isPending && s.saveButtonLoading,
-            { width: buttonWidth, bottom: keyboardHeight + g.size(24) }]}
+            animatedStyles,
+            { bottom: keyboardHeight + g.size(24) }]}
           onPress={handleSubmit((data: any) => {
             Keyboard.dismiss();
             onUpdatePatient(data);
