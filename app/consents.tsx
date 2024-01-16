@@ -77,7 +77,7 @@ export default function Consents() {
   const params = useLocalSearchParams();
   const { accepted } = params;
 
-  const isAccepted = isSuccess || accepted;
+  const isAccepted = isSuccess || !!accepted;
 
   return (
     <Screen>
@@ -128,7 +128,7 @@ export default function Consents() {
                     onPress={() =>
                       router.push({
                         pathname: 'pdf-modal',
-                        params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess }
+                        params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess || null }
                       })}
                   >
                     <Text style={s.link}>General Consent Document</Text>
