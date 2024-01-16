@@ -45,9 +45,11 @@
       "@config-plugins/react-native-blob-util",
       "@config-plugins/react-native-pdf",
       "@bugsnag/plugin-expo-eas-sourcemaps",
+      "expo-image-picker",
       [
         "expo-build-properties",
         {
+          "photosPermission": "The app accesses your photos to let you upload a photo to your profile.",
           "android": {
             "usesCleartextTraffic": true
           }

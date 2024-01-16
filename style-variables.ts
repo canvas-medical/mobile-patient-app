@@ -30,6 +30,7 @@ const global = {
   severityRed: '#B22222',
   severityYellow: '#FFFF00',
   severityGreen: '#00FF00',
+  editGreen: '#41CC79',
   shadow: {
     shadowOffset: {
       width: 0,

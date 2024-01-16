@@ -49,10 +49,10 @@ import {
   MyHealthBlock,
   ProcedureCard,
   VitalCard,
-  VitalCardSkeleton, QuestionnaireResponseCard,
+  VitalCardSkeleton,
+  QuestionnaireResponseCard,
 } from '@components';
 import { g } from '@styles';
-import Questionnaire from '@app/questionnaire';
 
 const s = StyleSheet.create({
   container: {
