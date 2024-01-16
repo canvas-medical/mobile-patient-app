@@ -11,14 +11,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 import { useForm, Controller, FieldError } from 'react-hook-form';
-import { Button, Input } from '@components';
-import { g } from '@styles';
-import { Image } from 'expo-image';
 import { QuestionnaireIds, useQuestionnaire, useQuestionnaireSubmit } from '@services';
-import graphic from '@assets/images/graphic.png';
 import { Question } from '@interfaces';
+import { Button, Input } from '@components';
+import graphic from '@assets/images/graphic.png';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {

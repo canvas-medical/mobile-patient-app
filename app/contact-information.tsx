@@ -10,16 +10,16 @@ import {
   Keyboard,
 } from 'react-native';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { useStateMachine } from 'little-state-machine';
-import { Button, Input } from '@components';
-import { updateAction } from '@store';
-import { g } from '@styles';
-import { Image } from 'expo-image';
-import graphic from '@assets/images/graphic.png';
 import { americanStatesArray } from '@constants';
 import { useCreatePatient } from '@services';
+import { Button, Input } from '@components';
+import { updateAction } from '@store';
+import graphic from '@assets/images/graphic.png';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {

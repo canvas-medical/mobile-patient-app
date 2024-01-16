@@ -10,14 +10,14 @@ import {
   Keyboard,
 } from 'react-native';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
 import { useStateMachine } from 'little-state-machine';
 import { Button, Input } from '@components';
 import { updateAction } from '@store';
-import { g } from '@styles';
-import { Image } from 'expo-image';
 import graphic from '@assets/images/graphic.png';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   container: {
@@ -88,20 +88,13 @@ export default function PersonalDetails() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      // preferredName: null,
-      // firstName: null,
-      // middleName: null,
-      // lastName: null,
-      // gender: null,
-      // birthSex: null,
-      // birthDate: null,
       preferredName: null,
-      firstName: 'Reid',
+      firstName: null,
       middleName: null,
-      lastName: 'Garner',
-      gender: 'Male',
-      birthSex: 'male',
-      birthDate: '1995-01-01',
+      lastName: null,
+      gender: null,
+      birthSex: null,
+      birthDate: null,
     },
     shouldFocusError: false,
   });

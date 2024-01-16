@@ -6,12 +6,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
-import { Button } from '@components';
-import { g } from '@styles';
 import { Image } from 'expo-image';
-import graphic from '@assets/images/graphic.png';
+import { Feather } from '@expo/vector-icons';
 import { useConsentCreate, ConsentPDFs } from '@services';
+import { Button } from '@components';
+import graphic from '@assets/images/graphic.png';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   checkboxButton: {

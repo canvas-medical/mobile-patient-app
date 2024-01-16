@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { Image } from 'expo-image';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
 import { Overlay } from '@rneui/themed';
 import { Button } from '@components';
-import { g } from '@styles';
-import { Image } from 'expo-image';
 import graphic from '@assets/images/graphic.png';
+import { g } from '@styles';
 
 const s = StyleSheet.create({
   buttonContainer: {
