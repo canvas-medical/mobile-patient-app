@@ -14,11 +14,11 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
   },
   dosage: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     flex: 1,
   },
   dosageAndDateContainer: {
@@ -29,7 +29,7 @@ const s = StyleSheet.create({
   },
   medication: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     maxWidth: '92%',
   },
 });
@@ -61,9 +61,7 @@ export function MedicationCard({ med }: { med: Medication }) {
 
 export function MedicationSkeleton() {
   return (
-    <View
-      style={[s.card, { height: g.size(60) }]}
-    >
+    <View style={[s.card, { height: g.size(60) }]}>
       <BlurFill />
     </View>
   );

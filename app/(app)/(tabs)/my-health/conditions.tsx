@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.white,
+    color: g.black,
     marginLeft: g.size(4),
   },
   scrollSection: {
@@ -23,7 +23,7 @@ export default function Conditions() {
   return (
     <StackListView
       title="Conditions"
-      icon={<FontAwesome5 name="notes-medical" size={g.size(36)} color={g.white} />}
+      icon={<FontAwesome5 name="notes-medical" size={g.size(36)} color={g.black} />}
       isLoading={isLoading}
       refetch={refetch}
     >

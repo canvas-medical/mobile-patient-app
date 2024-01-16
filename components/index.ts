@@ -20,5 +20,6 @@ export { SelectReasonForVisit } from '@components/select-reason-for-visit';
 export { SelectAppointmentDate } from '@components/select-appointment-date';
 export { SelectAppointmentType } from '@components/select-appointment-type';
 export { StackListView } from '@components/stack-list-view';
+export { TabBar } from '@components/tab-bar';
 export { VitalCard, VitalCardSkeleton } from '@components/vital-card';
 export { ZeroState } from '@components/zero-state';

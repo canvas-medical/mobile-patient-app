@@ -11,10 +11,14 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { QueryObserverResult } from '@tanstack/react-query';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { Header, Screen } from '@components';
+import { Header } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: g.white,
+  },
   loading: {
     flex: 1,
     paddingBottom: g.size(120),
@@ -30,6 +34,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.black,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -64,7 +69,7 @@ export function StackListView({
   };
 
   return (
-    <Screen>
+    <View style={s.container}>
       <Header />
       <View style={s.titleContainer}>
         {icon}
@@ -73,14 +78,14 @@ export function StackListView({
         </Text>
       </View>
       {isLoading
-        ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+        ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
         : (
           <MaskedView
             style={s.maskedView}
             maskElement={(
               <LinearGradient
                 style={s.maskedView}
-                colors={[g.transparent, g.white]}
+                colors={[g.transparent, g.black]}
                 locations={[0.0175, 0.065]}
               />
             )}
@@ -95,7 +100,7 @@ export function StackListView({
                 <RefreshControl
                   refreshing={refreshing}
                   onRefresh={onRefresh}
-                  tintColor={g.white}
+                  tintColor={g.primaryBlue}
                   colors={[g.primaryBlue]}
                   progressViewOffset={g.size(40)}
                 />
@@ -105,6 +110,6 @@ export function StackListView({
             </ScrollView>
           </MaskedView>
         )}
-    </Screen>
+    </View>
   );
 }

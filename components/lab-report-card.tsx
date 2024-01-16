@@ -28,13 +28,13 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
     alignSelf: 'flex-end',
   },
   displayText: {
     flex: 1,
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
   row: {
     flexDirection: 'row',
@@ -83,8 +83,8 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
           {data.display}
         </Text>
         {isDiagnosticData && isLoadingDiagnosticURI
-          ? <ActivityIndicator color={g.white} />
-          : !!data.uri && <Feather name="chevron-right" size={g.size(28)} color={g.white} style={s.chevron} />}
+          ? <ActivityIndicator color={g.primaryBlue} />
+          : !!data.uri && <Feather name="chevron-right" size={g.size(28)} color={g.black} style={s.chevron} />}
       </View>
       <Text style={s.date}>
         {formatDate(data.date)}

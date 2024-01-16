@@ -18,13 +18,13 @@ const s = StyleSheet.create({
   container: {
     position: 'relative',
     overflow: 'hidden',
-    backgroundColor: g.primaryBlue,
+    backgroundColor: g.tertiaryBlue,
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: g.size(16),
     paddingTop: g.size(72),
-    borderBottomLeftRadius: g.size(36),
-    borderBottomRightRadius: g.size(36),
+    borderBottomLeftRadius: g.size(40),
+    borderBottomRightRadius: g.size(40),
   },
   graphic: {
     position: 'absolute',

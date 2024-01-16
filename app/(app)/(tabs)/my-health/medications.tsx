@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.white,
+    color: g.black,
   },
   scrollSection: {
     gap: g.size(16),
@@ -24,7 +24,7 @@ export default function Medications() {
   return (
     <StackListView
       title="Medications"
-      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.white} />}
+      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.black} />}
       isLoading={isLoading}
       refetch={refetch}
     >

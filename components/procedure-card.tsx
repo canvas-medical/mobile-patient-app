@@ -5,7 +5,7 @@ import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  blurContainer: {
+  card: {
     borderRadius: g.size(8),
     overflow: 'hidden',
     paddingVertical: g.size(12),
@@ -14,12 +14,12 @@ const s = StyleSheet.create({
   },
   procedureDate: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
     alignSelf: 'flex-end',
   },
   procedureType: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
 });
 
@@ -28,9 +28,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
   const codeDisplay = code?.coding[0]?.display;
 
   return (
-    <View
-      style={s.blurContainer}
-    >
+    <View style={s.card}>
       <BlurFill />
       <Text
         style={s.procedureType}
@@ -47,7 +45,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
 
 export function ProcedureSkeleton() {
   return (
-    <View style={[s.blurContainer, { height: g.size(48) }]}>
+    <View style={[s.card, { height: g.size(48) }]}>
       <BlurFill />
     </View>
   );

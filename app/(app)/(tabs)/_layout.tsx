@@ -1,22 +1,19 @@
-import { Platform } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
-import {
-  Feather,
-  FontAwesome5,
-  MaterialCommunityIcons
-} from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { TabBar } from '@components';
 import { g } from '@styles';
+import { Platform } from 'react-native';
 
 const tabIconSwitch = (tab: string, color: string) => {
   switch (tab) {
     case 'my-health':
       return <MaterialCommunityIcons name="view-dashboard-outline" size={g.size(32)} color={color} />;
     case 'appointments':
-      return <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={color} />;
+      return <MaterialCommunityIcons name="calendar-heart" size={g.size(32)} color={color} />;
     case 'messages':
-      return <Feather name="message-circle" size={g.size(36)} color={color} />;
+      return <Feather name="message-circle" size={g.size(32)} color={color} />;
     case 'billing':
-      return <FontAwesome5 name="file-invoice-dollar" size={g.size(28)} color={color} />;
+      return <Feather name="credit-card" size={g.size(32)} color={color} />;
     default:
       return null;
   }
@@ -25,22 +22,11 @@ const tabIconSwitch = (tab: string, color: string) => {
 export default function Layout() {
   return (
     <Tabs
+      tabBar={TabBar}
       screenOptions={{
-        tabBarActiveTintColor: g.primaryBlue,
-        tabBarInactiveTintColor: g.neutral500,
+        tabBarActiveTintColor: g.white,
+        tabBarInactiveTintColor: g.newNeutral600,
         tabBarHideOnKeyboard: Platform.OS === 'android',
-        tabBarStyle: {
-          height: Platform.OS === 'android' ? g.size(72) : g.size(88),
-          paddingBottom: Platform.OS === 'android' ? g.size(12) : g.size(24),
-          backgroundColor: g.white,
-          borderTopLeftRadius: g.size(48),
-          borderTopRightRadius: g.size(48),
-          position: 'absolute',
-          bottom: 0,
-        },
-        tabBarIconStyle: {
-          marginTop: g.size(8),
-        },
       }}
     >
       <Tabs.Screen

@@ -7,11 +7,11 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   allergy: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
   allergyInfo: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
   },
   card: {
     borderRadius: g.size(8),
@@ -44,7 +44,7 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
       case 'severe':
         return g.severityRed;
       default:
-        return g.white;
+        return g.black;
     }
   };
 

@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.white,
+    color: g.black,
   },
   scrollSection: {
     gap: g.size(16),
@@ -23,35 +23,35 @@ export default function Allergies() {
   return (
     <StackListView
       title="Allergies"
-      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.white} />}
+      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.black} />}
       isLoading={isLoading}
       refetch={refetch}
     >
       {activeAllergies.length > 0 && (
-      <View style={s.scrollSection}>
-        <Text style={s.label}>
-          Active
-        </Text>
-        {activeAllergies.map((allergy: Allergy) => (
-          <AllergyCard
-            key={allergy.id}
-            allergy={allergy}
-          />
-        ))}
-      </View>
+        <View style={s.scrollSection}>
+          <Text style={s.label}>
+            Active
+          </Text>
+          {activeAllergies.map((allergy: Allergy) => (
+            <AllergyCard
+              key={allergy.id}
+              allergy={allergy}
+            />
+          ))}
+        </View>
       )}
       {inactiveAllergies.length > 0 && (
-      <View style={s.scrollSection}>
-        <Text style={s.label}>
-          Inactive
-        </Text>
-        {inactiveAllergies.map((allergy: Allergy) => (
-          <AllergyCard
-            key={allergy.id}
-            allergy={allergy}
-          />
-        ))}
-      </View>
+        <View style={s.scrollSection}>
+          <Text style={s.label}>
+            Inactive
+          </Text>
+          {inactiveAllergies.map((allergy: Allergy) => (
+            <AllergyCard
+              key={allergy.id}
+              allergy={allergy}
+            />
+          ))}
+        </View>
       )}
     </StackListView>
   );

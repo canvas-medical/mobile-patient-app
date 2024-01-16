@@ -14,12 +14,12 @@ const s = StyleSheet.create({
   },
   condition: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     maxWidth: '95%',
   },
   conditionDate: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
     alignSelf: 'flex-end',
   },
 });

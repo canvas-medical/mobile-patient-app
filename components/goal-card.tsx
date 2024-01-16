@@ -13,7 +13,7 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
     alignSelf: 'flex-end',
   },
   datesContainer: {
@@ -22,11 +22,11 @@ const s = StyleSheet.create({
   goal: {
     flex: 1,
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
   goalInfo: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
   },
   priorityLabel: {
     ...g.bodySmall,

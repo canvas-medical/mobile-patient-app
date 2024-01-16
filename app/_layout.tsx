@@ -40,7 +40,7 @@ export default function RootLayout() {
     registerForPushNotificationsAsync();
   }, []);
 
-  if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.white} />;
+  if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.primaryBlue} />;
   return (
     <QueryClientProvider client={queryClient}>
       <StatusBar style="light" />

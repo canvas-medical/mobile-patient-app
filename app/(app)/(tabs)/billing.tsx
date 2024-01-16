@@ -26,7 +26,7 @@ import {
 } from '@services';
 import { formatDate } from '@utils';
 import { Invoice, PaymentNotice } from '@interfaces';
-import { Header, Input, InvoiceCard, Screen, ZeroState } from '@components';
+import { Header, Input, InvoiceCard, ZeroState } from '@components';
 import receipt from '@assets/images/cc-payment.svg';
 import { g } from '@styles';
 
@@ -49,6 +49,10 @@ const s = StyleSheet.create({
     top: g.size(18),
     height: g.size(36),
   },
+  container: {
+    flex: 1,
+    backgroundColor: g.white,
+  },
   disabled: {
     opacity: 0.7,
   },
@@ -59,7 +63,7 @@ const s = StyleSheet.create({
   },
   greyedOut: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.primaryBlue,
     opacity: 0.8,
     marginLeft: g.size(12),
   },
@@ -68,7 +72,7 @@ const s = StyleSheet.create({
   },
   label: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
   },
   loading: {
     flex: 1,
@@ -79,9 +83,9 @@ const s = StyleSheet.create({
   },
   payButton: {
     ...g.bodyLarge,
-    color: g.primaryBlue,
+    color: g.white,
     overflow: 'hidden',
-    backgroundColor: g.white,
+    backgroundColor: g.primaryBlue,
     borderRadius: g.size(18),
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
@@ -102,6 +106,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.black,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -207,16 +212,16 @@ export default function Billing() {
   return (
     <StripeProvider publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLIC_KEY}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Screen>
+        <View style={s.container}>
           <Header hideBackButton />
           <View style={s.titleContainer}>
-            <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color="white" />
+            <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color={g.black} />
             <Text style={s.title}>
               Billing
             </Text>
           </View>
           {loadingPaymentNotices || loadingInvoices
-            ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+            ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
             : (
               <>
                 {invoices?.length ? (
@@ -229,7 +234,7 @@ export default function Billing() {
                         ]}
                         name="dollar-sign"
                         size={g.size(20)}
-                        color={g.neutral200}
+                        color={g.newNeutral400}
                       />
                       <Input
                         onChange={setAmount}
@@ -245,8 +250,7 @@ export default function Billing() {
                         autoCapitalize="none"
                         textContentType="none"
                         returnKeyType="default"
-                        style={{ paddingLeft: g.size(36), color: g.white }}
-                        selectionColor={g.white}
+                        style={{ paddingLeft: g.size(36), color: g.black }}
                       />
                       <View style={[s.buttonContainer, Platform.OS === 'android' && s.androidButtonContainer]}>
                         <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
@@ -263,7 +267,7 @@ export default function Billing() {
                       maskElement={(
                         <LinearGradient
                           style={s.maskedView}
-                          colors={[g.transparent, g.white]}
+                          colors={[g.transparent, g.black]}
                           locations={[0, 0.06]}
                         />
                       )}
@@ -278,7 +282,7 @@ export default function Billing() {
                           <RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
-                            tintColor={g.white}
+                            tintColor={g.primaryBlue}
                             colors={[g.primaryBlue]}
                             progressViewOffset={g.size(40)}
                           />
@@ -289,11 +293,11 @@ export default function Billing() {
                             <Text style={s.label}>Payment History</Text>
                             {paymentNotices?.map((notice: PaymentNotice) => (
                               <View key={notice.id} style={s.paymentHistoryItem}>
-                                <Text style={{ color: g.white }}>
+                                <Text style={{ color: g.black }}>
                                   $
                                   {notice.amount.value.toFixed(2)}
                                 </Text>
-                                <Text style={{ color: g.white }}>{formatDate(notice.created)}</Text>
+                                <Text style={{ color: g.black }}>{formatDate(notice.created)}</Text>
                               </View>
                             ))}
                           </View>
@@ -321,7 +325,7 @@ export default function Billing() {
                 )}
               </>
             )}
-        </Screen>
+        </View>
       </TouchableWithoutFeedback>
     </StripeProvider>
   );

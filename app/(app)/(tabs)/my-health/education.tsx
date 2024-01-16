@@ -14,7 +14,7 @@ export default function Education() {
   return (
     <StackListView
       title="Education"
-      icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(36)} color={g.white} />}
+      icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(36)} color={g.black} />}
       isLoading={isLoading}
       refetch={refetch}
     >

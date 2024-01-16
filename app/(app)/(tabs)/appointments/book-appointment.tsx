@@ -18,7 +18,6 @@ import { formatDate, formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import {
   Button,
-  Screen,
   BlurFill,
   SelectAppointmentDate,
   SelectAppointmentType,
@@ -38,11 +37,15 @@ const s = StyleSheet.create({
     right: g.size(16),
   },
   buttonSelected: {
+    backgroundColor: g.black,
+  },
+  container: {
+    flex: 1,
     backgroundColor: g.white,
   },
   error: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     textAlign: 'center',
     marginBottom: g.size(176),
   },
@@ -79,7 +82,7 @@ const s = StyleSheet.create({
   },
   scheduleButtonLabel: {
     ...g.bodyLarge,
-    color: g.white,
+    color: g.black,
     flexShrink: 1,
     opacity: 0.8,
   },
@@ -94,7 +97,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     marginLeft: g.size(4),
   },
   slotButton: {
@@ -105,7 +108,7 @@ const s = StyleSheet.create({
   },
   slotButtonLabel: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     opacity: 0.8,
   },
   slotButtonsContainer: {
@@ -116,6 +119,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.black,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -189,15 +193,15 @@ export default function BookAppointment() {
   }
 
   return (
-    <Screen>
+    <View style={s.container}>
       <TouchableOpacity
         style={s.backButton}
         onPress={() => router.back()}
       >
-        <Feather name="arrow-left" size={g.size(48)} color={g.white} />
+        <Feather name="arrow-left" size={g.size(48)} color={g.black} />
       </TouchableOpacity>
       <View style={s.titleContainer}>
-        <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.white} />
+        <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.black} />
         <Text style={s.title}>
           Book Appointment
         </Text>
@@ -207,7 +211,7 @@ export default function BookAppointment() {
         maskElement={(
           <LinearGradient
             style={s.maskedView}
-            colors={[g.transparent, g.white]}
+            colors={[g.transparent, g.black]}
             locations={[0, 0.06]}
           />
         )}
@@ -239,7 +243,7 @@ export default function BookAppointment() {
           {futureDateSelected && (
             <>
               {isLoadingSchedules
-                ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+                ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
                 : (
                   <View style={s.sectionContainer}>
                     <Text style={s.sectionHeader}>
@@ -261,7 +265,7 @@ export default function BookAppointment() {
                             <FontAwesome5
                               name="user-md"
                               size={g.size(28)}
-                              color={selected ? g.primaryBlue : g.white}
+                              color={selected ? g.primaryBlue : g.black}
                               style={selected ? s.practitionerIconSelected : s.practitionerIcon}
                             />
                             <Text
@@ -279,7 +283,7 @@ export default function BookAppointment() {
             </>
           )}
           {!!Object.keys(selectedSchedule).length && isLoadingSlots
-            ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+            ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
             : (
               <>
                 {slotData?.length > 0 && (
@@ -319,7 +323,7 @@ export default function BookAppointment() {
         </ScrollView>
         <Button
           label={buttonLabel()}
-          theme="secondary"
+          theme="primary"
           style={[
             s.bookButton,
             { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(12) }
@@ -335,6 +339,6 @@ export default function BookAppointment() {
           disabled={bookDisabled}
         />
       </MaskedView>
-    </Screen>
+    </View>
   );
 }
