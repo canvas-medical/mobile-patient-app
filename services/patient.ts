@@ -7,24 +7,6 @@ import Bugsnag from '@bugsnag/expo';
 import { coverageUpdate } from './coverage';
 import { getToken } from './access-token';
 
-interface PatientInfo {
-  addressLine1?: string;
-  addressLine2?: string;
-  avatar?: string;
-  birthDate?: string;
-  birthSex?: string;
-  city?: string;
-  email?: string;
-  firstName?: string;
-  gender?: string;
-  lastName?: string;
-  middleName?: string;
-  phone?: string;
-  postalCode?: string;
-  preferredName?: string;
-  stateAbbreviation?: string;
-}
-
 /**
  * Converts the birth sex value to a corresponding code.
  *
@@ -52,7 +34,7 @@ function birthSexCodeSwitch(birthSex: string): string {
  * @returns {Promise<void>} - A promise that resolves when the patient record is created successfully.
  * @throws {Error} - If there is an error creating the patient record.
  */
-async function patientCreate(data: PatientInfo): Promise<void> {
+async function patientCreate(data: PatientProfileFormData): Promise<void> {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
     method: 'POST',
@@ -112,7 +94,7 @@ async function patientCreate(data: PatientInfo): Promise<void> {
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: PatientInfo) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: PatientProfileFormData) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -169,7 +151,7 @@ export function usePatient() {
  * @returns {Promise<void>} - A promise that resolves when the patient record is updated successfully.
  * @throws {Error} - If there is an error updating the patient record.
  */
-async function updatePatient(data: PatientInfo): Promise<void> {
+async function updatePatient(data: PatientProfileFormData): Promise<void> {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
   const body = {
