@@ -40,9 +40,9 @@ const s = StyleSheet.create({
   },
   modalToggleButtonLabel: {
     ...g.bodyLarge,
-    color: g.white,
+    color: g.black,
   },
-  modalToggleButtonPlaceholder: {
+  modalToggleButtonPlaceholder: { // TODO: Check all placeholder colors
     color: g.neutral200
   },
   sectionContainer: {
@@ -50,7 +50,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     marginLeft: g.size(4),
   },
 });
@@ -95,7 +95,7 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
           >
             {appointmentType || 'Select'}
           </Text>
-          <Feather name="chevron-down" size={g.size(20)} color={g.white} />
+          <Feather name="chevron-down" size={g.size(20)} color={g.black} />
         </TouchableOpacity>
         <View style={s.modalContainer}>
           <Modal

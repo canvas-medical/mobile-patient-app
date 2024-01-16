@@ -1,26 +1,27 @@
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   button: {
     borderRadius: g.size(40),
-    display: 'flex',
-    overflow: 'hidden',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  gradient: {
     paddingVertical: g.size(12),
     alignItems: 'center',
     justifyContent: 'center',
   },
+  disabled: {
+    opacity: 0.5,
+  },
   label: {
     ...g.labelLarge,
   },
+  primary: {
+    backgroundColor: g.secondaryBlue,
+  },
   primaryLabel: {
     color: g.white,
+  },
+  secondary: {
+    backgroundColor: g.white,
   },
   secondaryLabel: {
     color: g.secondaryBlue,
@@ -42,19 +43,17 @@ interface Props {
   style?: { [key: string]: number | string } | { [key: string]: number | string }[];
 }
 
+// TODO: Remove all linear gradients
+
 export function Button(props: Props) {
   const { label, onPress, theme, disabled, style = {} } = props;
-
-  const gradients = {
-    primary: [g.primaryBlue, g.secondaryBlue],
-    secondary: [g.white, g.white],
-    tertiary: ['transparent', 'transparent'],
-  };
 
   return (
     <TouchableOpacity
       style={[
         s.button,
+        theme === 'primary' && s.primary,
+        theme === 'secondary' && s.secondary,
         theme === 'tertiary' && s.tertiary,
         disabled && s.disabled,
         style,
@@ -62,23 +61,16 @@ export function Button(props: Props) {
       disabled={disabled}
       onPress={onPress}
     >
-      <LinearGradient
-        style={s.gradient}
-        colors={gradients[theme]}
-        start={{ x: 1, y: 0 }}
-        end={{ x: 0, y: 0 }}
+      <Text
+        style={[
+          s.label,
+          theme === 'primary' && s.primaryLabel,
+          theme === 'secondary' && s.secondaryLabel,
+          theme === 'tertiary' && s.tertiaryLabel,
+        ]}
       >
-        <Text
-          style={[
-            s.label,
-            theme === 'primary' && s.primaryLabel,
-            theme === 'secondary' && s.secondaryLabel,
-            theme === 'tertiary' && s.tertiaryLabel,
-          ]}
-        >
-          {label}
-        </Text>
-      </LinearGradient>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 }

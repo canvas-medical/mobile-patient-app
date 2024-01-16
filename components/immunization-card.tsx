@@ -1,7 +1,7 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { formatDate } from '@utils';
 import { Immunization } from '@interfaces';
-import { ExplainButton, BlurFill } from '@components';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -14,12 +14,12 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
     alignSelf: 'flex-end',
   },
   label: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     maxWidth: '92%',
   },
 });
@@ -31,13 +31,7 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
   } = immunization ?? {};
 
   return (
-    <ExplainButton
-      style={s.card}
-      id={immunization.id}
-      resourceType={immunization.resourceType}
-      codes={immunization.vaccineCode.coding}
-      description={immunization.vaccineCode.coding[0].display}
-    >
+    <View style={s.card}>
       <BlurFill />
       <Text
         style={s.label}
@@ -47,6 +41,6 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
       <Text style={s.date}>
         {formatDate(occurrenceDateTime)}
       </Text>
-    </ExplainButton>
+    </View>
   );
 }

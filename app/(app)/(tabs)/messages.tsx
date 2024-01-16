@@ -19,7 +19,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { useKeyboardVisible } from '@utils';
-import { MessageBlock, Screen, ZeroState } from '@components';
+import { MessageBlock, ZeroState, Screen } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
@@ -48,7 +48,7 @@ const s = StyleSheet.create({
   input: {
     ...g.bodyMedium,
     color: g.black,
-    backgroundColor: g.white,
+    backgroundColor: g.black,
     width: g.width * 0.8,
     alignSelf: 'center',
     borderRadius: g.size(20),
@@ -64,7 +64,7 @@ const s = StyleSheet.create({
     width: g.width - g.size(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: g.white,
+    backgroundColor: g.black,
     borderRadius: g.size(20),
     minHeight: g.size(36),
   },
@@ -132,14 +132,14 @@ export default function Messages() {
   }, [keyboardVisible]);
 
   return (
-    <Screen style={{ paddingBottom: tabBarHeight }}>
+    <View style={[StyleSheet.absoluteFill, { paddingBottom: tabBarHeight }]}>
       <View style={s.headerContainer}>
         <TouchableOpacity
           onPress={() => Keyboard.dismiss()}
           disabled={!keyboardVisible}
         >
           <Animated.View style={{ opacity: opacityValue }}>
-            <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
+            <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.black} />
           </Animated.View>
         </TouchableOpacity>
       </View>
@@ -152,13 +152,13 @@ export default function Messages() {
           maskElement={(
             <LinearGradient
               style={s.container}
-              colors={[g.transparent, g.white]}
+              colors={[g.transparent, g.black]}
               locations={[0, 0.065]}
             />
           )}
         >
           {isLoading
-            ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+            ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
             : (
               <>
                 {
@@ -202,7 +202,7 @@ export default function Messages() {
               autoCapitalize="sentences"
               keyboardType="default"
               textContentType="none"
-              placeholderTextColor={g.neutral200}
+              placeholderTextColor={g.newNeutral400}
               onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
             />
             {isPending
@@ -219,6 +219,6 @@ export default function Messages() {
           </View>
         </MaskedView>
       </KeyboardAvoidingView>
-    </Screen>
+    </View>
   );
 }

@@ -63,7 +63,7 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.neutral300,
+    color: g.newNeutral400,
     marginTop: g.size(2),
   },
   title: {
@@ -92,6 +92,8 @@ export default function Coverage() {
     shouldFocusError: false,
   });
   const { mutate: onCreateCoverage, isPending } = useCreateCoverage();
+
+  // TODO: look into keyboardShouldPersistTaps prop on ScrollViews
 
   return (
     <View style={s.container}>

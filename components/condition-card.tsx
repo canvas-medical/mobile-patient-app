@@ -1,7 +1,7 @@
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { formatDate } from '@utils';
 import { Condition } from '@interfaces';
-import { BlurFill, ExplainButton } from '@components';
+import { BlurFill } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -14,12 +14,12 @@ const s = StyleSheet.create({
   },
   condition: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     maxWidth: '95%',
   },
   conditionDate: {
     ...g.bodySmall,
-    color: g.white,
+    color: g.black,
     alignSelf: 'flex-end',
   },
 });
@@ -31,13 +31,7 @@ export function ConditionCard({ condition }: { condition: Condition }) {
   } = condition ?? {};
 
   return (
-    <ExplainButton
-      style={s.card}
-      id={condition.id}
-      resourceType={condition.resourceType}
-      codes={condition.code.coding}
-      description={condition.code.coding[0].display}
-    >
+    <View style={s.card}>
       <BlurFill />
       <Text style={s.condition}>
         {text}
@@ -45,6 +39,6 @@ export function ConditionCard({ condition }: { condition: Condition }) {
       <Text style={s.conditionDate}>
         {formatDate(recordedDate)}
       </Text>
-    </ExplainButton>
+    </View>
   );
 }

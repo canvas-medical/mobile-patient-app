@@ -203,7 +203,7 @@ export default function Dashboard() {
             loading={loadingAllergies}
           >
             {loadingAllergies
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : activeAllergies?.map((allergy: Allergy) => (
                 <AllergyCard
                   key={allergy.id}
@@ -221,7 +221,7 @@ export default function Dashboard() {
             loading={loadingProcedures}
           >
             {loadingProcedures
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : recentProcedures?.map((procedure: Procedure) => (
                 <ProcedureCard
                   key={procedure.id}
@@ -239,7 +239,7 @@ export default function Dashboard() {
             loading={loadingImmunizations}
           >
             {loadingImmunizations
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : immunizations?.slice(0, 1).map((immunization: Immunization) => (
                 <ImmunizationCard
                   key={immunization.id}
@@ -257,7 +257,7 @@ export default function Dashboard() {
             loading={loadingConditions}
           >
             {loadingConditions
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : activeConditions?.map((condition: Condition) => (
                 <ConditionCard
                   key={condition.id}
@@ -293,7 +293,7 @@ export default function Dashboard() {
             loading={loadingGoals}
           >
             {loadingGoals
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : activeGoals?.map((goal: Goal) => (
                 <GoalCard
                   key={goal.id}
@@ -311,7 +311,7 @@ export default function Dashboard() {
             loading={false}
           >
             {loadingEducationalMaterials
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : educationalMaterials?.map((item: DocumentResource) => ( // TODO: update type
                 <EducationalMaterialCard
                   key={item.id}

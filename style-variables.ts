@@ -1,5 +1,7 @@
 import { Dimensions } from 'react-native';
 
+// Remove gradient from primary button;
+
 const global = {
   // Screen Dimensions
   width: Dimensions.get('window').width,
@@ -8,23 +10,31 @@ const global = {
   size: (s: number) => Dimensions.get('window').width * (s / 393),
 
   // Color Palette
-  white: '#FAFAFA',
-  opaqueWhite: '#FAFAFA30',
-  black: '#1A1A1A',
-  // primaryBlue: '#006CE9', // Lighter // Leaving this until it's done.
-  primaryBlue: '#093EFE', // Lighter
-  secondaryBlue: '#0039AA', // Darker
-  blurBlue: '#5288EB',
+  white: '#f8fafc',
+  newNeutral100: '#f1f5f9',
+  newNeutral150: '#EAEFF5',
+  newNeutral200: '#e2e8f0',
+  newNeutral300: '#cbd5e1',
+  newNeutral400: '#94a3b8',
+  newNeutral500: '#64748b',
+  newNeutral600: '#475569',
+  newNeutral700: '#334155',
+  newNeutral800: '#1e293b',
+  newNeutral900: '#0f172a',
+  black: '#020617',
+  primaryBlue: '#3B66FD', // Lighter
+  secondaryBlue: '#2154FF', // Middle
+  tertiaryBlue: '#093EFE', // Darker
   error: '#DF3C3C30',
   red: '#ED4337',
-  goldenYellow: '#FFD700',
+  green: '#16a34a',
   neutral50: '#CECECE36',
   neutral100: '#D9D9D9',
   neutral200: '#C3C3C3',
   neutral300: '#989898',
   neutral500: '#6C6C6C',
   neutral800: '#27272a',
-  neutral900: '#171717',
+  neutral900: '#171717', // TODO: Replace neutrals with TW neutrals and check all instances of neutrals
   transparent: 'transparent',
   severityRed: '#B22222',
   severityYellow: '#FFFF00',
@@ -73,6 +83,12 @@ const global = {
     fontFamily: 'Alata',
     fontSize: Dimensions.get('window').width * (24 / 393),
     lineHeight: Dimensions.get('window').width * (28 / 393),
+    letterSpacing: 0,
+  },
+  labelXSmall: {
+    fontFamily: 'Alata',
+    fontSize: Dimensions.get('window').width * (10 / 393),
+    lineHeight: Dimensions.get('window').width * (12 / 393),
     letterSpacing: 0,
   },
   labelSmall: {

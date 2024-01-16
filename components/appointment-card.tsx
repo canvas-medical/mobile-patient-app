@@ -18,7 +18,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   appointmentLocation: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     textDecorationLine: 'underline',
   },
   appointmentType: {
@@ -30,7 +30,7 @@ const s = StyleSheet.create({
   },
   appointmentTypeText: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
   },
   cancelledCopy: {
     ...g.bodyMedium,
@@ -60,14 +60,14 @@ const s = StyleSheet.create({
   dataDivider: {
     height: g.size(1),
     width: '100%',
-    backgroundColor: g.white,
+    backgroundColor: g.black,
     marginVertical: g.size(16),
     opacity: 0.75,
     borderRadius: g.size(1),
   },
   dateTime: {
     ...g.bodyMedium,
-    color: g.white,
+    color: g.black,
     flex: 1,
   },
   leftBorder: {
@@ -78,7 +78,7 @@ const s = StyleSheet.create({
     width: g.size(4),
     borderRadius: g.size(4),
     opacity: 0.75,
-    backgroundColor: g.white,
+    backgroundColor: g.black,
   },
   navLink: {
     alignSelf: 'flex-start',
@@ -90,7 +90,7 @@ const s = StyleSheet.create({
   },
   reason: {
     ...g.bodyXLarge,
-    color: g.white,
+    color: g.black,
   },
   reasonData: {
     flex: 1,
@@ -182,7 +182,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
       <View style={s.leftBorder} />
       <View style={s.cardContent}>
         <View style={s.cardRow}>
-          <Feather name="clock" size={g.size(24)} color={g.white} />
+          <Feather name="clock" size={g.size(24)} color={g.black} />
           <Text
             style={s.dateTime}
             numberOfLines={1}
@@ -197,21 +197,21 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             {' '}
             {formatTime(end, true)}
           </Text>
-          {isPending && <ActivityIndicator color={g.white} />}
+          {isPending && <ActivityIndicator color={g.primaryBlue} />}
           {!cancelled && !isWithin48HoursOfStartTime && isFutureDate
             && (
-            <TouchableOpacity
-              disabled={cancelled || isPending}
-              onPress={cancelAppointment}
-            >
-              <MaterialIcons name="delete-forever" size={g.size(24)} color={g.white} />
-            </TouchableOpacity>
+              <TouchableOpacity
+                disabled={cancelled || isPending}
+                onPress={cancelAppointment}
+              >
+                <MaterialIcons name="delete-forever" size={g.size(24)} color={g.black} />
+              </TouchableOpacity>
             )
           }
         </View>
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
-          <FontAwesome5 name="user-md" size={g.size(36)} color={g.white} />
+          <FontAwesome5 name="user-md" size={g.size(36)} color={g.black} />
           <View style={s.reasonData}>
             <Text
               style={s.reason}
@@ -234,9 +234,9 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   }
                 }}
               >
-                {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.white} />}
-                {isTelemedicine && <MaterialIcons name="video-call" size={g.size(20)} color={g.white} />}
-                {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.white} />}
+                {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.black} />}
+                {isTelemedicine && <MaterialIcons name="video-call" size={g.size(20)} color={g.black} />}
+                {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.black} />}
                 <Text
                   style={s.appointmentLocation}
                   numberOfLines={1}
@@ -248,7 +248,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               <View style={s.appointmentType}>
                 {isPhoneCall && (
                   <>
-                    <FontAwesome5 name="phone-alt" size={g.size(16)} color={g.white} />
+                    <FontAwesome5 name="phone-alt" size={g.size(16)} color={g.black} />
                     <Text
                       style={s.appointmentTypeText}
                       numberOfLines={1}
@@ -259,7 +259,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 )}
                 {isHomeVisit && (
                   <>
-                    <Ionicons name="home" size={g.size(16)} color={g.white} />
+                    <Ionicons name="home" size={g.size(16)} color={g.black} />
                     <Text
                       style={s.appointmentTypeText}
                       numberOfLines={1}

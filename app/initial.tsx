@@ -19,7 +19,7 @@ const s = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: g.size(36),
     paddingBottom: g.size(120),
-    backgroundColor: g.primaryBlue,
+    backgroundColor: g.tertiaryBlue,
   },
   graphic: {
     position: 'absolute',
@@ -50,8 +50,8 @@ const s = StyleSheet.create({
   },
   version: {
     ...g.bodySmall,
-    color: g.neutral100,
-    opacity: 0.8,
+    color: g.newNeutral100,
+    opacity: 0.7,
     position: 'absolute',
     left: g.size(16),
     bottom: g.size(16)

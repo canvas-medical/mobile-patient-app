@@ -14,12 +14,12 @@ import { router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { schedulePushNotification, useAppointments } from '@services';
+import { AppointmentCard, Header, ZeroState } from '@components';
 import { Appointment } from '@interfaces';
-import { AppointmentCard, Header, Screen, ZeroState } from '@components';
+import { schedulePushNotification, useAppointments } from '@services';
+import { formatTime } from '@utils';
 import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
-import { formatTime } from '@utils';
 
 const s = StyleSheet.create({
   bookButton: {
@@ -27,11 +27,16 @@ const s = StyleSheet.create({
     width: g.size(72),
     height: g.size(72),
     borderRadius: g.size(36),
-    backgroundColor: g.white,
+    backgroundColor: g.secondaryBlue,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
     right: g.size(12),
+    opacity: 0.9,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: g.white,
   },
   loading: {
     flex: 1,
@@ -51,10 +56,11 @@ const s = StyleSheet.create({
   },
   sectionLabel: {
     ...g.titleXSmall,
-    color: g.white,
+    color: g.black,
   },
   title: {
     ...g.titleLarge,
+    color: g.black,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -101,16 +107,16 @@ export default function Appointments() {
   }, [upcomingAppointments]);
 
   return (
-    <Screen>
+    <View style={s.container}>
       <Header hideBackButton />
       <View style={s.titleContainer}>
-        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.white} />
+        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.black} />
         <Text style={s.title}>
           Appointments
         </Text>
       </View>
       {isLoading
-        ? <ActivityIndicator size="large" color={g.white} style={s.loading} />
+        ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
         : (
           <>
             {data.length ? (
@@ -119,7 +125,7 @@ export default function Appointments() {
                 maskElement={(
                   <LinearGradient
                     style={s.maskedView}
-                    colors={[g.transparent, g.white]}
+                    colors={[g.transparent, g.black]}
                     locations={[0.0175, 0.065]}
                   />
                 )}
@@ -133,7 +139,7 @@ export default function Appointments() {
                     <RefreshControl
                       refreshing={refreshing}
                       onRefresh={onRefresh}
-                      tintColor={g.white}
+                      tintColor={g.primaryBlue}
                       colors={[g.primaryBlue]}
                       progressViewOffset={g.size(40)}
                     />
@@ -183,8 +189,8 @@ export default function Appointments() {
         ]}
         onPress={() => router.push('appointments/book-appointment')}
       >
-        <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.primaryBlue} />
+        <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.white} />
       </TouchableOpacity>
-    </Screen>
+    </View>
   );
 }

@@ -16,7 +16,6 @@ Before you begin, make sure you have the following installed:
 *Optional*
 
 - [Deployed Stripe Microservice](https://github.com/brewerdigital-llc/stripe-microservice) for payment processing
-- [Deployed OpenAI Microservice](https://github.com/brewerdigital-llc/fhir-ai-ms) for AI-driven insights
 - [BugSnag Account](https://app.bugsnag.com/user/new/) for error reporting
 
 ## Clone the Repository
@@ -56,10 +55,6 @@ Here's how you can obtain the keys required in the `.env.local` file.
 
 #### Optional
 If these keys are not included, the associated features will not work but the app will still function
-
-*AI Explain Feature*
-
-- `EXPO_PUBLIC_OPENAI_API_URL` and `EXPO_PUBLIC_OPENAI_API_KEY`: These will be provided to you through the AWS API Gateway setup outlined in the [OpenAI Microservice documentation](https://github.com/brewerdigital-llc/fhir-ai-ms)
 
 *Bill Pay*
 

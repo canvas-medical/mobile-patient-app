@@ -24,7 +24,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: g.primaryBlue,
+    backgroundColor: g.tertiaryBlue,
   },
   contentContainer: {
     flex: 1,
@@ -63,7 +63,7 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.neutral300,
+    color: g.newNeutral400,
     marginTop: g.size(2),
   },
   title: {

@@ -44,7 +44,7 @@ const s = StyleSheet.create({
   },
   modalToggleButtonLabel: {
     ...g.bodyLarge,
-    color: g.white,
+    color: g.black,
   },
   modalToggleButtonPlaceholder: {
     color: g.neutral200
@@ -54,7 +54,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.white,
+    color: g.black,
     marginLeft: g.size(4),
   },
 });
@@ -140,7 +140,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
         >
           {futureDateSelected ? formatDate(selectedDate, 'numeric') : 'Select a date'}
         </Text>
-        <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.white} />
+        <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.black} />
       </TouchableOpacity>
     </View>
   );

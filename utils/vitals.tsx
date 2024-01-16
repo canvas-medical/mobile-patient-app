@@ -48,24 +48,24 @@ export function vitalsValueSwitch(type: string, vitalData: Vital) {
 export function vitalsIconSwitch(type: string) {
   switch (type) {
     case 'Weight':
-      return <FontAwesome5 name="weight" size={g.size(20)} color={g.white} />;
+      return <FontAwesome5 name="weight" size={g.size(20)} color={g.black} />;
     case 'Pulse':
-      return <FontAwesome name="heartbeat" size={g.size(20)} color={g.white} />;
+      return <FontAwesome name="heartbeat" size={g.size(20)} color={g.black} />;
     case 'Respiration Rate':
-      return <MaterialCommunityIcons name="lungs" size={g.size(20)} color={g.white} />;
+      return <MaterialCommunityIcons name="lungs" size={g.size(20)} color={g.black} />;
     case 'Blood Pressure':
-      return <Fontisto name="blood-drop" size={g.size(20)} color={g.white} />;
+      return <Fontisto name="blood-drop" size={g.size(20)} color={g.black} />;
     case 'Height':
-      return <MaterialCommunityIcons name="human-male-height-variant" size={g.size(20)} color={g.white} />;
+      return <MaterialCommunityIcons name="human-male-height-variant" size={g.size(20)} color={g.black} />;
     case 'Pulse Rhythm':
-      return <Octicons name="pulse" size={g.size(20)} color={g.white} />;
+      return <Octicons name="pulse" size={g.size(20)} color={g.black} />;
     case 'Body Temperature':
-      return <FontAwesome5 name="temperature-high" size={g.size(20)} color={g.white} />;
+      return <FontAwesome5 name="temperature-high" size={g.size(20)} color={g.black} />;
     case 'Waist Circumference':
-      return <Ionicons name="body" size={g.size(20)} color={g.white} />;
+      return <Ionicons name="body" size={g.size(20)} color={g.black} />;
     case 'Oxygen Saturation Arterial':
-      return <Entypo name="air" size={g.size(20)} color={g.white} />;
+      return <Entypo name="air" size={g.size(20)} color={g.black} />;
     default:
-      return <Feather name="heart" size={g.size(20)} color={g.white} />;
+      return <Feather name="heart" size={g.size(20)} color={g.black} />;
   }
 }
