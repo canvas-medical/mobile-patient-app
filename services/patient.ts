@@ -5,13 +5,31 @@ import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
+interface PatientInfo {
+  addressLine1?: string;
+  addressLine2?: string;
+  avatar?: string;
+  birthDate?: string;
+  birthSex?: string;
+  city?: string;
+  email?: string;
+  firstName?: string;
+  gender?: string;
+  lastName?: string;
+  middleName?: string;
+  phone?: string;
+  postalCode?: string;
+  preferredName?: string;
+  stateAbbreviation?: string;
+}
+
 /**
  * Converts the birth sex value to a corresponding code.
  *
  * @param {string} birthSex - The birth sex value.
  * @returns {string} The corresponding birth sex code.
  */
-function birthSexCodeSwitch(birthSex) {
+function birthSexCodeSwitch(birthSex: string): string {
   switch (birthSex) {
     case 'Female':
     case 'Male':
@@ -32,7 +50,7 @@ function birthSexCodeSwitch(birthSex) {
  * @returns {Promise<void>} - A promise that resolves when the patient record is created successfully.
  * @throws {Error} - If there is an error creating the patient record.
  */
-async function patientCreate(data: any) { // TODO: Add types
+async function patientCreate(data: PatientInfo): Promise<void> {
   const token = await getToken();
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient`, {
     method: 'POST',
@@ -92,7 +110,7 @@ async function patientCreate(data: any) { // TODO: Add types
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: any) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: PatientInfo) => patientCreate(data), // TODO: Add types
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -148,7 +166,7 @@ export function usePatient() {
  * @returns {Promise<void>} - A promise that resolves when the patient record is updated successfully.
  * @throws {Error} - If there is an error updating the patient record.
  */
-async function updatePatient(data: any) { // TODO: Add types
+async function updatePatient(data: PatientInfo): Promise<void> {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
@@ -195,6 +213,12 @@ async function updatePatient(data: any) { // TODO: Add types
         state: data.stateAbbreviation,
         postalCode: data.postalCode
       }],
+      photo:
+        [
+          {
+            data: data.avatar,
+          }
+        ],
     })
   });
   if (!res.ok) throw new Error();
@@ -208,7 +232,7 @@ async function updatePatient(data: any) { // TODO: Add types
 export function useUpdatePatient() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) => updatePatient(data), // TODO: Add types
+    mutationFn: (data: PatientInfo) => updatePatient(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['patient_data'] });
       Alert.alert(
