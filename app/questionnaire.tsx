@@ -66,7 +66,7 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.newNeutral100,
+    color: g.neutral100,
     marginTop: g.size(2),
   },
   title: {

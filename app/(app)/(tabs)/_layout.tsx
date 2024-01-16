@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router/tabs';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabBar } from '@components';
 import { g } from '@styles';
+import { Platform } from 'react-native';
 
 const tabIconSwitch = (tab: string, color: string) => {
   switch (tab) {
@@ -24,20 +25,8 @@ export default function Layout() {
       tabBar={TabBar}
       screenOptions={{
         tabBarActiveTintColor: g.white,
-        tabBarInactiveTintColor: g.newNeutral600,
-        // tabBarHideOnKeyboard: Platform.OS === 'android',
-        // tabBarStyle: {
-        //   height: Platform.OS === 'android' ? g.size(72) : g.size(88),
-        //   paddingBottom: Platform.OS === 'android' ? g.size(12) : g.size(24),
-        //   backgroundColor: g.white,
-        //   borderTopLeftRadius: g.size(48),
-        //   borderTopRightRadius: g.size(48),
-        //   position: 'absolute',
-        //   bottom: 0,
-        // },
-        // tabBarIconStyle: {
-        //   marginTop: g.size(8),
-        // },
+        tabBarInactiveTintColor: g.neutral600,
+        tabBarHideOnKeyboard: Platform.OS === 'android',
       }}
     >
       <Tabs.Screen

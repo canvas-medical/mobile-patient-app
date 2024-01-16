@@ -13,7 +13,7 @@ const s = StyleSheet.create({
     left: 0
   },
   message: {
-    backgroundColor: g.newNeutral300,
+    backgroundColor: g.neutral300,
     padding: g.size(15),
     borderRadius: g.size(10),
     borderBottomRightRadius: 0,
@@ -43,8 +43,8 @@ const s = StyleSheet.create({
     position: 'absolute',
     borderWidth: g.size(10),
     borderColor: g.transparent,
-    borderTopColor: g.newNeutral300,
-    borderRightColor: g.newNeutral300,
+    borderTopColor: g.neutral300,
+    borderRightColor: g.neutral300,
     bottom: g.size(-15),
     right: 0
   },

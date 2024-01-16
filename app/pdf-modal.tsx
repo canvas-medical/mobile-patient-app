@@ -60,7 +60,7 @@ export default function PdfModal() {
         style={s.pdf}
       /> */}
       <TouchableOpacity style={s.closeButton} onPress={() => router.canGoBack() && router.back()}>
-        <Feather name="x" size={32} color={g.newNeutral500} />
+        <Feather name="x" size={32} color={g.neutral500} />
       </TouchableOpacity>
       <View style={s.buttonContainer}>
         <Button

@@ -19,7 +19,7 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { useKeyboardVisible } from '@utils';
-import { MessageBlock, ZeroState, Screen } from '@components';
+import { MessageBlock, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
@@ -35,8 +35,12 @@ const s = StyleSheet.create({
     bottom: g.size(-1),
     right: 0,
   },
+  chatContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
+    backgroundColor: g.white,
   },
   headerContainer: {
     height: g.size(112),
@@ -132,7 +136,7 @@ export default function Messages() {
   }, [keyboardVisible]);
 
   return (
-    <View style={[StyleSheet.absoluteFill, { paddingBottom: tabBarHeight }]}>
+    <View style={[s.container, { paddingBottom: tabBarHeight }]}>
       <View style={s.headerContainer}>
         <TouchableOpacity
           onPress={() => Keyboard.dismiss()}
@@ -144,14 +148,14 @@ export default function Messages() {
         </TouchableOpacity>
       </View>
       <KeyboardAvoidingView
-        style={s.container}
+        style={s.chatContainer}
         behavior="height"
       >
         <MaskedView
-          style={s.container}
+          style={s.chatContainer}
           maskElement={(
             <LinearGradient
-              style={s.container}
+              style={s.chatContainer}
               colors={[g.transparent, g.black]}
               locations={[0, 0.065]}
             />
@@ -202,7 +206,7 @@ export default function Messages() {
               autoCapitalize="sentences"
               keyboardType="default"
               textContentType="none"
-              placeholderTextColor={g.newNeutral400}
+              placeholderTextColor={g.neutral400}
               onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
             />
             {isPending

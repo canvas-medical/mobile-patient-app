@@ -38,8 +38,7 @@ const s = StyleSheet.create({
   },
 });
 
-export function TabBar({ state, descriptors, navigation, insets }) {
-  console.log('====>: ', { state, descriptors, navigation, insets });
+export function TabBar({ state, descriptors, navigation }) {
   return (
     <View style={s.container}>
       <BlurView

@@ -192,9 +192,6 @@ export default function BookAppointment() {
     }
   }
 
-  // TODO: check all g.black to ensure they're proper (and g.whites..and g.primaryBlues i guess)
-  // TODO: Remove/replace all BlurFill components
-
   return (
     <View style={s.container}>
       <TouchableOpacity
@@ -326,7 +323,7 @@ export default function BookAppointment() {
         </ScrollView>
         <Button
           label={buttonLabel()}
-          theme="secondary"
+          theme="primary"
           style={[
             s.bookButton,
             { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(12) }

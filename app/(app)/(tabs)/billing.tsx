@@ -234,7 +234,7 @@ export default function Billing() {
                         ]}
                         name="dollar-sign"
                         size={g.size(20)}
-                        color={g.newNeutral400}
+                        color={g.neutral400}
                       />
                       <Input
                         onChange={setAmount}

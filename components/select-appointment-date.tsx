@@ -47,7 +47,7 @@ const s = StyleSheet.create({
     color: g.black,
   },
   modalToggleButtonPlaceholder: {
-    color: g.newNeutral400,
+    color: g.neutral400,
   },
   sectionContainer: {
     gap: g.size(12),
