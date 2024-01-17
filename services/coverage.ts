@@ -253,7 +253,7 @@ export async function coverageCancel(data: { coverageID: string, insurer: string
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
   const date = new Date();
-  const currentDay = `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate() - 1}`).slice(-2)}`;
+  const currentDay = `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`;
 
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data.coverageID}`, {
     method: 'PUT',
