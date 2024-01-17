@@ -488,7 +488,7 @@ export default function ProfileModal() {
               control={control}
               rules={{
                 required: { value: coverage?.id, message: 'Required' },
-                validate: (value) => value !== 'Choose an insurer'
+                validate: (value) => value !== 'Select One'
               }}
               render={({ field: { onChange, value } }) => (
                 <View>

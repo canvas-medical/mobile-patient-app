@@ -7,7 +7,7 @@ import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 export const Insurers = {
-  'Choose an insurer': {
+  'Select One': {
     payerId: null,
     transactorType: null,
     code: null
@@ -150,7 +150,6 @@ async function getCoverage() {
     },
   });
   const json = await res.json();
-  console.log(json);
   return json.entry?.map((entry: { resource: any; }) => entry.resource)
     .filter((resource: { status: string; }) => resource.status !== 'cancelled')[0] || {};
 }
@@ -250,9 +249,7 @@ export async function coverageUpdate(data: { coverageID: string, insurer: string
  * @throws {Error} If there is an issue with removing the coverage resource.
  */
 export async function coverageCancel(data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) {
-  console.log('in coverageCancel');
   const token = await getToken();
-  console.log(data.insurer);
   const provider = Insurers[data.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
   const date = new Date();
@@ -303,8 +300,6 @@ export async function coverageCancel(data: { coverageID: string, insurer: string
     })
   });
   const json: null | ApiError = await res.json();
-  console.log('res status', res.status);
-  console.log(json);
   if (json?.issue?.length > 0) throw new Error(json.issue[0].details.text);
 }
 
