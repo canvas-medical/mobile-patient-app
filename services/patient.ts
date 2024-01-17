@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
-import { coverageUpdate } from './coverage';
+import { coverageCreate, coverageUpdate } from './coverage';
 import { getToken } from './access-token';
 
 /**
@@ -217,10 +217,14 @@ export function useUpdatePatient() {
   return useMutation({
     mutationFn: async (data: PatientProfileFormData) => {
       const { coverageID, insurer, memberID, groupNumber, ...patientData } = data;
-      return (
-        await coverageUpdate({ coverageID, insurer, memberID, groupNumber }),
-        updatePatient(patientData)
-      );
+      if (coverageID) {
+        // Update coverage if it exists
+        await coverageUpdate({ coverageID, insurer, memberID, groupNumber });
+      } else if (insurer && memberID) {
+        // Create new coverage if we do not have a coverageID
+        await coverageCreate({ insurer, memberID, groupNumber });
+      }
+      return updatePatient(patientData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['patient_data', 'patient_coverage'] });

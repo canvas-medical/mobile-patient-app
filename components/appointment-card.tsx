@@ -20,7 +20,6 @@ const s = StyleSheet.create({
     ...g.bodyMedium,
     color: g.black,
     textDecorationLine: 'underline',
-    color: g.white,
   },
   appointmentLocation: {
     ...g.bodySmall,
