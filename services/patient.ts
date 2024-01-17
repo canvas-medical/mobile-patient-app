@@ -231,7 +231,10 @@ export function useUpdatePatient() {
       Alert.alert(
         'Your profile has been updated',
         '',
-        [{ text: 'OK' }],
+        [{
+          text: 'OK',
+          onPress: () => { if (router.canGoBack()) router.back(); },
+        }],
         { cancelable: false }
       );
     },
