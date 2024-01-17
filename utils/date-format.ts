@@ -5,11 +5,11 @@
  * @param year - The format for the year. Defaults to '2-digit'.
  * @returns The formatted date string.
  */
-export function formatDate(date: string, year: 'numeric' | '2-digit' = '2-digit') {
+export function formatDate(date: string, format?: { year: 'numeric' | '2-digit', month: 'numeric' | 'short', day: 'numeric' }) {
   return new Date(date).toLocaleDateString('en-US', {
-    year,
-    month: 'short',
-    day: 'numeric',
+    year: format?.year || 'numeric',
+    month: format?.month || 'short',
+    day: format?.day || 'numeric',
   });
 }
 

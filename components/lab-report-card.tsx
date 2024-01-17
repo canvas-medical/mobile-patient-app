@@ -2,7 +2,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   ActivityIndicator,
   Alert
 } from 'react-native';
@@ -11,17 +10,10 @@ import { Feather } from '@expo/vector-icons';
 import { useDiagnosticURI } from '@services';
 import { formatDate } from '@utils';
 import { DiagnosticReport, LabImagingReport, LabReport } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(4),
-  },
   chevron: {
     left: g.size(8),
     bottom: g.size(4),
@@ -66,8 +58,7 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
   }
 
   return (
-    <TouchableOpacity
-      style={s.card}
+    <CardContainer
       onPress={() => {
         if (data.uri) {
           router.push({
@@ -77,7 +68,6 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
         } else Alert.alert('There is no viewable data for this report.');
       }}
     >
-      <BlurFill />
       <View style={s.row}>
         <Text style={s.displayText}>
           {data.display}
@@ -89,14 +79,12 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
       <Text style={s.date}>
         {formatDate(data.date)}
       </Text>
-    </TouchableOpacity>
+    </CardContainer>
   );
 }
 
 export function LabReportSkeleton() {
   return (
-    <View style={s.card}>
-      <BlurFill />
-    </View>
+    <CardContainer skeleton />
   );
 }

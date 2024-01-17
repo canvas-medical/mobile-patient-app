@@ -1,6 +1,5 @@
 export { AllergyCard } from '@components/allergy-card';
 export { AppointmentCard } from '@components/appointment-card';
-export { BlurFill } from '@components/blur-fill';
 export { Button } from '@components/button';
 export { ConditionCard } from '@components/condition-card';
 export { EducationalMaterialCard } from '@components/educational-material-card';

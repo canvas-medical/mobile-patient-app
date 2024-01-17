@@ -50,7 +50,7 @@ const s = StyleSheet.create({
   },
   greeting: {
     ...g.labelXLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   header: {
     gap: g.size(16),
@@ -63,7 +63,7 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.newNeutral400,
+    color: g.neutral400,
     marginTop: g.size(2),
   },
   title: {
@@ -119,7 +119,7 @@ export default function Consents() {
                   <Feather
                     name={isAccepted ? 'check-square' : 'square'}
                     size={g.size(26)}
-                    color={isAccepted ? g.green : g.newNeutral300}
+                    color={isAccepted ? g.green : g.neutral300}
                   />
                 )}
             </TouchableOpacity>

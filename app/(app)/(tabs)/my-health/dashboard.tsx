@@ -57,7 +57,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: g.white,
+    backgroundColor: g.neutral100,
   },
   maskedView: {
     flex: 1,
@@ -104,8 +104,9 @@ export default function Dashboard() {
     await refetchProcedures();
     await refetchImmunizations();
     await refetchConditions();
-    await refetchGoals();
     await refetchLabResults();
+    await refetchQuestionnaireResponses();
+    await refetchGoals();
     await refetchEducationalMaterials();
     setRefreshing(false);
   };
@@ -155,7 +156,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Vitals"
             viewAll={false}
-            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.black} />}
+            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.neutral800} />}
             loading={loadingVitals}
           >
             <View style={s.vitalsContainer}>
@@ -184,7 +185,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/medications"
             title="Medications"
             viewAll={!!medications?.length}
-            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.black} />}
+            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.neutral800} />}
             loading={loadingMedications}
           >
             {loadingMedications
@@ -202,7 +203,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/allergies"
             title="Allergies"
             viewAll={!!allergies?.length}
-            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.black} />}
+            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.neutral800} />}
             loading={loadingAllergies}
           >
             {loadingAllergies
@@ -220,7 +221,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/procedures"
             title="Procedures"
             viewAll={procedures?.length > 1}
-            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.black} />}
+            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.neutral800} />}
             loading={loadingProcedures}
           >
             {loadingProcedures
@@ -238,7 +239,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/immunizations"
             title="Immunizations"
             viewAll={immunizations?.length > 1}
-            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.black} />}
+            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.neutral800} />}
             loading={loadingImmunizations}
           >
             {loadingImmunizations
@@ -256,7 +257,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/conditions"
             title="Conditions"
             viewAll={!!conditions?.length}
-            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.black} />}
+            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.neutral800} />}
             loading={loadingConditions}
           >
             {loadingConditions
@@ -274,7 +275,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/lab-results"
             title="Labs"
             viewAll={!!labs?.length}
-            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.black} />}
+            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.neutral800} />}
             loading={loadingLabs}
           >
             {loadingLabs
@@ -291,7 +292,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Questionnaires"
             viewAll={false}
-            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.white} />}
+            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.neutral800} />}
             loading={loadingQuestionnaireResponses}
           >
             {loadingQuestionnaireResponses
@@ -309,7 +310,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/goals"
             title="Goals"
             viewAll={!!goals?.length}
-            icon={<Feather name="target" size={g.size(20)} color={g.black} />}
+            icon={<Feather name="target" size={g.size(20)} color={g.neutral800} />}
             loading={loadingGoals}
           >
             {loadingGoals
@@ -327,7 +328,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/education"
             title="Educational Materials"
             viewAll={educationalMaterials?.length > 1}
-            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.black} />}
+            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.neutral800} />}
             loading={false}
           >
             {loadingEducationalMaterials

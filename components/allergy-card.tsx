@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Allergy } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -13,18 +13,15 @@ const s = StyleSheet.create({
     ...g.bodySmall,
     color: g.black,
   },
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(4),
-  },
   row: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  }
+  },
+  severity: {
+    ...g.bodySmall,
+    fontFamily: 'InterSemiBold'
+  },
 });
 
 export function AllergyCard({ allergy }: { allergy: Allergy }) {
@@ -49,13 +46,12 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
   };
 
   return (
-    <View style={s.card}>
-      <BlurFill />
+    <CardContainer>
       <View style={s.row}>
         <Text style={s.allergy}>
           {capitalizeFirstCharacter(display)}
         </Text>
-        <Text style={{ ...s.allergyInfo, color: severityColor() }}>
+        <Text style={[s.severity, { color: severityColor() }]}>
           {capitalizeFirstCharacter(severity)}
         </Text>
       </View>
@@ -67,6 +63,6 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
           {formatDate(recordedDate)}
         </Text>
       </View>
-    </View>
+    </CardContainer>
   );
 }

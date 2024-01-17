@@ -16,13 +16,7 @@ import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icon
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatDate, formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
-import {
-  Button,
-  BlurFill,
-  SelectAppointmentDate,
-  SelectAppointmentType,
-  SelectReasonForVisit
-} from '@components';
+import { Button, SelectAppointmentDate, SelectAppointmentType, SelectReasonForVisit } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -73,11 +67,11 @@ const s = StyleSheet.create({
   scheduleButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: g.neutral150,
     flexShrink: 1,
     gap: g.size(8),
     paddingHorizontal: g.size(16),
     paddingVertical: g.size(8),
-    overflow: 'hidden',
     borderRadius: g.size(32),
   },
   scheduleButtonLabel: {
@@ -101,10 +95,10 @@ const s = StyleSheet.create({
     marginLeft: g.size(4),
   },
   slotButton: {
+    backgroundColor: g.neutral150,
     paddingHorizontal: g.size(12),
     paddingVertical: g.size(4),
     borderRadius: g.size(32),
-    overflow: 'hidden',
   },
   slotButtonLabel: {
     ...g.labelMedium,
@@ -211,7 +205,7 @@ export default function BookAppointment() {
         maskElement={(
           <LinearGradient
             style={s.maskedView}
-            colors={[g.transparent, g.black]}
+            colors={[g.transparent, g.white]}
             locations={[0, 0.06]}
           />
         )}
@@ -261,7 +255,6 @@ export default function BookAppointment() {
                               setSelectedSchedule(schedule);
                             }}
                           >
-                            <BlurFill />
                             <FontAwesome5
                               name="user-md"
                               size={g.size(28)}
@@ -291,7 +284,7 @@ export default function BookAppointment() {
                     <Text style={s.sectionHeader}>
                       Appointments available for
                       {' '}
-                      {formatDate(selectedDate.toISOString(), 'numeric')}
+                      {formatDate(selectedDate.toISOString())}
                     </Text>
                     <View style={s.slotButtonsContainer}>
                       {slotData.map((slot: Slot) => {
@@ -302,7 +295,6 @@ export default function BookAppointment() {
                             style={[s.slotButton, selected && s.buttonSelected]}
                             onPress={() => setSelectedSlot(selected ? {} as Slot : slot)}
                           >
-                            <BlurFill />
                             <Text style={[s.slotButtonLabel, selected && s.labelSelected]}>
                               {formatTime(slot.start)}
                               {' '}

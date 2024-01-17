@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   cardContainer: {
-    rowGap: g.size(16),
+    rowGap: g.size(12),
   },
   container: {
     flex: 1,
@@ -18,7 +19,7 @@ const s = StyleSheet.create({
   },
   label: {
     ...g.titleXSmall,
-    color: g.black,
+    color: g.neutral800,
   },
   labelContainer: {
     flexDirection: 'row',
@@ -26,10 +27,16 @@ const s = StyleSheet.create({
     alignItems: 'center',
   },
   viewAll: {
-    ...g.bodyMedium,
-    color: g.black,
+    ...g.labelSmall,
+    lineHeight: g.size(16),
+    color: g.tertiaryBlue,
     opacity: 0.9,
     padding: g.size(2),
+  },
+  viewAllButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    top: g.size(1),
   },
   zeroState: {
     ...g.bodyMedium,
@@ -65,10 +72,14 @@ export function MyHealthBlock(
           </Text>
         </View>
         {viewAll && title !== 'Vitals' && (
-          <TouchableOpacity onPress={() => router.push(viewAllRoute)}>
+          <TouchableOpacity
+            style={s.viewAllButton}
+            onPress={() => router.push(viewAllRoute)}
+          >
             <Text style={s.viewAll}>
               View All
             </Text>
+            <Feather name="chevron-right" size={g.size(14)} color={g.tertiaryBlue} />
           </TouchableOpacity>
         )}
       </View>

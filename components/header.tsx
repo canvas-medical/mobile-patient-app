@@ -22,7 +22,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: g.size(16),
-    paddingTop: g.size(72),
+    paddingTop: g.size(60),
     borderBottomLeftRadius: g.size(40),
     borderBottomRightRadius: g.size(40),
   },
@@ -33,8 +33,8 @@ const s = StyleSheet.create({
     width: g.width * 0.6,
     aspectRatio: 1.4,
   },
-  label: {
-    ...g.labelMedium,
+  name: {
+    ...g.titleSmall,
     color: g.white,
   },
   nameAndAvatarContainer: {
@@ -75,7 +75,7 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
         onPress={() => router.push('profile-modal')}
         activeOpacity={0}
       >
-        <Text style={s.label}>{`${data?.name[0]?.given[0] || ''} ${data?.name[0]?.family || ''}`}</Text>
+        <Text style={s.name}>{`${data?.name[0]?.given[0] || ''} ${data?.name[0]?.family || ''}`}</Text>
         {Array.isArray(data?.photo) ? (
           <Image source={{ uri: data.photo[0].url }} style={s.userImage} />
         ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}

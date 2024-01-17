@@ -52,20 +52,19 @@ const s = StyleSheet.create({
     flex: 1,
   },
   inputContainer: {
-    backgroundColor: g.newNeutral150,
+    backgroundColor: g.neutral150,
     borderRadius: g.size(50),
-    overflow: 'hidden',
     flexDirection: 'row',
   },
   inputContainerError: {
     backgroundColor: g.error,
   },
   inputError: {
-    color: g.newNeutral500,
+    color: g.neutral500,
   },
   label: {
     ...g.labelMedium,
-    color: g.newNeutral500,
+    color: g.neutral500,
   },
   modal: {
     paddingHorizontal: g.size(8),
@@ -87,7 +86,7 @@ const s = StyleSheet.create({
   selectorButton: {
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
-    backgroundColor: g.newNeutral150,
+    backgroundColor: g.neutral150,
     borderRadius: g.size(50),
   },
   selectorButtonLabel: {
@@ -95,10 +94,10 @@ const s = StyleSheet.create({
     color: g.black,
   },
   selectorButtonPlaceholder: {
-    color: g.newNeutral400
+    color: g.neutral400
   },
   selectorButtonPlaceholderError: {
-    color: g.newNeutral500
+    color: g.neutral500
   }
 });
 
@@ -164,7 +163,7 @@ function TextComponent(props) {
       <TextInput
         style={[s.input, error && s.inputError, style]}
         placeholder={placeholder}
-        placeholderTextColor={error ? g.newNeutral500 : g.newNeutral400}
+        placeholderTextColor={error ? g.neutral500 : g.neutral400}
         secureTextEntry={name.toLowerCase().includes('password') && hidePassword}
         onFocus={() => onFocus()}
         onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
@@ -189,7 +188,7 @@ function TextComponent(props) {
           <Octicons
             name={hidePassword ? 'eye' : 'eye-closed'}
             size={g.size(24)}
-            color={error ? g.newNeutral500 : g.newNeutral400}
+            color={error ? g.neutral500 : g.neutral400}
           />
         </TouchableOpacity>
       )}
@@ -269,7 +268,7 @@ function DatePickerComponent(props) {
               !value && !!error && s.selectorButtonPlaceholderError,
             ]}
           >
-            {!value ? 'Select a date' : formatDate(value, 'numeric')}
+            {!value ? 'Select a date' : formatDate(value)}
           </Text>
         </TouchableOpacity>
       )}

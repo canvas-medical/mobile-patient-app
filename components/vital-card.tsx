@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { BlurFill } from '@components';
 import { Vital } from '@interfaces';
 import { vitalsValueSwitch, vitalsIconSwitch, formatDate } from '@utils';
 import { g } from '@styles';
@@ -12,11 +11,12 @@ const s = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
+    backgroundColor: g.white,
     width: (g.width - g.size(48)) / 2,
-    borderRadius: g.size(8),
-    overflow: 'hidden',
+    borderRadius: g.size(6),
     padding: g.size(8),
     justifyContent: 'space-between',
+    ...g.cardShadow,
   },
   firstBlurContainer: {
     width: '100%',
@@ -30,16 +30,14 @@ const s = StyleSheet.create({
   },
   vitalData: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral800,
   },
   vitalDate: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
   },
   vitalLabel: {
     flex: 1,
-    ...g.labelMedium,
-    color: g.black,
   },
 });
 
@@ -60,16 +58,15 @@ export function VitalCard({ vital, vitalsOdd, index }: {
         index === 0 && vitalsOdd && s.firstBlurContainer,
       ]}
     >
-      <BlurFill />
       <View style={s.topRow}>
-        <Text style={s.vitalLabel}>
+        <Text style={[s.vitalData, s.vitalLabel]}>
           {coding[0].display}
         </Text>
         {vitalsIconSwitch(coding[0].display)}
       </View>
       <View style={s.bottomRow}>
         <Text style={s.vitalDate}>
-          {formatDate(issued)}
+          {formatDate(issued, { year: '2-digit', month: 'numeric', day: 'numeric' })}
         </Text>
         <Text style={s.vitalData}>
           {vitalsValueSwitch(coding[0].display, vital)}
@@ -80,9 +77,5 @@ export function VitalCard({ vital, vitalsOdd, index }: {
 }
 
 export function VitalCardSkeleton() {
-  return (
-    <View style={[s.card, { height: g.size(48) }]}>
-      <BlurFill />
-    </View>
-  );
+  return <View style={[s.card, { height: g.size(48) }]} />;
 }
