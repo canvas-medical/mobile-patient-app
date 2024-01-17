@@ -237,7 +237,13 @@ export function useUpdatePatient() {
         '',
         [{
           text: 'OK',
-          onPress: () => { if (prevRoute && avatarUpdated) { router.replace(prevRoute); } else { router.back(); } },
+          onPress: () => {
+            if (prevRoute && avatarUpdated) {
+              router.back(); router.push(prevRoute);
+            } else {
+              router.back();
+            }
+          },
         }],
         { cancelable: false }
       );
