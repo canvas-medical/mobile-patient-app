@@ -43,9 +43,9 @@ export const Insurers = {
  * Creates a coverage resource for a patient with the specified insurer and member ID.
  *
  * @param data - The data required to create the coverage resource.
- * @param data?.insurer - The name of the insurer.
- * @param data?.memberID - The member ID of the patient.
- * @param data?.groupNumber - The group number (optional).
+ * @param data.insurer - The name of the insurer.
+ * @param data.memberID - The member ID of the patient.
+ * @param data.groupNumber - The group number (optional).
  * @throws {Error} If there is an issue with creating the coverage resource.
  */
 export async function coverageCreate(data: { insurer: string, memberID: string, groupNumber?: string }) {
@@ -170,10 +170,10 @@ export function useCoverage() {
  * Updates coverage resource for a patient with the specified insurer and member ID.
  *
  * @param data - The data required to update the coverage resource.
- * @param data?.coverageID - The ID of the coverage resource.
- * @param data?.insurer - The name of the insurer.
- * @param data?.memberID - The member ID of the patient.
- * @param data?.groupNumber - The group number (optional).
+ * @param data.coverageID - The ID of the coverage resource.
+ * @param data.insurer - The name of the insurer.
+ * @param data.memberID - The member ID of the patient.
+ * @param data.groupNumber - The group number (optional).
  * @throws {Error} If there is an issue with creating the coverage resource.
  */
 export async function coverageUpdate(data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) {

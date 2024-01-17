@@ -49,7 +49,7 @@ export function useQuestionnaire(id: string) {
 /**
  * Submits a questionnaire response to the server.
  *
- * @param data - The data object containing the form data and questionnaire data?.
+ * @param data - The data object containing the form data and questionnaire data.
  * @returns - A Promise that resolves when the questionnaire response is successfully submitted.
  * @throws - An error if there is an issue with submitting the questionnaire response.
  */

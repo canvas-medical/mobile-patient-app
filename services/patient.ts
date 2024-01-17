@@ -135,7 +135,7 @@ async function getPatient() {
 /**
  * Custom hook for fetching patient data that handles fetch states, errors, and caching automatically.
  *
- * @returns {QueryResult} The result of the query for patient data?.
+ * @returns {QueryResult} The result of the query for patient data.
  */
 export function usePatient() {
   return useQuery({
