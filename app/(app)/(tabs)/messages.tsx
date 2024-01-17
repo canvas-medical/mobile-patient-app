@@ -10,6 +10,7 @@ import {
   Keyboard,
   Animated,
   Easing,
+  Platform,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from 'expo-router';
@@ -57,7 +58,7 @@ const s = StyleSheet.create({
   },
   inputContainer: {
     position: 'absolute',
-    bottom: g.size(20),
+    bottom: Platform.OS === 'ios' ? g.size(20) : g.size(40),
     left: '50%',
     transform: [{ translateX: -((g.width - g.size(32)) / 2) }],
     width: g.width - g.size(32),

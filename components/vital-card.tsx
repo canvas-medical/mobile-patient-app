@@ -8,7 +8,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     gap: g.size(8),
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'baseline',
   },
   card: {
     backgroundColor: g.white,
@@ -30,7 +30,7 @@ const s = StyleSheet.create({
   },
   vitalData: {
     ...g.labelMedium,
-    flex: 1,
+    flexShrink: 1,
     color: g.neutral900,
     flexWrap: 'wrap',
   },
@@ -52,7 +52,6 @@ export function VitalCard({ vital, vitalsOdd, index }: {
     issued = '',
     code: { coding = [{ display: '' }] } = {}
   } = vital ?? {};
-
   return (
     <View
       style={[
@@ -70,7 +69,10 @@ export function VitalCard({ vital, vitalsOdd, index }: {
         <Text style={s.vitalDate}>
           {formatDate(issued, { year: '2-digit', month: 'numeric', day: 'numeric' })}
         </Text>
-        <Text numberOfLines={1} style={s.vitalData}>
+        <Text
+          numberOfLines={3}
+          style={s.vitalData}
+        >
           {vitalsValueSwitch(coding[0].display, vital)}
         </Text>
       </View>
