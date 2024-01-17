@@ -151,7 +151,7 @@ export function usePatient() {
  * @returns {Promise<void>} - A promise that resolves when the patient record is updated successfully.
  * @throws {Error} - If there is an error updating the patient record.
  */
-async function updatePatient(data: PatientProfileFormData): Promise<any> {
+async function updatePatient(data: PatientProfileFormData): Promise<void> {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
   const body = {
