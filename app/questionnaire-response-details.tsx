@@ -41,7 +41,6 @@ const s = StyleSheet.create({
   },
   qaRow: {
     flexDirection: 'row',
-    // alignItems: 'flex-start',
     gap: g.size(12),
   },
   question: {
@@ -79,11 +78,6 @@ export default function QuestionnaireResponseDetails() {
   const { data, isLoading } = useQuestionnaireResponse(responseId as string);
   return (
     <View style={s.container}>
-      <Image
-        style={s.graphic}
-        source={graphic}
-        contentFit="fill"
-      />
       <Image
         style={s.graphic}
         source={graphic}

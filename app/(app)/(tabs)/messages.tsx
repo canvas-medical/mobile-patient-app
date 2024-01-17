@@ -153,16 +153,6 @@ export default function Messages() {
         style={s.chatContainer}
         behavior="height"
       >
-        {/* <MaskedView
-          style={s.chatContainer}
-          maskElement={(
-            <LinearGradient
-              style={s.chatContainer}
-              colors={[g.transparent, g.primaryBlue]}
-              locations={[0, 0.065]}
-            />
-          )}
-        > */}
         {isLoading
           ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
           : (
@@ -223,7 +213,6 @@ export default function Messages() {
             )
           }
         </View>
-        {/* </MaskedView> */}
       </KeyboardAvoidingView>
     </View>
   );
