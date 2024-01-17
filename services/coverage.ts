@@ -1,12 +1,17 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '@interfaces';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 export const Insurers = {
+  'Select One': {
+    payerId: null,
+    transactorType: null,
+    code: null
+  },
   'CO BCBS': {
     payerId: '00050',
     transactorType: 'Commercial',
@@ -43,7 +48,7 @@ export const Insurers = {
  * @param data?.groupNumber - The group number (optional).
  * @throws {Error} If there is an issue with creating the coverage resource.
  */
-async function coverageCreate(data: { insurer: string, memberID: string, groupNumber?: string }) {
+export async function coverageCreate(data: { insurer: string, memberID: string, groupNumber?: string }) {
   const token = await getToken();
   const provider = Insurers[data?.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
@@ -145,7 +150,8 @@ async function getCoverage() {
     },
   });
   const json = await res.json();
-  return json.entry?.map((entry) => entry.resource)[0] || {};
+  return json.entry?.map((entry: { resource: any; }) => entry.resource)
+    .filter((resource: { status: string; }) => resource.status !== 'cancelled')[0] || {};
 }
 
 /**
@@ -230,4 +236,103 @@ export async function coverageUpdate(data: { coverageID: string, insurer: string
     })
   });
   if (!res.ok) throw new Error();
+}
+
+/**
+ * Cancels a coverage resource for a patient with the specified coverageID.
+ *
+ * @param data - The data required to remove the coverage resource.
+ * @param data.coverageID - The ID of the coverage resource.
+ * @param data.insurer - The name of the insurer.
+ * @param data.memberID - The member ID of the patient.
+ * @param data.groupNumber - The group number (optional).
+ * @throws {Error} If there is an issue with removing the coverage resource.
+ */
+export async function coverageCancel(data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) {
+  const token = await getToken();
+  const provider = Insurers[data.insurer];
+  const patientId = await SecureStore.getItemAsync('patient_id');
+  const date = new Date();
+  const currentDay = `${date.getFullYear()}-${(`0${date.getMonth() + 1}`).slice(-2)}-${(`0${date.getDate()}`).slice(-2)}`;
+
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data.coverageID}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      resourceType: 'Coverage',
+      order: 1,
+      status: 'cancelled',
+      type: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/ValueSet/coverage-type',
+            code: provider.code,
+          }
+        ]
+      },
+      subscriber: {
+        reference: `Patient/${patientId}`
+      },
+      subscriberId: data.memberID,
+      beneficiary: {
+        reference: `Patient/${patientId}`
+      },
+      relationship: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/ValueSet/subscriber-relationship',
+            code: 'self',
+          }
+        ]
+      },
+      payor: [
+        {
+          identifier: { value: provider.payerId }
+        }
+      ],
+      period: {
+        end: currentDay
+      },
+    })
+  });
+  const json: null | ApiError = await res.json();
+  if (json?.issue?.length > 0) throw new Error(json.issue[0].details.text);
+}
+
+/**
+ * Custom hook for creating a coverage record that handles fetch states and error handling automatically.
+ *
+ * @returns A mutation function that creates a coverage.
+ */
+export function useCancelCoverage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) => coverageCancel(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['patient_data', 'patient_coverage'] });
+      Alert.alert(
+        'Success',
+        'Your coverage has been successfully removed.',
+        [
+          { text: 'OK' }
+        ],
+        { cancelable: false }
+      );
+    },
+    onError: (e) => {
+      Bugsnag.leaveBreadcrumb('Error', { error: e });
+      Alert.alert(
+        'Error',
+        'There was an error removing your coverage. Please try again.',
+        [
+          { text: 'OK' }
+        ],
+        { cancelable: false }
+      );
+    },
+  });
 }

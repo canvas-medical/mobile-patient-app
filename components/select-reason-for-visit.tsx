@@ -109,11 +109,11 @@ export function SelectReasonForVisit({
                 selectedValue={provisionalReason}
                 onValueChange={(itemValue) => setProvisionalReason(itemValue)}
               >
-                {reasonsForDoctorVisit.map((item: { reasonLabel: string }) => (
+                {reasonsForDoctorVisit?.map((item: { reasonLabel: string }) => (
                   <Picker.Item
-                    key={item.reasonLabel}
-                    label={item.reasonLabel}
-                    value={item.reasonLabel}
+                    key={item?.reasonLabel}
+                    label={item?.reasonLabel}
+                    value={item?.reasonLabel}
                   />
                 ))}
               </Picker>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -41,7 +41,7 @@ const s = StyleSheet.create({
 export function TabBar({ state, descriptors, navigation }) {
   return (
     <View style={s.container}>
-      <View style={s.buttonContainer}>
+      <View style={[s.buttonContainer, Platform.OS === 'android' && { paddingBottom: g.size(0) }]}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
