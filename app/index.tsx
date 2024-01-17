@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useRootNavigationState, router } from 'expo-router';
 import { Image } from 'expo-image';
 import Bugsnag from '@bugsnag/expo';
 import { usePatient } from '@services';
+import { ZeroState } from '@components';
 import graphic from '@assets/images/graphic.png';
+import warning from '@assets/images/warning.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -26,10 +28,19 @@ Bugsnag.start();
 const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
 function ErrorView() {
-  // TODO: test this error view.
   return (
-    <View>
-      <Text>Error</Text>
+    <View style={s.container}>
+      <Image
+        source={graphic}
+        style={s.graphic}
+      />
+      <ZeroState
+        image={warning}
+        text="Something went wrong. Please try again later."
+        textColor={g.white}
+        imageAspectRatio={1.25}
+        marginBottom={0}
+      />
     </View>
   );
 }

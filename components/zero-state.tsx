@@ -24,11 +24,13 @@ const s = StyleSheet.create({
 export function ZeroState({
   image,
   text,
+  textColor,
   imageAspectRatio,
   marginBottom = g.size(120),
 }: {
   image: any;
   text: string;
+  textColor?: string;
   imageAspectRatio: number;
   marginBottom?: number;
 }) {
@@ -48,7 +50,7 @@ export function ZeroState({
         ]}
         priority="high"
       />
-      <Text style={s.text}>
+      <Text style={[s.text, { color: textColor }]}>
         {text}
       </Text>
     </View>
