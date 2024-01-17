@@ -81,7 +81,6 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
       {Platform.OS === 'android' && showDatePicker && (
         <DateTimePicker
           mode="date"
-          timeZoneName="Etc/Universal"
           value={selectedDate}
           minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
           themeVariant="dark"
@@ -108,7 +107,6 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
           <View style={s.modal}>
             <DateTimePicker
               mode="date"
-              timeZoneName="Etc/Universal"
               display="inline"
               value={selectedDate}
               minimumDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}

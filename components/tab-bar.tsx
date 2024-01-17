@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { g } from '@styles';
 
@@ -40,7 +40,7 @@ const s = StyleSheet.create({
 
 export function TabBar({ state, descriptors, navigation }) {
   return (
-    <View style={s.container}>
+    <View style={[s.container, Platform.OS === 'android' && { marginTop: g.size(16) }]}>
       <BlurView
         intensity={70}
         tint="light"
