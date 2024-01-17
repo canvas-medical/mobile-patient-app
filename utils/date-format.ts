@@ -7,9 +7,9 @@
  */
 export function formatDate(date: string, format?: { year: 'numeric' | '2-digit', month: 'numeric' | 'short', day: 'numeric' }) {
   return new Date(date).toLocaleDateString('en-US', {
-    year: format?.year || 'numeric',
-    month: format?.month || 'short',
-    day: format?.day || 'numeric',
+    year: format?.year ?? 'numeric',
+    month: format?.month ?? 'short',
+    day: format?.day ?? 'numeric',
   });
 }
 
