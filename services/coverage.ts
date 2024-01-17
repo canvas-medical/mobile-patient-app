@@ -316,7 +316,7 @@ export function useCancelCoverage() {
       queryClient.invalidateQueries({ queryKey: ['patient_data', 'patient_coverage'] });
       Alert.alert(
         'Success',
-        'Your coverage will now expire at the end of the day.',
+        'Your coverage has been successfully removed.',
         [
           { text: 'OK' }
         ],
