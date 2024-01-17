@@ -1,17 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Procedure } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(4),
-  },
   procedureDate: {
     ...g.bodySmall,
     color: g.black,
@@ -28,8 +21,7 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
   const codeDisplay = code?.coding[0]?.display;
 
   return (
-    <View style={s.card}>
-      <BlurFill />
+    <CardContainer>
       <Text
         style={s.procedureType}
         numberOfLines={3}
@@ -39,14 +31,10 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
       <Text style={s.procedureDate}>
         {formatDate(performedDateTime)}
       </Text>
-    </View>
+    </CardContainer>
   );
 }
 
 export function ProcedureSkeleton() {
-  return (
-    <View style={[s.card, { height: g.size(48) }]}>
-      <BlurFill />
-    </View>
-  );
+  return <CardContainer skeleton />;
 }

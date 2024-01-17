@@ -12,14 +12,12 @@ import {
   Easing,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import MaskedView from '@react-native-masked-view/masked-view';
 import { useFocusEffect } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { useKeyboardVisible } from '@utils';
-import { MessageBlock, ZeroState } from '@components';
+import { Header, MessageBlock, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
@@ -43,16 +41,13 @@ const s = StyleSheet.create({
     backgroundColor: g.white,
   },
   headerContainer: {
-    height: g.size(112),
-    paddingBottom: g.size(12),
-    paddingRight: g.size(24),
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    marginBottom: -g.size(8),
+    zIndex: 1,
   },
   input: {
     ...g.bodyMedium,
-    color: g.black,
-    backgroundColor: g.black,
+    color: g.neutral800,
+    backgroundColor: g.neutral200,
     width: g.width * 0.8,
     alignSelf: 'center',
     borderRadius: g.size(20),
@@ -68,9 +63,14 @@ const s = StyleSheet.create({
     width: g.width - g.size(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: g.black,
+    backgroundColor: g.neutral200,
     borderRadius: g.size(20),
     minHeight: g.size(36),
+  },
+  keyboardDismissButton: {
+    position: 'absolute',
+    bottom: g.size(20),
+    left: g.size(28),
   },
   loading: {
     flex: 1,
@@ -138,12 +138,14 @@ export default function Messages() {
   return (
     <View style={[s.container, { paddingBottom: tabBarHeight }]}>
       <View style={s.headerContainer}>
+        <Header hideBackButton />
         <TouchableOpacity
+          style={s.keyboardDismissButton}
           onPress={() => Keyboard.dismiss()}
           disabled={!keyboardVisible}
         >
           <Animated.View style={{ opacity: opacityValue }}>
-            <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.black} />
+            <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
           </Animated.View>
         </TouchableOpacity>
       </View>
@@ -151,77 +153,66 @@ export default function Messages() {
         style={s.chatContainer}
         behavior="height"
       >
-        <MaskedView
-          style={s.chatContainer}
-          maskElement={(
-            <LinearGradient
-              style={s.chatContainer}
-              colors={[g.transparent, g.black]}
-              locations={[0, 0.065]}
-            />
+        {isLoading
+          ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
+          : (
+            <>
+              {
+                messages.length ? (
+                  <ScrollView
+                    ref={scrollViewRef}
+                    contentContainerStyle={s.scrollContent}
+                    onLayout={({ nativeEvent: { layout } }) => {
+                      if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
+                      setContainerLayout(layout.height);
+                    }}
+                    onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+                  >
+                    {messages.map((mess: Message) => (
+                      <MessageBlock
+                        received={mess.resource.sender.type === 'Practitioner'}
+                        key={mess.resource.id}
+                        message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
+                      />
+                    ))}
+                  </ScrollView>
+                ) : (
+                  <ZeroState
+                    image={chat}
+                    imageAspectRatio={1}
+                    marginBottom={g.size(60)}
+                    text="Send a message below to get started!"
+                  />
+                )
+              }
+            </>
           )}
-        >
-          {isLoading
-            ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
+        <View style={s.inputContainer}>
+          <TextInput
+            style={{ ...s.input, height: size }}
+            multiline
+            placeholder="Message here..."
+            value={message}
+            onChange={(e) => setMessage(e.nativeEvent.text)}
+            onFocus={() => null}
+            autoCapitalize="sentences"
+            keyboardType="default"
+            textContentType="none"
+            placeholderTextColor={g.neutral400}
+            onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
+          />
+          {isPending
+            ? <ActivityIndicator size={g.size(39)} style={s.button} color={g.primaryBlue} />
             : (
-              <>
-                {
-                  messages.length ? (
-                    <ScrollView
-                      ref={scrollViewRef}
-                      contentContainerStyle={s.scrollContent}
-                      onLayout={({ nativeEvent: { layout } }) => {
-                        if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
-                        setContainerLayout(layout.height);
-                      }}
-                      onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-                    >
-                      {messages.map((mess: Message) => (
-                        <MessageBlock
-                          received={mess.resource.sender.type === 'Practitioner'}
-                          key={mess.resource.id}
-                          message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
-                        />
-                      ))}
-                    </ScrollView>
-                  ) : (
-                    <ZeroState
-                      image={chat}
-                      imageAspectRatio={1}
-                      marginBottom={g.size(60)}
-                      text="Send a message below to get started!"
-                    />
-                  )
-                }
-              </>
-            )}
-          <View style={s.inputContainer}>
-            <TextInput
-              style={{ ...s.input, height: size }}
-              multiline
-              placeholder="Message here..."
-              value={message}
-              onChange={(e) => setMessage(e.nativeEvent.text)}
-              onFocus={() => null}
-              autoCapitalize="sentences"
-              keyboardType="default"
-              textContentType="none"
-              placeholderTextColor={g.newNeutral400}
-              onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
-            />
-            {isPending
-              ? <ActivityIndicator size={g.size(39)} style={s.button} color={g.primaryBlue} />
-              : (
-                <TouchableOpacity
-                  onPress={() => onMessageSubmit(message)}
-                  disabled={buttonDisabled}
-                >
-                  <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={buttonDisabled ? s.buttonDisabled : s.button} />
-                </TouchableOpacity>
-              )
-            }
-          </View>
-        </MaskedView>
+              <TouchableOpacity
+                onPress={() => onMessageSubmit(message)}
+                disabled={buttonDisabled}
+              >
+                <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={buttonDisabled ? s.buttonDisabled : s.button} />
+              </TouchableOpacity>
+            )
+          }
+        </View>
       </KeyboardAvoidingView>
     </View>
   );

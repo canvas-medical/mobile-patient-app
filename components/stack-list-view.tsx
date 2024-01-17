@@ -17,7 +17,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: g.white,
+    backgroundColor: g.neutral100,
   },
   loading: {
     flex: 1,
@@ -41,7 +41,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(16),
     paddingLeft: g.size(20),
-    marginTop: g.size(16),
+    marginTop: g.size(20),
   },
 });
 
@@ -85,7 +85,7 @@ export function StackListView({
             maskElement={(
               <LinearGradient
                 style={s.maskedView}
-                colors={[g.transparent, g.black]}
+                colors={[g.transparent, g.white]}
                 locations={[0.0175, 0.065]}
               />
             )}

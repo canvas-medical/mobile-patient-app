@@ -6,54 +6,69 @@ import {
   ScrollView, ActivityIndicator,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
+import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 import { useQuestionnaireResponse } from '@services';
-import { Screen } from '@components';
+import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   answer: {
-    ...g.bodySmall,
-    color: g.black,
-    opacity: 0.7,
+    ...g.bodyLarge,
+    flex: 1,
+    color: g.neutral900,
   },
-  contentContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: g.tertiaryBlue,
+  },
+  graphic: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.width * 0.66,
+    aspectRatio: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: g.size(36),
+  },
+  lineLabel: {
+    ...g.titleXSmall,
+    color: g.neutral900,
+    lineHeight: g.size(20),
+  },
+  qaRow: {
+    flexDirection: 'row',
+    gap: g.size(12),
+  },
+  question: {
+    ...g.bodyLarge,
+    flex: 1,
+    color: g.neutral600,
+  },
+  questionContainer: {
+    gap: g.size(8),
+    paddingVertical: g.size(20),
+  },
+  questionContainerBottomBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: g.neutral300,
+  },
+  scroll: {
     flex: 1,
     backgroundColor: g.white,
     borderTopLeftRadius: g.size(36),
     borderTopRightRadius: g.size(36),
-    padding: g.size(36),
-    gap: g.size(24),
-  },
-  header: {
-    padding: g.size(36),
-    paddingTop: g.size(72),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  question: {
-    ...g.bodyMedium,
-    fontWeight: 'bold',
-    color: g.black,
-    opacity: 0.9,
-  },
-  questionContainer: {
-    gap: g.size(12),
   },
   scrollContent: {
     flexGrow: 1,
-  },
-  scrollCover: {
-    width: g.width,
-    height: g.height * 0.6,
-    backgroundColor: g.white,
-    position: 'absolute',
-    bottom: 0,
+    padding: g.size(24),
   },
   title: {
-    ...g.titleLarge,
     textAlign: 'right',
+    ...g.titleLarge,
   },
 });
 
@@ -62,34 +77,61 @@ export default function QuestionnaireResponseDetails() {
   const { responseId } = params;
   const { data, isLoading } = useQuestionnaireResponse(responseId as string);
   return (
-    <Screen>
-      <View style={s.scrollCover} />
-      <ScrollView contentContainerStyle={s.scrollContent}>
-        <View style={s.header}>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Feather
-              name="arrow-left"
-              size={g.size(36)}
-              color={g.white}
-            />
-          </TouchableOpacity>
-          <Text style={s.title}>
-            Questionnaire Response
-          </Text>
-        </View>
-        {isLoading ? <ActivityIndicator />
+    <View style={s.container}>
+      <Image
+        style={s.graphic}
+        source={graphic}
+        contentFit="fill"
+      />
+      <View style={s.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Feather
+            name="arrow-left"
+            size={g.size(36)}
+            color={g.white}
+          />
+        </TouchableOpacity>
+        <Text style={s.title}>
+          Completed Questionnaire
+        </Text>
+      </View>
+      <ScrollView
+        style={s.scroll}
+        contentContainerStyle={s.scrollContent}
+      >
+        {isLoading
+          ? <ActivityIndicator />
           : (
-            <View style={s.contentContainer}>
-              {data?.item.map(({ answer, text }) => (
-                <View style={s.questionContainer}>
-                  <Text style={s.question}>{text}</Text>
-                  <Text style={s.answer}>{answer[0].valueCoding?.display || answer[0].valueString}</Text>
+            <>
+              {data?.item.map(({ answer, text }, i) => (
+                <View
+                  style={[
+                    s.questionContainer,
+                    i !== data.item.length - 1 && s.questionContainerBottomBorder,
+                  ]}
+                >
+                  <View style={s.qaRow}>
+                    <Text style={s.lineLabel}>
+                      Q:
+                    </Text>
+                    <Text style={s.question}>
+                      {text}
+                    </Text>
+                  </View>
+                  <View style={s.qaRow}>
+                    <Text style={s.lineLabel}>
+                      A:
+                    </Text>
+                    <Text style={s.answer}>
+                      {answer[0].valueCoding?.display || answer[0].valueString}
+                    </Text>
+                  </View>
                 </View>
               ))}
-            </View>
+            </>
           )
         }
       </ScrollView>
-    </Screen>
+    </View>
   );
 }

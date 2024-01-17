@@ -31,7 +31,12 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { Image } from 'expo-image';
 import {
-  Feather, FontAwesome5, FontAwesome, Fontisto, MaterialCommunityIcons, MaterialIcons
+  Feather,
+  FontAwesome5,
+  FontAwesome,
+  Fontisto,
+  MaterialCommunityIcons,
+  MaterialIcons
 } from '@expo/vector-icons';
 import { PatientProfileFormData } from '@interfaces';
 import { useUpdatePatient, usePatient, useCoverage, Insurers, useCancelCoverage } from '@services';
@@ -95,7 +100,7 @@ const s = StyleSheet.create({
     top: 0,
     right: 0,
     width: g.width * 0.75,
-    aspectRatio: 1.3,
+    aspectRatio: 1.2,
   },
   header: {
     backgroundColor: g.tertiaryBlue,
@@ -116,10 +121,10 @@ const s = StyleSheet.create({
   input: {
     ...g.bodyLarge,
     flex: 1,
-    color: g.black,
+    color: g.neutral900,
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
-    backgroundColor: g.newNeutral150,
+    backgroundColor: g.neutral150,
     borderRadius: g.size(50),
   },
   inputError: {
@@ -140,7 +145,7 @@ const s = StyleSheet.create({
     marginTop: g.size(24),
     padding: g.size(16),
     borderWidth: g.size(1),
-    borderColor: g.newNeutral300,
+    borderColor: g.neutral300,
     borderRadius: g.size(8),
   },
   insuranceHeader: {
@@ -174,17 +179,17 @@ const s = StyleSheet.create({
   },
   patientDataLabel: {
     ...g.labelSmall,
-    color: g.newNeutral500,
+    color: g.neutral500,
   },
   patientDataListItem: {
     justifyContent: 'center',
     gap: g.size(8),
     paddingVertical: g.size(28),
     borderBottomWidth: g.size(1),
-    borderBottomColor: g.newNeutral300
+    borderBottomColor: g.neutral300
   },
   saveButton: {
-    ...g.shadow,
+    ...g.buttonShadow,
     width: g.size(72),
     height: g.size(72),
     borderRadius: g.size(36),
@@ -210,13 +215,13 @@ const s = StyleSheet.create({
   },
   selectorButtonLabel: {
     ...g.bodyLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   selectorButtonLabelError: {
-    color: g.newNeutral500,
+    color: g.neutral500,
   },
   selectorButtonLabelPlaceholder: {
-    color: g.newNeutral400
+    color: g.neutral400
   },
   userImage: {
     height: g.size(72),
@@ -450,7 +455,7 @@ export default function ProfileModal() {
           <View style={s.birthDateContainer}>
             <MaterialCommunityIcons name="cake-variant-outline" size={g.size(16)} color={g.white} />
             <Text style={s.birthDate}>
-              {formatDate(patient?.birthDate, 'numeric')}
+              {formatDate(patient?.birthDate)}
             </Text>
           </View>
         </View>
@@ -468,7 +473,7 @@ export default function ProfileModal() {
           <View style={s.insuranceContainer}>
             <View style={s.insuranceHeader}>
               <View style={s.iconLabelContainer}>
-                <FontAwesome5 name="address-card" size={g.size(22)} color={g.newNeutral400} />
+                <FontAwesome5 name="address-card" size={g.size(22)} color={g.neutral400} />
                 <Text style={s.patientDataLabel}>
                   Insurance
                 </Text>
@@ -479,7 +484,7 @@ export default function ProfileModal() {
                     disabled={!coverage?.id || isPending}
                     onPress={cancelInsuranceConfirmation}
                   >
-                    <MaterialIcons name="delete-forever" size={g.size(24)} color={g.newNeutral400} />
+                    <MaterialIcons name="delete-forever" size={g.size(24)} color={g.neutral400} />
                   </TouchableOpacity>
                 )}
             </View>
@@ -565,7 +570,7 @@ export default function ProfileModal() {
                   <TextInput
                     style={[s.input, !!errors.memberID && s.inputError]}
                     placeholder="Member ID"
-                    placeholderTextColor={errors.memberID ? g.newNeutral500 : g.newNeutral400}
+                    placeholderTextColor={errors.memberID ? g.neutral500 : g.neutral400}
                     onFocus={() => clearErrors()}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
@@ -590,7 +595,7 @@ export default function ProfileModal() {
                   <TextInput
                     style={[s.input, !!errors.groupNumber && s.inputError]}
                     placeholder="Group Number"
-                    placeholderTextColor={errors.groupNumber ? g.newNeutral500 : g.newNeutral400}
+                    placeholderTextColor={errors.groupNumber ? g.neutral500 : g.neutral400}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
                     }}
@@ -606,7 +611,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Feather name="user" size={g.size(24)} color={g.newNeutral400} />
+              <Feather name="user" size={g.size(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Preferred Name
                 <Text style={s.inputOptional}> - Optional</Text>
@@ -619,7 +624,7 @@ export default function ProfileModal() {
                 <TextInput
                   style={[s.input, !!errors.preferredName && s.inputError]}
                   placeholder="Preferred Name"
-                  placeholderTextColor={errors.preferredName ? g.newNeutral500 : g.newNeutral400}
+                  placeholderTextColor={errors.preferredName ? g.neutral500 : g.neutral400}
                   onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                     onChange(e.nativeEvent.text);
                   }}
@@ -635,7 +640,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Fontisto name="email" size={g.size(24)} color={g.newNeutral400} />
+              <Fontisto name="email" size={g.size(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Email
                 {errors.email && <Text style={s.inputRequired}>{` - ${errors.email.message}`}</Text>}
@@ -656,7 +661,7 @@ export default function ProfileModal() {
                 <TextInput
                   style={[s.input, !!errors.email && s.inputError]}
                   placeholder="Email"
-                  placeholderTextColor={errors.email ? g.newNeutral500 : g.newNeutral400}
+                  placeholderTextColor={errors.email ? g.neutral500 : g.neutral400}
                   onFocus={() => clearErrors()}
                   onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                     onChange(e.nativeEvent.text);
@@ -673,7 +678,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Feather name="smartphone" size={g.size(24)} color={g.newNeutral400} />
+              <Feather name="smartphone" size={g.size(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Phone
                 {errors.phone && <Text style={s.inputRequired}>{` - ${errors.phone.message}`}</Text>}
@@ -694,7 +699,7 @@ export default function ProfileModal() {
                 <TextInput
                   style={[s.input, !!errors.phone && s.inputError]}
                   placeholder="Phone Number"
-                  placeholderTextColor={errors.phone ? g.newNeutral500 : g.newNeutral400}
+                  placeholderTextColor={errors.phone ? g.neutral500 : g.neutral400}
                   onFocus={() => clearErrors()}
                   onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                     onChange(formatPhoneNumber(e.nativeEvent.text));
@@ -711,7 +716,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Feather name="home" size={g.size(24)} color={g.newNeutral400} />
+              <Feather name="home" size={g.size(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>Address</Text>
             </View>
             <Controller
@@ -727,7 +732,7 @@ export default function ProfileModal() {
                   <TextInput
                     style={[s.input, !!errors.addressLine1 && s.inputError]}
                     placeholder="Address line 1"
-                    placeholderTextColor={errors.addressLine1 ? g.newNeutral500 : g.newNeutral400}
+                    placeholderTextColor={errors.addressLine1 ? g.neutral500 : g.neutral400}
                     onFocus={() => clearErrors()}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
@@ -754,7 +759,7 @@ export default function ProfileModal() {
                   <TextInput
                     style={[s.input, !!errors.addressLine2 && s.inputError]}
                     placeholder="Address line 2"
-                    placeholderTextColor={errors.addressLine2 ? g.newNeutral500 : g.newNeutral400}
+                    placeholderTextColor={errors.addressLine2 ? g.neutral500 : g.neutral400}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
                     }}
@@ -782,7 +787,7 @@ export default function ProfileModal() {
                   <TextInput
                     style={[s.input, !!errors.city && s.inputError]}
                     placeholder="City"
-                    placeholderTextColor={errors.city ? g.newNeutral500 : g.newNeutral400}
+                    placeholderTextColor={errors.city ? g.neutral500 : g.neutral400}
                     onFocus={() => clearErrors()}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
@@ -811,7 +816,7 @@ export default function ProfileModal() {
                   <TextInput
                     style={[s.input, !!errors.postalCode && s.inputError]}
                     placeholder="Postal code"
-                    placeholderTextColor={errors.postalCode ? g.newNeutral500 : g.newNeutral400}
+                    placeholderTextColor={errors.postalCode ? g.neutral500 : g.neutral400}
                     onFocus={() => clearErrors()}
                     onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => {
                       onChange(e.nativeEvent.text);
@@ -900,7 +905,7 @@ export default function ProfileModal() {
           </View>
           <View style={[s.patientDataListItem, s.lastListItem]}>
             <View style={s.iconLabelContainer}>
-              <Feather name="user" size={g.size(24)} color={g.newNeutral400} />
+              <Feather name="user" size={g.size(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Gender
                 {errors.gender && <Text style={s.inputRequired}>{` - ${errors.gender.message}`}</Text>}
@@ -972,11 +977,13 @@ export default function ProfileModal() {
           </View>
         </ScrollView>
         <AnimatedTouchableOpacity
-          style={[s.saveButton,
-          !isDirty && s.saveButtonDisabled,
-          isPending && s.saveButtonLoading,
+          style={[
+            s.saveButton,
+            !isDirty && s.saveButtonDisabled,
+            isPending && s.saveButtonLoading,
             animatedStyles,
-          { bottom: keyboardHeight + g.size(24) }]}
+            { bottom: keyboardHeight + g.size(24) },
+          ]}
           onPress={handleSubmit((data: any) => {
             Keyboard.dismiss();
             onUpdatePatient(data);

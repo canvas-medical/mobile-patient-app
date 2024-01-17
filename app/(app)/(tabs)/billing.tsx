@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { Feather, FontAwesome5 } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { initPaymentSheet, presentPaymentSheet, StripeProvider } from '@stripe/stripe-react-native';
 import {
@@ -38,11 +38,6 @@ const s = StyleSheet.create({
   androidDollarSign: {
     top: g.size(40),
   },
-  androidPayButton: {
-    borderRadius: g.size(22),
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-  },
   buttonContainer: {
     position: 'absolute',
     right: 0,
@@ -51,7 +46,7 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: g.white,
+    backgroundColor: g.neutral100,
   },
   disabled: {
     opacity: 0.7,
@@ -60,6 +55,7 @@ const s = StyleSheet.create({
     position: 'absolute',
     top: g.size(26),
     left: g.size(12),
+    zIndex: 1,
   },
   greyedOut: {
     ...g.bodySmall,
@@ -72,7 +68,7 @@ const s = StyleSheet.create({
   },
   label: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral600,
   },
   loading: {
     flex: 1,
@@ -82,13 +78,21 @@ const s = StyleSheet.create({
     flex: 1,
   },
   payButton: {
-    ...g.bodyLarge,
-    color: g.white,
-    overflow: 'hidden',
     backgroundColor: g.primaryBlue,
     borderRadius: g.size(18),
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  payButtonAndroid: {
+    borderRadius: g.size(22),
+    paddingVertical: g.size(12),
+    paddingHorizontal: g.size(16),
+  },
+  payButtonLabel: {
+    ...g.labelMedium,
+    color: g.white,
   },
   paymentHistoryItem: {
     flexDirection: 'row',
@@ -106,14 +110,14 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
-    color: g.black,
+    color: g.neutral800,
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: g.size(16),
     paddingLeft: g.size(20),
-    marginTop: g.size(16),
+    marginTop: g.size(20),
   },
 });
 
@@ -215,7 +219,7 @@ export default function Billing() {
         <View style={s.container}>
           <Header hideBackButton />
           <View style={s.titleContainer}>
-            <FontAwesome5 name="file-invoice-dollar" size={g.size(36)} color={g.black} />
+            <Feather name="credit-card" size={g.size(36)} color={g.neutral800} />
             <Text style={s.title}>
               Billing
             </Text>
@@ -234,7 +238,7 @@ export default function Billing() {
                         ]}
                         name="dollar-sign"
                         size={g.size(20)}
-                        color={g.newNeutral400}
+                        color={g.neutral400}
                       />
                       <Input
                         onChange={setAmount}
@@ -250,13 +254,21 @@ export default function Billing() {
                         autoCapitalize="none"
                         textContentType="none"
                         returnKeyType="default"
-                        style={{ paddingLeft: g.size(36), color: g.black }}
+                        style={{ paddingLeft: g.size(36), color: g.neutral900 }}
                       />
                       <View style={[s.buttonContainer, Platform.OS === 'android' && s.androidButtonContainer]}>
-                        <TouchableOpacity onPress={handleSubmit} disabled={disabled}>
+                        <TouchableOpacity
+                          style={[
+                            s.payButton,
+                            disabled && s.disabled,
+                            Platform.OS === 'android' && s.payButtonAndroid,
+                          ]}
+                          onPress={handleSubmit}
+                          disabled={disabled}
+                        >
                           {paymentNoticePending || paymentIntentPending || buttonLoading
-                            ? <ActivityIndicator style={[s.payButton, Platform.OS === 'android' && s.androidPayButton]} color={g.primaryBlue} />
-                            : <Text style={[s.payButton, disabled && s.disabled, Platform.OS === 'android' && s.androidPayButton]}>Pay</Text>
+                            ? <ActivityIndicator color={g.white} />
+                            : <Text style={s.payButtonLabel}>Pay</Text>
                           }
                         </TouchableOpacity>
                       </View>
@@ -267,7 +279,7 @@ export default function Billing() {
                       maskElement={(
                         <LinearGradient
                           style={s.maskedView}
-                          colors={[g.transparent, g.black]}
+                          colors={[g.transparent, g.white]}
                           locations={[0, 0.06]}
                         />
                       )}
@@ -293,11 +305,11 @@ export default function Billing() {
                             <Text style={s.label}>Payment History</Text>
                             {paymentNotices?.map((notice: PaymentNotice) => (
                               <View key={notice.id} style={s.paymentHistoryItem}>
-                                <Text style={{ color: g.black }}>
+                                <Text style={{ color: g.neutral900 }}>
                                   $
                                   {notice.amount.value.toFixed(2)}
                                 </Text>
-                                <Text style={{ color: g.black }}>{formatDate(notice.created)}</Text>
+                                <Text style={{ color: g.neutral900 }}>{formatDate(notice.created)}</Text>
                               </View>
                             ))}
                           </View>

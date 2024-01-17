@@ -1,17 +1,10 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { capitalizeFirstCharacter, formatDate } from '@utils';
 import { Medication } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(8),
-  },
   date: {
     ...g.bodySmall,
     color: g.black,
@@ -42,8 +35,7 @@ export function MedicationCard({ med }: { med: Medication }) {
   } = med ?? {};
 
   return (
-    <View style={s.card}>
-      <BlurFill />
+    <CardContainer>
       <Text style={s.medication}>
         {capitalizeFirstCharacter(medication)}
       </Text>
@@ -55,14 +47,10 @@ export function MedicationCard({ med }: { med: Medication }) {
           {formatDate(dateAsserted)}
         </Text>
       </View>
-    </View>
+    </CardContainer>
   );
 }
 
 export function MedicationSkeleton() {
-  return (
-    <View style={[s.card, { height: g.size(60) }]}>
-      <BlurFill />
-    </View>
-  );
+  return <CardContainer skeleton />;
 }

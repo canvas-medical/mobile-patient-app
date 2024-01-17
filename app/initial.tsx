@@ -50,7 +50,7 @@ const s = StyleSheet.create({
   },
   version: {
     ...g.bodySmall,
-    color: g.newNeutral100,
+    color: g.neutral100,
     opacity: 0.7,
     position: 'absolute',
     left: g.size(16),

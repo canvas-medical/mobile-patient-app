@@ -2,7 +2,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
   ActivityIndicator,
   Alert
 } from 'react-native';
@@ -10,17 +9,10 @@ import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { formatDate } from '@utils';
 import { DocumentResource } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(4),
-  },
   chevron: {
     left: g.size(8),
     bottom: g.size(4),
@@ -52,8 +44,7 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
   } = data ?? {};
 
   return (
-    <TouchableOpacity
-      style={s.card}
+    <CardContainer
       onPress={() => {
         if (url) {
           router.push({
@@ -63,7 +54,6 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
         } else Alert.alert('There is no viewable data for this report.');
       }}
     >
-      <BlurFill />
       <View style={s.row}>
         <Text
           style={s.displayText}
@@ -78,14 +68,6 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
       <Text style={s.date}>
         {formatDate(date)}
       </Text>
-    </TouchableOpacity>
-  );
-}
-
-export function LabReportSkeleton() {
-  return (
-    <View style={s.card}>
-      <BlurFill />
-    </View>
+    </CardContainer>
   );
 }

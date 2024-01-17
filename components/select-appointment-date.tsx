@@ -11,7 +11,7 @@ import {
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { BlurFill, Button } from '@components';
+import { Button } from '@components';
 import { formatDate } from '@utils';
 import { g } from '@styles';
 
@@ -34,20 +34,20 @@ const s = StyleSheet.create({
     gap: g.size(4),
   },
   modalToggleButton: {
+    backgroundColor: g.neutral150,
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
     borderRadius: g.size(50),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    overflow: 'hidden',
   },
   modalToggleButtonLabel: {
     ...g.bodyLarge,
     color: g.black,
   },
   modalToggleButtonPlaceholder: {
-    color: g.newNeutral400,
+    color: g.neutral400,
   },
   sectionContainer: {
     gap: g.size(12),
@@ -128,14 +128,13 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
         style={s.modalToggleButton}
         onPress={() => setShowDatePicker(true)}
       >
-        <BlurFill />
         <Text
           style={[
             s.modalToggleButtonLabel,
             !futureDateSelected && s.modalToggleButtonPlaceholder,
           ]}
         >
-          {futureDateSelected ? formatDate(selectedDate.toISOString(), 'numeric') : 'Select a date'}
+          {futureDateSelected ? formatDate(selectedDate.toISOString()) : 'Select a date'}
         </Text>
         <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.black} />
       </TouchableOpacity>

@@ -1,18 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { formatDate } from '@utils';
 import { Invoice } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-  },
   chevron: {
     left: g.size(8),
     bottom: g.size(4),
@@ -40,14 +34,12 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
   } = invoice ?? {};
 
   return (
-    <TouchableOpacity
-      style={s.card}
+    <CardContainer
       onPress={() => router.push({
         pathname: 'pdf-modal',
         params: { uri: url }
       })}
     >
-      <BlurFill />
       <View style={s.row}>
         <Text style={s.label}>
           {display}
@@ -57,6 +49,6 @@ export function InvoiceCard({ invoice }: { invoice: Invoice }) {
       <Text style={s.date}>
         {formatDate(date)}
       </Text>
-    </TouchableOpacity>
+    </CardContainer>
   );
 }

@@ -1,17 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { formatDate } from '@utils';
 import { Immunization } from '@interfaces';
-import { BlurFill } from '@components';
 import { g } from '@styles';
+import { CardContainer } from './card-container';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(4),
-  },
   date: {
     ...g.bodySmall,
     color: g.black,
@@ -31,8 +24,7 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
   } = immunization ?? {};
 
   return (
-    <View style={s.card}>
-      <BlurFill />
+    <CardContainer>
       <Text
         style={s.label}
       >
@@ -41,6 +33,6 @@ export function ImmunizationCard({ immunization }: { immunization: Immunization 
       <Text style={s.date}>
         {formatDate(occurrenceDateTime)}
       </Text>
-    </View>
+    </CardContainer>
   );
 }

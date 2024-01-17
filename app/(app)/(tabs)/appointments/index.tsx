@@ -23,7 +23,7 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   bookButton: {
-    ...g.shadow,
+    ...g.buttonShadow,
     width: g.size(72),
     height: g.size(72),
     borderRadius: g.size(36),
@@ -36,7 +36,7 @@ const s = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: g.white,
+    backgroundColor: g.neutral100,
   },
   loading: {
     flex: 1,
@@ -56,18 +56,18 @@ const s = StyleSheet.create({
   },
   sectionLabel: {
     ...g.titleXSmall,
-    color: g.black,
+    color: g.neutral800,
   },
   title: {
     ...g.titleLarge,
-    color: g.black,
+    color: g.neutral800,
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: g.size(16),
     paddingLeft: g.size(20),
-    marginTop: g.size(16),
+    marginTop: g.size(20),
   }
 });
 
@@ -110,7 +110,7 @@ export default function Appointments() {
     <View style={s.container}>
       <Header hideBackButton />
       <View style={s.titleContainer}>
-        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.black} />
+        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.neutral800} />
         <Text style={s.title}>
           Appointments
         </Text>
@@ -125,7 +125,7 @@ export default function Appointments() {
                 maskElement={(
                   <LinearGradient
                     style={s.maskedView}
-                    colors={[g.transparent, g.black]}
+                    colors={[g.transparent, g.white]}
                     locations={[0.0175, 0.065]}
                   />
                 )}

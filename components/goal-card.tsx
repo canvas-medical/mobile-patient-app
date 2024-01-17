@@ -1,23 +1,17 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { formatDate } from '@utils';
 import { Goal } from '@interfaces';
-import { BlurFill } from '@components';
+import { CardContainer } from '@components/card-container';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  card: {
-    borderRadius: g.size(8),
-    overflow: 'hidden',
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-  },
   date: {
     ...g.bodySmall,
     color: g.black,
     alignSelf: 'flex-end',
   },
   datesContainer: {
-    marginTop: g.size(4),
+    marginTop: g.size(2),
   },
   goal: {
     flex: 1,
@@ -56,8 +50,7 @@ export function GoalCard({ goal }: { goal: Goal }) {
   };
 
   return (
-    <View style={s.card}>
-      <BlurFill />
+    <CardContainer>
       <View style={s.rowSpaceBetween}>
         <Text
           style={s.goal}
@@ -97,6 +90,6 @@ export function GoalCard({ goal }: { goal: Goal }) {
           </Text>
         )}
       </View>
-    </View>
+    </CardContainer>
   );
 }

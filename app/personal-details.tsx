@@ -43,7 +43,7 @@ const s = StyleSheet.create({
   },
   greeting: {
     ...g.labelXLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   header: {
     gap: g.size(16),
@@ -61,7 +61,7 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.newNeutral400,
+    color: g.neutral400,
     marginTop: g.size(2),
   },
   title: {

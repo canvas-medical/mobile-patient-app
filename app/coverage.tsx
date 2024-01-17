@@ -45,7 +45,7 @@ const s = StyleSheet.create({
   },
   greeting: {
     ...g.labelXLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   header: {
     gap: g.size(16),
@@ -63,7 +63,7 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.newNeutral400,
+    color: g.neutral400,
     marginTop: g.size(2),
   },
   title: {
@@ -144,7 +144,7 @@ export default function Coverage() {
                       placeholder="Select your insurance provider"
                       onFocus={() => clearErrors()}
                       options={Object.keys(Insurers)}
-                      onChange={(newValue) => { if (newValue !== 'Select One') onChange(value); }}
+                      onChange={(newValue) => { if (newValue !== 'Select One') onChange(newValue); }}
                       value={value}
                       forwardedRef={ref}
                       error={errors.insurer}

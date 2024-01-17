@@ -10,7 +10,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import { Feather } from '@expo/vector-icons';
-import { Button, BlurFill } from '@components';
+import { Button } from '@components';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -30,20 +30,20 @@ const s = StyleSheet.create({
     marginTop: -g.size(12),
   },
   modalToggleButton: {
+    backgroundColor: g.neutral150,
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
     borderRadius: g.size(50),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    overflow: 'hidden',
   },
   modalToggleButtonLabel: {
     ...g.bodyLarge,
     color: g.black,
   },
   modalToggleButtonPlaceholder: {
-    color: g.newNeutral400,
+    color: g.neutral400,
   },
   sectionContainer: {
     gap: g.size(12),
@@ -81,7 +81,6 @@ export function SelectReasonForVisit({
           style={s.modalToggleButton}
           onPress={() => setShowReasonPicker(true)}
         >
-          <BlurFill />
           <Text
             style={[
               s.modalToggleButtonLabel,

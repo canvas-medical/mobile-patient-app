@@ -59,7 +59,7 @@
     ],
     "max-len": [
       2,
-      150,
+      160,
       4
     ],
     "react/jsx-curly-newline": "off",
