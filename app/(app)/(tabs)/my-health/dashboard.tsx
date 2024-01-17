@@ -110,8 +110,6 @@ export default function Dashboard() {
     setRefreshing(false);
   };
 
-  console.log('Hello: ', vitals);
-
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');

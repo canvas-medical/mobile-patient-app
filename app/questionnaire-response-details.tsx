@@ -3,7 +3,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView, ActivityIndicator, Platform,
+  ScrollView,
+  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
