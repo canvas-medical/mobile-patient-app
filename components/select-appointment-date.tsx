@@ -44,7 +44,7 @@ const s = StyleSheet.create({
   },
   modalToggleButtonLabel: {
     ...g.bodyLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   modalToggleButtonPlaceholder: {
     color: g.neutral400,
@@ -54,7 +54,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral700,
     marginLeft: g.size(4),
   },
 });
@@ -98,9 +98,9 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
           animationOut="fadeOut"
           isVisible={showDatePicker}
           swipeDirection="right"
-          onSwipeComplete={() => closeDatePicker()}
+          onSwipeComplete={() => setShowDatePicker(false)}
           customBackdrop={(
-            <TouchableWithoutFeedback onPress={() => closeDatePicker()}>
+            <TouchableWithoutFeedback onPress={() => setShowDatePicker(false)}>
               <View style={s.backdrop} />
             </TouchableWithoutFeedback>
           )}
@@ -136,7 +136,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
         >
           {futureDateSelected ? formatDate(selectedDate.toISOString()) : 'Select a date'}
         </Text>
-        <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.black} />
+        <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.neutral600} />
       </TouchableOpacity>
     </View>
   );

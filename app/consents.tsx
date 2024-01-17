@@ -60,6 +60,7 @@ const s = StyleSheet.create({
   link: {
     ...g.bodyMedium,
     textDecorationLine: 'underline',
+    color: g.neutral900,
   },
   subGreeting: {
     ...g.bodyMedium,
@@ -68,6 +69,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
   },
 });
 

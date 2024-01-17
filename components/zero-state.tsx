@@ -13,7 +13,7 @@ const s = StyleSheet.create({
   },
   text: {
     ...g.bodyLarge,
-    color: g.white,
+    color: g.neutral700,
     textAlign: 'center',
     maxWidth: g.width * 0.8,
     marginTop: g.size(16),

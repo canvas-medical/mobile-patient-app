@@ -28,7 +28,7 @@ async function getAppointments() {
 /**
  * Custom hook for fetching appointments data that handles fetch states, errors, and caching automatically.
  *
- * @returns {QueryResult} The result of the query for the appointments data.
+ * @returns {QueryResult} The result of the query for the appointments data?.
  */
 export function useAppointments() {
   return useQuery({
@@ -59,7 +59,7 @@ async function getSlot(date: string, id: string, duration) {
 }
 
 /**
- * Custom hook to fetch and manage slot data.
+ * Custom hook to fetch and manage slot data?.
  *
  * @param date - The date of the slot.
  * @param id - The ID of the slot.
@@ -211,7 +211,7 @@ export function useCreateAppointment() {
 /**
  * Cancels an appointment.
  *
- * @param {AppointmentCancellationData} data - The appointment cancellation data.
+ * @param {AppointmentCancellationData} data - The appointment cancellation data?.
  * @returns {Promise<void>} - A promise that resolves when the appointment is cancelled successfully.
  * @throws {Error} - If the cancellation request fails.
  */

@@ -17,13 +17,13 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
   displayText: {
     flex: 1,
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
   },
   row: {
     flexDirection: 'row',
@@ -47,15 +47,11 @@ export function QuestionnaireResponseCard({ response }: { response: Questionnair
         <Text style={s.displayText}>
           {response.item[0].text}
         </Text>
-        <Feather name="chevron-right" size={g.size(28)} color={g.black} style={s.chevron} />
+        <Feather name="chevron-right" size={g.size(28)} color={g.neutral800} style={s.chevron} />
       </View>
       <Text style={s.date}>
         {formatDate(response.authored)}
       </Text>
     </CardContainer>
   );
-}
-
-export function LabReportSkeleton() {
-  return <CardContainer skeleton />;
 }

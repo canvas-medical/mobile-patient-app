@@ -68,6 +68,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
   },
 });
 

@@ -18,7 +18,7 @@ async function fetchReport(url: string, token: string) {
     }
   });
   const data = await response.json();
-  return data.entry?.map((report: any) => report.resource) || [];
+  return data?.entry?.map((report: any) => report.resource) || [];
 }
 
 /**

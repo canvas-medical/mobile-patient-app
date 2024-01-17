@@ -37,7 +37,7 @@ const s = StyleSheet.create({
   },
   errorMessage: {
     ...g.bodySmall,
-    color: g.red,
+    color: g.severityRed,
     opacity: 0.8,
     position: 'absolute',
     top: '100%',
@@ -46,7 +46,7 @@ const s = StyleSheet.create({
   },
   input: {
     ...g.bodyLarge,
-    color: g.black,
+    color: g.neutral900,
     paddingVertical: g.size(8),
     paddingHorizontal: g.size(16),
     flex: 1,
@@ -91,7 +91,7 @@ const s = StyleSheet.create({
   },
   selectorButtonLabel: {
     ...g.bodyLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   selectorButtonPlaceholder: {
     color: g.neutral400

@@ -10,11 +10,11 @@ export default function LabResults() {
   return (
     <StackListView
       title="Lab Results"
-      icon={<FontAwesome5 name="vial" size={g.size(36)} color={g.black} />}
+      icon={<FontAwesome5 name="vial" size={g.size(36)} color={g.neutral800} />}
       isLoading={isLoading}
       refetch={refetch}
     >
-      {data?.length > 0 && data.map((report: LabImagingReport | DiagnosticReport) => (
+      {data?.length > 0 && data?.map((report: LabImagingReport | DiagnosticReport) => (
         <LabReportCard
           key={report.id}
           report={report}

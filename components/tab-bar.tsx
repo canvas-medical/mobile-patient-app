@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BlurView } from 'expo-blur';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
@@ -12,6 +11,7 @@ const s = StyleSheet.create({
     paddingTop: g.size(8),
     paddingBottom: g.size(20),
     paddingHorizontal: g.size(10),
+    backgroundColor: g.white,
   },
   container: {
     position: 'absolute',
@@ -41,11 +41,7 @@ const s = StyleSheet.create({
 export function TabBar({ state, descriptors, navigation }) {
   return (
     <View style={s.container}>
-      <BlurView
-        intensity={70}
-        tint="light"
-        style={s.buttonContainer}
-      >
+      <View style={s.buttonContainer}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
@@ -86,7 +82,7 @@ export function TabBar({ state, descriptors, navigation }) {
             </TouchableOpacity>
           );
         })}
-      </BlurView>
+      </View>
     </View>
   );
 }

@@ -92,7 +92,7 @@ const s = StyleSheet.create({
   },
   reason: {
     ...g.bodyXLarge,
-    color: g.neutral800,
+    color: g.neutral900,
   },
   reasonData: {
     flex: 1,

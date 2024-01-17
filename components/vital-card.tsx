@@ -30,7 +30,7 @@ const s = StyleSheet.create({
   },
   vitalData: {
     ...g.labelMedium,
-    color: g.neutral800,
+    color: g.neutral900,
   },
   vitalDate: {
     ...g.bodySmall,
@@ -77,5 +77,5 @@ export function VitalCard({ vital, vitalsOdd, index }: {
 }
 
 export function VitalCardSkeleton() {
-  return <View style={[s.card, { height: g.size(48) }]} />;
+  return <View style={[s.card, { height: g.size(60) }]} />;
 }

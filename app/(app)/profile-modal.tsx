@@ -225,15 +225,15 @@ export default function ProfileModal() {
   const navigation = useNavigation();
   const { data: patient } = usePatient();
   const { data: coverage } = useCoverage();
-  const defaultValues = {
+  const patientData = {
     coverageID: coverage?.id || '',
     insurer: coverage?.payor ? coverage?.payor[0]?.display : '',
     memberID: coverage?.subscriberId || '',
     groupNumber: coverage?.class ? coverage?.class[0]?.value : null,
-    preferredName: patient?.name[1] ? patient?.name[1]?.given[0] : null,
-    firstName: patient?.name[0]?.given[0] ? patient?.name[0]?.given[0] : null,
-    middleName: patient?.name[0]?.given[1] ? patient?.name[0]?.given[1] : null,
-    lastName: patient?.name[0]?.family ? patient?.name[0]?.family : null,
+    preferredName: patient?.name && patient?.name[1] ? patient?.name[1]?.given[0] : null,
+    firstName: patient?.name && patient?.name[0]?.given[0] ? patient?.name[0]?.given[0] : null,
+    middleName: patient?.name && patient?.name[0]?.given[1] ? patient?.name[0]?.given[1] : null,
+    lastName: patient?.name && patient?.name[0]?.family ? patient?.name[0]?.family : null,
     email: patient?.telecom && patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
       ? patient?.telecom?.find((t: { system: string }) => t.system === 'email')?.value
       : null,
@@ -245,20 +245,22 @@ export default function ProfileModal() {
     city: patient?.address && patient?.address[0]?.city ? patient?.address[0]?.city : null,
     stateAbbreviation: patient?.address && patient?.address[0]?.state ? patient?.address[0]?.state : null,
     postalCode: patient?.address && patient?.address[0]?.postalCode ? patient?.address[0]?.postalCode : null,
-    birthDate: patient?.birthDate || '',
-    gender: capitalizeFirstCharacter(patient?.gender || ''),
+    birthDate: patient?.birthDate ?? '',
+    gender: capitalizeFirstCharacter(patient?.gender ?? ''),
   };
   const {
     control,
     setFocus,
     handleSubmit,
     clearErrors,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, defaultValues },
     reset,
   } = useForm<PatientProfileFormData>({
-    defaultValues,
+    defaultValues: patientData,
     shouldFocusError: false,
   });
+
+  console.log('Hello: ', defaultValues);
 
   const { mutateAsync: onUpdatePatient, isPending } = useUpdatePatient();
   const [showProviderPicker, setShowProviderPicker] = useState<boolean>(false);
@@ -304,7 +306,7 @@ export default function ProfileModal() {
   }, []);
 
   useEffect(() => {
-    reset(defaultValues);
+    reset(patientData);
   }, [coverage, patient]);
 
   useEffect(() => {
@@ -320,7 +322,7 @@ export default function ProfileModal() {
               style: 'destructive',
               onPress: () => {
                 unsubscribe();
-                navigation.dispatch(e.data.action);
+                navigation.dispatch(e.data?.action);
               }
             },
             { text: 'Keep Editing', onPress: () => { } },
@@ -403,16 +405,16 @@ export default function ProfileModal() {
               onPress={() => pickImage(onChange)}
               activeOpacity={0}
             >
-              {Array.isArray(patient?.photo) ? (
-                <Image source={{ uri: image || patient.photo[0].url }} style={s.userImage} />
-              ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
+              {patient?.photo ? (
+                <Image source={{ uri: image ?? patient.photo[0].url }} style={s.userImage} />
+              ) : <FontAwesome name="user-circle-o" size={g.size(72)} color={g.white} />}
               <MaterialIcons name="mode-edit" size={g.size(16)} color={g.white} style={s.editImage} />
             </TouchableOpacity>
           )}
         />
         <View style={s.nameAndBirthDateContainer}>
           <Text style={s.name}>
-            {`${patient?.name[0]?.given[0] || ''} ${patient?.name[0]?.family || ''}`}
+            {`${defaultValues.firstName ?? ''} ${defaultValues.lastName ?? ''}`}
           </Text>
           <View style={s.birthDateContainer}>
             <MaterialCommunityIcons name="cake-variant-outline" size={g.size(16)} color={g.white} />
@@ -455,13 +457,13 @@ export default function ProfileModal() {
                     isVisible={showProviderPicker}
                     swipeDirection="right"
                     onSwipeComplete={() => {
-                      onChange(defaultValues.insurer);
+                      onChange(patientData.insurer);
                       setShowProviderPicker(false);
                     }}
                     customBackdrop={(
                       <TouchableWithoutFeedback
                         onPress={() => {
-                          onChange(defaultValues.insurer);
+                          onChange(patientData.insurer);
                           setShowProviderPicker(false);
                         }}
                       >
@@ -797,13 +799,13 @@ export default function ProfileModal() {
                     isVisible={showStatePicker}
                     swipeDirection="right"
                     onSwipeComplete={() => {
-                      onChange(defaultValues.stateAbbreviation);
+                      onChange(patientData.stateAbbreviation);
                       setShowStatePicker(false);
                     }}
                     customBackdrop={(
                       <TouchableWithoutFeedback
                         onPress={() => {
-                          onChange(defaultValues.stateAbbreviation);
+                          onChange(patientData.stateAbbreviation);
                           setShowStatePicker(false);
                         }}
                       >
@@ -869,13 +871,13 @@ export default function ProfileModal() {
                     isVisible={showGenderPicker}
                     swipeDirection="right"
                     onSwipeComplete={() => {
-                      onChange(defaultValues.gender);
+                      onChange(patientData.gender);
                       setShowGenderPicker(false);
                     }}
                     customBackdrop={(
                       <TouchableWithoutFeedback
                         onPress={() => {
-                          onChange(defaultValues.gender);
+                          onChange(patientData.gender);
                           setShowGenderPicker(false);
                         }}
                       >

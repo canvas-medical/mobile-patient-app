@@ -10,11 +10,11 @@ export default function Procedures() {
   return (
     <StackListView
       title="Procedures"
-      icon={<FontAwesome5 name="procedures" size={g.size(36)} color={g.black} />}
+      icon={<FontAwesome5 name="procedures" size={g.size(36)} color={g.neutral800} />}
       isLoading={isLoading}
       refetch={refetch}
     >
-      {data.map((procedure: Procedure) => (
+      {data?.map((procedure: Procedure) => (
         <ProcedureCard
           key={procedure.id}
           procedure={procedure}

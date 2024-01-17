@@ -23,7 +23,7 @@ export const ConsentPDFs = {
 async function consentCreate(data: { consent: string }) {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const pdfResponse = await fetch(ConsentPDFs[data.consent]);
+  const pdfResponse = await fetch(ConsentPDFs[data?.consent]);
   const blob = await pdfResponse.blob();
   const reader = new FileReader();
   reader.readAsDataURL(blob);
@@ -51,7 +51,7 @@ async function consentCreate(data: { consent: string }) {
       category: [
         {
           coding: [
-            ConsentCodes[data.consent]
+            ConsentCodes[data?.consent]
           ]
         }
       ],
@@ -61,7 +61,7 @@ async function consentCreate(data: { consent: string }) {
       sourceAttachment: {
         contentType: 'application/pdf',
         data: base64,
-        title: data.consent,
+        title: data?.consent,
       },
       provision: {
         period: {

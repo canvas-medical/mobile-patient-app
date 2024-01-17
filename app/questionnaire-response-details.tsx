@@ -30,9 +30,11 @@ const s = StyleSheet.create({
     aspectRatio: 1,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     padding: g.size(36),
+    backgroundColor: g.tertiaryBlue,
+    overflow: 'hidden',
+    borderBottomLeftRadius: g.size(28),
+    borderBottomRightRadius: g.size(28),
   },
   lineLabel: {
     ...g.titleXSmall,
@@ -67,8 +69,10 @@ const s = StyleSheet.create({
     padding: g.size(24),
   },
   title: {
-    textAlign: 'right',
+    textAlign: 'center',
     ...g.titleLarge,
+    color: g.white,
+    // marginTop: g.size(8),
   },
 });
 
@@ -78,12 +82,12 @@ export default function QuestionnaireResponseDetails() {
   const { data, isLoading } = useQuestionnaireResponse(responseId as string);
   return (
     <View style={s.container}>
-      <Image
-        style={s.graphic}
-        source={graphic}
-        contentFit="fill"
-      />
       <View style={s.header}>
+        <Image
+          style={s.graphic}
+          source={graphic}
+          contentFit="fill"
+        />
         <TouchableOpacity onPress={() => router.back()}>
           <Feather
             name="arrow-left"
