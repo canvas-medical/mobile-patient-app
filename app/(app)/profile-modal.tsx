@@ -272,8 +272,6 @@ export default function ProfileModal() {
     shouldFocusError: false,
   });
 
-  console.log('Hello: ', defaultValues);
-
   const { mutateAsync: onUpdatePatient, isPending } = useUpdatePatient();
   const { mutateAsync: cancelCoverage, isPending: cancelPending } = useCancelCoverage();
   const [showProviderPicker, setShowProviderPicker] = useState<boolean>(false);
