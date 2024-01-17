@@ -23,7 +23,7 @@ export default function Allergies() {
   return (
     <StackListView
       title="Allergies"
-      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.neutral800} />}
+      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

@@ -110,7 +110,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
-    color: g.neutral800,
+    color: g.neutral700,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -219,7 +219,7 @@ export default function Billing() {
         <View style={s.container}>
           <Header hideBackButton />
           <View style={s.titleContainer}>
-            <Feather name="credit-card" size={g.size(36)} color={g.neutral800} />
+            <Feather name="credit-card" size={g.size(36)} color={g.neutral700} />
             <Text style={s.title}>
               Billing
             </Text>

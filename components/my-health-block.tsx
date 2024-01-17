@@ -17,13 +17,18 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  iconContainer: {
+    width: g.size(28),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   label: {
     ...g.titleXSmall,
-    color: g.neutral800,
+    color: g.neutral700,
   },
   labelContainer: {
     flexDirection: 'row',
-    gap: g.size(8),
+    gap: g.size(4),
     alignItems: 'center',
   },
   viewAll: {
@@ -42,7 +47,8 @@ const s = StyleSheet.create({
     ...g.bodyMedium,
     color: g.neutral700,
     opacity: 0.8,
-    paddingLeft: g.size(16),
+    marginLeft: g.size(32),
+    marginTop: -g.size(8),
   },
 });
 export function MyHealthBlock(
@@ -66,7 +72,9 @@ export function MyHealthBlock(
     <View style={s.container}>
       <View style={s.headerContainer}>
         <View style={s.labelContainer}>
-          {icon}
+          <View style={s.iconContainer}>
+            {icon}
+          </View>
           <Text style={s.label}>
             {title}
           </Text>

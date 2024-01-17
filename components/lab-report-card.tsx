@@ -74,7 +74,7 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
         </Text>
         {isDiagnosticData && isLoadingDiagnosticURI && <ActivityIndicator color={g.primaryBlue} />}
         {isDiagnosticData && !isLoadingDiagnosticURI && !!data?.uri
-          ? <Feather name="chevron-right" size={g.size(28)} color={g.neutral800} style={s.chevron} />
+          ? <Feather name="chevron-right" size={g.size(28)} color={g.neutral700} style={s.chevron} />
           : !isLoadingDiagnosticURI && <MaterialCommunityIcons name="note-off-outline" size={g.size(20)} color={g.neutral600} />
         }
       </View>
