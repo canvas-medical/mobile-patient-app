@@ -110,6 +110,8 @@ export default function Dashboard() {
     setRefreshing(false);
   };
 
+  console.log('Hello: ', vitals);
+
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
@@ -161,7 +163,10 @@ export default function Dashboard() {
             <View style={s.vitalsContainer}>
               {loadingVitals
                 ? Array.from(Array(6)).map((_, i) => { const key = i * 2; return (<VitalCardSkeleton key={key} />); })
-                : vitals?.map((vital: Vital, i: number) => (
+                // TODO: This is to account for vitals without a display name.
+                // Once this is fixed, we can remove the line with the filter and uncomment the line below.
+                // : vitals?.map((vital: Vital, i: number) => (
+                : vitals?.filter((vital) => !!vital.code.coding[0]?.display)?.map((vital: Vital, i: number) => (
                   <VitalCard
                     index={i}
                     key={vital.id}

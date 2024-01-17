@@ -9,9 +9,10 @@ const s = StyleSheet.create({
     borderTopRightRadius: g.size(40),
     overflow: 'hidden',
     paddingTop: g.size(8),
-    paddingBottom: g.size(20),
+    paddingBottom: Platform.OS === 'android' ? g.size(8) : g.size(20),
     paddingHorizontal: g.size(10),
     backgroundColor: g.white,
+    elevation: 8,
   },
   container: {
     position: 'absolute',
@@ -41,7 +42,7 @@ const s = StyleSheet.create({
 export function TabBar({ state, descriptors, navigation }) {
   return (
     <View style={s.container}>
-      <View style={[s.buttonContainer, Platform.OS === 'android' && { paddingBottom: g.size(0) }]}>
+      <View style={s.buttonContainer}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;

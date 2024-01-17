@@ -57,7 +57,7 @@ const s = StyleSheet.create({
   },
   inputContainer: {
     position: 'absolute',
-    bottom: g.size(20),
+    bottom: Platform.OS === 'ios' ? g.size(20) : g.size(40),
     left: '50%',
     transform: [{ translateX: -((g.width - g.size(32)) / 2) }],
     width: g.width - g.size(32),

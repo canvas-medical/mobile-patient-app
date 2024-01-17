@@ -50,7 +50,8 @@ const s = StyleSheet.create({
   },
   header: {
     paddingHorizontal: g.size(36),
-    paddingVertical: g.size(24),
+    paddingBottom: g.size(24),
+    paddingTop: Platform.OS === 'android' ? g.size(40) : g.size(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
     borderBottomLeftRadius: g.size(28),
@@ -91,6 +92,7 @@ const s = StyleSheet.create({
     gap: g.size(24),
     paddingHorizontal: g.size(16),
     paddingTop: Platform.OS === 'ios' ? g.size(28) : g.size(36),
+    paddingBottom: Platform.OS === 'android' && g.size(60),
   },
   sectionContainer: {
     gap: g.size(12),
@@ -175,6 +177,7 @@ export default function BookAppointment() {
 
   function buttonLabel() {
     switch (true) {
+      case !appointmentType: return 'Select appointment type';
       case !appointmentReason: return 'Select a reason';
       case !futureDateSelected: return 'Select a date';
       case !Object.keys(selectedSchedule).length: return 'Select a practitioner';
@@ -323,7 +326,7 @@ export default function BookAppointment() {
           theme="primary"
           style={[
             s.bookButton,
-            { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(12) }
+            { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(36) }
           ]}
           onPress={() => onCreateAppointment({
             startTime: selectedSlot?.start,

@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Text,
+  Platform,
 } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -32,7 +33,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: g.size(12),
-    marginBottom: g.size(8),
+    marginBottom: Platform.OS === 'ios' ? g.size(12) : g.size(32),
     opacity: 0.9,
   },
   container: {

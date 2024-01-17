@@ -38,6 +38,7 @@ const global = {
     shadowOpacity: 0.4,
     shadowRadius: Dimensions.get('window').width * (4 / 393),
     shadowColor: '#0f172a', // neutral900
+    elevation: 4,
   },
   cardShadow: {
     shadowOffset: {
@@ -47,6 +48,7 @@ const global = {
     shadowOpacity: 0.25,
     shadowRadius: Dimensions.get('window').width * (2 / 393),
     shadowColor: '#94a3b8', // neutral400
+    elevation: 1,
   },
 
   // Typography

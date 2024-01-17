@@ -3,7 +3,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView, ActivityIndicator,
+  ScrollView, ActivityIndicator, Platform,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Image } from 'expo-image';
@@ -31,7 +31,8 @@ const s = StyleSheet.create({
   },
   header: {
     paddingHorizontal: g.size(36),
-    paddingVertical: g.size(24),
+    paddingBottom: g.size(24),
+    paddingTop: Platform.OS === 'android' ? g.size(40) : g.size(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
     borderBottomLeftRadius: g.size(28),
