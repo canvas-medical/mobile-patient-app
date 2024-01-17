@@ -144,7 +144,7 @@ export default function Coverage() {
                       placeholder="Select your insurance provider"
                       onFocus={() => clearErrors()}
                       options={Object.keys(Insurers)}
-                      onChange={onChange}
+                      onChange={(newValue) => { if (newValue !== 'Select One') onChange(newValue); }}
                       value={value}
                       forwardedRef={ref}
                       error={errors.insurer}

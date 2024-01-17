@@ -1,5 +1,5 @@
 /**
- * This file contains all of the services used by the app.
+ * This file contains all the services used by the app.
  *
  * @module services
  */
@@ -10,7 +10,7 @@ export { useClinicLocation } from '@services/clinic-location';
 export { useCommunication, useCommunicationSubmit } from '@services/communication';
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';
-export { useCreateCoverage, Insurers, useCoverage } from '@services/coverage';
+export { useCreateCoverage, Insurers, useCoverage, useCancelCoverage } from '@services/coverage';
 export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
 export { useEducationalMaterials } from '@services/educational-materials';
 export { useGoals } from '@services/goals';
