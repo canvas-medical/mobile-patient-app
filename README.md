@@ -2,7 +2,8 @@
 ![Static Badge](https://img.shields.io/github/v/release/brewerdigital-llc/FHIR-Dashboard)
 
 # VivoCare Health
-![app-screenshots](https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/c6954d45-9dfe-4a8d-b87d-ca05bce4e23f)
+<img width="1286" alt="iphone-screenshots" src="https://github.com/brewerdigital-llc/VivoCare/assets/33329110/361701c3-51b1-4021-a295-5dbe199890e4">
+
 ## Overview
 
 VivoCare Health is a mobile application developed using Expo. The application provides a user-friendly interface for managing your medical information and appointments, making it a valuable tool for both healthcare providers and patients.  The application allows users to:  
