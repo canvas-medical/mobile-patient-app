@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.neutral800,
+    color: g.neutral700,
     marginLeft: g.size(4),
   },
   scrollSection: {

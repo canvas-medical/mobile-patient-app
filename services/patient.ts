@@ -94,7 +94,7 @@ async function patientCreate(data: PatientProfileFormData): Promise<void> {
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: PatientProfileFormData) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: PatientProfileFormData) => patientCreate(data),
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });

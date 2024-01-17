@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.neutral800,
+    color: g.neutral700,
   },
   scrollSection: {
     gap: g.size(16),

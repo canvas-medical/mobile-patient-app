@@ -290,7 +290,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Questionnaires"
             viewAll={false}
-            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.neutral800} />}
+            icon={<MaterialCommunityIcons name="comment-question-outline" size={g.size(20)} color={g.neutral800} />}
             loading={loadingQuestionnaireResponses}
           >
             {loadingQuestionnaireResponses
