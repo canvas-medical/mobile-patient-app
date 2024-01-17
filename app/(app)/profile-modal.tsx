@@ -262,13 +262,10 @@ export default function ProfileModal() {
     clearErrors,
     formState: { errors, isDirty },
     reset,
-    formState,
   } = useForm<PatientProfileFormData>({
     defaultValues,
     shouldFocusError: false,
   });
-
-  console.log('====: ', formState);
 
   const { mutateAsync: onUpdatePatient, isPending } = useUpdatePatient();
   const { mutateAsync: cancelCoverage, isPending: cancelPending } = useCancelCoverage();
