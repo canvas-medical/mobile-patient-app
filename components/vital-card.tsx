@@ -30,7 +30,9 @@ const s = StyleSheet.create({
   },
   vitalData: {
     ...g.labelMedium,
+    flex: 1,
     color: g.neutral900,
+    flexWrap: 'wrap',
   },
   vitalDate: {
     ...g.bodySmall,
@@ -68,7 +70,7 @@ export function VitalCard({ vital, vitalsOdd, index }: {
         <Text style={s.vitalDate}>
           {formatDate(issued, { year: '2-digit', month: 'numeric', day: 'numeric' })}
         </Text>
-        <Text style={s.vitalData}>
+        <Text numberOfLines={1} style={s.vitalData}>
           {vitalsValueSwitch(coding[0].display, vital)}
         </Text>
       </View>
