@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import { ApiError, PatientProfileFormData } from '@interfaces';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { router, useNavigation } from 'expo-router';
+import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import Bugsnag from '@bugsnag/expo';
 import { coverageCreate, coverageUpdate } from './coverage';
@@ -151,7 +151,7 @@ export function usePatient() {
  * @returns {Promise<void>} - A promise that resolves when the patient record is updated successfully.
  * @throws {Error} - If there is an error updating the patient record.
  */
-async function updatePatient(data: PatientProfileFormData): Promise<any> {
+async function updatePatient(data: PatientProfileFormData): Promise<void> {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
   const body = {
@@ -205,7 +205,6 @@ async function updatePatient(data: PatientProfileFormData): Promise<any> {
   if (!res.ok) throw new Error();
   const Json: null | ApiError = await res.json();
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
-  return !!data.avatar;
 }
 
 /**
@@ -214,9 +213,6 @@ async function updatePatient(data: PatientProfileFormData): Promise<any> {
  * @returns A mutation function that can be used to update a patient.
  */
 export function useUpdatePatient() {
-  const navigation = useNavigation();
-  const routes = navigation.getState()?.routes;
-  const prevRoute = routes[routes.length - 2];
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: PatientProfileFormData) => {
@@ -230,20 +226,17 @@ export function useUpdatePatient() {
       }
       return updatePatient(patientData);
     },
-    onSuccess: (avatarUpdated: boolean) => {
-      queryClient.invalidateQueries({ queryKey: ['patient_data', 'patient_coverage'] });
+    onSuccess: () => {
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['patient_data'] }),
+        queryClient.invalidateQueries({ queryKey: ['patient_coverage'] })
+      ]);
       Alert.alert(
         'Your profile has been updated',
         '',
         [{
           text: 'OK',
-          onPress: () => {
-            if (prevRoute && avatarUpdated) {
-              router.back(); router.push(prevRoute);
-            } else {
-              router.back();
-            }
-          },
+          onPress: () => router.back(),
         }],
         { cancelable: false }
       );

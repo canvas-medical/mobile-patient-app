@@ -76,7 +76,8 @@ const s = StyleSheet.create({
     ...g.bodyMedium,
     color: g.neutral700,
     opacity: 0.8,
-    paddingLeft: g.size(16),
+    marginLeft: g.size(32),
+    marginTop: -g.size(8),
   }
 });
 

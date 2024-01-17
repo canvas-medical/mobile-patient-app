@@ -313,7 +313,10 @@ export function useCancelCoverage() {
   return useMutation({
     mutationFn: (data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) => coverageCancel(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['patient_data', 'patient_coverage'] });
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['patient_data'] }),
+        queryClient.invalidateQueries({ queryKey: ['patient_coverage'] })
+      ]);
       Alert.alert(
         'Success',
         'Your coverage has been successfully removed.',
