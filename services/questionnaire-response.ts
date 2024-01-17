@@ -21,7 +21,7 @@ async function getQuestionnaireResponses(): Promise<QuestionnaireResponse[]> {
   });
   if (!res.ok) throw new Error();
   const json = await res.json();
-  return json.entry?.map((entry) => entry.resource);
+  return json.entry?.map((entry) => entry.resource) || [];
 }
 
 /**

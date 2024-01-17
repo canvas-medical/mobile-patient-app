@@ -7,11 +7,11 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   allergy: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
   },
   allergyInfo: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
   },
   row: {
     flex: 1,
@@ -41,7 +41,7 @@ export function AllergyCard({ allergy }: { allergy: Allergy }) {
       case 'severe':
         return g.severityRed;
       default:
-        return g.black;
+        return g.neutral900;
     }
   };
 

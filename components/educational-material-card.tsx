@@ -19,13 +19,13 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
   displayText: {
     flex: 1,
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
   },
   row: {
     flexDirection: 'row',
@@ -62,7 +62,7 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
           {display}
         </Text>
         {data
-          ? !!url && <Feather name="chevron-right" size={g.size(28)} color={g.black} style={s.chevron} />
+          ? !!url && <Feather name="chevron-right" size={g.size(28)} color={g.neutral800} style={s.chevron} />
           : <ActivityIndicator color={g.primaryBlue} />}
       </View>
       <Text style={s.date}>

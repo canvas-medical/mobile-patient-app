@@ -7,7 +7,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   date: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
   datesContainer: {
@@ -16,11 +16,11 @@ const s = StyleSheet.create({
   goal: {
     flex: 1,
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
   },
   goalInfo: {
     ...g.bodyMedium,
-    color: g.black,
+    color: g.neutral700,
   },
   priorityLabel: {
     ...g.bodySmall,

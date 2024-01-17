@@ -33,7 +33,7 @@ export async function schedulePushNotification({
   // Checking to see if this appointment already has a push notification scheduled
   if (!checkedIfScheduled) {
     const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-    const alreadyScheduled = scheduled.find((notification) => notification.content.data.data === appointmentID);
+    const alreadyScheduled = scheduled.find((notification) => notification.content.data?.data === appointmentID);
     if (alreadyScheduled) { return; }
   }
 

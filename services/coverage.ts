@@ -43,16 +43,16 @@ export const Insurers = {
  * Creates a coverage resource for a patient with the specified insurer and member ID.
  *
  * @param data - The data required to create the coverage resource.
- * @param data.insurer - The name of the insurer.
- * @param data.memberID - The member ID of the patient.
- * @param data.groupNumber - The group number (optional).
+ * @param data?.insurer - The name of the insurer.
+ * @param data?.memberID - The member ID of the patient.
+ * @param data?.groupNumber - The group number (optional).
  * @throws {Error} If there is an issue with creating the coverage resource.
  */
 export async function coverageCreate(data: { insurer: string, memberID: string, groupNumber?: string }) {
   const token = await getToken();
-  const provider = Insurers[data.insurer];
+  const provider = Insurers[data?.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const classes = data.groupNumber ? [
+  const classes = data?.groupNumber ? [
     {
       type: {
         coding: [
@@ -62,7 +62,7 @@ export async function coverageCreate(data: { insurer: string, memberID: string, 
           }
         ]
       },
-      value: data.groupNumber
+      value: data?.groupNumber
     },
   ] : null;
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage`, {
@@ -87,7 +87,7 @@ export async function coverageCreate(data: { insurer: string, memberID: string, 
       subscriber: {
         reference: `Patient/${patientId}`
       },
-      subscriberId: data.memberID,
+      subscriberId: data?.memberID,
       beneficiary: {
         reference: `Patient/${patientId}`
       },
@@ -170,17 +170,17 @@ export function useCoverage() {
  * Updates coverage resource for a patient with the specified insurer and member ID.
  *
  * @param data - The data required to update the coverage resource.
- * @param data.coverageID - The ID of the coverage resource.
- * @param data.insurer - The name of the insurer.
- * @param data.memberID - The member ID of the patient.
- * @param data.groupNumber - The group number (optional).
+ * @param data?.coverageID - The ID of the coverage resource.
+ * @param data?.insurer - The name of the insurer.
+ * @param data?.memberID - The member ID of the patient.
+ * @param data?.groupNumber - The group number (optional).
  * @throws {Error} If there is an issue with creating the coverage resource.
  */
 export async function coverageUpdate(data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) {
   const token = await getToken();
-  const provider = Insurers[data.insurer];
+  const provider = Insurers[data?.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const classes = data.groupNumber ? [
+  const classes = data?.groupNumber ? [
     {
       type: {
         coding: [
@@ -190,10 +190,10 @@ export async function coverageUpdate(data: { coverageID: string, insurer: string
           }
         ]
       },
-      value: data.groupNumber
+      value: data?.groupNumber
     },
   ] : null;
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data.coverageID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data?.coverageID}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@ export async function coverageUpdate(data: { coverageID: string, insurer: string
       subscriber: {
         reference: `Patient/${patientId}`
       },
-      subscriberId: data.memberID,
+      subscriberId: data?.memberID,
       beneficiary: {
         reference: `Patient/${patientId}`
       },

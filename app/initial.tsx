@@ -30,6 +30,7 @@ const s = StyleSheet.create({
   },
   or: {
     ...g.titleLarge,
+    color: g.white,
     textAlign: 'center'
   },
   pickerOverlay: {
@@ -43,9 +44,11 @@ const s = StyleSheet.create({
   },
   subtitleEmphasized: {
     ...g.titleSmall,
+    color: g.white,
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
     marginBottom: g.size(20),
   },
   version: {
@@ -67,7 +70,6 @@ export default function Initial() {
     { label: 'Select a patient', value: '' },
     { label: 'Kristen - Senior Female', value: 'a2d481743b774bbbb7084254cf384bac' },
     { label: 'Owen - Onc Single', value: '458b394369f34c50b63e46535b4f7722' },
-    { label: 'Donna - 52 Female', value: 'ae16fa0710894e999390abdec2859906' },
   ];
 
   const signInDemoPatient = async () => {

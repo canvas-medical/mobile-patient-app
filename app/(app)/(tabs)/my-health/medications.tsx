@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.black,
+    color: g.neutral800,
   },
   scrollSection: {
     gap: g.size(16),
@@ -18,13 +18,13 @@ const s = StyleSheet.create({
 export default function Medications() {
   const { data, isLoading, refetch } = useMedications();
   const activeStatuses = ['active', 'intended'];
-  const activeMedications = data.filter((med: Medication) => activeStatuses.includes(med.status));
-  const expiredMedications = data.filter((med: Medication) => !activeStatuses.includes(med.status));
+  const activeMedications = data?.filter((med: Medication) => activeStatuses.includes(med.status));
+  const expiredMedications = data?.filter((med: Medication) => !activeStatuses.includes(med.status));
 
   return (
     <StackListView
       title="Medications"
-      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.black} />}
+      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.neutral800} />}
       isLoading={isLoading}
       refetch={refetch}
     >

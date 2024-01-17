@@ -157,34 +157,32 @@ export default function Messages() {
           ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
           : (
             <>
-              {
-                messages.length ? (
-                  <ScrollView
-                    ref={scrollViewRef}
-                    contentContainerStyle={s.scrollContent}
-                    onLayout={({ nativeEvent: { layout } }) => {
-                      if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
-                      setContainerLayout(layout.height);
-                    }}
-                    onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-                  >
-                    {messages.map((mess: Message) => (
-                      <MessageBlock
-                        received={mess.resource.sender.type === 'Practitioner'}
-                        key={mess.resource.id}
-                        message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
-                      />
-                    ))}
-                  </ScrollView>
-                ) : (
-                  <ZeroState
-                    image={chat}
-                    imageAspectRatio={1}
-                    marginBottom={g.size(60)}
-                    text="Send a message below to get started!"
-                  />
-                )
-              }
+              {messages.length ? (
+                <ScrollView
+                  ref={scrollViewRef}
+                  contentContainerStyle={s.scrollContent}
+                  onLayout={({ nativeEvent: { layout } }) => {
+                    if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
+                    setContainerLayout(layout.height);
+                  }}
+                  onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+                >
+                  {messages.map((mess: Message) => (
+                    <MessageBlock
+                      received={mess.resource.sender.type === 'Practitioner'}
+                      key={mess.resource.id}
+                      message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
+                    />
+                  ))}
+                </ScrollView>
+              ) : (
+                <ZeroState
+                  image={chat}
+                  imageAspectRatio={1}
+                  marginBottom={g.size(60)}
+                  text="Send a message below to get started!"
+                />
+              )}
             </>
           )}
         <View style={s.inputContainer}>

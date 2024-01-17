@@ -93,7 +93,7 @@ export default function Appointments() {
           reasonCode = [{ text: '' }],
         } = upcomingAppointment ?? {};
         // Checking if notifications are already scheduled to reduce API calls
-        if (scheduled.find((notification) => notification.content.data.id === id)) return;
+        if (scheduled.find((notification) => notification.content.data?.id === id)) return;
         await schedulePushNotification({
           appointmentStartTime: start,
           formattedTime: formatTime(start, true),
@@ -119,7 +119,7 @@ export default function Appointments() {
         ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
         : (
           <>
-            {data.length ? (
+            {data?.length ? (
               <MaskedView
                 style={s.maskedView}
                 maskElement={(

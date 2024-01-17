@@ -24,16 +24,16 @@ export function vitalsValueSwitch(type: string, vitalData: Vital) {
     case 'Pulse':
     case 'Respiration Rate':
     case 'Waist Circumference':
-      return `${vitalData.valueQuantity.value} ${vitalData.valueQuantity.unit}`;
+      return `${vitalData?.valueQuantity.value} ${vitalData?.valueQuantity.unit}`;
     case 'Body Temperature':
     case 'Oxygen Saturation Arterial':
-      return `${vitalData.valueQuantity.value}${vitalData.valueQuantity.unit}`;
+      return `${vitalData?.valueQuantity.value}${vitalData?.valueQuantity.unit}`;
     case 'Blood Pressure':
-      return `${vitalData.component[0].valueQuantity.value}/${vitalData.component[1].valueQuantity.value}`;
+      return `${vitalData?.component[0].valueQuantity.value}/${vitalData?.component[1].valueQuantity.value}`;
     case 'Height':
-      return `${Math.floor(vitalData.valueQuantity.value / 12)}' ${vitalData.valueQuantity.value % 12}"`;
+      return `${Math.floor(vitalData?.valueQuantity.value / 12)}' ${vitalData?.valueQuantity.value % 12}"`;
     case 'Pulse Rhythm':
-      return vitalData.valueString;
+      return vitalData?.valueString;
     default:
       return 'N/A';
   }

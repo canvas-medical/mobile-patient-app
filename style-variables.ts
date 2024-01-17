@@ -25,7 +25,6 @@ const global = {
   secondaryBlue: '#2154FF', // Middle
   tertiaryBlue: '#093EFE', // Darker
   error: '#DF3C3C30',
-  red: '#ED4337',
   green: '#16a34a',
   severityRed: '#FF0000',
   severityYellow: '#FF8F00',
@@ -57,28 +56,24 @@ const global = {
     fontSize: Dimensions.get('window').width * (16 / 393),
     lineHeight: Dimensions.get('window').width * (24 / 393),
     letterSpacing: 0.1,
-    color: '#FAFAFA',
   },
   titleSmall: {
     fontFamily: 'InterExtraBold',
     fontSize: Dimensions.get('window').width * (20 / 393),
     lineHeight: Dimensions.get('window').width * (24 / 393),
     letterSpacing: 0.1,
-    color: '#FAFAFA',
   },
   titleMedium: {
     fontFamily: 'InterExtraBold',
     fontSize: Dimensions.get('window').width * (24 / 393),
     lineHeight: Dimensions.get('window').width * (28 / 393),
     letterSpacing: 0.15,
-    color: '#FAFAFA',
   },
   titleLarge: {
     fontFamily: 'InterExtraBold',
     fontSize: Dimensions.get('window').width * (32 / 393),
     lineHeight: Dimensions.get('window').width * (36 / 393),
     letterSpacing: 0,
-    color: '#FAFAFA',
   },
   labelXSmall: {
     fontFamily: 'InterMedium',
