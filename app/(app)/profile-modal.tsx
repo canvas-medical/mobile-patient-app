@@ -260,8 +260,6 @@ export default function ProfileModal() {
     shouldFocusError: false,
   });
 
-  console.log('Hello: ', defaultValues);
-
   const { mutateAsync: onUpdatePatient, isPending } = useUpdatePatient();
   const [showProviderPicker, setShowProviderPicker] = useState<boolean>(false);
   const [showStatePicker, setShowStatePicker] = useState<boolean>(false);
