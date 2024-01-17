@@ -40,7 +40,7 @@ const s = StyleSheet.create({
 
 export function TabBar({ state, descriptors, navigation }) {
   return (
-    <View style={[s.container, Platform.OS === 'android' && { marginTop: g.size(16) }]}>
+    <View style={s.container}>
       <View style={[s.buttonContainer, Platform.OS === 'android' && { paddingBottom: g.size(0) }]}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
