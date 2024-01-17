@@ -23,15 +23,16 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     padding: g.size(16),
     paddingTop: g.size(60),
-    borderBottomLeftRadius: g.size(40),
-    borderBottomRightRadius: g.size(40),
   },
   graphic: {
     position: 'absolute',
     top: 0,
-    right: 0,
-    width: g.width * 0.6,
+    left: 0,
+    width: g.width * 0.5,
     aspectRatio: 1.4,
+    transform: [
+      { scaleX: -1 }
+    ]
   },
   name: {
     ...g.titleSmall,
