@@ -13,6 +13,6 @@ export function formatTime(dateStr: string, AMPM: boolean = false, timezone: boo
   let hours = date.getHours();
   const minutes = date.getMinutes();
   const ampm = hours >= 12 ? 'PM' : 'AM';
-  const strTime = `${(hours %= 12) || '12'}:${minutes < 10 ? `0${minutes}` : minutes} ${AMPM ? ampm : ''} ${timeZone || ''}`;
+  const strTime = `${(hours %= 12) || '12'}:${minutes < 10 ? `0${minutes}` : minutes} ${AMPM ? ampm : ''} ${timeZone || ''}`.trimEnd();
   return strTime;
 }
