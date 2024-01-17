@@ -10,6 +10,7 @@ import {
   Keyboard,
   Animated,
   Easing,
+  Platform,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from 'expo-router';
