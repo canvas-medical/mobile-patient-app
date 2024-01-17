@@ -94,7 +94,7 @@ async function patientCreate(data: PatientProfileFormData): Promise<void> {
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: PatientProfileFormData) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: PatientProfileFormData) => patientCreate(data),
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -135,7 +135,7 @@ async function getPatient() {
 /**
  * Custom hook for fetching patient data that handles fetch states, errors, and caching automatically.
  *
- * @returns {QueryResult} The result of the query for patient data?.
+ * @returns {QueryResult} The result of the query for patient data.
  */
 export function usePatient() {
   return useQuery({

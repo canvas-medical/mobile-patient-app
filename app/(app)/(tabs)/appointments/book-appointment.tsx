@@ -49,7 +49,8 @@ const s = StyleSheet.create({
     aspectRatio: 1,
   },
   header: {
-    padding: g.size(36),
+    paddingHorizontal: g.size(36),
+    paddingVertical: g.size(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
     borderBottomLeftRadius: g.size(28),
@@ -224,7 +225,7 @@ export default function BookAppointment() {
             setAppointmentType={setAppointmentType}
             setAppointmentTypeCode={setAppointmentTypeCode}
           />
-          {!!appointmentType && reasonsForDoctorVisitMap[appointmentType] && (
+          {!!appointmentType && (
             <SelectReasonForVisit
               reasonsForDoctorVisit={reasonsForDoctorVisitMap[appointmentType]}
               appointmentReason={appointmentReason}

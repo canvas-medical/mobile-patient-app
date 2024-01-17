@@ -56,7 +56,7 @@ const s = StyleSheet.create({
   },
   sectionLabel: {
     ...g.titleXSmall,
-    color: g.neutral800,
+    color: g.neutral700,
   },
   title: {
     ...g.titleLarge,

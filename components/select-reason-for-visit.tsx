@@ -107,7 +107,9 @@ export function SelectReasonForVisit({
             <View style={s.modal}>
               <Picker
                 selectedValue={provisionalReason}
-                onValueChange={(itemValue) => setProvisionalReason(itemValue)}
+                onValueChange={(itemValue) => {
+                  if (itemValue !== 'Select One') setProvisionalReason(itemValue);
+                }}
               >
                 {reasonsForDoctorVisit?.map((item: { reasonLabel: string }) => (
                   <Picker.Item

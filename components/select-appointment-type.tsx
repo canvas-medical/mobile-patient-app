@@ -112,7 +112,9 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
             <View style={s.modal}>
               <Picker
                 selectedValue={provisionalAppointmentType}
-                onValueChange={(itemValue) => setProvisionalAppointmentType(itemValue)}
+                onValueChange={(itemValue) => {
+                  if (itemValue !== 'Select One') setProvisionalAppointmentType(itemValue);
+                }}
               >
                 {appointmentTypes.map((item: { appointmentTypeLabel: string }) => (
                   <Picker.Item

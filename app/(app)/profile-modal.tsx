@@ -77,6 +77,12 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: g.size(8),
   },
+  cancelInsuranceButton: {
+    width: g.size(24),
+    height: g.size(24),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: g.white,
@@ -481,17 +487,20 @@ export default function ProfileModal() {
               {coverage?.id
                 && (
                   <TouchableOpacity
+                    style={s.cancelInsuranceButton}
                     disabled={!coverage?.id || isPending}
                     onPress={cancelInsuranceConfirmation}
                   >
-                    <MaterialIcons name="delete-forever" size={g.size(24)} color={g.neutral400} />
+                    {cancelPending
+                      ? <ActivityIndicator size="small" color={g.primaryBlue} />
+                      : <MaterialIcons name="delete-forever" size={g.size(24)} color={g.neutral400} />}
                   </TouchableOpacity>
                 )}
             </View>
             <Controller
               name="insurer"
               control={control}
-              rules={{ required: { value: coverage?.id, message: 'Required' } }}
+              rules={{ required: { value: !!coverage?.id, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
@@ -560,7 +569,7 @@ export default function ProfileModal() {
             <Controller
               name="memberID"
               control={control}
-              rules={{ required: { value: coverage?.id, message: 'Required' } }}
+              rules={{ required: { value: !!coverage?.id, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
