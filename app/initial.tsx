@@ -30,6 +30,7 @@ const s = StyleSheet.create({
   },
   or: {
     ...g.titleLarge,
+    color: g.white,
     textAlign: 'center'
   },
   pickerOverlay: {
@@ -43,9 +44,11 @@ const s = StyleSheet.create({
   },
   subtitleEmphasized: {
     ...g.titleSmall,
+    color: g.white,
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
     marginBottom: g.size(20),
   },
   version: {

@@ -40,7 +40,7 @@ const s = StyleSheet.create({
   },
   modalToggleButtonLabel: {
     ...g.bodyLarge,
-    color: g.black,
+    color: g.neutral900,
   },
   modalToggleButtonPlaceholder: {
     color: g.neutral400,
@@ -50,7 +50,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral700,
     marginLeft: g.size(4),
   },
 });
@@ -89,7 +89,7 @@ export function SelectReasonForVisit({
           >
             {appointmentReason || 'Select'}
           </Text>
-          <Feather name="chevron-down" size={g.size(20)} color={g.black} />
+          <Feather name="chevron-down" size={g.size(20)} color={g.neutral700} />
         </TouchableOpacity>
         <View style={s.modalContainer}>
           <Modal
@@ -107,7 +107,9 @@ export function SelectReasonForVisit({
             <View style={s.modal}>
               <Picker
                 selectedValue={provisionalReason}
-                onValueChange={(itemValue) => setProvisionalReason(itemValue)}
+                onValueChange={(itemValue) => {
+                  if (itemValue !== 'Select One') setProvisionalReason(itemValue);
+                }}
               >
                 {reasonsForDoctorVisit?.map((item: { reasonLabel: string }) => (
                   <Picker.Item

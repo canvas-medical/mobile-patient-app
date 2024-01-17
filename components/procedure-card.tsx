@@ -7,12 +7,12 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   procedureDate: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
   procedureType: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
   },
 });
 
@@ -33,8 +33,4 @@ export function ProcedureCard({ procedure }: { procedure: Procedure, }) {
       </Text>
     </CardContainer>
   );
-}
-
-export function ProcedureSkeleton() {
-  return <CardContainer skeleton />;
 }

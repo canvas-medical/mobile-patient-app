@@ -20,6 +20,7 @@ import { Button, Input } from '@components';
 import { updateAction } from '@store';
 import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
+import { PatientProfileFormData } from '@interfaces';
 
 const s = StyleSheet.create({
   container: {
@@ -68,6 +69,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
   },
 });
 
@@ -314,7 +316,7 @@ export default function ContactInformation() {
                 />
               </View>
               <Button
-                onPress={handleSubmit((data: any) => { // TODO: fix type
+                onPress={handleSubmit((data: PatientProfileFormData) => {
                   actions.updateAction(data);
                   onCreatePatient({ ...personalDetails, ...data });
                 })}

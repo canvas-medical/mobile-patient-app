@@ -58,14 +58,14 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
 
-  const answers = Object.keys(data.formData).reduce((arr, key) => {
-    if (!data.formData[key]) return arr;
+  const answers = Object.keys(data?.formData).reduce((arr, key) => {
+    if (!data?.formData[key]) return arr;
 
-    const question = data.questionnaireData.item.find((item) => item.linkId === key);
+    const question = data?.questionnaireData?.item.find((item) => item.linkId === key);
     // For multiple-choice questions we need to return the code and system of the item(s) selected, for text fields we only need to return text
     // TODO: Add support for multi-select choice questions, these have repeat: true in the question object
-    const choiceAnswer = question.type === 'choice' && question.answerOption.find((obj) => obj.valueCoding.code === data.formData[key]);
-    const answer = choiceAnswer || { valueString: data.formData[key] };
+    const choiceAnswer = question.type === 'choice' && question.answerOption.find((obj) => obj.valueCoding.code === data?.formData[key]);
+    const answer = choiceAnswer || { valueString: data?.formData[key] };
     arr.push({
       linkId: key,
       text: question.text,
@@ -86,7 +86,7 @@ async function questionnaireSubmit(data: { formData: { key: string }; questionna
     body: JSON.stringify(
       {
         resourceType: 'QuestionnaireResponse',
-        questionnaire: `Questionnaire/${data.questionnaireData.id}`,
+        questionnaire: `Questionnaire/${data?.questionnaireData?.id}`,
         status: 'completed',
         subject: {
           reference: `Patient/${patientId}`,

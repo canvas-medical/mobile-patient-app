@@ -6,7 +6,7 @@ import {
   Alert
 } from 'react-native';
 import { router } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDiagnosticURI } from '@services';
 import { formatDate } from '@utils';
 import { DiagnosticReport, LabImagingReport, LabReport } from '@interfaces';
@@ -20,13 +20,13 @@ const s = StyleSheet.create({
   },
   date: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
   displayText: {
     flex: 1,
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
   },
   row: {
     flexDirection: 'row',
@@ -60,31 +60,27 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
   return (
     <CardContainer
       onPress={() => {
-        if (data.uri) {
+        if (data?.uri) {
           router.push({
             pathname: 'pdf-modal',
-            params: { uri: data.uri }
+            params: { uri: data?.uri }
           });
         } else Alert.alert('There is no viewable data for this report.');
       }}
     >
       <View style={s.row}>
         <Text style={s.displayText}>
-          {data.display}
+          {data?.display}
         </Text>
-        {isDiagnosticData && isLoadingDiagnosticURI
-          ? <ActivityIndicator color={g.primaryBlue} />
-          : !!data.uri && <Feather name="chevron-right" size={g.size(28)} color={g.black} style={s.chevron} />}
+        {isDiagnosticData && isLoadingDiagnosticURI && <ActivityIndicator color={g.primaryBlue} />}
+        {isDiagnosticData && !isLoadingDiagnosticURI && !!data?.uri
+          ? <Feather name="chevron-right" size={g.size(28)} color={g.neutral800} style={s.chevron} />
+          : !isLoadingDiagnosticURI && <MaterialCommunityIcons name="note-off-outline" size={g.size(20)} color={g.neutral600} />
+        }
       </View>
       <Text style={s.date}>
-        {formatDate(data.date)}
+        {formatDate(data?.date)}
       </Text>
     </CardContainer>
-  );
-}
-
-export function LabReportSkeleton() {
-  return (
-    <CardContainer skeleton />
   );
 }

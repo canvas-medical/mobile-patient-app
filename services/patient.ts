@@ -48,37 +48,37 @@ async function patientCreate(data: PatientProfileFormData): Promise<void> {
       extension: [
         {
           url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
-          valueCode: birthSexCodeSwitch(data.birthSex),
+          valueCode: birthSexCodeSwitch(data?.birthSex),
         },
       ],
       name: [
         {
           use: 'official',
-          family: data.lastName,
-          given: [data.firstName, ...(data.middleName ? [data.middleName] : [])]
+          family: data?.lastName,
+          given: [data?.firstName, ...(data?.middleName ? [data?.middleName] : [])]
         },
-        ...(data.preferredName ? [{
+        ...(data?.preferredName ? [{
           use: 'nickname',
-          given: [data.preferredName]
+          given: [data?.preferredName]
         }] : [])
       ],
       telecom: [
         {
           system: 'phone',
-          value: data.phone,
+          value: data?.phone,
         },
         {
           system: 'email',
-          value: data.email,
+          value: data?.email,
         }
       ],
-      gender: data.gender.toLowerCase(),
-      birthDate: data.birthDate,
+      gender: data?.gender.toLowerCase(),
+      birthDate: data?.birthDate,
       address: [{
-        line: [data.addressLine1, ...(data.addressLine2 ? [data.addressLine2] : [])],
-        city: data.city,
-        state: data.stateAbbreviation,
-        postalCode: data.postalCode
+        line: [data?.addressLine1, ...(data?.addressLine2 ? [data?.addressLine2] : [])],
+        city: data?.city,
+        state: data?.stateAbbreviation,
+        postalCode: data?.postalCode
       }],
     })
   });
@@ -94,7 +94,7 @@ async function patientCreate(data: PatientProfileFormData): Promise<void> {
  */
 export function useCreatePatient() {
   return useMutation({
-    mutationFn: (data: PatientProfileFormData) => patientCreate(data), // TODO: Add types
+    mutationFn: (data: PatientProfileFormData) => patientCreate(data),
     onSuccess: () => router.push('coverage'),
     onError: (e) => {
       Bugsnag.leaveBreadcrumb('Error', { error: e });
@@ -159,39 +159,39 @@ async function updatePatient(data: PatientProfileFormData): Promise<void> {
     extension: [
       {
         url: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex',
-        valueCode: birthSexCodeSwitch(data.birthSex),
+        valueCode: birthSexCodeSwitch(data?.birthSex),
       },
     ],
     name: [
       {
         use: 'official',
-        family: data.lastName,
-        given: [data.firstName, ...(data.middleName ? [data.middleName] : [])]
+        family: data?.lastName,
+        given: [data?.firstName, ...(data?.middleName ? [data?.middleName] : [])]
       },
-      ...(data.preferredName ? [{
+      ...(data?.preferredName ? [{
         use: 'nickname',
-        given: [data.preferredName]
+        given: [data?.preferredName]
       }] : [])
     ],
     telecom: [
       {
         system: 'phone',
-        value: data.phone,
+        value: data?.phone,
       },
       {
         system: 'email',
-        value: data.email,
+        value: data?.email,
       }
     ],
-    gender: data.gender.toLowerCase(),
-    birthDate: data.birthDate,
+    gender: data?.gender.toLowerCase(),
+    birthDate: data?.birthDate,
     address: [{
-      line: [data.addressLine1, ...(data.addressLine2 ? [data.addressLine2] : [])],
-      city: data.city,
-      state: data.stateAbbreviation,
-      postalCode: data.postalCode
+      line: [data?.addressLine1, ...(data?.addressLine2 ? [data?.addressLine2] : [])],
+      city: data?.city,
+      state: data?.stateAbbreviation,
+      postalCode: data?.postalCode
     }],
-    ...(data.avatar) && { photo: [{ data: data.avatar }] },
+    ...(data?.avatar) && { photo: [{ data: data?.avatar }] },
   };
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Patient/${patientId}`, {
     method: 'PUT',

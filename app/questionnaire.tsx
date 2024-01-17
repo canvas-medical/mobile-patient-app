@@ -66,11 +66,12 @@ const s = StyleSheet.create({
   },
   subGreeting: {
     ...g.bodyMedium,
-    color: g.neutral100,
+    color: g.neutral400,
     marginTop: g.size(2),
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
   },
 });
 

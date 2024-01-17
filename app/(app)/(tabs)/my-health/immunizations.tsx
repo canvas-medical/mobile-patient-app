@@ -9,11 +9,11 @@ export default function Immunizations() {
   return (
     <StackListView
       title="Immunizations"
-      icon={<Fontisto name="injection-syringe" size={g.size(36)} color={g.black} />}
+      icon={<Fontisto name="injection-syringe" size={g.size(36)} color={g.neutral800} />}
       isLoading={isLoading}
       refetch={refetch}
     >
-      {data?.length > 0 && data.map((immunization: Immunization) => (
+      {data?.length > 0 && data?.map((immunization: Immunization) => (
         <ImmunizationCard
           key={immunization.id}
           immunization={immunization}

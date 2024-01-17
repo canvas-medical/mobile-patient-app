@@ -11,27 +11,25 @@ import {
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { router } from 'expo-router';
+import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome5, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { FontAwesome5, Feather } from '@expo/vector-icons';
 import { useCreateAppointment, useSchedule, useSlot } from '@services';
 import { formatDate, formatTime } from '@utils';
 import { Schedule, Slot } from '@interfaces';
 import { Button, SelectAppointmentDate, SelectAppointmentType, SelectReasonForVisit } from '@components';
+import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  backButton: {
-    alignSelf: 'flex-start',
-    marginTop: Platform.OS === 'android' ? g.size(48) : g.size(16),
-    marginLeft: g.size(16),
-  },
   bookButton: {
     position: 'absolute',
     left: g.size(16),
     right: g.size(16),
   },
   buttonSelected: {
-    backgroundColor: g.black,
+    backgroundColor: g.secondaryBlue,
+    opacity: 1,
   },
   container: {
     flex: 1,
@@ -39,13 +37,27 @@ const s = StyleSheet.create({
   },
   error: {
     ...g.bodyMedium,
-    color: g.black,
+    color: g.neutral800,
     textAlign: 'center',
     marginBottom: g.size(176),
   },
+  graphic: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: g.width * 0.66,
+    aspectRatio: 1,
+  },
+  header: {
+    paddingHorizontal: g.size(36),
+    paddingVertical: g.size(24),
+    backgroundColor: g.tertiaryBlue,
+    overflow: 'hidden',
+    borderBottomLeftRadius: g.size(28),
+    borderBottomRightRadius: g.size(28),
+  },
   labelSelected: {
-    color: g.primaryBlue,
-    opacity: 1,
+    color: g.white,
   },
   loading: {
     flex: 1,
@@ -58,12 +70,6 @@ const s = StyleSheet.create({
     gap: g.size(16),
     alignItems: 'flex-start',
   },
-  practitionerIcon: {
-    opacity: 0.8,
-  },
-  practitionerIconSelected: {
-    opacity: 1,
-  },
   scheduleButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -73,12 +79,12 @@ const s = StyleSheet.create({
     paddingHorizontal: g.size(16),
     paddingVertical: g.size(8),
     borderRadius: g.size(32),
+    opacity: 0.8,
   },
   scheduleButtonLabel: {
     ...g.bodyLarge,
-    color: g.black,
+    color: g.neutral900,
     flexShrink: 1,
-    opacity: 0.8,
   },
   scrollContent: {
     flexGrow: 1,
@@ -91,7 +97,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral800,
     marginLeft: g.size(4),
   },
   slotButton: {
@@ -102,8 +108,7 @@ const s = StyleSheet.create({
   },
   slotButtonLabel: {
     ...g.labelMedium,
-    color: g.black,
-    opacity: 0.8,
+    color: g.neutral900,
   },
   slotButtonsContainer: {
     flexDirection: 'row',
@@ -112,15 +117,10 @@ const s = StyleSheet.create({
     paddingBottom: g.size(120),
   },
   title: {
+    textAlign: 'center',
     ...g.titleLarge,
-    color: g.black,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: g.size(16),
-    paddingLeft: g.size(20),
-    marginTop: g.size(12),
+    color: g.white,
+    marginTop: g.size(20),
   },
 });
 
@@ -188,14 +188,19 @@ export default function BookAppointment() {
 
   return (
     <View style={s.container}>
-      <TouchableOpacity
-        style={s.backButton}
-        onPress={() => router.back()}
-      >
-        <Feather name="arrow-left" size={g.size(48)} color={g.black} />
-      </TouchableOpacity>
-      <View style={s.titleContainer}>
-        <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.black} />
+      <View style={s.header}>
+        <Image
+          style={s.graphic}
+          source={graphic}
+          contentFit="fill"
+        />
+        <TouchableOpacity onPress={() => router.back()}>
+          <Feather
+            name="arrow-left"
+            size={g.size(36)}
+            color={g.white}
+          />
+        </TouchableOpacity>
         <Text style={s.title}>
           Book Appointment
         </Text>
@@ -220,7 +225,7 @@ export default function BookAppointment() {
             setAppointmentType={setAppointmentType}
             setAppointmentTypeCode={setAppointmentTypeCode}
           />
-          {!!appointmentType && reasonsForDoctorVisitMap[appointmentType] && (
+          {!!appointmentType && (
             <SelectReasonForVisit
               reasonsForDoctorVisit={reasonsForDoctorVisitMap[appointmentType]}
               appointmentReason={appointmentReason}
@@ -258,8 +263,7 @@ export default function BookAppointment() {
                             <FontAwesome5
                               name="user-md"
                               size={g.size(28)}
-                              color={selected ? g.primaryBlue : g.black}
-                              style={selected ? s.practitionerIconSelected : s.practitionerIcon}
+                              color={selected ? g.white : g.neutral800}
                             />
                             <Text
                               style={[s.scheduleButtonLabel, selected && s.labelSelected]}
@@ -287,7 +291,7 @@ export default function BookAppointment() {
                       {formatDate(selectedDate.toISOString())}
                     </Text>
                     <View style={s.slotButtonsContainer}>
-                      {slotData.map((slot: Slot) => {
+                      {slotData?.map((slot: Slot) => {
                         const selected = selectedSlot === slot;
                         return (
                           <TouchableOpacity
@@ -308,8 +312,9 @@ export default function BookAppointment() {
                     </View>
                   </View>
                 )}
-                {!!Object.keys(selectedSchedule).length && slotData.length === 0 && (
-                  <Text style={s.error}>There are no available appointments for the selected date. Please choose a different day.</Text>)}
+                {!!Object.keys(selectedSchedule).length && slotData?.length === 0 && (
+                  <Text style={s.error}>There are no available appointments for the selected date. Please choose a different day.</Text>
+                )}
               </>
             )}
         </ScrollView>

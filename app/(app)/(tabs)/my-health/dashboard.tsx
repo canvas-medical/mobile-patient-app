@@ -39,13 +39,11 @@ import {
   AllergyCard,
   ConditionCard,
   LabReportCard,
-  LabReportSkeleton,
   EducationalMaterialCard,
   GoalCard,
   Header,
   ImmunizationCard,
   MedicationCard,
-  MedicationSkeleton,
   MyHealthBlock,
   ProcedureCard,
   VitalCard,
@@ -76,7 +74,7 @@ const s = StyleSheet.create({
   },
   zeroState: {
     ...g.bodyMedium,
-    color: g.black,
+    color: g.neutral700,
     opacity: 0.8,
     paddingLeft: g.size(16),
   }
@@ -189,7 +187,7 @@ export default function Dashboard() {
             loading={loadingMedications}
           >
             {loadingMedications
-              ? <MedicationSkeleton />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : activeMedications?.map((med: Medication) => (
                 <MedicationCard
                   key={med.id}
@@ -279,7 +277,7 @@ export default function Dashboard() {
             loading={loadingLabs}
           >
             {loadingLabs
-              ? <LabReportSkeleton />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : recentLabs?.map((report: LabImagingReport | DiagnosticReport) => (
                 <LabReportCard
                   key={report.id}
@@ -292,17 +290,17 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Questionnaires"
             viewAll={false}
-            icon={<MaterialCommunityIcons name="file-question" size={g.size(20)} color={g.neutral800} />}
+            icon={<MaterialCommunityIcons name="comment-question-outline" size={g.size(20)} color={g.neutral800} />}
             loading={loadingQuestionnaireResponses}
           >
             {loadingQuestionnaireResponses
-              ? <ActivityIndicator color={g.white} />
+              ? <ActivityIndicator color={g.primaryBlue} />
               : questionnaireResponses?.map((questionnaire: QuestionnaireResponse) => (
                 <QuestionnaireResponseCard
                   key={questionnaire.id}
                   response={questionnaire}
                 />
-              )) || []}
+              ))}
           </MyHealthBlock>
 
           {/* Goals */}
@@ -333,7 +331,7 @@ export default function Dashboard() {
           >
             {loadingEducationalMaterials
               ? <ActivityIndicator color={g.primaryBlue} />
-              : educationalMaterials?.map((item: DocumentResource) => ( // TODO: update type
+              : educationalMaterials?.map((item: DocumentResource) => (
                 <EducationalMaterialCard
                   key={item.id}
                   data={item}

@@ -13,7 +13,7 @@ const s = StyleSheet.create({
     left: 0
   },
   message: {
-    backgroundColor: g.neutral300,
+    backgroundColor: g.neutral200,
     padding: g.size(15),
     borderRadius: g.size(10),
     borderBottomRightRadius: 0,
@@ -37,14 +37,14 @@ const s = StyleSheet.create({
   },
   messageText: {
     ...g.bodyMedium,
-    color: g.black,
+    color: g.neutral900,
   },
   rightArrow: {
     position: 'absolute',
     borderWidth: g.size(10),
     borderColor: g.transparent,
-    borderTopColor: g.neutral300,
-    borderRightColor: g.neutral300,
+    borderTopColor: g.neutral200,
+    borderRightColor: g.neutral200,
     bottom: g.size(-15),
     right: 0
   },

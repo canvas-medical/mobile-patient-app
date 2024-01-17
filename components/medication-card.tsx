@@ -7,11 +7,11 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   date: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
   },
   dosage: {
     ...g.bodyMedium,
-    color: g.black,
+    color: g.neutral700,
     flex: 1,
   },
   dosageAndDateContainer: {
@@ -22,7 +22,7 @@ const s = StyleSheet.create({
   },
   medication: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
     maxWidth: '92%',
   },
 });
@@ -49,8 +49,4 @@ export function MedicationCard({ med }: { med: Medication }) {
       </View>
     </CardContainer>
   );
-}
-
-export function MedicationSkeleton() {
-  return <CardContainer skeleton />;
 }

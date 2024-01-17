@@ -14,13 +14,13 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   answer: {
-    ...g.bodyLarge,
+    ...g.labelMedium,
     flex: 1,
     color: g.neutral900,
   },
   container: {
     flex: 1,
-    backgroundColor: g.tertiaryBlue,
+    backgroundColor: g.white,
   },
   graphic: {
     position: 'absolute',
@@ -30,9 +30,12 @@ const s = StyleSheet.create({
     aspectRatio: 1,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: g.size(36),
+    paddingHorizontal: g.size(36),
+    paddingVertical: g.size(24),
+    backgroundColor: g.tertiaryBlue,
+    overflow: 'hidden',
+    borderBottomLeftRadius: g.size(28),
+    borderBottomRightRadius: g.size(28),
   },
   lineLabel: {
     ...g.titleXSmall,
@@ -58,17 +61,15 @@ const s = StyleSheet.create({
   },
   scroll: {
     flex: 1,
-    backgroundColor: g.white,
-    borderTopLeftRadius: g.size(36),
-    borderTopRightRadius: g.size(36),
   },
   scrollContent: {
     flexGrow: 1,
     padding: g.size(24),
   },
   title: {
-    textAlign: 'right',
+    textAlign: 'center',
     ...g.titleLarge,
+    color: g.white,
   },
 });
 
@@ -78,12 +79,12 @@ export default function QuestionnaireResponseDetails() {
   const { data, isLoading } = useQuestionnaireResponse(responseId as string);
   return (
     <View style={s.container}>
-      <Image
-        style={s.graphic}
-        source={graphic}
-        contentFit="fill"
-      />
       <View style={s.header}>
+        <Image
+          style={s.graphic}
+          source={graphic}
+          contentFit="fill"
+        />
         <TouchableOpacity onPress={() => router.back()}>
           <Feather
             name="arrow-left"

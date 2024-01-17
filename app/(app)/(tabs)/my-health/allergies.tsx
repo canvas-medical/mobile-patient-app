@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.black,
+    color: g.neutral700,
   },
   scrollSection: {
     gap: g.size(16),
@@ -17,13 +17,13 @@ const s = StyleSheet.create({
 
 export default function Allergies() {
   const { data, isLoading, refetch } = useAllergies();
-  const activeAllergies = data.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
-  const inactiveAllergies = data.filter((allergy: Allergy) => allergy.clinicalStatus.text !== 'Active');
+  const activeAllergies = data?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
+  const inactiveAllergies = data?.filter((allergy: Allergy) => allergy.clinicalStatus.text !== 'Active');
 
   return (
     <StackListView
       title="Allergies"
-      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.black} />}
+      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.neutral800} />}
       isLoading={isLoading}
       refetch={refetch}
     >

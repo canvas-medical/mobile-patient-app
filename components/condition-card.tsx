@@ -7,12 +7,12 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   condition: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
     maxWidth: '95%',
   },
   conditionDate: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
 });

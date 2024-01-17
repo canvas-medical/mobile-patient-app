@@ -8,7 +8,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
-    color: g.black,
+    color: g.neutral700,
   },
   scrollSection: {
     gap: g.size(16),
@@ -24,7 +24,7 @@ export default function Goals() {
   return (
     <StackListView
       title="Goals"
-      icon={<Feather name="target" size={g.size(36)} color={g.black} />}
+      icon={<Feather name="target" size={g.size(36)} color={g.neutral800} />}
       isLoading={isLoading}
       refetch={refetch}
     >

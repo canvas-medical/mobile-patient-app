@@ -40,7 +40,7 @@ const s = StyleSheet.create({
   },
   zeroState: {
     ...g.bodyMedium,
-    color: g.black,
+    color: g.neutral700,
     opacity: 0.8,
     paddingLeft: g.size(16),
   },

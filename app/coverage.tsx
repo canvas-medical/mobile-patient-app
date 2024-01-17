@@ -68,6 +68,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
+    color: g.white,
   },
 });
 
@@ -199,7 +200,7 @@ export default function Coverage() {
               </View>
               <View style={s.buttonContainer}>
                 <Button
-                  onPress={handleSubmit((data: any) => onCreateCoverage(data))} // TODO: Type
+                  onPress={handleSubmit((data: FormData) => onCreateCoverage(data))}
                   label={isPending ? 'Submitting...' : 'Submit'}
                   theme="primary"
                 />

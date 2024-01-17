@@ -7,12 +7,12 @@ import { CardContainer } from './card-container';
 const s = StyleSheet.create({
   date: {
     ...g.bodySmall,
-    color: g.black,
+    color: g.neutral600,
     alignSelf: 'flex-end',
   },
   label: {
     ...g.labelMedium,
-    color: g.black,
+    color: g.neutral900,
     maxWidth: '92%',
   },
 });

@@ -50,9 +50,9 @@ export const Insurers = {
  */
 export async function coverageCreate(data: { insurer: string, memberID: string, groupNumber?: string }) {
   const token = await getToken();
-  const provider = Insurers[data.insurer];
+  const provider = Insurers[data?.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const classes = data.groupNumber ? [
+  const classes = data?.groupNumber ? [
     {
       type: {
         coding: [
@@ -62,7 +62,7 @@ export async function coverageCreate(data: { insurer: string, memberID: string, 
           }
         ]
       },
-      value: data.groupNumber
+      value: data?.groupNumber
     },
   ] : null;
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage`, {
@@ -87,7 +87,7 @@ export async function coverageCreate(data: { insurer: string, memberID: string, 
       subscriber: {
         reference: `Patient/${patientId}`
       },
-      subscriberId: data.memberID,
+      subscriberId: data?.memberID,
       beneficiary: {
         reference: `Patient/${patientId}`
       },
@@ -178,9 +178,9 @@ export function useCoverage() {
  */
 export async function coverageUpdate(data: { coverageID: string, insurer: string, memberID: string, groupNumber: string | undefined }) {
   const token = await getToken();
-  const provider = Insurers[data.insurer];
+  const provider = Insurers[data?.insurer];
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const classes = data.groupNumber ? [
+  const classes = data?.groupNumber ? [
     {
       type: {
         coding: [
@@ -190,10 +190,10 @@ export async function coverageUpdate(data: { coverageID: string, insurer: string
           }
         ]
       },
-      value: data.groupNumber
+      value: data?.groupNumber
     },
   ] : null;
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data.coverageID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage/${data?.coverageID}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@ export async function coverageUpdate(data: { coverageID: string, insurer: string
       subscriber: {
         reference: `Patient/${patientId}`
       },
-      subscriberId: data.memberID,
+      subscriberId: data?.memberID,
       beneficiary: {
         reference: `Patient/${patientId}`
       },
