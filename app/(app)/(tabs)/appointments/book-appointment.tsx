@@ -226,7 +226,7 @@ export default function BookAppointment() {
             setAppointmentType={setAppointmentType}
             setAppointmentTypeCode={setAppointmentTypeCode}
           />
-          {!!appointmentType && (
+          {!!appointmentType && reasonsForDoctorVisitMap[appointmentType] && (
             <SelectReasonForVisit
               reasonsForDoctorVisit={reasonsForDoctorVisitMap[appointmentType]}
               appointmentReason={appointmentReason}

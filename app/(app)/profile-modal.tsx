@@ -34,7 +34,7 @@ import {
   Feather, FontAwesome5, FontAwesome, Fontisto, MaterialCommunityIcons, MaterialIcons
 } from '@expo/vector-icons';
 import { PatientProfileFormData } from '@interfaces';
-import { useUpdatePatient, usePatient, useCoverage, Insurers } from '@services';
+import { useUpdatePatient, usePatient, useCoverage, Insurers, useCancelCoverage } from '@services';
 import { capitalizeFirstCharacter, clearHistory, formatDate, formatPhoneNumber } from '@utils';
 import { Button } from '@components';
 import { americanStatesArray } from '@constants';
@@ -90,7 +90,7 @@ const s = StyleSheet.create({
     paddingBottom: g.size(2),
     paddingRight: g.size(2),
   },
-    graphic: {
+  graphic: {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -134,6 +134,18 @@ const s = StyleSheet.create({
   },
   inputRequired: {
     color: g.severityRed,
+  },
+  insuranceContainer: {
+    gap: g.size(8),
+    marginTop: g.size(24),
+    padding: g.size(16),
+    borderWidth: g.size(1),
+    borderColor: g.newNeutral300,
+    borderRadius: g.size(8),
+  },
+  insuranceHeader: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   lastListItem: {
     borderBottomWidth: 0,
@@ -219,7 +231,7 @@ export default function ProfileModal() {
   const queryClient = useQueryClient();
   const navigation = useNavigation();
   const { data: patient } = usePatient();
-  const { data: coverage } = useCoverage();
+  const { data: coverage, refetch: refetchCoverage } = useCoverage();
   const defaultValues = {
     coverageID: coverage?.id || '',
     insurer: coverage?.payor ? coverage?.payor[0]?.display : '',
@@ -256,6 +268,7 @@ export default function ProfileModal() {
   });
 
   const { mutateAsync: onUpdatePatient, isPending } = useUpdatePatient();
+  const { mutateAsync: cancelCoverage, isPending: cancelPending } = useCancelCoverage();
   const [showProviderPicker, setShowProviderPicker] = useState<boolean>(false);
   const [showStatePicker, setShowStatePicker] = useState<boolean>(false);
   const [showGenderPicker, setShowGenderPicker] = useState<boolean>(false);
@@ -366,6 +379,31 @@ export default function ProfileModal() {
     );
   };
 
+  const cancelInsuranceConfirmation = () => {
+    Alert.alert(
+      'Are you sure?',
+      'This will remove your coverage',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Remove Coverage',
+          style: 'destructive',
+          onPress: async () => {
+            const insurer = coverage?.payor?.[0]?.display ?? null;
+            const memberID = coverage?.subscriberId ?? null;
+            const groupNumber = coverage?.class?.[0]?.value ?? null;
+            await cancelCoverage({ coverageID: coverage?.id, insurer, memberID, groupNumber });
+            await refetchCoverage();
+            reset();
+          }
+        },
+      ]
+    );
+  };
+
   return (
     <View style={s.container}>
       <View style={s.header}>
@@ -416,36 +454,6 @@ export default function ProfileModal() {
             </Text>
           </View>
         </View>
-        <View style={s.actionContainer}>
-          <View style={s.actionButtonContainer}>
-            <TouchableOpacity
-              style={s.actionButton}
-              onPress={() => logout()}
-            >
-              <Text style={s.actionButtonLabel}>
-                Logout
-              </Text>
-              <MaterialIcons name="logout" size={g.size(24)} color={g.white} />
-            </TouchableOpacity>
-          </View>
-          <View style={s.actionDivider} />
-          <View style={s.actionButtonContainer}>
-            <TouchableOpacity
-              style={s.actionButton}
-              onPress={handleSubmit((data: PatientProfileFormData) => {
-                Keyboard.dismiss();
-                onUpdatePatient(data);
-                reset(data);
-              })}
-              disabled={!isDirty || isPending}
-            >
-              <Text style={[s.actionButtonLabel, !isDirty && s.actionButtonLabelDisabled]}>
-                {isPending ? 'Saving...' : 'Save Changes'}
-              </Text>
-              <Feather name="edit-2" size={g.size(22)} color={g.white} style={!isDirty && s.actionButtonLabelDisabled} />
-            </TouchableOpacity>
-          </View>
-        </View>
       </View>
       <KeyboardAvoidingView
         behavior="padding"
@@ -457,17 +465,28 @@ export default function ProfileModal() {
           style={s.scroll}
           contentContainerStyle={s.scrollContent}
         >
-          <View style={s.patientDataListItem}>
-            <View style={s.iconLabelContainer}>
-              <FontAwesome5 name="address-card" size={g.size(22)} color={g.newNeutral400} />
-              <Text style={s.patientDataLabel}>
-                Insurance
-              </Text>
+          <View style={s.insuranceContainer}>
+            <View style={s.insuranceHeader}>
+              <View style={s.iconLabelContainer}>
+                <FontAwesome5 name="address-card" size={g.size(22)} color={g.newNeutral400} />
+                <Text style={s.patientDataLabel}>
+                  Insurance
+                </Text>
+              </View>
+              {coverage?.id
+                && (
+                  <TouchableOpacity
+                    disabled={!coverage?.id || isPending}
+                    onPress={cancelInsuranceConfirmation}
+                  >
+                    <MaterialIcons name="delete-forever" size={g.size(24)} color={g.newNeutral400} />
+                  </TouchableOpacity>
+                )}
             </View>
             <Controller
               name="insurer"
               control={control}
-              rules={{ required: { value: true, message: 'Required' } }}
+              rules={{ required: { value: coverage?.id, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
@@ -497,7 +516,9 @@ export default function ProfileModal() {
                     <View style={s.modal}>
                       <Picker
                         selectedValue={value}
-                        onValueChange={(itemValue) => onChange(itemValue)}
+                        onValueChange={(itemValue) => {
+                          if (itemValue !== 'Select One') onChange(itemValue);
+                        }}
                       >
                         {Object.keys(Insurers).map((option) => (
                           <Picker.Item
@@ -534,7 +555,7 @@ export default function ProfileModal() {
             <Controller
               name="memberID"
               control={control}
-              rules={{ required: { value: true, message: 'Required' } }}
+              rules={{ required: { value: coverage?.id, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
@@ -852,7 +873,10 @@ export default function ProfileModal() {
                       <Button
                         label="Select"
                         theme="primary"
-                        onPress={() => onChange(value)}
+                        onPress={() => {
+                          onChange(value);
+                          setShowStatePicker(false);
+                        }}
                       />
                     </View>
                   </Modal>
@@ -949,10 +973,10 @@ export default function ProfileModal() {
         </ScrollView>
         <AnimatedTouchableOpacity
           style={[s.saveButton,
-            !isDirty && s.saveButtonDisabled,
-            isPending && s.saveButtonLoading,
+          !isDirty && s.saveButtonDisabled,
+          isPending && s.saveButtonLoading,
             animatedStyles,
-            { bottom: keyboardHeight + g.size(24) }]}
+          { bottom: keyboardHeight + g.size(24) }]}
           onPress={handleSubmit((data: any) => {
             Keyboard.dismiss();
             onUpdatePatient(data);
