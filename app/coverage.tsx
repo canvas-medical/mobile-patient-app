@@ -134,7 +134,10 @@ export default function Coverage() {
                 <Controller
                   name="insurer"
                   control={control}
-                  rules={{ required: { value: true, message: 'Required' } }}
+                  rules={{
+                    required: { value: true, message: 'Required' },
+                    validate: (value) => value !== 'Select One'
+                  }}
                   render={({ field: { onChange, value, ref } }) => (
                     <Input
                       type="selector"
