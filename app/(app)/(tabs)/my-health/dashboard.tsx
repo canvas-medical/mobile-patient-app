@@ -62,7 +62,7 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    gap: g.size(16),
+    gap: g.size(32),
     paddingHorizontal: g.size(16),
     paddingTop: g.size(32),
   },

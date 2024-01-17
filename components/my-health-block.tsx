@@ -11,7 +11,6 @@ const s = StyleSheet.create({
   container: {
     flex: 1,
     gap: g.size(16),
-    paddingBottom: g.size(16),
   },
   headerContainer: {
     flexDirection: 'row',
