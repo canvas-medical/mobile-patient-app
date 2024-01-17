@@ -47,7 +47,7 @@ export function QuestionnaireResponseCard({ response }: { response: Questionnair
         <Text style={s.displayText}>
           {response.item[0].text}
         </Text>
-        <Feather name="chevron-right" size={g.size(28)} color={g.neutral800} style={s.chevron} />
+        <Feather name="chevron-right" size={g.size(28)} color={g.neutral700} style={s.chevron} />
       </View>
       <Text style={s.date}>
         {formatDate(response.authored)}

@@ -24,7 +24,7 @@ export default function Goals() {
   return (
     <StackListView
       title="Goals"
-      icon={<Feather name="target" size={g.size(36)} color={g.neutral800} />}
+      icon={<Feather name="target" size={g.size(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

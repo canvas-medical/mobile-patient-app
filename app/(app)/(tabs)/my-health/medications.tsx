@@ -24,7 +24,7 @@ export default function Medications() {
   return (
     <StackListView
       title="Medications"
-      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.neutral800} />}
+      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

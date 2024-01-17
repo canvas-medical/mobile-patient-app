@@ -10,7 +10,7 @@ export default function LabResults() {
   return (
     <StackListView
       title="Lab Results"
-      icon={<FontAwesome5 name="vial" size={g.size(36)} color={g.neutral800} />}
+      icon={<FontAwesome5 name="vial" size={g.size(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

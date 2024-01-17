@@ -34,7 +34,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
-    color: g.neutral800,
+    color: g.neutral700,
   },
   titleContainer: {
     flexDirection: 'row',

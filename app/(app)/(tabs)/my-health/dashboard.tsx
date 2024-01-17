@@ -154,7 +154,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Vitals"
             viewAll={false}
-            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.neutral800} />}
+            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.neutral700} />}
             loading={loadingVitals}
           >
             <View style={s.vitalsContainer}>
@@ -183,7 +183,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/medications"
             title="Medications"
             viewAll={!!medications?.length}
-            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.neutral800} />}
+            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.neutral700} />}
             loading={loadingMedications}
           >
             {loadingMedications
@@ -201,7 +201,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/allergies"
             title="Allergies"
             viewAll={!!allergies?.length}
-            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.neutral800} />}
+            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.neutral700} />}
             loading={loadingAllergies}
           >
             {loadingAllergies
@@ -219,7 +219,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/procedures"
             title="Procedures"
             viewAll={procedures?.length > 1}
-            icon={<FontAwesome5 name="procedures" size={g.size(20)} color={g.neutral800} />}
+            icon={<FontAwesome5 name="procedures" size={g.size(18)} color={g.neutral700} />}
             loading={loadingProcedures}
           >
             {loadingProcedures
@@ -237,7 +237,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/immunizations"
             title="Immunizations"
             viewAll={immunizations?.length > 1}
-            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.neutral800} />}
+            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.neutral700} />}
             loading={loadingImmunizations}
           >
             {loadingImmunizations
@@ -255,7 +255,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/conditions"
             title="Conditions"
             viewAll={!!conditions?.length}
-            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.neutral800} />}
+            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.neutral700} />}
             loading={loadingConditions}
           >
             {loadingConditions
@@ -273,7 +273,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/lab-results"
             title="Labs"
             viewAll={!!labs?.length}
-            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.neutral800} />}
+            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.neutral700} />}
             loading={loadingLabs}
           >
             {loadingLabs
@@ -290,7 +290,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Questionnaires"
             viewAll={false}
-            icon={<MaterialCommunityIcons name="comment-question-outline" size={g.size(20)} color={g.neutral800} />}
+            icon={<MaterialCommunityIcons name="comment-question-outline" size={g.size(20)} color={g.neutral700} />}
             loading={loadingQuestionnaireResponses}
           >
             {loadingQuestionnaireResponses
@@ -308,7 +308,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/goals"
             title="Goals"
             viewAll={!!goals?.length}
-            icon={<Feather name="target" size={g.size(20)} color={g.neutral800} />}
+            icon={<Feather name="target" size={g.size(20)} color={g.neutral700} />}
             loading={loadingGoals}
           >
             {loadingGoals
@@ -326,7 +326,7 @@ export default function Dashboard() {
             viewAllRoute="my-health/education"
             title="Educational Materials"
             viewAll={educationalMaterials?.length > 1}
-            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.neutral800} />}
+            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.neutral700} />}
             loading={false}
           >
             {loadingEducationalMaterials

@@ -37,7 +37,7 @@ const s = StyleSheet.create({
   },
   error: {
     ...g.bodyMedium,
-    color: g.neutral800,
+    color: g.neutral700,
     textAlign: 'center',
     marginBottom: g.size(176),
   },
@@ -97,7 +97,7 @@ const s = StyleSheet.create({
   },
   sectionHeader: {
     ...g.labelMedium,
-    color: g.neutral800,
+    color: g.neutral700,
     marginLeft: g.size(4),
   },
   slotButton: {

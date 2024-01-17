@@ -9,7 +9,7 @@ export default function Immunizations() {
   return (
     <StackListView
       title="Immunizations"
-      icon={<Fontisto name="injection-syringe" size={g.size(36)} color={g.neutral800} />}
+      icon={<Fontisto name="injection-syringe" size={g.size(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

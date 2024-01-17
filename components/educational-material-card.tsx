@@ -62,7 +62,7 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
           {display}
         </Text>
         {data
-          ? !!url && <Feather name="chevron-right" size={g.size(28)} color={g.neutral800} style={s.chevron} />
+          ? !!url && <Feather name="chevron-right" size={g.size(28)} color={g.neutral700} style={s.chevron} />
           : <ActivityIndicator color={g.primaryBlue} />}
       </View>
       <Text style={s.date}>

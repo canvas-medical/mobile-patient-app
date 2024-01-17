@@ -32,6 +32,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: g.size(12),
+    marginBottom: g.size(8),
     opacity: 0.9,
   },
   container: {
@@ -60,7 +61,7 @@ const s = StyleSheet.create({
   },
   title: {
     ...g.titleLarge,
-    color: g.neutral800,
+    color: g.neutral700,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -110,7 +111,7 @@ export default function Appointments() {
     <View style={s.container}>
       <Header hideBackButton />
       <View style={s.titleContainer}>
-        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.neutral800} />
+        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.neutral700} />
         <Text style={s.title}>
           Appointments
         </Text>
