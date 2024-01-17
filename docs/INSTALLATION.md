@@ -66,6 +66,14 @@ If these keys are not included, the associated features will not work but the ap
 
 - `EXPO_PUBLIC_BUGSNAG_API_KEY` and `BUGSNAG_API_KEY`: These are specific to the Bugsnag platform. When you create an account and register an application with Bugsnag, you will be provided with these credentials.
 
+## Setup Demo Patients
+
+To allow users to log in as demo patients you'll need to:
+
+1. [Create demo patients](https://www.loom.com/share/d8238cf4bdac4b0691f493045ff15f28?sid=f2a35c29-ec8f-43dc-9fcb-c101bfb5d63b) through Canvas
+2. Add their IDs and names to the `demoPatients` object in [`app/index.tsx`](https://github.com/brewerdigital-llc/VivoCare/blob/main/app/initial.tsx#L69). 
+
+
 ## Set up Expo
 
 After creating an account, run
