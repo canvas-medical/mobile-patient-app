@@ -134,10 +134,7 @@ export default function Coverage() {
                 <Controller
                   name="insurer"
                   control={control}
-                  rules={{
-                    required: { value: true, message: 'Required' },
-                    validate: (value) => value !== 'Select One'
-                  }}
+                  rules={{ required: { value: true, message: 'Required' } }}
                   render={({ field: { onChange, value, ref } }) => (
                     <Input
                       type="selector"
@@ -147,7 +144,7 @@ export default function Coverage() {
                       placeholder="Select your insurance provider"
                       onFocus={() => clearErrors()}
                       options={Object.keys(Insurers)}
-                      onChange={onChange}
+                      onChange={(newValue) => { if (newValue !== 'Select One') onChange(value); }}
                       value={value}
                       forwardedRef={ref}
                       error={errors.insurer}
