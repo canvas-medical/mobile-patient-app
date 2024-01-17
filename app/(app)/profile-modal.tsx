@@ -500,7 +500,7 @@ export default function ProfileModal() {
             <Controller
               name="insurer"
               control={control}
-              rules={{ required: { value: coverage?.id, message: 'Required' } }}
+              rules={{ required: { value: !!coverage?.id, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
@@ -569,7 +569,7 @@ export default function ProfileModal() {
             <Controller
               name="memberID"
               control={control}
-              rules={{ required: { value: coverage?.id, message: 'Required' } }}
+              rules={{ required: { value: !!coverage?.id, message: 'Required' } }}
               render={({ field: { onChange, value } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
