@@ -112,7 +112,7 @@ export default function Dashboard() {
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
-  const vitalsFiltered = vitals?.filter((vital) => !!vital.code.coding[0]?.display);
+  const vitalsFiltered = vitals?.filter((vital) => !!vital.code.coding[0]?.display) ?? [];
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));
