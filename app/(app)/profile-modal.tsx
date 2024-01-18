@@ -60,7 +60,7 @@ const s = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? g.size(16) : g.size(40),
+    top: Platform.OS === 'ios' ? g.size(20) : g.size(44),
     left: g.size(16),
   },
   backdrop: {
@@ -426,7 +426,7 @@ export default function ProfileModal() {
           style={s.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Feather name="arrow-left" size={g.size(48)} color={g.white} />
+          <Feather name="arrow-left" size={g.size(40)} color={g.white} />
         </TouchableOpacity>
         <View style={s.logoutButton}>
           <TouchableOpacity
@@ -443,10 +443,7 @@ export default function ProfileModal() {
           name="avatar"
           control={control}
           render={({ field: { onChange } }) => (
-            <TouchableOpacity
-              onPress={() => pickImage(onChange)}
-              activeOpacity={0}
-            >
+            <TouchableOpacity onPress={() => pickImage(onChange)}>
               {patient?.photo ? (
                 <Image source={{ uri: image ?? patient.photo[0].url }} style={s.userImage} />
               ) : <FontAwesome name="user-circle-o" size={g.size(72)} color={g.white} />}

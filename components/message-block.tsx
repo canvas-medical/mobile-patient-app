@@ -58,6 +58,7 @@ export function MessageBlock({ received, message }: { received: boolean, message
             baseStyle={s.messageReceivedText}
             source={{ html: message }}
             tagsStyles={{ p: { padding: 0, margin: 0, } }}
+            contentWidth={(g.width - g.size(40)) * 0.9}
           />
           <View style={s.leftArrow} />
         </View>

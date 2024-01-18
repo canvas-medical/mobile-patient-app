@@ -11,7 +11,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { QueryObserverResult } from '@tanstack/react-query';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { Header } from '@components';
+import { Header } from '@components/header';
 import { g } from '@styles';
 
 const s = StyleSheet.create({

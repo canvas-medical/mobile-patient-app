@@ -49,13 +49,14 @@ const s = StyleSheet.create({
     aspectRatio: 1,
   },
   header: {
-    paddingHorizontal: g.size(36),
+    paddingHorizontal: g.size(20),
     paddingBottom: g.size(24),
     paddingTop: Platform.OS === 'android' ? g.size(40) : g.size(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
     borderBottomLeftRadius: g.size(28),
     borderBottomRightRadius: g.size(28),
+    alignItems: 'flex-start',
   },
   labelSelected: {
     color: g.white,
@@ -119,10 +120,11 @@ const s = StyleSheet.create({
     paddingBottom: g.size(120),
   },
   title: {
-    textAlign: 'center',
     ...g.titleLarge,
     color: g.white,
     marginTop: g.size(20),
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
 
@@ -200,7 +202,7 @@ export default function BookAppointment() {
         <TouchableOpacity onPress={() => router.back()}>
           <Feather
             name="arrow-left"
-            size={g.size(36)}
+            size={g.size(40)}
             color={g.white}
           />
         </TouchableOpacity>

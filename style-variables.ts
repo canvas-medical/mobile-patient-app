@@ -26,6 +26,7 @@ const global = {
   tertiaryBlue: '#093EFE', // Darker
   error: '#DF3C3C30',
   green: '#16a34a',
+  red: '#FF0000', // For dev use only
   severityRed: '#FF0000',
   severityYellow: '#FF8F00',
   severityGreen: '#008000',
