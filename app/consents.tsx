@@ -16,10 +16,10 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: g.size(12),
-    marginBottom: 'auto',
   },
   consentsContainer: {
-    marginBottom: 'auto',
+    flex: 1,
+    gap: g.size(16),
   },
   link: {
     ...g.bodyMedium,
