@@ -94,6 +94,14 @@ const s = StyleSheet.create({
     ...g.labelMedium,
     color: g.white,
   },
+  paymentAmount: {
+    ...g.labelSmall,
+    color: g.neutral900,
+  },
+  paymentDate: {
+    ...g.bodyMedium,
+    color: g.neutral600,
+  },
   paymentHistoryItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -308,11 +316,11 @@ export default function Billing() {
                           <Text style={s.label}>Payment History</Text>
                           {paymentNotices?.map((notice: PaymentNotice) => (
                             <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={{ color: g.neutral900 }}>
+                              <Text style={s.paymentAmount}>
                                 $
                                 {notice.amount.value.toFixed(2)}
                               </Text>
-                              <Text style={{ color: g.neutral900 }}>{formatDate(notice.created)}</Text>
+                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
                             </View>
                           ))}
                         </View>
