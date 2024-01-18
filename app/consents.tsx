@@ -63,7 +63,7 @@ export default function Consents() {
             onPress={() =>
               router.push({
                 pathname: 'pdf-modal',
-                params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess }
+                params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess || null }
               })}
           >
             <Text style={s.link}>General Consent Document</Text>
