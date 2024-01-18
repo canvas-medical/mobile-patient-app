@@ -14,6 +14,7 @@ import graphic from '@assets/images/graphic.png';
 const s = StyleSheet.create({
   backButton: {
     marginLeft: g.size(8),
+    justifyContent: 'center',
   },
   container: {
     position: 'relative',
@@ -68,7 +69,7 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
           style={s.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Feather name="arrow-left" size={g.size(48)} color={g.white} />
+          <Feather name="arrow-left" size={g.size(40)} color={g.white} />
         </TouchableOpacity>
       )}
       <TouchableOpacity

@@ -112,6 +112,7 @@ export default function Dashboard() {
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
+  const vitalsFiltered = vitals?.filter((vital) => !!vital.code.coding[0]?.display) ?? [];
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));
@@ -161,18 +162,18 @@ export default function Dashboard() {
             <View style={s.vitalsContainer}>
               {loadingVitals
                 ? Array.from(Array(6)).map((_, i) => { const key = i * 2; return (<VitalCardSkeleton key={key} />); })
-                // TODO: This is to account for vitals without a display name.
-                // Once this is fixed, we can remove the line with the filter and uncomment the line below.
+                // TODO: vitalsFiltered is to account for vitals without a display name.
+                // Once this is fixed, we can remove the filter and uncomment the line below.
                 // : vitals?.map((vital: Vital, i: number) => (
-                : vitals?.filter((vital) => !!vital.code.coding[0]?.display)?.map((vital: Vital, i: number) => (
+                : vitalsFiltered?.map((vital: Vital, i: number) => (
                   <VitalCard
                     index={i}
                     key={vital.id}
                     vital={vital}
-                    vitalsOdd={vitals.length % 2 !== 0}
+                    vitalsOdd={vitalsFiltered.length % 2 !== 0}
                   />
                 ))}
-              {!loadingVitals && !vitals?.length && (
+              {!loadingVitals && !vitalsFiltered?.length && (
                 <Text style={s.zeroState}>
                   No Active
                   {' '}

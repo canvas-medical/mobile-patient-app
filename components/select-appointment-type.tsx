@@ -10,7 +10,7 @@ import {
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import { Feather } from '@expo/vector-icons';
-import { Button } from '@components';
+import { Button } from '@components/button';
 import { g } from '@styles';
 
 const s = StyleSheet.create({

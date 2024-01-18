@@ -32,13 +32,14 @@ const s = StyleSheet.create({
     aspectRatio: 1,
   },
   header: {
-    paddingHorizontal: g.size(36),
+    paddingHorizontal: g.size(20),
     paddingBottom: g.size(24),
     paddingTop: Platform.OS === 'android' ? g.size(40) : g.size(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
     borderBottomLeftRadius: g.size(28),
     borderBottomRightRadius: g.size(28),
+    alignItems: 'flex-start',
   },
   lineLabel: {
     ...g.titleXSmall,
@@ -70,9 +71,10 @@ const s = StyleSheet.create({
     padding: g.size(24),
   },
   title: {
-    textAlign: 'center',
     ...g.titleLarge,
     color: g.white,
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
 
@@ -91,7 +93,7 @@ export default function QuestionnaireResponseDetails() {
         <TouchableOpacity onPress={() => router.back()}>
           <Feather
             name="arrow-left"
-            size={g.size(36)}
+            size={g.size(40)}
             color={g.white}
           />
         </TouchableOpacity>
@@ -109,6 +111,7 @@ export default function QuestionnaireResponseDetails() {
             <>
               {data?.item.map(({ answer, text }, i) => (
                 <View
+                  key={text}
                   style={[
                     s.questionContainer,
                     i !== data.item.length - 1 && s.questionContainerBottomBorder,

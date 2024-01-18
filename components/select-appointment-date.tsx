@@ -11,7 +11,7 @@ import {
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Modal from 'react-native-modal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Button } from '@components';
+import { Button } from '@components/button';
 import { formatDate } from '@utils';
 import { g } from '@styles';
 

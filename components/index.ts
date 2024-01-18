@@ -12,6 +12,7 @@ export { LabReportCard } from '@components/lab-report-card';
 export { MedicationCard } from '@components/medication-card';
 export { MessageBlock } from '@components/message-block';
 export { MyHealthBlock } from '@components/my-health-block';
+export { OnboardingScreen } from '@components/onboarding-screen';
 export { ProcedureCard } from '@components/procedure-card';
 export { QuestionnaireResponseCard } from '@components/questionnaire-response-card';
 export { SelectReasonForVisit } from '@components/select-reason-for-visit';
