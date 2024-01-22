@@ -117,8 +117,6 @@ export default function Messages() {
     setRefreshing(false);
   };
 
-  console.log('Hello: ', messages.length);
-
   useEffect(() => {
     if (hasNextPage && messages.length) {
       fetchNextPage();

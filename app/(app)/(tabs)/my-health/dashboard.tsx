@@ -95,8 +95,6 @@ export default function Dashboard() {
   const { data: labs, isLoading: loadingLabs, refetch: refetchLabResults } = useLabResults();
   const { data: educationalMaterials, isLoading: loadingEducationalMaterials, refetch: refetchEducationalMaterials } = useEducationalMaterials();
 
-  console.log('Hello: ', vitals);
-
   const onRefresh = async () => {
     setRefreshing(true);
     await refetchObservations();
@@ -111,8 +109,6 @@ export default function Dashboard() {
     await refetchEducationalMaterials();
     setRefreshing(false);
   };
-
-  console.log('Hello: ', vitals);
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 

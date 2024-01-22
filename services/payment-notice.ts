@@ -21,7 +21,6 @@ async function getPaymentNotices() {
     }
   });
   const json = await res.json();
-  console.log('Hello: ', json);
   return json.entry?.map((entry) => entry.resource).reverse() || [];
 }
 
