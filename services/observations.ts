@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
@@ -18,31 +18,22 @@ async function getObservations() {
     }
   });
   const json = await res.json();
-  return (
-    json.entry?.map((entry) => entry.resource)
-      .filter((resource) => !!resource.valueQuantity || !!resource.valueString)
-      .reduce((acc, current) => {
-        const existingIndex = acc.findIndex((item) => item.code.coding[0].display === current.code.coding[0].display);
-        if (current.code.coding[0].display === 'Note') acc.push(current);
-        else if (existingIndex > -1) {
-          const existingItem = acc[existingIndex];
-          if (new Date(existingItem.effectiveDateTime) < new Date(current.effectiveDateTime)) {
-            acc[existingIndex] = current;
-          }
-        } else acc.push(current);
-        return acc;
-      }, []) ?? []
-  );
+  return json.entry?.map((entry) => entry.resource) ?? [];
 }
 
 /**
- * Custom hook for fetching observations data that handles fetch states, errors, and caching automatically.
+ * Custom hook for fetching observation data using infinite query.
  *
- * @returns {QueryResult} The result of the query for observations.
+ * @returns {InfiniteQueryResult} The result of the infinite query for the observation data.
  */
 export function useObservations() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['observations'],
-    queryFn: () => getObservations(),
+    queryFn: getObservations,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.length < 100) return undefined;
+      return lastPageParam + 100;
+    },
   });
 }

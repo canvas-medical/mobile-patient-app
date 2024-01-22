@@ -1,6 +1,7 @@
 export interface Vital {
   id: string;
   issued: string;
+  effectiveDateTime: string;
   code: {
     coding: any[];
   };

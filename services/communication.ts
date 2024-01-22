@@ -10,7 +10,7 @@ import { getToken } from './access-token';
  *
  * @returns {Promise<Array<Object>>} - A promise that resolves to an array of communication message objects.
  */
-async function getCommunication({ pageParam: offset }) {
+async function getCommunications({ pageParam: offset }) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?patient=Patient/${patientID}&_count=100&_offset=${offset}`, {
@@ -29,10 +29,10 @@ async function getCommunication({ pageParam: offset }) {
  *
  * @returns {InfiniteQueryResult} The result of the infinite query for the communication data.
  */
-export function useCommunication() {
+export function useCommunications() {
   return useInfiniteQuery({
     queryKey: ['communications'],
-    queryFn: getCommunication,
+    queryFn: getCommunications,
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.length < 100) return undefined;
