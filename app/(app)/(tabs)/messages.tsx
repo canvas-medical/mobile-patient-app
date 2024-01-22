@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   View,
   KeyboardAvoidingView,
-  ScrollView,
   Keyboard,
   Animated,
   Easing,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useFocusEffect } from 'expo-router';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { FlashList } from '@shopify/flash-list';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
 import { useKeyboardVisible } from '@utils';
-import { Header, MessageBlock, ZeroState } from '@components';
+import { FlashListSeparator, Header, MessageBlock, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
@@ -48,7 +48,7 @@ const s = StyleSheet.create({
   input: {
     ...g.bodyMedium,
     color: g.neutral800,
-    backgroundColor: g.neutral200,
+    backgroundColor: g.neutral150,
     width: g.width * 0.8,
     alignSelf: 'center',
     borderRadius: g.size(20),
@@ -58,13 +58,12 @@ const s = StyleSheet.create({
   },
   inputContainer: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? g.size(20) : g.size(40),
     left: '50%',
     transform: [{ translateX: -((g.width - g.size(32)) / 2) }],
     width: g.width - g.size(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: g.neutral200,
+    backgroundColor: g.neutral150,
     borderRadius: g.size(20),
     minHeight: g.size(36),
   },
@@ -77,11 +76,9 @@ const s = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
-    paddingTop: g.size(36),
     paddingHorizontal: g.size(20),
-    paddingBottom: g.size(96),
-    gap: g.size(16),
+    paddingTop: g.size(72), // This is actually bottom padding due to the FlashList being inverted
+    paddingBottom: g.size(36), // This is actually top padding due to the FlashList being inverted
   },
 });
 
@@ -89,17 +86,44 @@ export default function Messages() {
   const tabBarHeight = useBottomTabBarHeight();
   const keyboardVisible = useKeyboardVisible();
   const opacityValue = useRef(new Animated.Value(0)).current;
-  const [containerLayout, setContainerLayout] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [size, setSize] = useState<number>(g.size(32));
-  const { data: messages, isLoading, refetch } = useCommunication();
+  const {
+    data,
+    isLoading,
+    refetch,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage
+  } = useCommunication();
+  const messages = useMemo(() => data?.pages?.flat()
+    .filter((item: Message) => !!item?.payload)
+    .sort((a: Message, b: Message) => {
+      const aDate = new Date(a.sent || a.received);
+      const bDate = new Date(b.sent || b.received);
+      return bDate.getTime() - aDate.getTime();
+    }) ?? [], [data]);
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
-  const scrollViewRef = useRef<ScrollView>();
+  const flashListRef = useRef<FlashList<any>>();
   const buttonDisabled = message.length === 0;
   const updateSize = (num: number) => {
     if (num > g.size(32) && num < g.size(500)) { setSize(num); }
   };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    if (hasNextPage && messages.length) {
+      fetchNextPage();
+      flashListRef.current?.scrollToIndex({ index: 0, animated: true });
+    }
+  }, [hasNextPage, messages.length]);
 
   useEffect(() => {
     // Setting messages to refetch every 30 seconds when the user is on the messaging screen
@@ -109,18 +133,11 @@ export default function Messages() {
     };
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      scrollViewRef?.current?.scrollToEnd();
-    }, [])
-  );
-
   useEffect(() => {
     if (!isSuccess) return;
     setMessage('');
     refetch();
     setSize(g.size(32));
-    Keyboard.dismiss();
   }, [isSuccess]);
 
   function toggleKeyBoard() {
@@ -135,6 +152,17 @@ export default function Messages() {
   useEffect(() => {
     toggleKeyBoard();
   }, [keyboardVisible]);
+
+  const inputBottomPositionSwitch = () => {
+    switch (Platform.OS) {
+      case 'ios':
+        return g.size(20);
+      case 'android':
+        return keyboardVisible ? g.size(60) : g.size(40);
+      default:
+        return g.size(20);
+    }
+  };
 
   return (
     <View style={[s.container, { paddingBottom: tabBarHeight }]}>
@@ -152,30 +180,49 @@ export default function Messages() {
       </View>
       <KeyboardAvoidingView
         style={s.chatContainer}
-        behavior="height"
+        behavior={(Platform.OS === 'ios' && 'height') || undefined}
       >
         {isLoading
           ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
           : (
             <>
               {messages.length ? (
-                <ScrollView
-                  ref={scrollViewRef}
+                <FlashList
+                  ref={flashListRef}
+                  inverted
+                  data={messages}
                   contentContainerStyle={s.scrollContent}
-                  onLayout={({ nativeEvent: { layout } }) => {
-                    if (layout.height < containerLayout) scrollViewRef.current.scrollToEnd({ animated: true });
-                    setContainerLayout(layout.height);
-                  }}
-                  onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
-                >
-                  {messages.map((mess: Message) => (
+                  renderItem={({ item }) => (
                     <MessageBlock
-                      received={mess.resource.sender.type === 'Practitioner'}
-                      key={mess.resource.id}
-                      message={mess.resource?.payload && mess.resource.payload[0]?.contentString}
+                      received={item.sender.type === 'Practitioner'}
+                      key={item.id}
+                      message={item?.payload && item.payload[0]?.contentString}
+                      sentTime={item.sent}
                     />
-                  ))}
-                </ScrollView>
+                  )}
+                  refreshControl={(
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                      tintColor={g.primaryBlue}
+                      colors={[g.primaryBlue]}
+                      progressViewOffset={tabBarHeight}
+                    />
+                  )}
+                  ItemSeparatorComponent={() => FlashListSeparator()}
+                  estimatedItemSize={g.size(150)}
+                  onEndReached={() => {
+                    if (hasNextPage) fetchNextPage();
+                  }}
+                  onEndReachedThreshold={1}
+                  ListFooterComponent={isFetchingNextPage && (
+                    <ActivityIndicator
+                      size="large"
+                      color={g.primaryBlue}
+                      style={{ marginBottom: g.size(20) }}
+                    />
+                  )}
+                />
               ) : (
                 <ZeroState
                   image={chat}
@@ -186,7 +233,12 @@ export default function Messages() {
               )}
             </>
           )}
-        <View style={s.inputContainer}>
+        <View
+          style={{
+            ...s.inputContainer,
+            bottom: inputBottomPositionSwitch(),
+          }}
+        >
           <TextInput
             style={{ ...s.input, height: size }}
             multiline
@@ -204,7 +256,10 @@ export default function Messages() {
             ? <ActivityIndicator size={g.size(39)} style={s.button} color={g.primaryBlue} />
             : (
               <TouchableOpacity
-                onPress={() => onMessageSubmit(message)}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  onMessageSubmit(message);
+                }}
                 disabled={buttonDisabled}
               >
                 <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={buttonDisabled ? s.buttonDisabled : s.button} />

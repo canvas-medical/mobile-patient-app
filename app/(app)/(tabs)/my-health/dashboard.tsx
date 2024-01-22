@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -84,7 +84,13 @@ const s = StyleSheet.create({
 export default function Dashboard() {
   const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const { data: vitals, isLoading: loadingVitals, refetch: refetchObservations } = useObservations();
+  const {
+    data: vitals,
+    isLoading: loadingVitals,
+    refetch: refetchObservations,
+    hasNextPage: hasNextPageVitals,
+    fetchNextPage: fetchNextPageVitals,
+  } = useObservations();
   const { data: medications, isLoading: loadingMedications, refetch: refetchMedications } = useMedications();
   const { data: allergies, isLoading: loadingAllergies, refetch: refetchAllergies } = useAllergies();
   const { data: procedures, isLoading: loadingProcedures, refetch: refetchProcedures } = useProcedures();
@@ -112,7 +118,19 @@ export default function Dashboard() {
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
-  const vitalsFiltered = vitals?.filter((vital) => !!vital.code.coding[0]?.display) ?? [];
+  const vitalsFiltered = useMemo(() => vitals?.pages?.flat()
+    .filter((vital: Vital) => !!vital?.code.coding[0]?.display && (!!vital?.valueQuantity || !!vital?.valueString))
+    .reduce((acc, current) => {
+      const existingIndex = acc?.findIndex((item) => item?.code?.coding[0]?.display === current?.code?.coding[0]?.display);
+      if (current?.code?.coding[0].display === 'Note') acc.push(current);
+      else if (existingIndex > -1) {
+        const existingItem = acc[existingIndex];
+        if (new Date(existingItem?.effectiveDateTime) < new Date(current?.effectiveDateTime)) {
+          acc[existingIndex] = current;
+        }
+      } else acc?.push(current);
+      return acc;
+    }, []) ?? [], [vitals]);
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));
@@ -123,6 +141,10 @@ export default function Dashboard() {
   const recentProcedureDate = procedures?.[0]?.performedDateTime;
   const recentProcedures = procedures?.filter((procedure: Procedure) =>
     new Date(procedure.performedDateTime).toDateString() === new Date(recentProcedureDate).toDateString());
+
+  useEffect(() => {
+    if (hasNextPageVitals && vitalsFiltered.length) fetchNextPageVitals();
+  }, [hasNextPageVitals, vitalsFiltered.length]);
 
   return (
     <View style={s.container}>
@@ -162,9 +184,6 @@ export default function Dashboard() {
             <View style={s.vitalsContainer}>
               {loadingVitals
                 ? Array.from(Array(6)).map((_, i) => { const key = i * 2; return (<VitalCardSkeleton key={key} />); })
-                // TODO: vitalsFiltered is to account for vitals without a display name.
-                // Once this is fixed, we can remove the filter and uncomment the line below.
-                // : vitals?.map((vital: Vital, i: number) => (
                 : vitalsFiltered?.map((vital: Vital, i: number) => (
                   <VitalCard
                     index={i}

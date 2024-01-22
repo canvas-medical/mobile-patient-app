@@ -10,7 +10,8 @@ import { getToken } from './access-token';
 async function getEducationalMaterials() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/DocumentReference?subject=Patient/${patientID}&category=educationalmaterial`, {
+  const apiURL = process.env.EXPO_PUBLIC_API_URL;
+  const res = await fetch(`${apiURL}/DocumentReference?subject=Patient/${patientID}&category=educationalmaterial&_count=100&_offset=0`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,

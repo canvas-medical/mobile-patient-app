@@ -12,7 +12,7 @@ import { getToken } from './access-token';
 async function getQuestionnaireResponses(): Promise<QuestionnaireResponse[]> {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/QuestionnaireResponse?patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/QuestionnaireResponse?patient=Patient/${patientID}&_count=100&_offset=0`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,

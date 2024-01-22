@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import { g } from '@styles';
+import { formatDate, formatTime } from '@utils';
 
 const s = StyleSheet.create({
   leftArrow: {
@@ -48,10 +49,20 @@ const s = StyleSheet.create({
     bottom: g.size(-15),
     right: 0
   },
+  sentTime: {
+    ...g.bodySmall,
+    color: g.neutral500,
+    textAlign: 'center',
+    marginTop: g.size(8),
+  }
 });
-export function MessageBlock({ received, message }: { received: boolean, message: string }) {
+
+export function MessageBlock({ received, message, sentTime }: { received: boolean, message: string, sentTime?: string }) {
   return (
     <>
+      <Text style={s.sentTime}>
+        {sentTime ? `${formatDate(sentTime)} ${formatTime(sentTime, true, true)}` : ''}
+      </Text>
       {received ? (
         <View style={s.messageReceived}>
           <RenderHtml

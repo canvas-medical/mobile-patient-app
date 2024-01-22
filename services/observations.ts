@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { getToken } from './access-token';
 
@@ -10,7 +10,7 @@ import { getToken } from './access-token';
 async function getObservations() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Observation?category=vital-signs&patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Observation?category=vital-signs&patient=Patient/${patientID}&_count=100&_offset=0`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -18,17 +18,22 @@ async function getObservations() {
     }
   });
   const json = await res.json();
-  return json.entry?.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason) || [];
+  return json.entry?.map((entry) => entry.resource) ?? [];
 }
 
 /**
- * Custom hook for fetching observations data that handles fetch states, errors, and caching automatically.
+ * Custom hook for fetching observation data using infinite query.
  *
- * @returns {QueryResult} The result of the query for observations.
+ * @returns {InfiniteQueryResult} The result of the infinite query for the observation data.
  */
 export function useObservations() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['observations'],
-    queryFn: () => getObservations(),
+    queryFn: getObservations,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.length < 100) return undefined;
+      return lastPageParam + 100;
+    },
   });
 }

@@ -1,20 +1,22 @@
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { AppointmentCreationData, AppointmentCancellationData } from '@interfaces';
 import Bugsnag from '@bugsnag/expo';
 import { getToken } from './access-token';
 
 /**
- * Retrieves the appointments for a specific patient.
+ * Retrieves a list of appointments for a specific patient.
  *
- * @returns {Promise<Array<any>>} A promise that resolves to an array of appointment objects.
+ * @param {Object} options - The options for retrieving appointments.
+ * @param {number} options.pageParam - The offset value for pagination.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of appointment objects.
  */
-async function getAppointments() {
+async function getAppointments({ pageParam: offset }) {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment?patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Appointment?patient=Patient/${patientID}&_sort=-date&_count=100&_offset=${offset}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -26,14 +28,19 @@ async function getAppointments() {
 }
 
 /**
- * Custom hook for fetching appointments data that handles fetch states, errors, and caching automatically.
+ * Custom hook for fetching appointments using useInfiniteQuery.
  *
- * @returns {QueryResult} The result of the query for the appointments data.
+ * @returns {InfiniteQueryResult} The result of the infinite query for the appointments data.
  */
 export function useAppointments() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['appointments'],
-    queryFn: () => getAppointments(),
+    queryFn: getAppointments,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.length < 100) return undefined;
+      return lastPageParam + 100;
+    },
   });
 }
 

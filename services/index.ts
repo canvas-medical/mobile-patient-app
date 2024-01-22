@@ -11,12 +11,11 @@ export { useCommunication, useCommunicationSubmit } from '@services/communicatio
 export { ConsentCodes, ConsentPDFs, useConsentCreate } from '@services/consent';
 export { useConditions } from '@services/conditions';
 export { useCreateCoverage, Insurers, useCoverage, useCancelCoverage } from '@services/coverage';
-export { useDiagnostics, useDiagnosticURI } from '@services/diagnostics';
 export { useEducationalMaterials } from '@services/educational-materials';
 export { useGoals } from '@services/goals';
 export { useInvoices } from '@services/invoices';
 export { useImmunizations } from '@services/immunization';
-export { useLabResults } from '@services/lab-results';
+export { useLabResults, useDiagnosticURI } from '@services/lab-results';
 export { useMedications } from '@services/medications';
 export { useObservations } from '@services/observations';
 export { useCreatePatient, usePatient, useUpdatePatient } from '@services/patient';

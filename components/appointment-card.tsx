@@ -238,13 +238,14 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                     style={s.appointmentLocation}
                     numberOfLines={1}
                   >
-                    {isOfficeVisit ? 'Get directions' : 'Join video call'}
+                    {isOfficeVisit ? 'Get directions' : 'Join'}
                   </Text>
                   <Text
                     style={s.appointmentAddress}
                     numberOfLines={1}
                   >
                     {isOfficeVisit && clinicAddress}
+                    {isTelemedicine && 'Video Call'}
                   </Text>
                 </View>
               </TouchableOpacity>

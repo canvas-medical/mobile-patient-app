@@ -17,8 +17,8 @@ const s = StyleSheet.create({
 
 export default function Allergies() {
   const { data, isLoading, refetch } = useAllergies();
-  const activeAllergies = data?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active');
-  const inactiveAllergies = data?.filter((allergy: Allergy) => allergy.clinicalStatus.text !== 'Active');
+  const activeAllergies = data?.filter((allergy: Allergy) => allergy.clinicalStatus.text === 'Active') ?? [];
+  const inactiveAllergies = data?.filter((allergy: Allergy) => allergy.clinicalStatus.text !== 'Active') ?? [];
 
   return (
     <StackListView
