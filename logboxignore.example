@@ -1,0 +1,23 @@
+  const IGNORED_LOGS = [
+    'Unhandled Promise Rejection',
+    'You seem to update props of the "TRenderEngineProvider" component in short periods of time, causing costly tree rerenders',
+    'Bugsnag.start() was called more than once. Ignoring.',
+  ];
+
+  LogBox.ignoreLogs(IGNORED_LOGS);
+
+  // Workaround for Expo 45
+  if (__DEV__) {
+    const withoutIgnored = (logger) => (...args) => {
+      const output = args.join(' ');
+
+      if (!IGNORED_LOGS.some((log) => output.includes(log))) {
+        logger(...args);
+      }
+    };
+
+    console.log = withoutIgnored(console.log);
+    console.info = withoutIgnored(console.info);
+    console.warn = withoutIgnored(console.warn);
+    console.error = withoutIgnored(console.error);
+  }
