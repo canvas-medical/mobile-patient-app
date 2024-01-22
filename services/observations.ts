@@ -10,7 +10,7 @@ import { getToken } from './access-token';
 async function getObservations() {
   const token = await getToken();
   const patientID = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Observation?category=vital-signs&patient=Patient/${patientID}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Observation?category=vital-signs&patient=Patient/${patientID}&_count=100&_offset=0`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -18,7 +18,21 @@ async function getObservations() {
     }
   });
   const json = await res.json();
-  return json.entry?.map((entry) => entry.resource).filter((resource) => resource.status === 'final' && !resource.dataAbsentReason) || [];
+  return (
+    json.entry?.map((entry) => entry.resource)
+      .filter((resource) => !!resource.valueQuantity || !!resource.valueString)
+      .reduce((acc, current) => {
+        const existingIndex = acc.findIndex((item) => item.code.coding[0].display === current.code.coding[0].display);
+        if (current.code.coding[0].display === 'Note') acc.push(current);
+        else if (existingIndex > -1) {
+          const existingItem = acc[existingIndex];
+          if (new Date(existingItem.effectiveDateTime) < new Date(current.effectiveDateTime)) {
+            acc[existingIndex] = current;
+          }
+        } else acc.push(current);
+        return acc;
+      }, []) ?? []
+  );
 }
 
 /**

@@ -245,6 +245,9 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                     numberOfLines={1}
                   >
                     {isOfficeVisit && clinicAddress}
+                    {/* 👇🏼 I added this, as it was missing for the video call use case. Update it, this is just placeholder 👇🏼 */}
+                    {isTelemedicine && 'Video call'}
+                    {/* ☝🏼 I added this, as it was missing for the video call use case. Update it, this is just placeholder ☝🏼 */}
                   </Text>
                 </View>
               </TouchableOpacity>

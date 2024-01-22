@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  ScrollView,
   View,
   TouchableOpacity,
   ActivityIndicator,
@@ -9,13 +8,14 @@ import {
   Text,
   Platform,
 } from 'react-native';
-import * as Notifications from 'expo-notifications';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import MaskedView from '@react-native-masked-view/masked-view';
+import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import MaskedView from '@react-native-masked-view/masked-view';
-import { AppointmentCard, Header, ZeroState } from '@components';
+import { FlashList } from '@shopify/flash-list';
+import { AppointmentCard, Header, FlashListSeparator, ZeroState } from '@components';
 import { Appointment } from '@interfaces';
 import { schedulePushNotification, useAppointments } from '@services';
 import { formatTime } from '@utils';
@@ -48,17 +48,14 @@ const s = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
-    gap: g.size(16),
     paddingHorizontal: g.size(16),
-    paddingTop: g.size(40),
-  },
-  scrollSection: {
-    gap: g.size(16),
+    paddingTop: g.size(28),
   },
   sectionLabel: {
     ...g.titleXSmall,
     color: g.neutral700,
+    marginTop: g.size(4),
+    marginBottom: -g.size(8),
   },
   title: {
     ...g.titleLarge,
@@ -75,10 +72,24 @@ const s = StyleSheet.create({
 
 export default function Appointments() {
   const tabBarHeight = useBottomTabBarHeight();
-  const { data, isLoading, refetch } = useAppointments();
+  const {
+    data,
+    isLoading,
+    refetch,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useAppointments();
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const upcomingAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) > new Date()).reverse();
-  const pastAppointments = data?.filter((appointment: Appointment) => new Date(appointment.start) <= new Date());
+  const upcomingAppointments = data?.pages.flat().filter((appointment: Appointment) => new Date(appointment.start) > new Date()).reverse() ?? [];
+  const pastAppointments = data?.pages.flat().filter((appointment: Appointment) => new Date(appointment.start) <= new Date()) ?? [];
+  const appointments: (string | Appointment)[] = [
+    'Upcoming',
+    ...upcomingAppointments,
+    'Past',
+    ...pastAppointments,
+  ];
+
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
@@ -120,61 +131,59 @@ export default function Appointments() {
       {isLoading
         ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
         : (
-          <>
-            {data?.length ? (
-              <MaskedView
+          <MaskedView
+            style={s.maskedView}
+            maskElement={(
+              <LinearGradient
                 style={s.maskedView}
-                maskElement={(
-                  <LinearGradient
-                    style={s.maskedView}
-                    colors={[g.transparent, g.white]}
-                    locations={[0.0175, 0.065]}
+                colors={[g.transparent, g.white]}
+                locations={[0.0175, 0.065]}
+              />
+            )}
+          >
+            {appointments?.length ? (
+              <FlashList
+                data={appointments}
+                contentContainerStyle={{
+                  ...s.scrollContent,
+                  paddingBottom: tabBarHeight + g.size(120),
+                }}
+                getItemType={(item) => {
+                  if (typeof item === 'string') return 'sectionHeader';
+                  return 'row';
+                }}
+                renderItem={({ item }) => {
+                  if (typeof item === 'string') return <Text style={s.sectionLabel}>{item}</Text>;
+                  return (
+                    <AppointmentCard
+                      key={item.id}
+                      appointment={item}
+                    />
+                  );
+                }}
+                refreshControl={(
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor={g.primaryBlue}
+                    colors={[g.primaryBlue]}
+                    progressViewOffset={g.size(40)}
                   />
                 )}
-              >
-                <ScrollView
-                  contentContainerStyle={[
-                    s.scrollContent,
-                    { paddingBottom: tabBarHeight + g.size(104) },
-                  ]}
-                  refreshControl={(
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                      tintColor={g.primaryBlue}
-                      colors={[g.primaryBlue]}
-                      progressViewOffset={g.size(40)}
-                    />
-                  )}
-                >
-                  {upcomingAppointments.length > 0 && (
-                    <View style={s.scrollSection}>
-                      <Text style={s.sectionLabel}>
-                        Upcoming
-                      </Text>
-                      {upcomingAppointments.map((appt) => (
-                        <AppointmentCard
-                          key={appt.id}
-                          appointment={appt}
-                        />
-                      ))}
-                    </View>
-                  )}
-                  {pastAppointments.length > 0 && (
-                    <View style={s.scrollSection}>
-                      <Text style={s.sectionLabel}>
-                        Past
-                      </Text>
-                      {pastAppointments.map((appt) => (
-                        <AppointmentCard
-                          key={appt.id}
-                          appointment={appt}
-                        />
-                      ))}
-                    </View>
-                  )}
-                </ScrollView>
-              </MaskedView>
+                ItemSeparatorComponent={() => FlashListSeparator()}
+                estimatedItemSize={g.size(137)}
+                onEndReached={() => {
+                  if (hasNextPage) fetchNextPage();
+                }}
+                onEndReachedThreshold={0.1}
+                ListFooterComponent={isFetchingNextPage && (
+                  <ActivityIndicator
+                    size="large"
+                    color={g.primaryBlue}
+                    style={{ marginTop: g.size(40) }}
+                  />
+                )}
+              />
             ) : (
               <ZeroState
                 image={doctor}
@@ -182,7 +191,7 @@ export default function Appointments() {
                 text="You have no upcoming appointments. Press the plus icon below to book one!"
               />
             )}
-          </>
+          </MaskedView>
         )}
       <TouchableOpacity
         style={[

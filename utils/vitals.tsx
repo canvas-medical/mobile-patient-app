@@ -35,7 +35,7 @@ export function vitalsValueSwitch(type: string, vitalData: Vital) {
     case 'Pulse Rhythm':
       return vitalData.valueString;
     default:
-      return 'N/A';
+      return vitalData.valueString || vitalData.valueQuantity.value || vitalData.valueQuantity.unit || 'N/A';
   }
 }
 

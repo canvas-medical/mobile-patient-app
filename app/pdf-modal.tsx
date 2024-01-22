@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useConsentCreate } from '@services';

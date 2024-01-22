@@ -3,6 +3,7 @@ export { AppointmentCard } from '@components/appointment-card';
 export { Button } from '@components/button';
 export { ConditionCard } from '@components/condition-card';
 export { EducationalMaterialCard } from '@components/educational-material-card';
+export { FlashListSeparator } from '@components/flash-list-separator';
 export { GoalCard } from '@components/goal-card';
 export { Header } from '@components/header';
 export { ImmunizationCard } from '@components/immunization-card';

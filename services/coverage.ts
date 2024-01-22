@@ -142,7 +142,7 @@ export function useCreateCoverage() {
 async function getCoverage() {
   const token = await getToken();
   const patientId = await SecureStore.getItemAsync('patient_id');
-  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage?patient=Patient/${patientId}`, {
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Coverage?patient=Patient/${patientId}&_count=100&_offset=0`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,

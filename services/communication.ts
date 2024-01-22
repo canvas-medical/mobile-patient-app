@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useInfiniteQuery } from '@tanstack/react-query';
 import * as SecureStore from 'expo-secure-store';
 import { Alert } from 'react-native';
 import { ApiError } from '@interfaces';
@@ -8,45 +8,36 @@ import { getToken } from './access-token';
 /**
  * Retrieves the communication messages for a specific patient.
  *
- * @returns {Promise<Array>} A promise that resolves to an array of communication messages sorted by date.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of communication message objects.
  */
-async function getCommunication() {
+async function getCommunication({ pageParam: offset }) {
   const token = await getToken();
-  const patientId = await SecureStore.getItemAsync('patient_id');
-  const createFetchRequest = async (params: string) => {
-    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication${params}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        accept: 'application/json'
-      }
-    });
-    return response.json();
-  };
-
-  const fromRes = await createFetchRequest(`?sender=Patient/${patientId}`);
-  const toRes = await createFetchRequest(`?recipient=Patient/${patientId}`);
-
-  const fromArray = fromRes?.entry || [];
-  const toArray = toRes?.entry || [];
-  const allMessages = [...fromArray, ...toArray];
-
-  return allMessages.sort((a, b) => {
-    const aDate = new Date(a.resource.sent || a.resource.received);
-    const bDate = new Date(b.resource.sent || b.resource.received);
-    return aDate.getTime() - bDate.getTime();
+  const patientID = await SecureStore.getItemAsync('patient_id');
+  const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/Communication?patient=Patient/${patientID}&_count=100&_offset=${offset}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: 'application/json'
+    }
   });
+  const json = await res.json();
+  return json.entry?.map((entry) => entry.resource) || [];
 }
 
 /**
- * Custom hook for fetching communication data that handles fetch states, errors, and caching automatically.
+ * Custom hook for fetching communication data using infinite query.
  *
- * @returns {QueryResult} The result of the query for the communication data.
+ * @returns {InfiniteQueryResult} The result of the infinite query for the communication data.
  */
 export function useCommunication() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ['communications'],
-    queryFn: () => getCommunication(),
+    queryFn: getCommunication,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.length < 100) return undefined;
+      return lastPageParam + 100;
+    },
   });
 }
 
@@ -92,6 +83,7 @@ async function communicationSubmit(message: string) {
   });
   const Json: null | ApiError = await res.json();
   if (Json?.issue?.length > 0) throw new Error(Json.issue[0].details.text);
+  return res;
 }
 
 /**
