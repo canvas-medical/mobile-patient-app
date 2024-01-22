@@ -106,8 +106,6 @@ export default function Messages() {
     }) ?? [], [data]);
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
-  console.log('Hello: ', messages);
-
   const flashListRef = useRef<FlashList<any>>();
   const buttonDisabled = message.length === 0;
   const updateSize = (num: number) => {
