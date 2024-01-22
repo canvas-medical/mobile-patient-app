@@ -119,19 +119,18 @@ export default function Dashboard() {
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
   const vitalsFiltered = useMemo(() => vitals?.pages?.flat()
-    .filter((vital: Vital) => !!vital.code.coding[0]?.display && (!!vital.valueQuantity || !!vital.valueString))
+    .filter((vital: Vital) => !!vital?.code.coding[0]?.display && (!!vital?.valueQuantity || !!vital?.valueString))
     .reduce((acc, current) => {
-      const existingIndex = acc.findIndex((item) => item.code.coding[0].display === current.code.coding[0].display);
-      if (current.code.coding[0].display === 'Note') acc.push(current);
+      const existingIndex = acc?.findIndex((item) => item?.code?.coding[0]?.display === current?.code?.coding[0]?.display);
+      if (current?.code?.coding[0].display === 'Note') acc.push(current);
       else if (existingIndex > -1) {
         const existingItem = acc[existingIndex];
-        if (new Date(existingItem.effectiveDateTime) < new Date(current.effectiveDateTime)) {
+        if (new Date(existingItem?.effectiveDateTime) < new Date(current?.effectiveDateTime)) {
           acc[existingIndex] = current;
         }
-      } else acc.push(current);
+      } else acc?.push(current);
       return acc;
     }, []) ?? [], [vitals]);
-  console.log('VITALS: ', vitalsFiltered);
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));
