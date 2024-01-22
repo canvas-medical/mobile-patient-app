@@ -58,7 +58,6 @@ const s = StyleSheet.create({
   },
   inputContainer: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? g.size(20) : g.size(40),
     left: '50%',
     transform: [{ translateX: -((g.width - g.size(32)) / 2) }],
     width: g.width - g.size(32),
@@ -98,12 +97,16 @@ export default function Messages() {
     isFetchingNextPage,
     hasNextPage
   } = useCommunication();
-  const messages = useMemo(() => (data?.pages?.flat().sort((a: Message, b: Message) => {
-    const aDate = new Date(a.sent || a.received);
-    const bDate = new Date(b.sent || b.received);
-    return bDate.getTime() - aDate.getTime();
-  })) ?? [], [data]);
+  const messages = useMemo(() => data?.pages?.flat()
+    .filter((item: Message) => !!item?.payload)
+    .sort((a: Message, b: Message) => {
+      const aDate = new Date(a.sent || a.received);
+      const bDate = new Date(b.sent || b.received);
+      return bDate.getTime() - aDate.getTime();
+    }) ?? [], [data]);
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
+
+  console.log('Hello: ', messages);
 
   const flashListRef = useRef<FlashList<any>>();
   const buttonDisabled = message.length === 0;
@@ -152,6 +155,17 @@ export default function Messages() {
     toggleKeyBoard();
   }, [keyboardVisible]);
 
+  const inputBottomPositionSwitch = () => {
+    switch (Platform.OS) {
+      case 'ios':
+        return g.size(20);
+      case 'android':
+        return keyboardVisible ? g.size(60) : g.size(40);
+      default:
+        return g.size(20);
+    }
+  };
+
   return (
     <View style={[s.container, { paddingBottom: tabBarHeight }]}>
       <View style={s.headerContainer}>
@@ -168,7 +182,7 @@ export default function Messages() {
       </View>
       <KeyboardAvoidingView
         style={s.chatContainer}
-        behavior="height"
+        behavior={(Platform.OS === 'ios' && 'height') || undefined}
       >
         {isLoading
           ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
@@ -221,7 +235,12 @@ export default function Messages() {
               )}
             </>
           )}
-        <View style={s.inputContainer}>
+        <View
+          style={{
+            ...s.inputContainer,
+            bottom: inputBottomPositionSwitch(),
+          }}
+        >
           <TextInput
             style={{ ...s.input, height: size }}
             multiline

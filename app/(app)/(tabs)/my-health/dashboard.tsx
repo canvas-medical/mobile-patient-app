@@ -118,7 +118,7 @@ export default function Dashboard() {
 
   const activeGoalStates = ['In Progress', 'Improving', 'Worsening', 'No Change', 'Sustaining'];
 
-  const vitalsFiltered = useMemo(() => (vitals?.pages?.flat()
+  const vitalsFiltered = useMemo(() => vitals?.pages?.flat()
     .filter((vital: Vital) => !!vital.code.coding[0]?.display && (!!vital.valueQuantity || !!vital.valueString))
     .reduce((acc, current) => {
       const existingIndex = acc.findIndex((item) => item.code.coding[0].display === current.code.coding[0].display);
@@ -130,7 +130,7 @@ export default function Dashboard() {
         }
       } else acc.push(current);
       return acc;
-    }, []) ?? []), [vitals]);
+    }, []) ?? [], [vitals]);
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));

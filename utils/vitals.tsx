@@ -33,6 +33,7 @@ export function vitalsValueSwitch(type: string, vitalData: Vital) {
     case 'Height':
       return `${Math.floor(vitalData.valueQuantity.value / 12)}' ${vitalData.valueQuantity.value % 12}"`;
     case 'Pulse Rhythm':
+    case 'Note':
       return vitalData.valueString;
     default:
       return vitalData.valueString || vitalData.valueQuantity.value || vitalData.valueQuantity.unit || 'N/A';
@@ -65,6 +66,8 @@ export function vitalsIconSwitch(type: string) {
       return <Ionicons name="body" size={g.size(20)} color={g.neutral500} />;
     case 'Oxygen Saturation Arterial':
       return <Entypo name="air" size={g.size(20)} color={g.neutral500} />;
+    case 'Note':
+      return <FontAwesome5 name="sticky-note" size={g.size(20)} color={g.neutral500} />;
     default:
       return <Feather name="heart" size={g.size(20)} color={g.neutral500} />;
   }
