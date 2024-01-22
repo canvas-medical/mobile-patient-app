@@ -131,6 +131,7 @@ export default function Dashboard() {
       } else acc.push(current);
       return acc;
     }, []) ?? [], [vitals]);
+  console.log('VITALS: ', vitalsFiltered);
   const activeMedications = medications?.filter((med: Medication) => med?.status === 'active');
   const activeConditions = conditions?.filter((condition: Condition) => condition?.clinicalStatus?.text === 'Active');
   const activeGoals = goals?.filter((goal: Goal) => activeGoalStates.includes(goal?.achievementStatus?.coding[0].display));

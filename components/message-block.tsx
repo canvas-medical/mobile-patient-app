@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */ // REMOVE
 import { View, Text, StyleSheet } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import { g } from '@styles';

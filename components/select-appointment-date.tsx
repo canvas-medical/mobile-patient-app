@@ -69,7 +69,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
   }
 
   function closeDatePicker() {
-    setSelectedDate(provisionalDate);
+    if (provisionalDate) setSelectedDate(provisionalDate);
     setShowDatePicker(false);
   }
 
