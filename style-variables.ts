@@ -9,9 +9,10 @@ const moderateScale = (size: number, factor: number = 0.5) => size + (widthScale
 
 const global = {
   // Screen Dimensions
-  width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height,
+  width,
+  height,
 
+  // Screen Scaling
   ws: widthScale, // width, marginHorizontal, paddingHorizontal, etc. w/ exceptions
   hs: heightScale, // height, marginVertical, paddingVertical, etc. w/ exceptions
   ms: moderateScale, // fontSize, borderRadius, icons, etc. w/ exceptions

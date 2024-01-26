@@ -59,7 +59,7 @@ const s = StyleSheet.create({
 
 export function MessageBlock({ received, message, sentTime }: { received: boolean, message: string, sentTime?: string }) {
   return (
-    <View>
+    <>
       <Text style={s.sentTime}>
         {sentTime ? `${formatDate(sentTime)} ${formatTime(sentTime, true, true)}` : ''}
       </Text>
@@ -79,6 +79,6 @@ export function MessageBlock({ received, message, sentTime }: { received: boolea
           <View style={s.rightArrow} />
         </View>
       )}
-    </View>
+    </>
   );
 }
