@@ -108,7 +108,6 @@ const s = StyleSheet.create({
     gap: g.hs(20),
     paddingHorizontal: g.ws(16),
     paddingTop: g.hs(24),
-    paddingBottom: g.tabBarHeight + g.hs(120),
   },
   sectionContainer: {
     gap: g.hs(12),
@@ -279,7 +278,10 @@ export default function Billing() {
                     )}
                   >
                     <ScrollView
-                      contentContainerStyle={s.scrollContent}
+                      contentContainerStyle={[
+                        s.scrollContent,
+                        { paddingBottom: g.tabBarHeight + g.hs(120) }
+                      ]}
                       scrollEnabled={!!paymentNotices?.length || !!invoices?.length}
                       refreshControl={(
                         <RefreshControl
@@ -291,181 +293,6 @@ export default function Billing() {
                         />
                       )}
                     >
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
-                      {!!paymentNotices?.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Payment History</Text>
-                          {paymentNotices?.map((notice: PaymentNotice) => (
-                            <View key={notice.id} style={s.paymentHistoryItem}>
-                              <Text style={s.paymentAmount}>
-                                $
-                                {notice.amount.value.toFixed(2)}
-                              </Text>
-                              <Text style={s.paymentDate}>{formatDate(notice.created)}</Text>
-                            </View>
-                          ))}
-                        </View>
-                      )}
-                      {!!invoices.length && (
-                        <View style={s.sectionContainer}>
-                          <Text style={s.label}>Invoices</Text>
-                          {invoices.map((invoice: Invoice) => (
-                            <InvoiceCard
-                              key={invoice.id}
-                              invoice={invoice}
-                            />
-                          ))}
-                        </View>
-                      )}
                       {!!paymentNotices?.length && (
                         <View style={s.sectionContainer}>
                           <Text style={s.label}>Payment History</Text>

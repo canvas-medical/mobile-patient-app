@@ -30,7 +30,6 @@ const s = StyleSheet.create({
     gap: g.hs(16),
     paddingHorizontal: g.ws(16),
     paddingTop: g.hs(40),
-    paddingBottom: g.tabBarHeight + g.hs(120),
   },
   title: {
     ...g.titleLarge,
@@ -91,7 +90,10 @@ export function StackListView({
           >
             <ScrollView
               scrollEnabled={scrollEnabled}
-              contentContainerStyle={s.scrollContent}
+              contentContainerStyle={[
+                s.scrollContent,
+                { paddingBottom: g.tabBarHeight + g.hs(120) }
+              ]}
               refreshControl={(
                 <RefreshControl
                   refreshing={refreshing}

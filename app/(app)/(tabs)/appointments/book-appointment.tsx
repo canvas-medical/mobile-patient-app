@@ -25,7 +25,6 @@ const s = StyleSheet.create({
     position: 'absolute',
     left: g.ws(16),
     right: g.ws(16),
-    bottom: Platform.OS === 'ios' ? g.hs(24) : g.tabBarHeight + g.hs(36) // TODO: Check this on Android
   },
   buttonSelected: {
     backgroundColor: g.secondaryBlue,
@@ -325,7 +324,10 @@ export default function BookAppointment() {
         <Button
           label={buttonLabel()}
           theme="primary"
-          style={s.bookButton}
+          style={[
+            s.bookButton,
+            { bottom: Platform.OS === 'ios' ? g.hs(24) : g.tabBarHeight + g.hs(24) },
+          ]}
           onPress={() => onCreateAppointment({
             startTime: selectedSlot?.start,
             endTime: selectedSlot?.end,

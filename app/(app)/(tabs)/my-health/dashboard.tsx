@@ -64,7 +64,6 @@ const s = StyleSheet.create({
     gap: g.hs(32),
     paddingHorizontal: g.ws(16),
     paddingTop: g.hs(32),
-    paddingBottom: g.tabBarHeight + g.hs(120),
   },
   vitalsContainer: {
     flexDirection: 'row',
@@ -159,7 +158,10 @@ export default function Dashboard() {
         )}
       >
         <ScrollView
-          contentContainerStyle={s.scrollContent}
+          contentContainerStyle={[
+            s.scrollContent,
+            { paddingBottom: g.tabBarHeight + g.hs(120) }
+          ]}
           refreshControl={(
             <RefreshControl
               refreshing={refreshing}

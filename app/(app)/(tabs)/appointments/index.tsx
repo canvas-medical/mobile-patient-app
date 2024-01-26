@@ -31,7 +31,6 @@ const s = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: g.ms(12),
-    bottom: g.tabBarHeight + g.hs(12),
     opacity: 0.9,
   },
   container: {
@@ -48,7 +47,6 @@ const s = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: g.ws(16),
     paddingTop: g.hs(28),
-    paddingBottom: g.tabBarHeight + g.hs(120),
   },
   sectionLabel: {
     ...g.titleXSmall,
@@ -142,7 +140,10 @@ export default function Appointments() {
             {appointments?.length > 2 ? (
               <FlashList
                 data={appointments}
-                contentContainerStyle={s.scrollContent}
+                contentContainerStyle={{
+                  ...s.scrollContent,
+                  paddingBottom: g.tabBarHeight + g.hs(120),
+                }}
                 getItemType={(item) => {
                   if (typeof item === 'string') return 'sectionHeader';
                   return 'row';
@@ -189,7 +190,10 @@ export default function Appointments() {
           </MaskedView>
         )}
       <TouchableOpacity
-        style={s.bookAppointmentButton}
+        style={[
+          s.bookAppointmentButton,
+          { bottom: g.tabBarHeight + g.hs(12) },
+        ]}
         onPress={() => router.push('appointments/book-appointment')}
       >
         <MaterialCommunityIcons name="calendar-plus" size={g.ms(36)} color={g.white} />

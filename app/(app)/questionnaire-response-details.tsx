@@ -108,7 +108,7 @@ export default function QuestionnaireResponseDetails() {
         style={s.scroll}
         contentContainerStyle={s.scrollContent}
       >
-        {!isLoading
+        {isLoading
           ? <ActivityIndicator color={g.primaryBlue} size="large" style={s.loading} />
           : (
             <>
