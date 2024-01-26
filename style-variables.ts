@@ -14,7 +14,7 @@ const global = {
 
   ws: widthScale, // width, marginHorizontal, paddingHorizontal, etc. w/ exceptions
   hs: heightScale, // height, marginVertical, paddingVertical, etc. w/ exceptions
-  ms: moderateScale, // fontSize, borderRadius, etc. w/ exceptions
+  ms: moderateScale, // fontSize, borderRadius, icons, etc. w/ exceptions
 
   // Color Palette
   white: '#f8fafc',

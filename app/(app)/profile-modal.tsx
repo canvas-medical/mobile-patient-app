@@ -133,9 +133,6 @@ const s = StyleSheet.create({
     marginLeft: g.ms(2),
     marginBottom: g.hs(4),
   },
-  inputOptional: {
-    fontStyle: 'italic', // Check this - also option tags on onboarding screens
-  },
   inputRequired: {
     color: g.severityRed,
   },
@@ -435,9 +432,9 @@ export default function ProfileModal() {
           control={control}
           render={({ field: { onChange } }) => (
             <TouchableOpacity onPress={() => pickImage(onChange)}>
-              {patient?.photo ? (
-                <Image source={{ uri: image ?? patient.photo[0].url }} style={s.userImage} />
-              ) : <FontAwesome name="user-circle-o" size={g.ms(72)} color={g.white} />}
+              {patient?.photo
+                ? <Image source={{ uri: image ?? patient.photo[0].url }} style={s.userImage} />
+                : <FontAwesome name="user-circle-o" size={g.ms(72)} color={g.white} />}
               <View style={s.editImageIconContainer}>
                 <MaterialIcons name="mode-edit" size={g.ms(14)} color={g.white} />
               </View>
@@ -589,8 +586,7 @@ export default function ProfileModal() {
               render={({ field: { onChange, value, ref } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
-                    Group Number
-                    <Text style={s.inputOptional}> - Optional</Text>
+                    Group Number - Optional
                   </Text>
                   <TextInput
                     style={[s.input, !!errors.groupNumber && s.inputError]}
@@ -613,8 +609,7 @@ export default function ProfileModal() {
             <View style={s.iconLabelContainer}>
               <Feather name="user" size={g.ms(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
-                Preferred Name
-                <Text style={s.inputOptional}> - Optional</Text>
+                Preferred Name - Optional
               </Text>
             </View>
             <Controller
@@ -753,8 +748,7 @@ export default function ProfileModal() {
               render={({ field: { onChange, value, ref } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
-                    Address Line 2
-                    <Text style={s.inputOptional}> - Optional</Text>
+                    Address Line 2 - Optional
                   </Text>
                   <TextInput
                     style={[s.input, !!errors.addressLine2 && s.inputError]}

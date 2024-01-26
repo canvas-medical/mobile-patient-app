@@ -150,7 +150,7 @@ export default function Messages() {
     toggleKeyBoard();
   }, [keyboardVisible]);
 
-  function inputOffsetSwitch() {
+  function inputBottomPositionSwitch() {
     switch (Platform.OS) {
       case 'ios':
         return (keyboardVisible && keyboardHeight > g.tabBarHeight ? keyboardHeight : g.tabBarHeight) + g.hs(16);
@@ -160,7 +160,7 @@ export default function Messages() {
         return 0;
     }
   }
-  function scrollOffsetSwitch() {
+  function scrollBottomPaddingSwitch() {
     switch (Platform.OS) {
       case 'ios':
         return (keyboardVisible && keyboardHeight > g.tabBarHeight ? keyboardHeight : g.tabBarHeight) + g.hs(96);
@@ -196,7 +196,7 @@ export default function Messages() {
                 data={messages}
                 contentContainerStyle={{
                   ...s.scrollContent,
-                  paddingTop: scrollOffsetSwitch(), // This is actually bottom padding due to the FlashList being inverted
+                  paddingTop: scrollBottomPaddingSwitch(), // This is actually bottom padding due to the FlashList being inverted
                 }}
                 renderItem={({ item }) => (
                   <MessageBlock
@@ -242,7 +242,7 @@ export default function Messages() {
       <View
         style={[
           s.inputContainer,
-          { bottom: inputOffsetSwitch() }
+          { bottom: inputBottomPositionSwitch() }
         ]}
       >
         <TextInput

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
+import Constants from 'expo-constants';
 import { Image } from 'expo-image';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
@@ -68,7 +69,7 @@ const s = StyleSheet.create({
   version: {
     ...g.bodySmall,
     color: g.neutral100,
-    opacity: 0.7,
+    opacity: 0.6,
     position: 'absolute',
     left: g.ws(16),
     bottom: g.ws(16)
@@ -91,6 +92,8 @@ export default function Initial() {
     await SecureStore.setItemAsync('patient_id', value);
     router.push('(tabs)/my-health');
   };
+
+  console.log('Hello: ', Constants);
 
   return (
     <View style={s.container}>
@@ -145,7 +148,7 @@ export default function Initial() {
         </Modal>
       )}
       <Text style={s.version}>
-        Version: 1.1.2
+        {`Version: ${Constants.expoConfig.version}`}
       </Text>
     </View>
   );
