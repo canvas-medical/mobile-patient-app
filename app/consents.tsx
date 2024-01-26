@@ -1,25 +1,33 @@
-import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+  DeviceEventEmitter,
+} from 'react-native';
+import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useConsentCreate, ConsentPDFs } from '@services';
 import { OnboardingScreen, Button } from '@components';
 import { g } from '@styles';
+import React, { useEffect, useState } from 'react';
 
 const s = StyleSheet.create({
   checkboxButton: {
-    width: g.size(28),
-    height: g.size(28),
+    width: g.ms(28),
+    height: g.ms(28),
     alignItems: 'center',
     justifyContent: 'center',
   },
   consentItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(12),
+    gap: g.ws(12),
   },
   consentsContainer: {
     flex: 1,
-    gap: g.size(16),
+    gap: g.hs(16),
   },
   link: {
     ...g.bodyMedium,
@@ -29,11 +37,20 @@ const s = StyleSheet.create({
 });
 
 export default function Consents() {
+  const navigation = useNavigation();
   const { mutate: onCreateConsent, isSuccess, isPending } = useConsentCreate();
-  const params = useLocalSearchParams();
-  const { accepted } = params;
+  const [accepted, setAccepted] = useState(false);
 
-  const isAccepted = isSuccess || !!accepted;
+  useEffect(() => {
+    if (!isSuccess) return;
+    setAccepted(true);
+  }, [isSuccess, navigation]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      DeviceEventEmitter.addListener('event.accepted', (bool) => setAccepted(bool));
+    }, [accepted, navigation])
+  );
 
   return (
     <OnboardingScreen
@@ -46,15 +63,15 @@ export default function Consents() {
           <TouchableOpacity
             style={s.checkboxButton}
             onPress={() => onCreateConsent({ consent: 'Consent Document' })}
-            disabled={!!isAccepted}
+            disabled={!!accepted}
           >
             {isPending
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator color={g.primaryBlue} size="small" />
               : (
                 <Feather
-                  name={isAccepted ? 'check-square' : 'square'}
-                  size={g.size(26)}
-                  color={isAccepted ? g.green : g.neutral300}
+                  name={accepted ? 'check-square' : 'square'}
+                  size={g.ms(26)}
+                  color={accepted ? g.green : g.neutral300}
                 />
               )}
           </TouchableOpacity>
@@ -63,7 +80,7 @@ export default function Consents() {
             onPress={() =>
               router.push({
                 pathname: 'pdf-modal',
-                params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: isSuccess || null }
+                params: { uri: ConsentPDFs['Consent Document'], consentType: 'Consent Document', isAccepted: accepted }
               })}
           >
             <Text style={s.link}>General Consent Document</Text>
@@ -71,9 +88,12 @@ export default function Consents() {
         </View>
       </View>
       <Button
-        disabled={!isAccepted}
+        disabled={!accepted}
         theme="primary"
-        onPress={() => router.push('questionnaire')}
+        onPress={() => {
+          DeviceEventEmitter.removeAllListeners('event.accepted');
+          router.push('questionnaire');
+        }}
         label="Next"
       />
     </OnboardingScreen>

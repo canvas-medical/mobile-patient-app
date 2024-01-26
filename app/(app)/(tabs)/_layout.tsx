@@ -1,19 +1,19 @@
+import { Platform } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabBar } from '@components';
 import { g } from '@styles';
-import { Platform } from 'react-native';
 
 const tabIconSwitch = (tab: string, color: string) => {
   switch (tab) {
     case 'my-health':
-      return <MaterialCommunityIcons name="view-dashboard-outline" size={g.size(32)} color={color} />;
+      return <MaterialCommunityIcons name="view-dashboard-outline" size={g.ms(32)} color={color} />;
     case 'appointments':
-      return <MaterialCommunityIcons name="calendar-heart" size={g.size(32)} color={color} />;
+      return <MaterialCommunityIcons name="calendar-heart" size={g.ms(32)} color={color} />;
     case 'messages':
-      return <Feather name="message-circle" size={g.size(32)} color={color} />;
+      return <Feather name="message-circle" size={g.ms(32)} color={color} />;
     case 'billing':
-      return <Feather name="credit-card" size={g.size(32)} color={color} />;
+      return <Feather name="credit-card" size={g.ms(32)} color={color} />;
     default:
       return null;
   }

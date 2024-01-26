@@ -11,15 +11,14 @@ import {
   TextInputSubmitEditingEventData,
   Platform, TouchableWithoutFeedback,
 } from 'react-native';
-import { Octicons } from '@expo/vector-icons';
 import { FieldError, UseFormClearErrors } from 'react-hook-form';
+import Modal from 'react-native-modal';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { Overlay } from '@rneui/themed';
+import { Octicons } from '@expo/vector-icons';
+import { Button } from '@components/button';
 import { formatDate, formatPhoneNumber, timeZoneOffset } from '@utils';
 import { g } from '@styles';
-import { Button } from '@components/button';
-import Modal from 'react-native-modal';
 
 const s = StyleSheet.create({
   backdrop: {
@@ -28,7 +27,7 @@ const s = StyleSheet.create({
     opacity: 0.5,
   },
   container: {
-    gap: g.size(4),
+    gap: g.hs(4),
   },
   containerFlexRow: {
     flexDirection: 'row',
@@ -41,19 +40,19 @@ const s = StyleSheet.create({
     opacity: 0.8,
     position: 'absolute',
     top: '100%',
-    right: g.size(12),
+    right: g.ws(12),
     alignSelf: 'flex-end',
   },
   input: {
     ...g.bodyLarge,
     color: g.neutral900,
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
+    paddingVertical: g.hs(8),
+    paddingHorizontal: g.ms(16),
     flex: 1,
   },
   inputContainer: {
     backgroundColor: g.neutral150,
-    borderRadius: g.size(50),
+    borderRadius: g.ms(50),
     flexDirection: 'row',
   },
   inputContainerError: {
@@ -67,27 +66,29 @@ const s = StyleSheet.create({
     color: g.neutral500,
   },
   modal: {
-    paddingHorizontal: g.size(8),
-    paddingBottom: g.size(12),
+    paddingHorizontal: g.ws(8),
+    paddingBottom: g.hs(12),
     backgroundColor: g.white,
-    borderRadius: g.size(16),
-    gap: g.size(4),
+    width: '85%',
+    maxWidth: 375,
+    borderRadius: g.ms(16),
+    gap: g.hs(4),
+    alignSelf: 'center',
   },
   passwordRevealButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: g.size(12),
+    paddingHorizontal: g.ms(12),
   },
-  pickerOverlay: {
-    width: '85%',
-    borderRadius: g.size(16),
-    backgroundColor: g.white,
+  pickerItem: {
+    ...g.bodyLarge,
+    color: g.neutral900,
   },
   selectorButton: {
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
+    paddingVertical: g.hs(8),
+    paddingHorizontal: g.ms(16),
     backgroundColor: g.neutral150,
-    borderRadius: g.size(50),
+    borderRadius: g.ms(50),
   },
   selectorButtonLabel: {
     ...g.bodyLarge,
@@ -187,7 +188,7 @@ function TextComponent(props) {
         >
           <Octicons
             name={hidePassword ? 'eye' : 'eye-closed'}
-            size={g.size(24)}
+            size={g.ms(24)}
             color={error ? g.neutral500 : g.neutral400}
           />
         </TouchableOpacity>
@@ -317,35 +318,45 @@ function SelectorComponent(props) {
         </Text>
       </TouchableOpacity>
       {show && (
-        <Overlay
+        <Modal
+          animationIn="fadeIn"
+          animationOut="fadeOut"
           isVisible={show}
-          onBackdropPress={() => setShow(false)}
-          overlayStyle={s.pickerOverlay}
-        >
-          <Picker
-            selectedValue={value}
-            onValueChange={(itemValue, index) => { onChange(itemValue); setSelectedLabel(options[index].label); }}
-          >
-            {options.map((option) => {
-              const isString = typeof option === 'string';
-              return (
-                <Picker.Item
-                  key={isString ? option : option.value}
-                  label={isString ? option : option.label}
-                  value={isString ? option : option.value}
-                />
-              );
-            })}
-          </Picker>
-          {buttonText && (
-            <Button
-              label={buttonText}
-              disabled={!value}
-              theme="primary"
-              onPress={() => setShow(false)}
-            />
+          swipeDirection="right"
+          onSwipeComplete={() => setShow(false)}
+          customBackdrop={(
+            <TouchableWithoutFeedback onPress={() => setShow(false)}>
+              <View style={s.backdrop} />
+            </TouchableWithoutFeedback>
           )}
-        </Overlay>
+        >
+          <View style={s.modal}>
+            <Picker
+              itemStyle={s.pickerItem}
+              selectedValue={value}
+              onValueChange={(itemValue, index) => { onChange(itemValue); setSelectedLabel(options[index].label); }}
+            >
+              {options.map((option) => {
+                const isString = typeof option === 'string';
+                return (
+                  <Picker.Item
+                    key={isString ? option : option.value}
+                    label={isString ? option : option.label}
+                    value={isString ? option : option.value}
+                  />
+                );
+              })}
+            </Picker>
+            {buttonText && (
+              <Button
+                label={buttonText}
+                disabled={!value}
+                theme="primary"
+                onPress={() => setShow(false)}
+              />
+            )}
+          </View>
+        </Modal>
       )}
     </>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, KeyboardEvent } from 'react-native';
 
 /**
  * Custom hook that detects whether the keyboard is currently visible on the screen.
@@ -26,3 +26,28 @@ export const useKeyboardVisible = () => {
 
   return isKeyboardVisible;
 };
+
+/**
+ * Custom hook that detects the height of the keyboard.
+ * It returns a number value indicating the height of the keyboard.
+ *
+ * @returns {number} - The height of the keyboard.
+ */
+export function useKeyboardHeight() {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  function onKeyboardShow(event: KeyboardEvent) {
+    setKeyboardHeight(event.endCoordinates.height);
+  }
+  function onKeyboardHide() {
+    setKeyboardHeight(0);
+  }
+  useEffect(() => {
+    const onShow = Keyboard.addListener('keyboardDidShow', onKeyboardShow);
+    const onHide = Keyboard.addListener('keyboardDidHide', onKeyboardHide);
+    return () => {
+      onShow.remove();
+      onHide.remove();
+    };
+  }, []);
+  return keyboardHeight;
+}

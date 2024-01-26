@@ -33,27 +33,29 @@ const s = StyleSheet.create({
     color: g.neutral900,
   },
   header: {
-    gap: g.size(16),
-    padding: g.size(36),
-    paddingTop: g.size(72),
+    gap: g.hs(16),
+    paddingTop: g.hs(72),
+    paddingHorizontal: g.ws(24),
+    paddingBottom: g.hs(36),
     alignItems: 'flex-start',
   },
   scroll: {
     flex: 1,
     backgroundColor: g.white,
-    borderTopLeftRadius: g.size(36),
-    borderTopRightRadius: g.size(36),
+    borderTopLeftRadius: g.ms(36),
+    borderTopRightRadius: g.ms(36),
   },
   scrollContent: {
     flexGrow: 1,
-    padding: g.size(36),
+    paddingHorizontal: g.ws(24),
+    paddingVertical: g.hs(36),
     justifyContent: 'space-between',
-    gap: g.size(36),
+    gap: g.hs(36),
   },
   subGreeting: {
     ...g.bodyMedium,
     color: g.neutral400,
-    marginTop: g.size(2),
+    marginTop: g.hs(2),
   },
   title: {
     ...g.titleLarge,
@@ -84,7 +86,7 @@ export function OnboardingScreen({
           <TouchableOpacity onPress={() => router.back()}>
             <Feather
               name="arrow-left"
-              size={g.size(40)}
+              size={g.ms(40)}
               color={g.white}
             />
           </TouchableOpacity>

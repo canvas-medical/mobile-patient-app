@@ -10,7 +10,7 @@ export default function Procedures() {
   return (
     <StackListView
       title="Procedures"
-      icon={<FontAwesome5 name="procedures" size={g.size(36)} color={g.neutral700} />}
+      icon={<FontAwesome5 name="procedures" size={g.ms(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

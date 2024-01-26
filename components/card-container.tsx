@@ -5,14 +5,14 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   card: {
     backgroundColor: g.white,
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
-    gap: g.size(4),
-    borderRadius: g.size(6),
+    paddingVertical: g.hs(12),
+    paddingHorizontal: g.ms(16),
+    gap: g.hs(4),
+    borderRadius: g.ms(6),
     ...g.cardShadow,
   },
   skeleton: {
-    height: g.size(48),
+    height: g.hs(48),
   },
 });
 

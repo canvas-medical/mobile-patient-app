@@ -6,15 +6,15 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   bottomRow: {
     flexDirection: 'row',
-    gap: g.size(8),
+    gap: g.ms(8),
     justifyContent: 'space-between',
     alignItems: 'baseline',
   },
   card: {
     backgroundColor: g.white,
-    width: (g.width - g.size(48)) / 2,
-    borderRadius: g.size(6),
-    padding: g.size(8),
+    width: (g.width - g.ws(48)) / 2,
+    borderRadius: g.ms(6),
+    padding: g.ms(8),
     justifyContent: 'space-between',
     ...g.cardShadow,
   },
@@ -24,9 +24,9 @@ const s = StyleSheet.create({
   topRow: {
     flex: 1,
     flexDirection: 'row',
-    gap: g.size(8),
+    gap: g.ms(8),
     justifyContent: 'space-between',
-    marginBottom: g.size(8),
+    marginBottom: g.hs(8),
   },
   vitalData: {
     ...g.labelMedium,
@@ -81,5 +81,5 @@ export function VitalCard({ vital, vitalsOdd, index }: {
 }
 
 export function VitalCardSkeleton() {
-  return <View style={[s.card, { height: g.size(60) }]} />;
+  return <View style={[s.card, { height: g.hs(60) }]} />;
 }

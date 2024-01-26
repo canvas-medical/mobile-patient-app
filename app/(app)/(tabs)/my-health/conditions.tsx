@@ -9,10 +9,10 @@ const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
     color: g.neutral700,
-    marginLeft: g.size(4),
+    marginLeft: g.ms(4),
   },
   scrollSection: {
-    gap: g.size(16),
+    gap: g.hs(16),
   },
 });
 
@@ -23,7 +23,7 @@ export default function Conditions() {
   return (
     <StackListView
       title="Conditions"
-      icon={<FontAwesome5 name="notes-medical" size={g.size(36)} color={g.neutral700} />}
+      icon={<FontAwesome5 name="notes-medical" size={g.ms(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

@@ -1,16 +1,32 @@
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  bookAppointmentButton: {
+    ...g.buttonShadow,
+    width: g.ms(72),
+    height: g.ms(72),
+    borderRadius: g.ms(36),
+    backgroundColor: g.secondaryBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: g.ms(12),
+    top: -g.ms(84),
+    opacity: 0.9,
+  },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
-    borderTopLeftRadius: g.size(40),
-    borderTopRightRadius: g.size(40),
+    justifyContent: 'space-evenly',
+    borderTopLeftRadius: g.ws(40),
+    borderTopRightRadius: g.ws(40),
     overflow: 'hidden',
-    paddingTop: g.size(8),
-    paddingBottom: Platform.OS === 'android' ? g.size(8) : g.size(20),
-    paddingHorizontal: g.size(10),
+    paddingTop: g.hs(8),
+    paddingBottom: Platform.OS === 'android' ? g.hs(8) : g.hs(20),
+    paddingHorizontal: g.ws(10),
     backgroundColor: g.white,
     elevation: 8,
   },
@@ -21,18 +37,18 @@ const s = StyleSheet.create({
     right: 0,
     shadowOffset: {
       width: 0,
-      height: g.size(-2),
+      height: g.ms(-2),
     },
     shadowOpacity: 0.25,
-    shadowRadius: g.size(4),
+    shadowRadius: g.ms(4),
   },
   tabButton: {
     flex: 1,
-    justifyContent: 'space-evenly',
     alignItems: 'center',
-    borderRadius: g.size(50),
-    paddingVertical: g.size(8),
-    marginHorizontal: g.size(1),
+    borderRadius: g.ms(100),
+    paddingVertical: g.hs(8),
+    marginHorizontal: g.ws(1),
+    maxWidth: 180,
   },
   tabLabel: {
     ...g.labelXSmall,
@@ -41,12 +57,16 @@ const s = StyleSheet.create({
 
 export function TabBar({ state, descriptors, navigation }) {
   return (
-    <View style={s.container}>
+    <View
+      style={s.container}
+      onLayout={(e) => {
+        g.tabBarHeight = e.nativeEvent.layout.height;
+      }}
+    >
       <View style={s.buttonContainer}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
-
           const onPress = () => {
             const event = navigation.emit({
               type: 'tabPress',
@@ -57,7 +77,6 @@ export function TabBar({ state, descriptors, navigation }) {
               navigation.navigate(route.name, route.params);
             }
           };
-
           return (
             <TouchableOpacity
               key={route.key}
@@ -84,6 +103,14 @@ export function TabBar({ state, descriptors, navigation }) {
           );
         })}
       </View>
+      {state.routes[state.index].name === 'appointments' && (
+        <TouchableOpacity
+          style={s.bookAppointmentButton}
+          onPress={() => router.push('appointments/book-appointment')}
+        >
+          <MaterialCommunityIcons name="calendar-plus" size={g.ms(36)} color={g.white} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

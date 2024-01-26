@@ -9,7 +9,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   formContainer: {
     flex: 1,
-    gap: g.size(24),
+    gap: g.hs(24),
   },
 });
 

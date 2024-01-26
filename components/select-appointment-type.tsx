@@ -20,20 +20,23 @@ const s = StyleSheet.create({
     opacity: 0.5,
   },
   modal: {
-    paddingHorizontal: g.size(8),
-    paddingBottom: g.size(12),
+    paddingHorizontal: g.ws(8),
+    paddingBottom: g.hs(12),
     backgroundColor: g.white,
-    borderRadius: g.size(16),
-    gap: g.size(4),
+    width: '85%',
+    maxWidth: 375,
+    borderRadius: g.ms(16),
+    gap: g.hs(4),
+    alignSelf: 'center',
   },
   modalContainer: {
-    marginTop: -g.size(12),
+    marginTop: -g.hs(12),
   },
   modalToggleButton: {
     backgroundColor: g.neutral150,
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
-    borderRadius: g.size(50),
+    paddingVertical: g.hs(8),
+    paddingHorizontal: g.ms(16),
+    borderRadius: g.ms(50),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -45,13 +48,17 @@ const s = StyleSheet.create({
   modalToggleButtonPlaceholder: {
     color: g.neutral400,
   },
+  pickerItem: {
+    ...g.bodyLarge,
+    color: g.neutral900,
+  },
   sectionContainer: {
-    gap: g.size(12),
+    gap: g.hs(12),
   },
   sectionHeader: {
     ...g.labelMedium,
     color: g.neutral700,
-    marginLeft: g.size(4),
+    marginLeft: g.ms(4),
   },
 });
 
@@ -94,7 +101,7 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
           >
             {appointmentType || 'Select'}
           </Text>
-          <Feather name="chevron-down" size={g.size(20)} color={g.neutral700} />
+          <Feather name="chevron-down" size={g.ms(20)} color={g.neutral700} />
         </TouchableOpacity>
         <View style={s.modalContainer}>
           <Modal
@@ -111,6 +118,7 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
           >
             <View style={s.modal}>
               <Picker
+                itemStyle={s.pickerItem}
                 selectedValue={provisionalAppointmentType}
                 onValueChange={(itemValue) => {
                   if (itemValue !== 'Select One') setProvisionalAppointmentType(itemValue);
@@ -125,7 +133,7 @@ export function SelectAppointmentType({ appointmentType, setAppointmentType, set
                 ))}
               </Picker>
               <Button
-                label="Select Appointment Type"
+                label="Select"
                 theme="primary"
                 onPress={() => {
                   setShowAppointmentTypePicker(false);

@@ -9,9 +9,10 @@ const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
     color: g.neutral700,
+    marginLeft: g.ms(4),
   },
   scrollSection: {
-    gap: g.size(16),
+    gap: g.hs(16),
   },
 });
 
@@ -24,7 +25,7 @@ export default function Medications() {
   return (
     <StackListView
       title="Medications"
-      icon={<MaterialCommunityIcons name="pill" size={g.size(36)} color={g.neutral700} />}
+      icon={<MaterialCommunityIcons name="pill" size={g.ms(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

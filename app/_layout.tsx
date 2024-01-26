@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, LogBox } from 'react-native';
 import { Stack } from 'expo-router';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
@@ -56,6 +56,30 @@ export default function RootLayout() {
   useEffect(() => {
     registerForPushNotificationsAsync();
   }, []);
+
+  const IGNORED_LOGS = [
+    'Unhandled Promise Rejection',
+    'You seem to update props of the "TRenderEngineProvider" component in short periods of time, causing costly tree rerenders',
+    'Bugsnag.start() was called more than once. Ignoring.',
+  ];
+
+  LogBox.ignoreLogs(IGNORED_LOGS);
+
+  // Workaround for Expo 45
+  if (__DEV__) {
+    const withoutIgnored = (logger) => (...args) => {
+      const output = args.join(' ');
+
+      if (!IGNORED_LOGS.some((log) => output.includes(log))) {
+        logger(...args);
+      }
+    };
+
+    console.log = withoutIgnored(console.log);
+    console.info = withoutIgnored(console.info);
+    console.warn = withoutIgnored(console.warn);
+    console.error = withoutIgnored(console.error);
+  }
 
   if (!fontsLoaded) return <ActivityIndicator style={s.loading} size="large" color={g.primaryBlue} />;
   return (

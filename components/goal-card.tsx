@@ -11,7 +11,7 @@ const s = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   datesContainer: {
-    marginTop: g.size(2),
+    marginTop: g.hs(2),
   },
   goal: {
     flex: 1,
@@ -29,7 +29,7 @@ const s = StyleSheet.create({
   rowSpaceBetween: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: g.size(8),
+    gap: g.ms(8),
   },
 });
 

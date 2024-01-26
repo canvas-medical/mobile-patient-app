@@ -10,7 +10,7 @@ export default function Education() {
   return (
     <StackListView
       title="Education"
-      icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(36)} color={g.neutral700} />}
+      icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.ms(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

@@ -8,7 +8,6 @@ import {
   RefreshControl,
 } from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, MaterialCommunityIcons, Fontisto, Feather } from '@expo/vector-icons';
 import {
@@ -62,27 +61,27 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    gap: g.size(32),
-    paddingHorizontal: g.size(16),
-    paddingTop: g.size(32),
+    gap: g.hs(32),
+    paddingHorizontal: g.ws(16),
+    paddingTop: g.hs(32),
+    paddingBottom: g.tabBarHeight + g.hs(120),
   },
   vitalsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    rowGap: g.size(16),
+    rowGap: g.hs(16),
     justifyContent: 'space-between',
   },
   zeroState: {
     ...g.bodyMedium,
     color: g.neutral700,
     opacity: 0.8,
-    marginLeft: g.size(32),
-    marginTop: -g.size(8),
+    marginLeft: g.ms(32),
+    marginTop: -g.hs(8),
   }
 });
 
 export default function Dashboard() {
-  const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const {
     data: vitals,
@@ -160,17 +159,14 @@ export default function Dashboard() {
         )}
       >
         <ScrollView
-          contentContainerStyle={[
-            s.scrollContent,
-            { paddingBottom: tabBarHeight + g.size(32) },
-          ]}
+          contentContainerStyle={s.scrollContent}
           refreshControl={(
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
               tintColor={g.primaryBlue}
               colors={[g.primaryBlue]}
-              progressViewOffset={g.size(40)}
+              progressViewOffset={g.hs(20)}
             />
           )}
         >
@@ -178,7 +174,7 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Vitals"
             viewAll={false}
-            icon={<FontAwesome5 name="heartbeat" size={g.size(20)} color={g.neutral700} />}
+            icon={<FontAwesome5 name="heartbeat" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingVitals}
           >
             <View style={s.vitalsContainer}>
@@ -207,11 +203,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/medications"
             title="Medications"
             viewAll={!!medications?.length}
-            icon={<MaterialCommunityIcons name="pill" size={g.size(20)} color={g.neutral700} />}
+            icon={<MaterialCommunityIcons name="pill" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingMedications}
           >
             {loadingMedications
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : activeMedications?.map((med: Medication) => (
                 <MedicationCard
                   key={med.id}
@@ -225,11 +221,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/allergies"
             title="Allergies"
             viewAll={!!allergies?.length}
-            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(20)} color={g.neutral700} />}
+            icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingAllergies}
           >
             {loadingAllergies
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : activeAllergies?.map((allergy: Allergy) => (
                 <AllergyCard
                   key={allergy.id}
@@ -243,11 +239,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/procedures"
             title="Procedures"
             viewAll={procedures?.length > 1}
-            icon={<FontAwesome5 name="procedures" size={g.size(18)} color={g.neutral700} />}
+            icon={<FontAwesome5 name="procedures" size={g.ms(18)} color={g.neutral700} />}
             loading={loadingProcedures}
           >
             {loadingProcedures
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : recentProcedures?.map((procedure: Procedure) => (
                 <ProcedureCard
                   key={procedure.id}
@@ -261,11 +257,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/immunizations"
             title="Immunizations"
             viewAll={immunizations?.length > 1}
-            icon={<Fontisto name="injection-syringe" size={g.size(20)} color={g.neutral700} />}
+            icon={<Fontisto name="injection-syringe" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingImmunizations}
           >
             {loadingImmunizations
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : immunizations?.slice(0, 1).map((immunization: Immunization) => (
                 <ImmunizationCard
                   key={immunization.id}
@@ -279,11 +275,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/conditions"
             title="Conditions"
             viewAll={!!conditions?.length}
-            icon={<FontAwesome5 name="notes-medical" size={g.size(20)} color={g.neutral700} />}
+            icon={<FontAwesome5 name="notes-medical" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingConditions}
           >
             {loadingConditions
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : activeConditions?.map((condition: Condition) => (
                 <ConditionCard
                   key={condition.id}
@@ -297,11 +293,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/lab-results"
             title="Labs"
             viewAll={!!labs?.length}
-            icon={<FontAwesome5 name="vial" size={g.size(20)} color={g.neutral700} />}
+            icon={<FontAwesome5 name="vial" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingLabs}
           >
             {loadingLabs
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : recentLabs?.map((report: LabImagingReport | DiagnosticReport) => (
                 <LabReportCard
                   key={report.id}
@@ -314,11 +310,11 @@ export default function Dashboard() {
           <MyHealthBlock
             title="Questionnaires"
             viewAll={false}
-            icon={<MaterialCommunityIcons name="comment-question-outline" size={g.size(20)} color={g.neutral700} />}
+            icon={<MaterialCommunityIcons name="comment-question-outline" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingQuestionnaireResponses}
           >
             {loadingQuestionnaireResponses
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : questionnaireResponses?.map((questionnaire: QuestionnaireResponse) => (
                 <QuestionnaireResponseCard
                   key={questionnaire.id}
@@ -332,11 +328,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/goals"
             title="Goals"
             viewAll={!!goals?.length}
-            icon={<Feather name="target" size={g.size(20)} color={g.neutral700} />}
+            icon={<Feather name="target" size={g.ms(20)} color={g.neutral700} />}
             loading={loadingGoals}
           >
             {loadingGoals
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : activeGoals?.map((goal: Goal) => (
                 <GoalCard
                   key={goal.id}
@@ -350,11 +346,11 @@ export default function Dashboard() {
             viewAllRoute="my-health/education"
             title="Educational Materials"
             viewAll={educationalMaterials?.length > 1}
-            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.size(20)} color={g.neutral700} />}
+            icon={<MaterialCommunityIcons name="book-open-page-variant-outline" size={g.ms(20)} color={g.neutral700} />}
             loading={false}
           >
             {loadingEducationalMaterials
-              ? <ActivityIndicator color={g.primaryBlue} />
+              ? <ActivityIndicator size="small" color={g.primaryBlue} />
               : educationalMaterials?.map((item: DocumentResource) => (
                 <EducationalMaterialCard
                   key={item.id}

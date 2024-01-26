@@ -28,44 +28,47 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: g.size(4),
-    gap: g.size(4),
+    padding: g.ms(4),
+    gap: g.ms(4),
   },
   appointmentTypeText: {
     ...g.bodyMedium,
     color: g.neutral600,
+  },
+  cancelButtonDisabled: {
+    opacity: 0.4,
   },
   cancelledCopy: {
     ...g.bodyMedium,
     color: g.severityRed,
   },
   cancelledCopyContainer: {
-    minHeight: g.size(28),
-    padding: g.size(4),
+    minHeight: g.hs(28),
+    padding: g.ms(4),
     justifyContent: 'center',
   },
   card: {
     backgroundColor: g.white,
-    borderRadius: g.size(6),
+    borderRadius: g.ms(6),
   },
   cardCancelled: {
     opacity: 0.5,
   },
   cardContent: {
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
+    paddingVertical: g.hs(12),
+    paddingHorizontal: g.ms(16),
   },
   cardRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(12),
+    gap: g.ms(12),
   },
   dataDivider: {
-    height: g.size(1),
+    height: g.hs(1),
     width: '100%',
     backgroundColor: g.neutral300,
-    marginVertical: g.size(16),
-    borderRadius: g.size(1),
+    marginVertical: g.hs(16),
+    borderRadius: g.ms(1),
   },
   dateTime: {
     ...g.bodyMedium,
@@ -75,20 +78,20 @@ const s = StyleSheet.create({
   leftBorder: {
     position: 'absolute',
     left: 0,
-    top: g.size(6),
-    bottom: g.size(6),
-    width: g.size(4),
-    borderRadius: g.size(4),
+    top: g.hs(6),
+    bottom: g.hs(6),
+    width: g.ms(4),
+    borderRadius: g.ms(4),
     backgroundColor: g.neutral500,
   },
   navLink: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: g.size(4),
+    padding: g.ms(4),
     paddingLeft: 0,
-    gap: g.size(4),
-    minHeight: g.size(28),
+    gap: g.ms(4),
+    minHeight: g.hs(28),
   },
   reason: {
     ...g.bodyXLarge,
@@ -134,45 +137,54 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
   }) : address;
 
   const cancelAppointment = () => {
-    Alert.alert(
-      'Would you like to cancel this appointment?',
-      '',
-      [
-        {
-          text: 'No',
-          style: 'cancel',
-        },
-        {
-          text: 'Yes',
-          style: 'destructive',
-          onPress: () => {
-            Alert.alert(
-              'Are you sure?',
-              '',
-              [
-                {
-                  text: 'No',
-                  style: 'cancel',
-                },
-                {
-                  text: "Yes, I'm sure",
-                  style: 'destructive',
-                  onPress: () => {
-                    onCancelAppointment({
-                      id,
-                      start,
-                      end,
-                      practitionerID,
-                      appointmentType: appointmentTypeText,
-                    });
-                  },
-                },
-              ],
-            );
+    if (isWithin48HoursOfStartTime) {
+      Alert.alert(
+        'You are within 48 hours of your appointment time.',
+        'Please contact your provider to cancel this appointment.',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    } else {
+      Alert.alert(
+        'Would you like to cancel this appointment?',
+        '',
+        [
+          {
+            text: 'No',
+            style: 'cancel',
           },
-        },
-      ],
-    );
+          {
+            text: 'Yes',
+            style: 'destructive',
+            onPress: () => {
+              Alert.alert(
+                'Are you sure?',
+                '',
+                [
+                  {
+                    text: 'No',
+                    style: 'cancel',
+                  },
+                  {
+                    text: "Yes, I'm sure",
+                    style: 'destructive',
+                    onPress: () => {
+                      onCancelAppointment({
+                        id,
+                        start,
+                        end,
+                        practitionerID,
+                        appointmentType: appointmentTypeText,
+                      });
+                    },
+                  },
+                ],
+              );
+            },
+          },
+        ],
+      );
+    }
   };
 
   return (
@@ -180,7 +192,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
       <View style={s.leftBorder} />
       <View style={s.cardContent}>
         <View style={s.cardRow}>
-          <Feather name="clock" size={g.size(24)} color={g.neutral500} />
+          <Feather name="clock" size={g.ms(24)} color={g.neutral500} />
           <Text
             style={s.dateTime}
             numberOfLines={1}
@@ -195,19 +207,20 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
             {' '}
             {formatTime(end, true, true)}
           </Text>
-          {isPending && <ActivityIndicator color={g.primaryBlue} />}
-          {!cancelled && !isWithin48HoursOfStartTime && isFutureDate && (
+          {isPending && <ActivityIndicator color={g.primaryBlue} size="small" />}
+          {!cancelled && isFutureDate && (
             <TouchableOpacity
-              disabled={cancelled || isPending}
+              style={isWithin48HoursOfStartTime && s.cancelButtonDisabled}
               onPress={cancelAppointment}
+              disabled={cancelled || isPending}
             >
-              <MaterialIcons name="delete-forever" size={g.size(24)} color={g.neutral500} />
+              <MaterialIcons name="delete-forever" size={g.ms(24)} color={g.neutral500} />
             </TouchableOpacity>
           )}
         </View>
         <View style={s.dataDivider} />
         <View style={s.cardRow}>
-          <FontAwesome5 name="user-md" size={g.size(36)} color={g.neutral500} />
+          <FontAwesome5 name="user-md" size={g.ms(36)} color={g.neutral500} />
           <View style={s.reasonData}>
             <Text
               style={s.reason}
@@ -230,9 +243,9 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                   }
                 }}
               >
-                {isOfficeVisit && <Ionicons name="navigate" size={g.size(18)} color={g.neutral500} />}
-                {isTelemedicine && <MaterialIcons name="video-call" size={g.size(20)} color={g.neutral500} />}
-                {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.size(20)} color={g.neutral500} />}
+                {isOfficeVisit && <Ionicons name="navigate" size={g.ms(18)} color={g.neutral500} />}
+                {isTelemedicine && <MaterialIcons name="video-call" size={g.ms(20)} color={g.neutral500} />}
+                {isPhoneCall && <FontAwesome5 name="phone-alt" size={g.ms(20)} color={g.neutral500} />}
                 <View>
                   <Text
                     style={s.appointmentLocation}
@@ -253,7 +266,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
               <View style={s.appointmentType}>
                 {isPhoneCall && (
                   <>
-                    <FontAwesome5 name="phone-alt" size={g.size(16)} color={g.neutral500} />
+                    <FontAwesome5 name="phone-alt" size={g.ms(16)} color={g.neutral500} />
                     <Text
                       style={s.appointmentTypeText}
                       numberOfLines={1}
@@ -264,7 +277,7 @@ export function AppointmentCard({ appointment }: { appointment: Appointment }) {
                 )}
                 {isHomeVisit && (
                   <>
-                    <Ionicons name="home" size={g.size(16)} color={g.neutral500} />
+                    <Ionicons name="home" size={g.ms(16)} color={g.neutral500} />
                     <Text
                       style={s.appointmentTypeText}
                       numberOfLines={1}

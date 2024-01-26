@@ -12,8 +12,8 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   chevron: {
-    left: g.size(8),
-    bottom: g.size(4),
+    left: g.ms(8),
+    bottom: g.ms(4),
   },
   date: {
     ...g.bodySmall,
@@ -47,7 +47,7 @@ export function QuestionnaireResponseCard({ response }: { response: Questionnair
         <Text style={s.displayText}>
           {response.item[0].text}
         </Text>
-        <Feather name="chevron-right" size={g.size(28)} color={g.neutral700} style={s.chevron} />
+        <Feather name="chevron-right" size={g.ms(28)} color={g.neutral700} style={s.chevron} />
       </View>
       <Text style={s.date}>
         {formatDate(response.authored)}

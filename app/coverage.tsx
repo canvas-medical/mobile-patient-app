@@ -7,11 +7,11 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   buttonContainer: {
-    gap: g.size(16),
+    gap: g.hs(16),
   },
   formContainer: {
     flex: 1,
-    gap: g.size(24),
+    gap: g.hs(24),
   },
 });
 
