@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, RefreshControl, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  RefreshControl,
+  Text,
+  TouchableOpacity
+} from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
+import { router } from 'expo-router';
 import * as Notifications from 'expo-notifications';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -13,6 +21,19 @@ import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  bookAppointmentButton: {
+    ...g.buttonShadow,
+    width: g.ms(72),
+    height: g.ms(72),
+    borderRadius: g.ms(36),
+    backgroundColor: g.secondaryBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: g.ms(12),
+    bottom: g.tabBarHeight + g.hs(12),
+    opacity: 0.9,
+  },
   container: {
     flex: 1,
     backgroundColor: g.neutral100,
@@ -167,6 +188,12 @@ export default function Appointments() {
             )}
           </MaskedView>
         )}
+      <TouchableOpacity
+        style={s.bookAppointmentButton}
+        onPress={() => router.push('appointments/book-appointment')}
+      >
+        <MaterialCommunityIcons name="calendar-plus" size={g.ms(36)} color={g.white} />
+      </TouchableOpacity>
     </View>
   );
 }

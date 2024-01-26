@@ -51,10 +51,8 @@ export default function Index() {
   useEffect(() => {
     if (!navigationState?.key || isFetching) return;
     if (patient?.id) {
-      router.replace('(tabs)/messages');
-      // router.replace('(tabs)/my-health');
+      router.replace('(tabs)/my-health');
     } else router.replace('initial');
-    // router.replace('consents');
   }, [navigationState, patient, isFetching]);
 
   return (
