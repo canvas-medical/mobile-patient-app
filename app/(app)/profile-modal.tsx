@@ -26,6 +26,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import { router, useNavigation } from 'expo-router';
+import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -242,6 +243,14 @@ const s = StyleSheet.create({
     width: g.ms(72),
     borderRadius: g.ms(36),
   },
+  version: {
+    ...g.bodySmall,
+    color: g.neutral500,
+    opacity: 0.6,
+    position: 'absolute',
+    left: g.ws(16),
+    bottom: g.ws(16)
+  }
 });
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
@@ -971,6 +980,9 @@ export default function ProfileModal() {
               )}
             />
           </View>
+          <Text style={s.version}>
+            {`Version: ${Constants.expoConfig.version}`}
+          </Text>
         </ScrollView>
         <AnimatedTouchableOpacity
           style={[
