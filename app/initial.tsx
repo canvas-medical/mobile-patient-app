@@ -93,8 +93,6 @@ export default function Initial() {
     router.push('(tabs)/my-health');
   };
 
-  console.log('Hello: ', Constants);
-
   return (
     <View style={s.container}>
       <Image

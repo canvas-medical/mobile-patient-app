@@ -77,9 +77,9 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
         activeOpacity={0}
       >
         <Text style={s.name}>{`${data?.name ? data?.name[0]?.given[0] : ''} ${data?.name ? data?.name[0]?.family : ''}`}</Text>
-        {data?.photo ? (
-          <Image source={{ uri: data?.photo[0].url }} style={s.userImage} />
-        ) : <FontAwesome name="user-circle-o" size={g.hs(48)} color={g.white} />}
+        {data?.photo
+          ? <Image source={{ uri: data?.photo[0].url }} style={s.userImage} />
+          : <FontAwesome name="user-circle-o" size={g.hs(48)} color={g.white} />}
       </TouchableOpacity>
     </View>
   );
