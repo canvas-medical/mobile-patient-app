@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
   ActivityIndicator,
   RefreshControl,
   Text,
-  Platform,
+  TouchableOpacity
 } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
-import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
+import * as Notifications from 'expo-notifications';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FlashList } from '@shopify/flash-list';
@@ -23,17 +21,16 @@ import doctor from '@assets/images/doctor.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  bookButton: {
+  bookAppointmentButton: {
     ...g.buttonShadow,
-    width: g.size(72),
-    height: g.size(72),
-    borderRadius: g.size(36),
+    width: g.ms(72),
+    height: g.ms(72),
+    borderRadius: g.ms(36),
     backgroundColor: g.secondaryBlue,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: g.size(12),
-    marginBottom: Platform.OS === 'ios' ? g.size(12) : g.size(32),
+    right: g.ms(12),
     opacity: 0.9,
   },
   container: {
@@ -42,20 +39,20 @@ const s = StyleSheet.create({
   },
   loading: {
     flex: 1,
-    paddingBottom: g.size(120),
+    paddingBottom: g.hs(120),
   },
   maskedView: {
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: g.size(16),
-    paddingTop: g.size(28),
+    paddingHorizontal: g.ws(16),
+    paddingTop: g.hs(28),
   },
   sectionLabel: {
     ...g.titleXSmall,
     color: g.neutral700,
-    marginTop: g.size(4),
-    marginBottom: -g.size(8),
+    marginTop: g.hs(4),
+    marginBottom: -g.hs(8),
   },
   title: {
     ...g.titleLarge,
@@ -64,14 +61,13 @@ const s = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(16),
-    paddingLeft: g.size(20),
-    marginTop: g.size(20),
+    gap: g.ms(12),
+    paddingLeft: g.ws(14),
+    marginTop: g.hs(20),
   }
 });
 
 export default function Appointments() {
-  const tabBarHeight = useBottomTabBarHeight();
   const {
     data,
     isLoading,
@@ -123,7 +119,7 @@ export default function Appointments() {
     <View style={s.container}>
       <Header hideBackButton />
       <View style={s.titleContainer}>
-        <MaterialCommunityIcons name="calendar-heart" size={g.size(36)} color={g.neutral700} />
+        <MaterialCommunityIcons name="calendar-heart" size={g.ms(36)} color={g.neutral700} />
         <Text style={s.title}>
           Appointments
         </Text>
@@ -141,12 +137,12 @@ export default function Appointments() {
               />
             )}
           >
-            {appointments?.length ? (
+            {appointments?.length > 2 ? (
               <FlashList
                 data={appointments}
                 contentContainerStyle={{
                   ...s.scrollContent,
-                  paddingBottom: tabBarHeight + g.size(120),
+                  paddingBottom: g.tabBarHeight + g.hs(120),
                 }}
                 getItemType={(item) => {
                   if (typeof item === 'string') return 'sectionHeader';
@@ -167,11 +163,11 @@ export default function Appointments() {
                     onRefresh={onRefresh}
                     tintColor={g.primaryBlue}
                     colors={[g.primaryBlue]}
-                    progressViewOffset={g.size(40)}
+                    progressViewOffset={g.hs(32)}
                   />
                 )}
                 ItemSeparatorComponent={() => FlashListSeparator()}
-                estimatedItemSize={g.size(137)}
+                estimatedItemSize={g.hs(120)}
                 onEndReached={() => {
                   if (hasNextPage) fetchNextPage();
                 }}
@@ -180,7 +176,7 @@ export default function Appointments() {
                   <ActivityIndicator
                     size="large"
                     color={g.primaryBlue}
-                    style={{ marginTop: g.size(40) }}
+                    style={{ marginTop: g.hs(40) }}
                   />
                 )}
               />
@@ -195,12 +191,12 @@ export default function Appointments() {
         )}
       <TouchableOpacity
         style={[
-          s.bookButton,
-          { bottom: tabBarHeight + g.size(16) },
+          s.bookAppointmentButton,
+          { bottom: g.tabBarHeight + g.hs(12) },
         ]}
         onPress={() => router.push('appointments/book-appointment')}
       >
-        <MaterialCommunityIcons name="calendar-plus" size={g.size(36)} color={g.white} />
+        <MaterialCommunityIcons name="calendar-plus" size={g.ms(36)} color={g.white} />
       </TouchableOpacity>
     </View>
   );

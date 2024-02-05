@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { QueryObserverResult } from '@tanstack/react-query';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -21,16 +20,16 @@ const s = StyleSheet.create({
   },
   loading: {
     flex: 1,
-    paddingBottom: g.size(120),
+    paddingBottom: g.hs(120),
   },
   maskedView: {
     flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
-    gap: g.size(16),
-    paddingHorizontal: g.size(16),
-    paddingTop: g.size(40),
+    gap: g.hs(16),
+    paddingHorizontal: g.ws(16),
+    paddingTop: g.hs(40),
   },
   title: {
     ...g.titleLarge,
@@ -39,9 +38,9 @@ const s = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(16),
-    paddingLeft: g.size(20),
-    marginTop: g.size(20),
+    gap: g.ms(12),
+    paddingLeft: g.ws(16),
+    marginTop: g.hs(20),
   },
 });
 
@@ -60,7 +59,6 @@ export function StackListView({
   scrollEnabled?: boolean,
   children: ReactNode,
 }) {
-  const tabBarHeight = useBottomTabBarHeight();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -94,7 +92,7 @@ export function StackListView({
               scrollEnabled={scrollEnabled}
               contentContainerStyle={[
                 s.scrollContent,
-                { paddingBottom: tabBarHeight + g.size(32) },
+                { paddingBottom: g.tabBarHeight + g.hs(120) }
               ]}
               refreshControl={(
                 <RefreshControl
@@ -102,7 +100,7 @@ export function StackListView({
                   onRefresh={onRefresh}
                   tintColor={g.primaryBlue}
                   colors={[g.primaryBlue]}
-                  progressViewOffset={g.size(40)}
+                  progressViewOffset={g.hs(32)}
                 />
               )}
             >

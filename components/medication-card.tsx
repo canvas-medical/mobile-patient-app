@@ -18,7 +18,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    gap: g.size(12),
+    gap: g.ms(12),
   },
   medication: {
     ...g.labelMedium,

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
-  Platform,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -10,8 +9,8 @@ import {
   RefreshControl,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,24 +25,11 @@ import {
 } from '@services';
 import { formatDate } from '@utils';
 import { Invoice, PaymentNotice } from '@interfaces';
-import { Header, Input, InvoiceCard, ZeroState } from '@components';
+import { Header, InvoiceCard, ZeroState } from '@components';
 import receipt from '@assets/images/cc-payment.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  androidButtonContainer: {
-    top: g.size(26),
-    height: g.size(44),
-  },
-  androidDollarSign: {
-    top: g.size(40),
-  },
-  buttonContainer: {
-    position: 'absolute',
-    right: 0,
-    top: g.size(18),
-    height: g.size(36),
-  },
   container: {
     flex: 1,
     backgroundColor: g.neutral100,
@@ -51,20 +37,34 @@ const s = StyleSheet.create({
   disabled: {
     opacity: 0.7,
   },
-  dollarSign: {
-    position: 'absolute',
-    top: g.size(26),
-    left: g.size(12),
-    zIndex: 1,
-  },
-  greyedOut: {
-    ...g.bodySmall,
-    color: g.primaryBlue,
-    opacity: 0.8,
-    marginLeft: g.size(12),
+  input: {
+    ...g.bodyMedium,
+    color: g.neutral900,
+    flex: 1,
+    paddingVertical: g.hs(8),
   },
   inputContainer: {
-    marginHorizontal: g.size(16),
+    ...g.cardShadow,
+    backgroundColor: g.neutral200,
+    borderRadius: g.ms(50),
+    height: g.ms(32),
+    flexShrink: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: g.ws(16),
+    marginTop: g.hs(16),
+    paddingLeft: g.ms(8),
+  },
+  inputContainerError: {
+    backgroundColor: g.error,
+  },
+  inputErrorLabel: {
+    ...g.bodySmall,
+    color: g.severityRed,
+    opacity: 0.8,
+    position: 'absolute',
+    right: g.ms(0),
+    bottom: -g.ms(20),
   },
   label: {
     ...g.labelMedium,
@@ -72,23 +72,19 @@ const s = StyleSheet.create({
   },
   loading: {
     flex: 1,
-    paddingBottom: g.size(120),
+    paddingBottom: g.hs(120),
   },
   maskedView: {
     flex: 1,
   },
   payButton: {
     backgroundColor: g.primaryBlue,
-    borderRadius: g.size(18),
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
+    borderRadius: g.ms(50),
+    height: '100%',
+    minWidth: g.ms(64),
+    paddingHorizontal: g.ms(16),
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  payButtonAndroid: {
-    borderRadius: g.size(22),
-    paddingVertical: g.size(12),
-    paddingHorizontal: g.size(16),
   },
   payButtonLabel: {
     ...g.labelMedium,
@@ -109,12 +105,12 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    gap: g.size(20),
-    paddingHorizontal: g.size(16),
-    paddingTop: g.size(24),
+    gap: g.hs(20),
+    paddingHorizontal: g.ws(16),
+    paddingTop: g.hs(24),
   },
   sectionContainer: {
-    gap: g.size(12),
+    gap: g.hs(12),
   },
   title: {
     ...g.titleLarge,
@@ -123,14 +119,13 @@ const s = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(16),
-    paddingLeft: g.size(20),
-    marginTop: g.size(20),
+    gap: g.ms(16),
+    paddingLeft: g.ws(16),
+    marginTop: g.hs(20),
   },
 });
 
 export default function Billing() {
-  const tabBarHeight = useBottomTabBarHeight();
   const { data: invoices, isLoading: loadingInvoices, refetch: refetchInvoices } = useInvoices();
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -228,7 +223,7 @@ export default function Billing() {
           <View>
             <Header hideBackButton />
             <View style={s.titleContainer}>
-              <Feather name="credit-card" size={g.size(36)} color={g.neutral700} />
+              <Feather name="credit-card" size={g.hs(36)} color={g.neutral700} />
               <Text style={s.title}>
                 Billing
               </Text>
@@ -240,50 +235,37 @@ export default function Billing() {
           : (
             <>
               {invoices?.length ? (
-                <>
-                  <View style={s.inputContainer}>
+                <View style={s.container}>
+                  <View style={[s.inputContainer, error && s.inputContainerError]}>
                     <Feather
-                      style={[
-                        s.dollarSign,
-                        Platform.OS === 'android' && s.androidDollarSign,
-                      ]}
                       name="dollar-sign"
-                      size={g.size(20)}
+                      size={g.ms(20)}
                       color={g.neutral400}
                     />
-                    <Input
-                      onChange={setAmount}
+                    <TextInput
+                      style={s.input}
+                      onChange={(e) => setAmount(e.nativeEvent.text)}
                       value={amount}
                       placeholder="Enter dollar amount to pay"
-                      keyboardType="numeric"
-                      error={null}
-                      label=""
-                      name="amount"
-                      onFocus={() => { }}
-                      type="text"
-                      onSubmitEditing={() => { }}
+                      keyboardType="decimal-pad"
+                      onSubmitEditing={() => Keyboard.dismiss()}
                       autoCapitalize="none"
                       textContentType="none"
-                      returnKeyType="default"
-                      style={{ paddingLeft: g.size(36), color: g.neutral900 }}
+                      returnKeyType="done"
                     />
-                    <View style={[s.buttonContainer, Platform.OS === 'android' && s.androidButtonContainer]}>
-                      <TouchableOpacity
-                        style={[
-                          s.payButton,
-                          disabled && s.disabled,
-                          Platform.OS === 'android' && s.payButtonAndroid,
-                        ]}
-                        onPress={handleSubmit}
-                        disabled={disabled}
-                      >
-                        {paymentNoticePending || paymentIntentPending || buttonLoading
-                          ? <ActivityIndicator color={g.white} />
-                          : <Text style={s.payButtonLabel}>Pay</Text>
-                        }
-                      </TouchableOpacity>
-                    </View>
-                    {!!error && <Text style={s.greyedOut}>{error}</Text>}
+                    <TouchableOpacity
+                      style={[
+                        s.payButton,
+                        disabled && s.disabled,
+                      ]}
+                      onPress={handleSubmit}
+                      disabled={disabled}
+                    >
+                      {paymentNoticePending || paymentIntentPending || buttonLoading
+                        ? <ActivityIndicator color={g.white} size="small" />
+                        : <Text style={s.payButtonLabel}>Pay</Text>}
+                    </TouchableOpacity>
+                    {!!error && <Text style={s.inputErrorLabel}>{error}</Text>}
                   </View>
                   <MaskedView
                     style={s.maskedView}
@@ -298,7 +280,7 @@ export default function Billing() {
                     <ScrollView
                       contentContainerStyle={[
                         s.scrollContent,
-                        { paddingBottom: tabBarHeight + g.size(32) },
+                        { paddingBottom: g.tabBarHeight + g.hs(120) }
                       ]}
                       scrollEnabled={!!paymentNotices?.length || !!invoices?.length}
                       refreshControl={(
@@ -307,7 +289,7 @@ export default function Billing() {
                           onRefresh={onRefresh}
                           tintColor={g.primaryBlue}
                           colors={[g.primaryBlue]}
-                          progressViewOffset={g.size(40)}
+                          progressViewOffset={g.hs(20)}
                         />
                       )}
                     >
@@ -338,7 +320,7 @@ export default function Billing() {
                       )}
                     </ScrollView>
                   </MaskedView>
-                </>
+                </View>
               ) : (
                 <ZeroState
                   image={receipt}

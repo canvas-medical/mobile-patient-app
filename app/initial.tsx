@@ -1,24 +1,30 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
+import Modal from 'react-native-modal';
 import { Picker } from '@react-native-picker/picker';
+import Constants from 'expo-constants';
 import { Image } from 'expo-image';
 import * as SecureStore from 'expo-secure-store';
 import { router } from 'expo-router';
-import { Overlay } from '@rneui/themed';
 import { Button } from '@components';
 import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    backgroundColor: g.black,
+    opacity: 0.5,
+  },
   buttonContainer: {
-    marginTop: g.size(96),
-    gap: g.size(16),
+    marginTop: g.hs(96),
+    gap: g.hs(16),
   },
   container: {
     flex: 1,
     justifyContent: 'flex-end',
-    paddingHorizontal: g.size(36),
-    paddingBottom: g.size(120),
+    paddingHorizontal: g.ws(36),
+    paddingBottom: g.hs(120),
     backgroundColor: g.tertiaryBlue,
   },
   graphic: {
@@ -28,15 +34,24 @@ const s = StyleSheet.create({
     width: g.width * 0.8,
     aspectRatio: 59 / 77,
   },
+  modal: {
+    paddingHorizontal: g.ws(8),
+    paddingBottom: g.hs(12),
+    backgroundColor: g.white,
+    width: '85%',
+    maxWidth: 375,
+    borderRadius: g.ms(16),
+    gap: g.hs(4),
+    alignSelf: 'center',
+  },
   or: {
     ...g.titleLarge,
     color: g.white,
     textAlign: 'center'
   },
-  pickerOverlay: {
-    width: '85%',
-    borderRadius: g.size(16),
-    backgroundColor: g.white,
+  pickerItem: {
+    ...g.bodyLarge,
+    color: g.neutral900,
   },
   subtitle: {
     ...g.bodyXLarge,
@@ -49,22 +64,21 @@ const s = StyleSheet.create({
   title: {
     ...g.titleLarge,
     color: g.white,
-    marginBottom: g.size(20),
+    marginBottom: g.hs(20),
   },
   version: {
     ...g.bodySmall,
     color: g.neutral100,
-    opacity: 0.7,
+    opacity: 0.6,
     position: 'absolute',
-    left: g.size(16),
-    bottom: g.size(16)
+    left: g.ws(16),
+    bottom: g.ws(16)
   }
 });
 
 export default function Initial() {
   const [show, setShow] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
-  const [currentPatientName, setCurrentPatientName] = useState<string>('');
 
   const demoPatients = [
     { label: 'Select a patient', value: '' },
@@ -78,11 +92,6 @@ export default function Initial() {
     await SecureStore.setItemAsync('patient_id', value);
     router.push('(tabs)/my-health');
   };
-
-  useEffect(() => {
-    if (value) setCurrentPatientName(demoPatients.find((demo) => value === demo.value)?.label.split(' ')[0]);
-    else setCurrentPatientName('');
-  }, [value]);
 
   return (
     <View style={s.container}>
@@ -107,27 +116,37 @@ export default function Initial() {
         />
       </View>
       {show && (
-        <Overlay
+        <Modal
+          animationIn="fadeIn"
+          animationOut="fadeOut"
           isVisible={show}
-          onBackdropPress={() => setShow(false)}
-          overlayStyle={s.pickerOverlay}
+          swipeDirection="right"
+          onSwipeComplete={() => setShow(false)}
+          customBackdrop={(
+            <TouchableWithoutFeedback onPress={() => setShow(false)}>
+              <View style={s.backdrop} />
+            </TouchableWithoutFeedback>
+          )}
         >
-          <Picker
-            selectedValue={value}
-            onValueChange={(patientId: string) => setValue(patientId)}
-          >
-            {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
-          </Picker>
-          <Button
-            label={value ? `Login as ${currentPatientName}` : 'Login as demo patient'}
-            disabled={!value}
-            theme="primary"
-            onPress={() => signInDemoPatient()}
-          />
-        </Overlay>
+          <View style={s.modal}>
+            <Picker
+              itemStyle={s.pickerItem}
+              selectedValue={value}
+              onValueChange={(patientId: string) => setValue(patientId)}
+            >
+              {demoPatients.map((option) => <Picker.Item key={option.value} label={option.label} value={option.value} />)}
+            </Picker>
+            <Button
+              label="Login"
+              disabled={!value}
+              theme="primary"
+              onPress={() => signInDemoPatient()}
+            />
+          </View>
+        </Modal>
       )}
       <Text style={s.version}>
-        Version: 1.1.0
+        {`Version: ${Constants.expoConfig.version}`}
       </Text>
     </View>
   );

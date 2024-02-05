@@ -14,8 +14,8 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   chevron: {
-    left: g.size(8),
-    bottom: g.size(4),
+    left: g.ms(8),
+    bottom: g.ms(4),
   },
   date: {
     ...g.bodySmall,
@@ -62,8 +62,8 @@ export function EducationalMaterialCard({ data }: { data: DocumentResource }) {
           {display}
         </Text>
         {data
-          ? !!url && <Feather name="chevron-right" size={g.size(28)} color={g.neutral700} style={s.chevron} />
-          : <ActivityIndicator color={g.primaryBlue} />}
+          ? !!url && <Feather name="chevron-right" size={g.ms(28)} color={g.neutral700} style={s.chevron} />
+          : <ActivityIndicator color={g.primaryBlue} size="small" />}
       </View>
       <Text style={s.date}>
         {formatDate(date)}

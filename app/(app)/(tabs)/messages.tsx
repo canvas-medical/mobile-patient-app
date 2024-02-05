@@ -5,44 +5,41 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
   Keyboard,
   Animated,
   Easing,
-  Platform,
   RefreshControl,
+  Platform,
 } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { Message } from '@interfaces';
 import { useCommunication, useCommunicationSubmit } from '@services';
-import { useKeyboardVisible } from '@utils';
+import { useKeyboardVisible, useKeyboardHeight } from '@utils';
 import { FlashListSeparator, Header, MessageBlock, ZeroState } from '@components';
 import chat from '@assets/images/chat.svg';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
   button: {
-    position: 'absolute',
-    bottom: g.size(-1),
-    right: 0,
+    width: g.ms(36),
+    height: g.ms(36),
+    borderRadius: g.ms(18),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: g.primaryBlue,
+    borderWidth: g.ms(3),
+    borderColor: g.neutral150,
   },
   buttonDisabled: {
     opacity: 0.5,
-    position: 'absolute',
-    bottom: g.size(-1),
-    right: 0,
-  },
-  chatContainer: {
-    flex: 1,
   },
   container: {
     flex: 1,
     backgroundColor: g.white,
+    borderWidth: 1,
   },
   headerContainer: {
-    marginBottom: -g.size(8),
     zIndex: 1,
   },
   input: {
@@ -51,44 +48,43 @@ const s = StyleSheet.create({
     backgroundColor: g.neutral150,
     width: g.width * 0.8,
     alignSelf: 'center',
-    borderRadius: g.size(20),
-    paddingTop: g.size(8),
-    paddingBottom: g.size(4),
-    paddingHorizontal: g.size(16),
+    borderRadius: g.ms(50),
+    paddingHorizontal: g.ms(16),
+    flex: 1,
   },
   inputContainer: {
     position: 'absolute',
     left: '50%',
-    transform: [{ translateX: -((g.width - g.size(32)) / 2) }],
-    width: g.width - g.size(32),
+    transform: [{ translateX: -((g.width - g.ws(32)) / 2) }],
+    width: g.width - g.ws(32),
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: g.neutral150,
-    borderRadius: g.size(20),
-    minHeight: g.size(36),
+    borderRadius: g.ms(50),
+    minHeight: g.hs(36),
+    gap: g.ms(8),
   },
   keyboardDismissButton: {
     position: 'absolute',
-    bottom: g.size(20),
-    left: g.size(28),
+    bottom: g.hs(20),
+    left: g.ws(28),
   },
   loading: {
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: g.size(20),
-    paddingTop: g.size(72), // This is actually bottom padding due to the FlashList being inverted
-    paddingBottom: g.size(36), // This is actually top padding due to the FlashList being inverted
+    paddingHorizontal: g.ws(20),
+    paddingBottom: g.hs(36), // This is actually top padding due to the FlashList being inverted
   },
 });
 
 export default function Messages() {
-  const tabBarHeight = useBottomTabBarHeight();
   const keyboardVisible = useKeyboardVisible();
+  const keyboardHeight = useKeyboardHeight();
   const opacityValue = useRef(new Animated.Value(0)).current;
   const [message, setMessage] = useState<string>('');
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [size, setSize] = useState<number>(g.size(32));
+  const [size, setSize] = useState<number>(g.hs(32));
   const {
     data,
     isLoading,
@@ -107,9 +103,9 @@ export default function Messages() {
   const { mutate: onMessageSubmit, isPending, isSuccess } = useCommunicationSubmit();
 
   const flashListRef = useRef<FlashList<any>>();
-  const buttonDisabled = message.length === 0;
+  const submitDisabled = message.length === 0;
   const updateSize = (num: number) => {
-    if (num > g.size(32) && num < g.size(500)) { setSize(num); }
+    if (num > g.hs(32) && num < g.hs(500)) { setSize(num); }
   };
 
   const onRefresh = async () => {
@@ -137,7 +133,8 @@ export default function Messages() {
     if (!isSuccess) return;
     setMessage('');
     refetch();
-    setSize(g.size(32));
+    setSize(g.hs(32));
+    flashListRef.current?.scrollToOffset({ offset: 0, animated: true });
   }, [isSuccess]);
 
   function toggleKeyBoard() {
@@ -153,19 +150,29 @@ export default function Messages() {
     toggleKeyBoard();
   }, [keyboardVisible]);
 
-  const inputBottomPositionSwitch = () => {
+  function inputBottomPositionSwitch() {
     switch (Platform.OS) {
       case 'ios':
-        return g.size(20);
+        return (keyboardVisible && keyboardHeight > g.tabBarHeight ? keyboardHeight : g.tabBarHeight) + g.hs(16);
       case 'android':
-        return keyboardVisible ? g.size(60) : g.size(40);
+        return keyboardVisible ? g.tabBarHeight + g.hs(40) : g.tabBarHeight + g.hs(16);
       default:
-        return g.size(20);
+        return 0;
     }
-  };
+  }
+  function scrollBottomPaddingSwitch() {
+    switch (Platform.OS) {
+      case 'ios':
+        return (keyboardVisible && keyboardHeight > g.tabBarHeight ? keyboardHeight : g.tabBarHeight) + g.hs(96);
+      case 'android':
+        return g.tabBarHeight + g.hs(96);
+      default:
+        return 0;
+    }
+  }
 
   return (
-    <View style={[s.container, { paddingBottom: tabBarHeight }]}>
+    <View style={s.container}>
       <View style={s.headerContainer}>
         <Header hideBackButton />
         <TouchableOpacity
@@ -174,100 +181,96 @@ export default function Messages() {
           disabled={!keyboardVisible}
         >
           <Animated.View style={{ opacity: opacityValue }}>
-            <MaterialIcons name="keyboard-hide" size={g.size(40)} color={g.white} />
+            <MaterialIcons name="keyboard-hide" size={g.ms(40)} color={g.white} />
           </Animated.View>
         </TouchableOpacity>
       </View>
-      <KeyboardAvoidingView
-        style={s.chatContainer}
-        behavior={(Platform.OS === 'ios' && 'height') || undefined}
-      >
-        {isLoading
-          ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
-          : (
-            <>
-              {messages.length ? (
-                <FlashList
-                  ref={flashListRef}
-                  inverted
-                  data={messages}
-                  contentContainerStyle={s.scrollContent}
-                  renderItem={({ item }) => (
-                    <MessageBlock
-                      received={item.sender.type === 'Practitioner'}
-                      key={item.id}
-                      message={item?.payload && item.payload[0]?.contentString}
-                      sentTime={item.sent}
-                    />
-                  )}
-                  refreshControl={(
-                    <RefreshControl
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                      tintColor={g.primaryBlue}
-                      colors={[g.primaryBlue]}
-                      progressViewOffset={tabBarHeight}
-                    />
-                  )}
-                  ItemSeparatorComponent={() => FlashListSeparator()}
-                  estimatedItemSize={g.size(150)}
-                  onEndReached={() => {
-                    if (hasNextPage) fetchNextPage();
-                  }}
-                  onEndReachedThreshold={1}
-                  ListFooterComponent={isFetchingNextPage && (
-                    <ActivityIndicator
-                      size="large"
-                      color={g.primaryBlue}
-                      style={{ marginBottom: g.size(20) }}
-                    />
-                  )}
-                />
-              ) : (
-                <ZeroState
-                  image={chat}
-                  imageAspectRatio={1}
-                  marginBottom={g.size(60)}
-                  text="Send a message below to get started!"
-                />
-              )}
-            </>
-          )}
-        <View
-          style={{
-            ...s.inputContainer,
-            bottom: inputBottomPositionSwitch(),
-          }}
-        >
-          <TextInput
-            style={{ ...s.input, height: size }}
-            multiline
-            placeholder="Message here..."
-            value={message}
-            onChange={(e) => setMessage(e.nativeEvent.text)}
-            onFocus={() => null}
-            autoCapitalize="sentences"
-            keyboardType="default"
-            textContentType="none"
-            placeholderTextColor={g.neutral400}
-            onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
-          />
-          {isPending
-            ? <ActivityIndicator size={g.size(39)} style={s.button} color={g.primaryBlue} />
-            : (
-              <TouchableOpacity
-                onPress={() => {
-                  Keyboard.dismiss();
-                  onMessageSubmit(message);
+      {isLoading
+        ? <ActivityIndicator size="large" color={g.primaryBlue} style={s.loading} />
+        : (
+          <>
+            {messages.length ? (
+              <FlashList
+                ref={flashListRef}
+                inverted
+                data={messages}
+                contentContainerStyle={{
+                  ...s.scrollContent,
+                  paddingTop: scrollBottomPaddingSwitch(), // This is actually bottom padding due to the FlashList being inverted
                 }}
-                disabled={buttonDisabled}
-              >
-                <Ionicons name="arrow-up-circle" size={g.size(36)} color={g.primaryBlue} style={buttonDisabled ? s.buttonDisabled : s.button} />
-              </TouchableOpacity>
-            )
-          }
-        </View>
-      </KeyboardAvoidingView>
+                renderItem={({ item }) => (
+                  <MessageBlock
+                    received={item.sender.type === 'Practitioner'}
+                    key={item.id}
+                    message={item?.payload && item.payload[0]?.contentString}
+                    sentTime={item.sent}
+                  />
+                )}
+                refreshControl={(
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor={g.primaryBlue}
+                    colors={[g.primaryBlue]}
+                    progressViewOffset={g.tabBarHeight + g.hs(72)}
+                  />
+                )}
+                ItemSeparatorComponent={() => FlashListSeparator()}
+                estimatedItemSize={g.hs(300)}
+                onEndReached={() => {
+                  if (hasNextPage) fetchNextPage();
+                }}
+                onEndReachedThreshold={1}
+                ListFooterComponent={isFetchingNextPage && (
+                  <ActivityIndicator
+                    size="large"
+                    color={g.primaryBlue}
+                    style={{ marginBottom: g.hs(20) }}
+                  />
+                )}
+              />
+            ) : (
+              <ZeroState
+                image={chat}
+                imageAspectRatio={1}
+                marginBottom={g.hs(60)}
+                text="Send a message below to get started!"
+              />
+            )}
+          </>
+        )}
+      <View
+        style={[
+          s.inputContainer,
+          { bottom: inputBottomPositionSwitch() }
+        ]}
+      >
+        <TextInput
+          style={{ ...s.input, height: size }}
+          multiline
+          placeholder="Message here..."
+          value={message}
+          onChange={(e) => setMessage(e.nativeEvent.text)}
+          onFocus={() => null}
+          autoCapitalize="sentences"
+          keyboardType="default"
+          textContentType="none"
+          placeholderTextColor={g.neutral400}
+          onContentSizeChange={(e) => updateSize(e.nativeEvent.contentSize.height)}
+        />
+        <TouchableOpacity
+          style={[s.button, submitDisabled && s.buttonDisabled]}
+          onPress={() => {
+            Keyboard.dismiss();
+            onMessageSubmit(message);
+          }}
+          disabled={submitDisabled}
+        >
+          {isPending
+            ? <ActivityIndicator size="small" style={s.button} color={g.white} />
+            : <Ionicons name="arrow-up" size={g.ms(24)} color={g.white} />}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

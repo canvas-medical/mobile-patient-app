@@ -26,6 +26,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import { router, useNavigation } from 'expo-router';
+import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -47,21 +48,14 @@ import graphic from '@assets/images/graphic.png';
 import { g } from '@styles';
 
 const s = StyleSheet.create({
-  actionButton: {
+  actionButtonContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: g.size(8),
-    padding: g.size(6),
-  },
-  actionButtonLabel: {
-    ...g.labelMedium,
-    color: g.white,
-  },
-  backButton: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? g.size(20) : g.size(44),
-    left: g.size(16),
+    top: Platform.OS === 'ios' ? g.ms(20) : g.ms(44),
+    left: g.ms(16),
+    right: g.ms(16),
   },
   backdrop: {
     flex: 1,
@@ -75,11 +69,11 @@ const s = StyleSheet.create({
   birthDateContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(8),
+    gap: g.ms(8),
   },
   cancelInsuranceButton: {
-    width: g.size(24),
-    height: g.size(24),
+    width: g.ms(24),
+    height: g.ms(24),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -87,7 +81,9 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: g.white,
   },
-  editImage: {
+  editImageIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     position: 'absolute',
     bottom: 0,
     right: 0,
@@ -95,64 +91,59 @@ const s = StyleSheet.create({
     overflow: 'hidden',
     borderColor: g.white,
     borderStyle: 'solid',
-    borderWidth: g.size(1),
-    borderRadius: g.size(14),
-    padding: g.size(4),
-    paddingBottom: g.size(2),
-    paddingRight: g.size(2),
+    borderWidth: g.ms(1),
+    borderRadius: g.ms(20),
+    padding: g.ms(2),
   },
   graphic: {
     position: 'absolute',
     top: 0,
     right: 0,
-    width: g.width * 0.75,
+    width: '82%',
     aspectRatio: 1.2,
   },
   header: {
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
-    borderBottomLeftRadius: g.size(28),
-    borderBottomRightRadius: g.size(28),
-    paddingTop: Platform.OS === 'ios' ? g.size(48) : g.size(80),
-    paddingHorizontal: g.size(20),
-    paddingBottom: g.size(24),
+    borderBottomLeftRadius: g.ws(28),
+    borderBottomRightRadius: g.ws(28),
+    paddingTop: Platform.OS === 'ios' ? g.hs(48) : g.hs(80),
+    paddingHorizontal: g.ws(20),
+    paddingBottom: g.hs(24),
     alignItems: 'center',
-    gap: g.size(28),
+    gap: g.hs(8),
   },
   iconLabelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(8),
+    gap: g.ms(8),
   },
   input: {
     ...g.bodyLarge,
     flex: 1,
     color: g.neutral900,
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
+    paddingVertical: g.hs(8),
+    paddingHorizontal: g.ms(16),
     backgroundColor: g.neutral150,
-    borderRadius: g.size(50),
+    borderRadius: g.ms(50),
   },
   inputError: {
     backgroundColor: g.error,
   },
   inputLabel: {
-    marginLeft: g.size(2),
-    marginBottom: g.size(2),
-  },
-  inputOptional: {
-    fontStyle: 'italic',
+    marginLeft: g.ms(2),
+    marginBottom: g.hs(4),
   },
   inputRequired: {
     color: g.severityRed,
   },
   insuranceContainer: {
-    gap: g.size(8),
-    marginTop: g.size(24),
-    padding: g.size(16),
-    borderWidth: g.size(1),
-    borderColor: g.neutral300,
-    borderRadius: g.size(8),
+    gap: g.hs(8),
+    marginTop: g.hs(24),
+    padding: g.ms(16),
+    borderWidth: g.ms(1),
+    borderColor: g.neutral200,
+    borderRadius: g.ms(8),
   },
   insuranceHeader: {
     justifyContent: 'space-between',
@@ -162,26 +153,35 @@ const s = StyleSheet.create({
     borderBottomWidth: 0,
   },
   logoutButton: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? g.size(24) : g.size(48),
-    right: g.size(16),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: g.ms(8),
+    padding: g.ms(6),
+  },
+  logoutButtonLabel: {
+    ...g.labelMedium,
+    color: g.white,
   },
   modal: {
-    paddingHorizontal: g.size(8),
-    paddingBottom: g.size(12),
+    paddingHorizontal: g.ws(8),
+    paddingBottom: g.hs(12),
     backgroundColor: g.white,
-    borderRadius: g.size(16),
-    gap: g.size(4),
+    width: '85%',
+    maxWidth: 375,
+    borderRadius: g.ms(16),
+    gap: g.hs(4),
+    alignSelf: 'center',
   },
   name: {
     ...g.labelXLarge,
     color: g.white,
     textAlign: 'center',
-    paddingHorizontal: g.size(60),
+    paddingHorizontal: g.ws(60),
   },
   nameAndBirthDateContainer: {
     alignItems: 'center',
-    gap: g.size(8),
+    gap: g.hs(4),
   },
   patientDataLabel: {
     ...g.labelSmall,
@@ -189,24 +189,33 @@ const s = StyleSheet.create({
   },
   patientDataListItem: {
     justifyContent: 'center',
-    gap: g.size(8),
-    paddingVertical: g.size(28),
-    borderBottomWidth: g.size(1),
+    gap: g.hs(8),
+    paddingVertical: g.hs(28),
+    borderBottomWidth: g.ms(1),
     borderBottomColor: g.neutral300
+  },
+  pickerItem: {
+    ...g.bodyLarge,
+    color: g.neutral900,
   },
   saveButton: {
     ...g.buttonShadow,
-    width: g.size(72),
-    height: g.size(72),
-    borderRadius: g.size(36),
+    width: g.ms(72),
+    height: g.ms(72),
+    borderRadius: g.ms(36),
     backgroundColor: g.primaryBlue,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: g.size(12),
+    right: g.ms(12),
+    bottom: g.ms(20),
   },
   saveButtonDisabled: {
     opacity: 0.2
+  },
+  saveButtonLabel: {
+    ...g.labelMedium,
+    color: g.white,
   },
   saveButtonLoading: {
     opacity: 0.8
@@ -216,8 +225,8 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: g.size(20),
-    paddingBottom: g.size(32),
+    paddingHorizontal: g.ms(20),
+    paddingBottom: g.hs(96),
   },
   selectorButtonLabel: {
     ...g.bodyLarge,
@@ -230,10 +239,18 @@ const s = StyleSheet.create({
     color: g.neutral400
   },
   userImage: {
-    height: g.size(72),
-    width: g.size(72),
-    borderRadius: g.size(36),
+    height: g.ms(72),
+    width: g.ms(72),
+    borderRadius: g.ms(36),
   },
+  version: {
+    ...g.bodySmall,
+    color: g.neutral500,
+    opacity: 0.6,
+    position: 'absolute',
+    left: g.ws(16),
+    bottom: g.ws(16)
+  }
 });
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
@@ -283,7 +300,6 @@ export default function ProfileModal() {
   const [showProviderPicker, setShowProviderPicker] = useState<boolean>(false);
   const [showStatePicker, setShowStatePicker] = useState<boolean>(false);
   const [showGenderPicker, setShowGenderPicker] = useState<boolean>(false);
-  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
   const [image, setImage] = useState(null);
   const prevIsDirtyRef = useRef<boolean>(false);
   const offset = useSharedValue(0);
@@ -305,22 +321,6 @@ export default function ProfileModal() {
     };
     return buttonAnimation();
   }, [isDirty]);
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
-      if (Platform.OS === 'ios') {
-        setKeyboardHeight(e.endCoordinates.height);
-      }
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardHeight(0);
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   useEffect(() => {
     reset(patientData);
@@ -422,21 +422,18 @@ export default function ProfileModal() {
           style={s.graphic}
           source={graphic}
         />
-        <TouchableOpacity
-          style={s.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Feather name="arrow-left" size={g.size(40)} color={g.white} />
-        </TouchableOpacity>
-        <View style={s.logoutButton}>
+        <View style={s.actionButtonContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Feather name="arrow-left" size={g.ms(40)} color={g.white} />
+          </TouchableOpacity>
           <TouchableOpacity
-            style={s.actionButton}
+            style={s.logoutButton}
             onPress={() => logout()}
           >
-            <Text style={s.actionButtonLabel}>
+            <Text style={s.logoutButtonLabel}>
               Logout
             </Text>
-            <MaterialIcons name="logout" size={g.size(24)} color={g.white} />
+            <MaterialIcons name="logout" size={g.ms(24)} color={g.white} />
           </TouchableOpacity>
         </View>
         <Controller
@@ -444,10 +441,12 @@ export default function ProfileModal() {
           control={control}
           render={({ field: { onChange } }) => (
             <TouchableOpacity onPress={() => pickImage(onChange)}>
-              {patient?.photo ? (
-                <Image source={{ uri: image ?? patient.photo[0].url }} style={s.userImage} />
-              ) : <FontAwesome name="user-circle-o" size={g.size(72)} color={g.white} />}
-              <MaterialIcons name="mode-edit" size={g.size(16)} color={g.white} style={s.editImage} />
+              {patient?.photo
+                ? <Image source={{ uri: image ?? patient.photo[0].url }} style={s.userImage} />
+                : <FontAwesome name="user-circle-o" size={g.ms(72)} color={g.white} />}
+              <View style={s.editImageIconContainer}>
+                <MaterialIcons name="mode-edit" size={g.ms(14)} color={g.white} />
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -456,7 +455,7 @@ export default function ProfileModal() {
             {`${defaultValues.firstName ?? ''} ${defaultValues.lastName ?? ''}`}
           </Text>
           <View style={s.birthDateContainer}>
-            <MaterialCommunityIcons name="cake-variant-outline" size={g.size(16)} color={g.white} />
+            <MaterialCommunityIcons name="cake-variant-outline" size={g.ms(16)} color={g.white} />
             <Text style={s.birthDate}>
               {formatDate(patient?.birthDate)}
             </Text>
@@ -466,7 +465,7 @@ export default function ProfileModal() {
       <KeyboardAvoidingView
         behavior="padding"
         enabled={Platform.OS === 'ios'}
-        keyboardVerticalOffset={g.size(55)}
+        keyboardVerticalOffset={g.ms(55)}
         style={s.scroll}
       >
         <ScrollView
@@ -476,7 +475,7 @@ export default function ProfileModal() {
           <View style={s.insuranceContainer}>
             <View style={s.insuranceHeader}>
               <View style={s.iconLabelContainer}>
-                <FontAwesome5 name="address-card" size={g.size(22)} color={g.neutral400} />
+                <FontAwesome5 name="address-card" size={g.ms(22)} color={g.neutral400} />
                 <Text style={s.patientDataLabel}>
                   Insurance
                 </Text>
@@ -490,7 +489,7 @@ export default function ProfileModal() {
                   >
                     {cancelPending
                       ? <ActivityIndicator size="small" color={g.primaryBlue} />
-                      : <MaterialIcons name="delete-forever" size={g.size(24)} color={g.neutral400} />}
+                      : <MaterialIcons name="delete-forever" size={g.ms(24)} color={g.neutral400} />}
                   </TouchableOpacity>
                 )}
             </View>
@@ -526,6 +525,7 @@ export default function ProfileModal() {
                   >
                     <View style={s.modal}>
                       <Picker
+                        itemStyle={s.pickerItem}
                         selectedValue={value}
                         onValueChange={(itemValue) => {
                           if (itemValue !== 'Select One') onChange(itemValue);
@@ -595,8 +595,7 @@ export default function ProfileModal() {
               render={({ field: { onChange, value, ref } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
-                    Group Number
-                    <Text style={s.inputOptional}> - Optional</Text>
+                    Group Number - Optional
                   </Text>
                   <TextInput
                     style={[s.input, !!errors.groupNumber && s.inputError]}
@@ -617,10 +616,9 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Feather name="user" size={g.size(24)} color={g.neutral400} />
+              <Feather name="user" size={g.ms(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
-                Preferred Name
-                <Text style={s.inputOptional}> - Optional</Text>
+                Preferred Name - Optional
               </Text>
             </View>
             <Controller
@@ -646,7 +644,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Fontisto name="email" size={g.size(24)} color={g.neutral400} />
+              <Fontisto name="email" size={g.ms(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Email
                 {errors.email && <Text style={s.inputRequired}>{` - ${errors.email.message}`}</Text>}
@@ -684,7 +682,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Feather name="smartphone" size={g.size(24)} color={g.neutral400} />
+              <Feather name="smartphone" size={g.ms(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Phone
                 {errors.phone && <Text style={s.inputRequired}>{` - ${errors.phone.message}`}</Text>}
@@ -722,7 +720,7 @@ export default function ProfileModal() {
           </View>
           <View style={s.patientDataListItem}>
             <View style={s.iconLabelContainer}>
-              <Feather name="home" size={g.size(24)} color={g.neutral400} />
+              <Feather name="home" size={g.ms(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>Address</Text>
             </View>
             <Controller
@@ -759,8 +757,7 @@ export default function ProfileModal() {
               render={({ field: { onChange, value, ref } }) => (
                 <View>
                   <Text style={[s.patientDataLabel, s.inputLabel]}>
-                    Address Line 2
-                    <Text style={s.inputOptional}> - Optional</Text>
+                    Address Line 2 - Optional
                   </Text>
                   <TextInput
                     style={[s.input, !!errors.addressLine2 && s.inputError]}
@@ -870,6 +867,7 @@ export default function ProfileModal() {
                   >
                     <View style={s.modal}>
                       <Picker
+                        itemStyle={s.pickerItem}
                         selectedValue={value}
                         onValueChange={(itemValue) => onChange(itemValue)}
                       >
@@ -911,7 +909,7 @@ export default function ProfileModal() {
           </View>
           <View style={[s.patientDataListItem, s.lastListItem]}>
             <View style={s.iconLabelContainer}>
-              <Feather name="user" size={g.size(24)} color={g.neutral400} />
+              <Feather name="user" size={g.ms(24)} color={g.neutral400} />
               <Text style={s.patientDataLabel}>
                 Gender
                 {errors.gender && <Text style={s.inputRequired}>{` - ${errors.gender.message}`}</Text>}
@@ -945,6 +943,7 @@ export default function ProfileModal() {
                   >
                     <View style={s.modal}>
                       <Picker
+                        itemStyle={s.pickerItem}
                         selectedValue={capitalizeFirstCharacter(value || '')}
                         onValueChange={(itemValue) => onChange(itemValue)}
                       >
@@ -981,6 +980,9 @@ export default function ProfileModal() {
               )}
             />
           </View>
+          <Text style={s.version}>
+            {`Version: ${Constants.expoConfig.version}`}
+          </Text>
         </ScrollView>
         <AnimatedTouchableOpacity
           style={[
@@ -988,7 +990,6 @@ export default function ProfileModal() {
             !isDirty && s.saveButtonDisabled,
             isPending && s.saveButtonLoading,
             animatedStyles,
-            { bottom: keyboardHeight + g.size(24) },
           ]}
           onPress={handleSubmit((data: any) => {
             Keyboard.dismiss();
@@ -997,10 +998,11 @@ export default function ProfileModal() {
           })}
           disabled={!isDirty || isPending}
         >
-          {isPending ? <ActivityIndicator />
+          {isPending
+            ? <ActivityIndicator color={g.white} size="large" />
             : (
               <>
-                <Text style={s.actionButtonLabel}>
+                <Text style={s.saveButtonLabel}>
                   Save
                 </Text>
               </>

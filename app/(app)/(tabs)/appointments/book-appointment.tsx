@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
@@ -24,8 +23,8 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   bookButton: {
     position: 'absolute',
-    left: g.size(16),
-    right: g.size(16),
+    left: g.ws(16),
+    right: g.ws(16),
   },
   buttonSelected: {
     backgroundColor: g.secondaryBlue,
@@ -39,23 +38,23 @@ const s = StyleSheet.create({
     ...g.bodyMedium,
     color: g.neutral700,
     textAlign: 'center',
-    marginBottom: g.size(176),
+    marginBottom: g.hs(176),
   },
   graphic: {
     position: 'absolute',
     top: 0,
     right: 0,
-    width: g.width * 0.66,
+    width: '66%',
     aspectRatio: 1,
   },
   header: {
-    paddingHorizontal: g.size(20),
-    paddingBottom: g.size(24),
-    paddingTop: Platform.OS === 'android' ? g.size(40) : g.size(24),
+    paddingHorizontal: g.ms(20),
+    paddingBottom: g.hs(24),
+    paddingTop: Platform.OS === 'android' ? g.hs(40) : g.hs(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
-    borderBottomLeftRadius: g.size(28),
-    borderBottomRightRadius: g.size(28),
+    borderBottomLeftRadius: g.ms(28),
+    borderBottomRightRadius: g.ms(28),
     alignItems: 'flex-start',
   },
   labelSelected: {
@@ -63,13 +62,13 @@ const s = StyleSheet.create({
   },
   loading: {
     flex: 1,
-    paddingBottom: g.size(120),
+    paddingBottom: g.hs(120),
   },
   maskedView: {
     flex: 1,
   },
   practitionerButtonsContainer: {
-    gap: g.size(16),
+    gap: g.hs(16),
     alignItems: 'flex-start',
   },
   scheduleButton: {
@@ -77,10 +76,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: g.neutral150,
     flexShrink: 1,
-    gap: g.size(8),
-    paddingHorizontal: g.size(16),
-    paddingVertical: g.size(8),
-    borderRadius: g.size(32),
+    gap: g.ms(8),
+    paddingHorizontal: g.ms(16),
+    paddingVertical: g.hs(8),
+    borderRadius: g.ms(32),
     opacity: 0.8,
   },
   scheduleButtonLabel: {
@@ -90,24 +89,24 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    gap: g.size(24),
-    paddingHorizontal: g.size(16),
-    paddingTop: Platform.OS === 'ios' ? g.size(28) : g.size(36),
-    paddingBottom: Platform.OS === 'android' && g.size(60),
+    gap: g.hs(24),
+    paddingHorizontal: g.ws(16),
+    paddingTop: Platform.OS === 'ios' ? g.hs(28) : g.hs(36),
+    paddingBottom: g.hs(96),
   },
   sectionContainer: {
-    gap: g.size(12),
+    gap: g.hs(12),
   },
   sectionHeader: {
     ...g.labelMedium,
     color: g.neutral700,
-    marginLeft: g.size(4),
+    marginLeft: g.ms(4),
   },
   slotButton: {
     backgroundColor: g.neutral150,
-    paddingHorizontal: g.size(12),
-    paddingVertical: g.size(4),
-    borderRadius: g.size(32),
+    paddingHorizontal: g.ms(12),
+    paddingVertical: g.hs(4),
+    borderRadius: g.ms(32),
   },
   slotButtonLabel: {
     ...g.labelMedium,
@@ -116,13 +115,13 @@ const s = StyleSheet.create({
   slotButtonsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: g.size(16),
-    paddingBottom: g.size(120),
+    gap: g.ms(16),
+    paddingBottom: g.hs(120),
   },
   title: {
     ...g.titleLarge,
     color: g.white,
-    marginTop: g.size(20),
+    marginTop: g.hs(12),
     alignSelf: 'center',
     textAlign: 'center',
   },
@@ -156,7 +155,6 @@ const reasonsForDoctorVisitMap = {
 };
 
 export default function BookAppointment() {
-  const tabBarHeight = useBottomTabBarHeight();
   const scrollViewRef = useRef<ScrollView>();
   const [appointmentReason, setAppointmentReason] = useState<string>('');
   const [appointmentDuration, setAppointmentDuration] = useState<number>(0);
@@ -202,7 +200,7 @@ export default function BookAppointment() {
         <TouchableOpacity onPress={() => router.back()}>
           <Feather
             name="arrow-left"
-            size={g.size(40)}
+            size={g.ms(40)}
             color={g.white}
           />
         </TouchableOpacity>
@@ -267,7 +265,7 @@ export default function BookAppointment() {
                           >
                             <FontAwesome5
                               name="user-md"
-                              size={g.size(28)}
+                              size={g.ms(28)}
                               color={selected ? g.white : g.neutral800}
                             />
                             <Text
@@ -328,7 +326,7 @@ export default function BookAppointment() {
           theme="primary"
           style={[
             s.bookButton,
-            { bottom: Platform.OS === 'ios' ? g.size(32) : tabBarHeight + g.size(36) }
+            { bottom: Platform.OS === 'ios' ? g.hs(24) : g.tabBarHeight + g.hs(24) },
           ]}
           onPress={() => onCreateAppointment({
             startTime: selectedSlot?.start,

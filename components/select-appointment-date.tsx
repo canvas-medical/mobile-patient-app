@@ -27,17 +27,20 @@ const s = StyleSheet.create({
     opacity: 0.5,
   },
   modal: {
-    paddingHorizontal: g.size(8),
-    paddingBottom: g.size(12),
+    paddingHorizontal: g.ws(8),
+    paddingBottom: g.hs(12),
     backgroundColor: g.white,
-    borderRadius: g.size(16),
-    gap: g.size(4),
+    width: '85%',
+    maxWidth: 375,
+    borderRadius: g.ms(16),
+    gap: g.hs(4),
+    alignSelf: 'center',
   },
   modalToggleButton: {
     backgroundColor: g.neutral150,
-    paddingVertical: g.size(8),
-    paddingHorizontal: g.size(16),
-    borderRadius: g.size(50),
+    paddingVertical: g.hs(8),
+    paddingHorizontal: g.ms(16),
+    borderRadius: g.ms(50),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -50,12 +53,12 @@ const s = StyleSheet.create({
     color: g.neutral400,
   },
   sectionContainer: {
-    gap: g.size(12),
+    gap: g.hs(12),
   },
   sectionHeader: {
     ...g.labelMedium,
     color: g.neutral700,
-    marginLeft: g.size(4),
+    marginLeft: g.ms(4),
   },
 });
 
@@ -115,7 +118,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
               onChange={(_e: DateTimePickerEvent, date: Date) => setProvisionalDate(date)}
             />
             <Button
-              label="Select Date"
+              label="Select"
               theme="primary"
               onPress={() => closeDatePicker()}
             />
@@ -134,7 +137,7 @@ export function SelectAppointmentDate({ selectedDate, setSelectedDate }: Appoint
         >
           {futureDateSelected ? formatDate(selectedDate.toISOString()) : 'Select a date'}
         </Text>
-        <MaterialCommunityIcons name="calendar-blank" size={g.size(20)} color={g.neutral600} />
+        <MaterialCommunityIcons name="calendar-blank" size={g.ms(20)} color={g.neutral600} />
       </TouchableOpacity>
     </View>
   );

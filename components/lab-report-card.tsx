@@ -15,8 +15,8 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   chevron: {
-    left: g.size(8),
-    bottom: g.size(4),
+    left: g.ms(8),
+    bottom: g.ms(4),
   },
   date: {
     ...g.bodySmall,
@@ -72,10 +72,10 @@ export function LabReportCard({ report }: { report: LabImagingReport | Diagnosti
         <Text style={s.displayText}>
           {data?.display}
         </Text>
-        {isDiagnosticData && isLoadingDiagnosticURI && <ActivityIndicator color={g.primaryBlue} />}
+        {isDiagnosticData && isLoadingDiagnosticURI && <ActivityIndicator color={g.primaryBlue} size="small" />}
         {isDiagnosticData && !isLoadingDiagnosticURI && !!data?.uri
-          ? <Feather name="chevron-right" size={g.size(28)} color={g.neutral700} style={s.chevron} />
-          : !isLoadingDiagnosticURI && <MaterialCommunityIcons name="note-off-outline" size={g.size(20)} color={g.neutral600} />
+          ? <Feather name="chevron-right" size={g.ms(28)} color={g.neutral700} style={s.chevron} />
+          : !isLoadingDiagnosticURI && <MaterialCommunityIcons name="note-off-outline" size={g.ms(20)} color={g.neutral600} />
         }
       </View>
       <Text style={s.date}>

@@ -6,11 +6,11 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   cardContainer: {
-    rowGap: g.size(12),
+    rowGap: g.hs(12),
   },
   container: {
     flex: 1,
-    gap: g.size(16),
+    gap: g.hs(16),
   },
   headerContainer: {
     flexDirection: 'row',
@@ -18,7 +18,7 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconContainer: {
-    width: g.size(28),
+    width: g.ms(28),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -28,27 +28,26 @@ const s = StyleSheet.create({
   },
   labelContainer: {
     flexDirection: 'row',
-    gap: g.size(4),
+    gap: g.ms(4),
     alignItems: 'center',
   },
   viewAll: {
     ...g.labelSmall,
-    lineHeight: g.size(16),
     color: g.tertiaryBlue,
     opacity: 0.9,
-    padding: g.size(2),
+    padding: g.ms(2),
   },
   viewAllButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    top: g.size(1),
+    top: g.hs(1),
   },
   zeroState: {
     ...g.bodyMedium,
     color: g.neutral700,
     opacity: 0.8,
-    marginLeft: g.size(32),
-    marginTop: -g.size(8),
+    marginLeft: g.ms(32),
+    marginTop: -g.hs(8),
   },
 });
 export function MyHealthBlock(
@@ -87,7 +86,7 @@ export function MyHealthBlock(
             <Text style={s.viewAll}>
               View All
             </Text>
-            <Feather name="chevron-right" size={g.size(14)} color={g.tertiaryBlue} />
+            <Feather name="chevron-right" size={g.ms(14)} color={g.tertiaryBlue} />
           </TouchableOpacity>
         )}
       </View>

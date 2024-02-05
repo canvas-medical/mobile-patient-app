@@ -13,7 +13,7 @@ import graphic from '@assets/images/graphic.png';
 
 const s = StyleSheet.create({
   backButton: {
-    marginLeft: g.size(8),
+    marginLeft: g.ws(8),
     justifyContent: 'center',
   },
   container: {
@@ -22,8 +22,8 @@ const s = StyleSheet.create({
     backgroundColor: g.tertiaryBlue,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: g.size(16),
-    paddingTop: g.size(60),
+    padding: g.hs(16),
+    paddingTop: g.hs(48),
   },
   graphic: {
     position: 'absolute',
@@ -40,17 +40,16 @@ const s = StyleSheet.create({
     color: g.white,
   },
   nameAndAvatarContainer: {
-    minHeight: g.size(48),
+    minHeight: g.hs(48),
     flexDirection: 'row',
     alignItems: 'center',
-    gap: g.size(8),
-    marginRight: g.size(8),
+    gap: g.ws(8),
     marginLeft: 'auto',
   },
   userImage: {
-    width: g.size(48),
-    height: g.size(48),
-    borderRadius: g.size(24),
+    width: g.hs(48),
+    height: g.hs(48),
+    borderRadius: g.ms(24),
   }
 });
 
@@ -69,7 +68,7 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
           style={s.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Feather name="arrow-left" size={g.size(40)} color={g.white} />
+          <Feather name="arrow-left" size={g.ms(40)} color={g.white} />
         </TouchableOpacity>
       )}
       <TouchableOpacity
@@ -78,9 +77,9 @@ export function Header({ hideBackButton = false }: { hideBackButton?: boolean })
         activeOpacity={0}
       >
         <Text style={s.name}>{`${data?.name ? data?.name[0]?.given[0] : ''} ${data?.name ? data?.name[0]?.family : ''}`}</Text>
-        {data?.photo ? (
-          <Image source={{ uri: data?.photo[0].url }} style={s.userImage} />
-        ) : <FontAwesome name="user-circle-o" size={g.size(48)} color={g.white} />}
+        {data?.photo
+          ? <Image source={{ uri: data?.photo[0].url }} style={s.userImage} />
+          : <FontAwesome name="user-circle-o" size={g.hs(48)} color={g.white} />}
       </TouchableOpacity>
     </View>
   );

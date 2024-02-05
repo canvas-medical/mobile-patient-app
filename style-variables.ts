@@ -1,11 +1,21 @@
 import { Dimensions } from 'react-native';
 
+const { width, height } = Dimensions.get('window');
+const guidelineBaseWidth = 393;
+const guidelineBaseHeight = 852;
+const widthScale = (size: number) => (width / guidelineBaseWidth) * size;
+const heightScale = (size: number) => (height / guidelineBaseHeight) * size;
+const moderateScale = (size: number, factor: number = 0.5) => size + (widthScale(size) - size) * factor;
+
 const global = {
   // Screen Dimensions
-  width: Dimensions.get('window').width,
-  height: Dimensions.get('window').height,
+  width,
+  height,
 
-  size: (s: number) => Dimensions.get('window').width * (s / 393),
+  // Screen Scaling
+  ws: widthScale, // width, marginHorizontal, paddingHorizontal, etc. w/ exceptions
+  hs: heightScale, // height, marginVertical, paddingVertical, etc. w/ exceptions
+  ms: moderateScale, // fontSize, borderRadius, icons, etc. w/ exceptions
 
   // Color Palette
   white: '#f8fafc',
@@ -34,102 +44,103 @@ const global = {
   buttonShadow: {
     shadowOffset: {
       width: 0,
-      height: Dimensions.get('window').width * (4 / 393),
+      height: moderateScale(4),
     },
     shadowOpacity: 0.4,
-    shadowRadius: Dimensions.get('window').width * (4 / 393),
+    shadowRadius: moderateScale(4),
     shadowColor: '#0f172a', // neutral900
     elevation: 4,
   },
   cardShadow: {
     shadowOffset: {
       width: 0,
-      height: Dimensions.get('window').width * (1 / 393),
+      height: moderateScale(1),
     },
     shadowOpacity: 0.25,
-    shadowRadius: Dimensions.get('window').width * (2 / 393),
+    shadowRadius: moderateScale(2),
     shadowColor: '#94a3b8', // neutral400
     elevation: 1,
   },
+  tabBarHeight: 0,
 
   // Typography
   // Titles
   titleXSmall: {
     fontFamily: 'InterExtraBold',
-    fontSize: Dimensions.get('window').width * (16 / 393),
-    lineHeight: Dimensions.get('window').width * (24 / 393),
+    fontSize: moderateScale(16),
+    lineHeight: moderateScale(24),
     letterSpacing: 0.1,
   },
   titleSmall: {
     fontFamily: 'InterExtraBold',
-    fontSize: Dimensions.get('window').width * (20 / 393),
-    lineHeight: Dimensions.get('window').width * (24 / 393),
+    fontSize: moderateScale(20),
+    lineHeight: moderateScale(24),
     letterSpacing: 0.1,
   },
   titleMedium: {
     fontFamily: 'InterExtraBold',
-    fontSize: Dimensions.get('window').width * (24 / 393),
-    lineHeight: Dimensions.get('window').width * (28 / 393),
+    fontSize: moderateScale(24),
+    lineHeight: moderateScale(28),
     letterSpacing: 0.15,
   },
   titleLarge: {
     fontFamily: 'InterExtraBold',
-    fontSize: Dimensions.get('window').width * (32 / 393),
-    lineHeight: Dimensions.get('window').width * (36 / 393),
+    fontSize: moderateScale(32),
+    lineHeight: moderateScale(36),
     letterSpacing: 0,
   },
   labelXSmall: {
     fontFamily: 'InterMedium',
-    fontSize: Dimensions.get('window').width * (10 / 393),
-    lineHeight: Dimensions.get('window').width * (12 / 393),
+    fontSize: moderateScale(10),
+    lineHeight: moderateScale(12),
     letterSpacing: 0,
   },
   labelSmall: {
     fontFamily: 'InterMedium',
-    fontSize: Dimensions.get('window').width * (14 / 393),
-    lineHeight: Dimensions.get('window').width * (18 / 393),
+    fontSize: moderateScale(14),
+    lineHeight: moderateScale(18),
     letterSpacing: 0.5,
   },
   labelMedium: {
     fontFamily: 'InterMedium',
-    fontSize: Dimensions.get('window').width * (16 / 393),
-    lineHeight: Dimensions.get('window').width * (20 / 393),
+    fontSize: moderateScale(16),
+    lineHeight: moderateScale(20),
     letterSpacing: 0.5,
   },
   labelLarge: {
     fontFamily: 'InterMedium',
-    fontSize: Dimensions.get('window').width * (20 / 393),
-    lineHeight: Dimensions.get('window').width * (24 / 393),
+    fontSize: moderateScale(20),
+    lineHeight: moderateScale(24),
     letterSpacing: 0.1,
   },
   labelXLarge: {
     fontFamily: 'InterMedium',
-    fontSize: Dimensions.get('window').width * (24 / 393),
-    lineHeight: Dimensions.get('window').width * (28 / 393),
+    fontSize: moderateScale(24),
+    lineHeight: moderateScale(28),
     letterSpacing: 0.5,
   },
   bodySmall: {
     fontFamily: 'InterRegular',
-    fontSize: Dimensions.get('window').width * (12 / 393),
-    lineHeight: Dimensions.get('window').width * (16 / 393),
+    fontSize: moderateScale(12),
+    lineHeight: moderateScale(16),
     letterSpacing: 0.4,
   },
   bodyMedium: {
     fontFamily: 'InterRegular',
-    fontSize: Dimensions.get('window').width * (14 / 393),
-    lineHeight: Dimensions.get('window').width * (18 / 393),
+    fontSize: moderateScale(14),
+    lineHeight: moderateScale(18),
     letterSpacing: 0.25,
   },
   bodyLarge: {
     fontFamily: 'InterRegular',
-    fontSize: Dimensions.get('window').width * (16 / 393),
-    lineHeight: Dimensions.get('window').width * (20 / 393),
+    fontSize: moderateScale(16),
+    lineHeight: moderateScale(20),
     letterSpacing: 0.5,
   },
   bodyXLarge: {
     fontFamily: 'InterRegular',
-    fontSize: Dimensions.get('window').width * (20 / 393),
-    lineHeight: Dimensions.get('window').width * (24 / 393),
+    fontSize: moderateScale(20),
+    lineHeight: moderateScale(24),
     letterSpacing: 0.5,
   },
 };

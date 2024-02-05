@@ -28,27 +28,30 @@ const s = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    width: g.width * 0.66,
+    width: '66%',
     aspectRatio: 1,
   },
   header: {
-    paddingHorizontal: g.size(20),
-    paddingBottom: g.size(24),
-    paddingTop: Platform.OS === 'android' ? g.size(40) : g.size(24),
+    paddingHorizontal: g.ms(20),
+    paddingBottom: g.hs(24),
+    paddingTop: Platform.OS === 'android' ? g.hs(40) : g.hs(24),
     backgroundColor: g.tertiaryBlue,
     overflow: 'hidden',
-    borderBottomLeftRadius: g.size(28),
-    borderBottomRightRadius: g.size(28),
+    borderBottomLeftRadius: g.ms(28),
+    borderBottomRightRadius: g.ms(28),
     alignItems: 'flex-start',
   },
   lineLabel: {
     ...g.titleXSmall,
     color: g.neutral900,
-    lineHeight: g.size(20),
+    lineHeight: g.ms(20),
+  },
+  loading: {
+    flex: 1,
   },
   qaRow: {
     flexDirection: 'row',
-    gap: g.size(12),
+    gap: g.ms(12),
   },
   question: {
     ...g.bodyLarge,
@@ -56,8 +59,8 @@ const s = StyleSheet.create({
     color: g.neutral600,
   },
   questionContainer: {
-    gap: g.size(8),
-    paddingVertical: g.size(20),
+    gap: g.hs(8),
+    paddingVertical: g.hs(20),
   },
   questionContainerBottomBorder: {
     borderBottomWidth: 1,
@@ -68,7 +71,7 @@ const s = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    padding: g.size(24),
+    padding: g.ms(24),
   },
   title: {
     ...g.titleLarge,
@@ -93,7 +96,7 @@ export default function QuestionnaireResponseDetails() {
         <TouchableOpacity onPress={() => router.back()}>
           <Feather
             name="arrow-left"
-            size={g.size(40)}
+            size={g.ms(40)}
             color={g.white}
           />
         </TouchableOpacity>
@@ -106,7 +109,7 @@ export default function QuestionnaireResponseDetails() {
         contentContainerStyle={s.scrollContent}
       >
         {isLoading
-          ? <ActivityIndicator />
+          ? <ActivityIndicator color={g.primaryBlue} size="large" style={s.loading} />
           : (
             <>
               {data?.item.map(({ answer, text }, i) => (

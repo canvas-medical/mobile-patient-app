@@ -7,17 +7,19 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    maxWidth: 650,
+    alignSelf: 'center',
   },
   image: {
-    width: g.width * 0.8,
+    width: '80%',
   },
   text: {
     ...g.bodyLarge,
     color: g.neutral700,
     textAlign: 'center',
     maxWidth: g.width * 0.8,
-    marginTop: g.size(16),
-    lineHeight: g.size(24),
+    marginTop: g.hs(16),
+    lineHeight: g.ms(24),
   },
 });
 
@@ -26,7 +28,7 @@ export function ZeroState({
   text,
   textColor,
   imageAspectRatio,
-  marginBottom = g.size(120),
+  marginBottom = g.hs(120),
 }: {
   image: any;
   text: string;

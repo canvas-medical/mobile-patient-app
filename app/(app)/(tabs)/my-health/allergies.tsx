@@ -9,9 +9,10 @@ const s = StyleSheet.create({
   label: {
     ...g.titleXSmall,
     color: g.neutral700,
+    marginLeft: g.ms(4),
   },
   scrollSection: {
-    gap: g.size(16),
+    gap: g.hs(16),
   },
 });
 
@@ -23,7 +24,7 @@ export default function Allergies() {
   return (
     <StackListView
       title="Allergies"
-      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.size(36)} color={g.neutral700} />}
+      icon={<MaterialCommunityIcons name="peanut-off-outline" size={g.ms(36)} color={g.neutral700} />}
       isLoading={isLoading}
       refetch={refetch}
     >

@@ -3,8 +3,8 @@ import { g } from '@styles';
 
 const s = StyleSheet.create({
   button: {
-    borderRadius: g.size(40),
-    paddingVertical: g.size(12),
+    borderRadius: g.ms(40),
+    paddingVertical: g.hs(12),
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -7,6 +7,7 @@ import { g } from '@styles';
 const s = StyleSheet.create({
   allergy: {
     ...g.labelMedium,
+    flex: 1,
     color: g.neutral900,
   },
   allergyInfo: {
@@ -17,6 +18,7 @@ const s = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: g.ms(8),
   },
   severity: {
     ...g.bodySmall,
