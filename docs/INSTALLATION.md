@@ -23,8 +23,8 @@ Before you begin, make sure you have the following installed:
 First, clone the VivoCare Health repository to your local machine:
 
 ```bash
-git clone https://github.com/brewerdigital-llc/VivoCare.git
-cd VivoCare
+git clone https://github.com/canvas-medical/mobile-patient-health.git
+cd mobile-patient-health
 ```
 
 ## Install Dependencies
