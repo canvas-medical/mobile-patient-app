@@ -1,7 +1,7 @@
 ## Installation 
-# Development Setup Guide for VivoCare Health Application
+# Development Setup Guide for Mobile Patient Application
 
-This guide will walk you through the process of setting up the VivoCare Health application on your local machine for development purposes.
+This guide will walk you through the process of setting up the Mobile Patient Applicatio on your local machine for development purposes.
 
 ## Prerequisites
 
@@ -11,6 +11,7 @@ Before you begin, make sure you have the following installed:
 - [Expo Account](https://expo.dev/signup)
 - [Apple Developer Account](https://expo.dev/signup](https://developer.apple.com/programs/enroll/)) (for iOS)
 - [Google Play Account](https://developer.android.com/distribute/console) (for Android)
+- [New Firebase Project](https://alphatech.technology/Blog-Entry-srk/Google-Services-Json-bek/) (for Android)
 - [Android Studio](https://developer.android.com/studio/install) or [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) (for running the app on a simulator)
 
 *Optional*
@@ -51,7 +52,7 @@ Here's how you can obtain the keys required in the `.env.local` file.
 
 - `EXPO_PUBLIC_PRACTITIONER_ID` and `EXPO_PUBLIC_CLINIC_ID`: These are specific to your application and can be obtained from your Canvas Dashboard.
 
-- `GOOGLE_SERVICES_JSON`: This is a JSON file that contains your project configuration for Google services. You can generate this file from the Google Cloud Console when you create a project.
+- `GOOGLE_SERVICES_JSON`: This is a JSON file that contains your project configuration for Google services. You can generate this file from the Firebase Console when you create a project.
 
 #### Optional
 If these keys are not included, the associated features will not work but the app will still function
