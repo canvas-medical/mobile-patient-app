@@ -2,7 +2,7 @@
 ![Static Badge](https://img.shields.io/github/v/release/brewerdigital-llc/FHIR-Dashboard)
 
 # VivoCare Health
-<img width="1286" alt="iphone-screenshots" src="https://github.com/brewerdigital-llc/VivoCare/assets/33329110/361701c3-51b1-4021-a295-5dbe199890e4">
+<img width="1286" alt="iphone-screenshots" src="https://github.com/canvas-medical/mobile-patient-app/blob/main/assets/vivocare-iphone-screenshots-for-readme.png">
 
 ## Overview
 
