@@ -1,12 +1,14 @@
+# VivoCare Health
+
 ![Static Badge](https://img.shields.io/badge/license-apache-red)
 ![Static Badge](https://img.shields.io/github/v/release/brewerdigital-llc/FHIR-Dashboard)
 
-# VivoCare Health
-<img width="1286" alt="iphone-screenshots" src="https://github.com/canvas-medical/mobile-patient-app/blob/main/assets/vivocare-iphone-screenshots-for-readme.png">
+![iphone-screenshots](https://github.com/canvas-medical/mobile-patient-app/blob/main/assets/readme/vivocare-iphone-rendering.png)
 
 ## Overview
 
 VivoCare Health is a mobile application developed using Expo. The application provides a user-friendly interface for managing your medical information and appointments, making it a valuable tool for both healthcare providers and patients.  The application allows users to:  
+
 - Register and create a profile
 - Send messages to healthcare providers
 - Schedule appointments
@@ -30,7 +32,7 @@ By streamlining the process of managing health information, VivoCare Health enha
 
 This repository is part of the _VivoCare_ Health FHIR app project by Brewer Digital.  The other repositories are:
 
-* [FHIR Stripe microservice](https://github.com/brewerdigital-llc/stripe-microservice) - The microservice that handles Stripe payment processing for _VivoCare_.
+- [FHIR Stripe microservice](https://github.com/brewerdigital-llc/stripe-microservice) - The microservice that handles Stripe payment processing for _VivoCare_.
 
 ## Installation
 
@@ -38,7 +40,7 @@ Please refer to the [Installation Guide](./docs/INSTALLATION.md) for detailed in
 
 ## Usage
 
-After you have completed all the steps in the [Installation Guide](./docs/INSTALLATION.md), you can run the following command to run the application. 
+After you have completed all the steps in the [Installation Guide](./docs/INSTALLATION.md), you can run the following command to run the application.
 
 ```bash
 npx expo start --dev-client
@@ -59,10 +61,8 @@ npx expo start --dev-client
 
 - **AWS**: Amazon Web Services (AWS) offers a wide range of services that are eligible for use with PHI under the AWS Business Associate Addendum (BAA). Ensure that you are using only the HIPAA-eligible services for any PHI, and that you have a signed BAA with AWS. Also, ensure that you are following all necessary security best practices, such as encrypting data at rest and in transit.
 
-
 ## About Brewer Digital
 
-<a href="https://brewerdigital.com/">
-  <img align="left" width="33%" src="https://github.com/brewerdigital-llc/FHIR-Dashboard/assets/33329110/676b2fd1-34f3-44ef-b6a3-3b4b409eb87f"/>
-</a>
+[![Brewer Digital Logo](https://github.com/canvas-medical/mobile-patient-app/blob/main/assets/readme/brewer-digital-logo.jpg)](https://brewerdigital.com/)
+
 With over four decades of collective industry experience, our team specializes in software development for healthcare startups. Having worked with over 50 different companies, we provide the experience to bring your ideas to life.
